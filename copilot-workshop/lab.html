@@ -524,18 +524,72 @@ model: Claude Sonnet 4              # Optional — specify the AI model
 </code></pre>
 <p><strong>Available tools</strong> include: <code>codebase</code>, <code>search</code>, <code>editFiles</code>, <code>runCommands</code>, <code>usages</code>, <code>problems</code>, <code>changes</code>, <code>fetch</code>, <code>githubRepo</code>, <code>todos</code>, <code>github/*</code> (all GitHub MCP tools), <code>playwright/*</code> (all Playwright tools)</p>
 <h3>Steps</h3>
-<p><strong>Exercise 1 — Use the OctoCATEngineer Agent</strong></p>
+<p><strong>Exercise 1 — Create and Use the OctoCATEngineer Agent</strong></p>
 <p>The simplest kind of agent — a persona with local tools. No MCP, no custom model, just a specialized pair programmer.</p>
 <ol>
-<li>Open <code>.github/agents/OctoCATEngineer.agent.md</code></li>
-<li>Read through the file and notice:<ul>
-<li>The <strong>tools</strong> list: <code>codebase</code>, <code>search</code>, <code>editFiles</code>, <code>runCommands</code>, <code>problems</code> — all local tools</li>
+<li><p><strong>Create the agent file:</strong></p>
+<ul>
+<li>In your repo, create a new file at <code>.github/agents/OctoCATEngineer.agent.md</code> with the following content:</li>
+</ul>
+<pre><code class="language-yaml">---
+tools: [&#39;search/codebase&#39;, &#39;azure-mcp/search&#39;, &#39;edit/editFiles&#39;, &#39;execute/getTerminalOutput&#39;, &#39;execute/runInTerminal&#39;, &#39;read/terminalLastCommand&#39;, &#39;read/terminalSelection&#39;, &#39;read/problems&#39;]
+description: Full-stack engineer for the OctoCAT Supply app
+---
+
+You are a senior full-stack TypeScript engineer working on the OctoCAT Supply application — a supply chain management web app with a React 18+ frontend (Vite, Tailwind CSS) and an Express.js API backend (TypeScript, OpenAPI/Swagger).
+
+## Your Approach
+
+- Read existing code patterns before making changes — follow the conventions already established in the project
+- Use TypeScript with strict typing for all new code
+- Follow REST conventions for API endpoints
+- Add Swagger/OpenAPI documentation annotations for any new or modified API routes
+- Use Tailwind CSS for all frontend styling — no inline styles or CSS modules
+- Use functional React components with hooks
+
+## Backend Conventions
+
+- Entity models go in `api/src/models/`
+- Route handlers go in `api/src/routes/`
+- Follow the pattern established in `api/src/routes/product.ts` for new routes
+- Register new routes in `api/src/index.ts`
+- Use proper error handling with try/catch and appropriate HTTP status codes
+- Include input validation for all POST/PUT endpoints
+
+## Frontend Conventions
+
+- Pages go in `src/pages/`
+- Reusable components go in `src/components/`
+- Follow the component structure in existing pages like `src/pages/Products.tsx`
+- Use React Router for navigation
+- Handle loading, error, and empty states in all data-fetching components
+
+## Testing
+
+- Use vitest as the test framework
+- Follow patterns from existing test files
+- Run tests after making changes to verify nothing is broken
+
+## Workflow
+
+1. Understand the task by reading relevant existing code
+2. Plan the changes needed
+3. Implement the changes across all affected files
+4. Build and verify the changes compile successfully
+5. Run tests if applicable
+</code></pre>
+</li>
+<li><p>Read through the file and notice:</p>
+<ul>
+<li>The <strong>tools</strong> list: <code>search/codebase</code>, <code>azure-mcp/search</code>, <code>edit/editFiles</code>, <code>execute/getTerminalOutput</code>, <code>execute/runInTerminal</code>, <code>read/terminalLastCommand</code>, <code>read/terminalSelection</code>, <code>read/problems</code> — all local tools</li>
 <li>No <code>model</code> field — it uses the default model</li>
 <li>The persona: a full-stack TypeScript engineer for OctoCAT Supply</li>
 </ul>
 </li>
-<li>Open the Copilot Chat mode picker (dropdown at the top) and select <strong>OctoCATEngineer</strong></li>
-<li>Give it a task:</li>
+<li><p>Open the Copilot Chat mode picker (dropdown at the top) and select <strong>OctoCATEngineer</strong></p>
+</li>
+<li><p>Give it a task:</p>
+</li>
 </ol>
 <pre><code>Add a GET /api/products/search endpoint that accepts a &quot;name&quot; query parameter and returns matching products
 </code></pre>
