@@ -648,18 +648,29 @@ Be direct and opinionated. Don&#39;t say &quot;consider&quot; — say &quot;chan
 <ol start="5">
 <li>The agent maintains its persona across the entire conversation</li>
 </ol>
-<p><strong>Exercise 4 — Explore the Advanced Agent (ImplementationIdeas)</strong></p>
-<p>This agent shows the most advanced patterns — MCP server tools, a custom model, and delegation to the Coding Agent.</p>
+<p><strong>Exercise 4 — Run the ImplementationIdeas Agent (Bonus — Agents Calling Agents)</strong></p>
+<p>This is the most advanced agent pattern — an agent that researches, plans, and then <strong>delegates implementation to the Coding Agent</strong> in the cloud.</p>
 <ol>
 <li>Open <code>.github/agents/ImplementationIdeas.agent.md</code></li>
 <li>Read through the file and notice what makes this different from OctoCATEngineer:<ul>
-<li>The <strong>tools</strong> list includes <code>github/*</code> and <code>playwright/*</code> — MCP server wildcard tools</li>
-<li>The <strong>model</strong> is specified — the agent picks its own model (<code>Claude Sonnet 4.5</code>)</li>
-<li>The behavior instructions tell it to research deeply, use parallel searches, and delegate to Coding Agent</li>
-<li>Key line: <code>call GitHub&#39;s create_pull_request_with_copilot</code> — this agent can trigger other agents!</li>
+<li><strong>Tools</strong>: <code>search</code>, <code>github/*</code> (wildcard = all GitHub MCP tools), <code>playwright/*</code>, <code>githubRepo</code>, <code>todos</code></li>
+<li><strong>Model</strong>: <code>Claude Sonnet 4.5</code> — the agent chooses its own model</li>
+<li><strong>Key line</strong>: <code>call GitHub&#39;s create_pull_request_with_copilot</code> — this agent delegates to the Coding Agent (cloud)</li>
 </ul>
 </li>
-<li>Think about the progression:<ul>
+<li>Select <strong>ImplementationIdeas</strong> from the Copilot Chat mode picker</li>
+<li>Give it a task:</li>
+</ol>
+<pre><code>Explore adding a wishlist feature where users can save products for later
+</code></pre>
+<ol start="5">
+<li>Watch the agent work — it should:<ul>
+<li>Research the codebase using parallel tool calls</li>
+<li>Create a todo list with feature variations</li>
+<li>Delegate implementation to Coding Agent (which creates a branch and opens a PR)</li>
+</ul>
+</li>
+<li>Think about the progression across all three agents:<ul>
 <li><strong>OctoCATEngineer</strong>: local tools, default model → simple worker</li>
 <li><strong>CodeReviewer</strong>: read-only tools, specified model → safe reviewer</li>
 <li><strong>ImplementationIdeas</strong>: MCP tools, custom model, delegation → advanced strategist</li>
@@ -667,7 +678,10 @@ Be direct and opinionated. Don&#39;t say &quot;consider&quot; — say &quot;chan
 </li>
 </ol>
 <blockquote>
-<p><strong>Note</strong>: We&#39;ll see the Coding Agent (which ImplementationIdeas delegates to) in detail during Section 9.</p>
+<p><strong>Note</strong>: When you run this, you may see a tip from Coding Agent: <em>&quot;You can make Copilot smarter by setting up custom instructions, customizing its development environment and configuring MCP servers.&quot;</em> Coding Agent configuration (environment setup, branch protection, assigning issues) is covered in the workshop&#39;s Section 9 demo.</p>
+</blockquote>
+<blockquote>
+<p><strong>Note</strong>: This exercise requires the GitHub MCP server to be configured (Lab 7) and Coding Agent to be enabled in the repository settings. If either is not available, read through the agent file to understand the pattern — you&#39;ll see it demonstrated live.</p>
 </blockquote>
 <p><strong>Exercise 5 — Create Your Own Agent</strong> (Bonus)</p>
 <p>Choose a persona that would be useful for this project and create it:</p>
