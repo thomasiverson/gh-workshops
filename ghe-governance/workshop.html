@@ -1,0 +1,1802 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Enterprise Administration &amp; Governance Workshop</title><link rel="stylesheet" href="/gh-workshops/_astro/index.tKAiv-SV.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1>GitHub Enterprise Administration &amp; Governance Workshop</h1>
+<p><strong>Duration</strong>: 3 hours (with breaks)<br><strong>Format</strong>: Presentation + Live Demos<br><strong>Audience</strong>: Enterprise Admins, Org Owners, Security Teams, Engineering Managers<br><strong>Focus</strong>: GitHub Enterprise Cloud with Enterprise Managed Users (EMU)</p>
+<hr>
+<h2>Workshop Overview</h2>
+<p>This comprehensive workshop covers end-to-end GitHub Enterprise administration and governance—from identity management and authentication through repository policies, security features, compliance controls, billing, and GitHub Copilot governance. The format combines presentation slides with live demos in the GitHub Enterprise admin portal, giving attendees hands-on familiarity with real configurations.</p>
+<h3>Learning Objectives</h3>
+<ul>
+<li>Architect and manage a GitHub Enterprise Cloud environment with EMU</li>
+<li>Configure enterprise-wide authentication, identity, and access controls</li>
+<li>Implement repository governance policies across organizations</li>
+<li>Deploy GitHub Advanced Security (GHAS) features for code security</li>
+<li>Manage billing, licensing, and seat optimization across products</li>
+<li>Govern GitHub Copilot with security controls and usage policies</li>
+<li>Establish audit, compliance, and incident response processes</li>
+<li>Design a phased rollout and change management strategy</li>
+</ul>
+<hr>
+<h2>Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a href="#1-opening--enterprise-architecture-overview-10-min">Opening &amp; Enterprise Architecture Overview</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#2-identity-authentication--sso-20-min">Identity, Authentication &amp; SSO</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#3-enterprise--organization-structure-15-min">Enterprise &amp; Organization Structure</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#4-repository-governance--branch-policies-20-min">Repository Governance &amp; Branch Policies</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>☕</td>
+<td><strong>Break</strong></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="#5-github-advanced-security-ghas-20-min">GitHub Advanced Security (GHAS)</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="#6-github-copilot-governance-20-min">GitHub Copilot Governance</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="#7-billing-licensing--seat-management-15-min">Billing, Licensing &amp; Seat Management</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>8</td>
+<td><a href="#8-audit-compliance--incident-response-15-min">Audit, Compliance &amp; Incident Response</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>9</td>
+<td><a href="#9-operational-best-practices--wrap-up-15-min">Operational Best Practices &amp; Wrap-up</a></td>
+<td>15 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total</strong>: ~3 hours including break</p>
+<hr>
+<h2>1. Opening &amp; Enterprise Architecture Overview (10 min)</h2>
+<h3>Why Enterprise Governance Matters</h3>
+<ul>
+<li>Consistent security posture across all engineering teams</li>
+<li>Compliance with industry regulations (SOC 2, GDPR, HIPAA, FedRAMP)</li>
+<li>Cost optimization through centralized management</li>
+<li>Reduced shadow IT and configuration drift</li>
+<li>Faster onboarding for new teams, repos, and developers</li>
+</ul>
+<h3>GitHub Enterprise Cloud Architecture</h3>
+<pre><code>┌─────────────────────────────────────────────────┐
+│              ENTERPRISE ACCOUNT                 │
+│   Identity Provider (IdP) ← SAML/OIDC/SCIM     │
+│   Enterprise Policies (highest precedence)      │
+│   Billing &amp; Licensing                           │
+│   Audit Log (unified)                           │
+├─────────────────────────────────────────────────┤
+│  ┌──────────────┐   ┌──────────────┐            │
+│  │   Org A       │   │   Org B       │           │
+│  │  (Eng Team)   │   │  (Platform)   │           │
+│  │  ┌─────────┐  │   │  ┌─────────┐  │           │
+│  │  │ Repos   │  │   │  │ Repos   │  │           │
+│  │  │ Teams   │  │   │  │ Teams   │  │           │
+│  │  │ Projects│  │   │  │ Projects│  │           │
+│  │  └─────────┘  │   │  └─────────┘  │           │
+│  └──────────────┘   └──────────────┘            │
+└─────────────────────────────────────────────────┘
+</code></pre>
+<h3>Enterprise Managed Users (EMU) vs. Standard Enterprise</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Standard Enterprise</th>
+<th>EMU Enterprise</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Account creation</td>
+<td>Users sign up themselves</td>
+<td>IdP provisions accounts</td>
+</tr>
+<tr>
+<td>Identity control</td>
+<td>SAML linking</td>
+<td>Full lifecycle management</td>
+</tr>
+<tr>
+<td>Username format</td>
+<td>User-chosen</td>
+<td><code>&lt;shortcode&gt;_&lt;handle&gt;</code></td>
+</tr>
+<tr>
+<td>Personal repos</td>
+<td>Allowed</td>
+<td>Not allowed</td>
+</tr>
+<tr>
+<td>Outside collaborators</td>
+<td>Allowed</td>
+<td>Restricted by default</td>
+</tr>
+<tr>
+<td>SSO enforcement</td>
+<td>Org-level</td>
+<td>Enterprise-level</td>
+</tr>
+<tr>
+<td>SCIM provisioning</td>
+<td>Optional</td>
+<td>Required</td>
+</tr>
+</tbody></table>
+<h3>Key Points</h3>
+<ul>
+<li>EMU provides the strongest governance model—accounts are owned and managed by the enterprise</li>
+<li>All user lifecycle events (create, update, deactivate) flow through the IdP</li>
+<li>Users cannot fork to personal accounts or contribute outside the enterprise</li>
+</ul>
+<hr>
+<h2>2. Identity, Authentication &amp; SSO (20 min)</h2>
+<h3>SAML SSO Configuration</h3>
+<ul>
+<li><strong>Enterprise-level SAML</strong>: Single sign-on enforced across all organizations</li>
+<li><strong>IdP integration</strong>: Azure AD (Entra ID), Okta, PingFederate, OneLogin</li>
+<li><strong>SAML attributes mapping</strong>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>SAML Attribute</th>
+<th>GitHub Field</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NameID</code></td>
+<td>Username</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>Email address</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>first_name</code></td>
+<td>Display name (first)</td>
+<td>Recommended</td>
+</tr>
+<tr>
+<td><code>last_name</code></td>
+<td>Display name (last)</td>
+<td>Recommended</td>
+</tr>
+</tbody></table>
+<h3>SCIM Provisioning</h3>
+<ul>
+<li>Automatic user provisioning and deprovisioning via SCIM 2.0</li>
+<li>Group-based team synchronization (IdP groups → GitHub teams)</li>
+<li>Lifecycle management: onboarding, role changes, offboarding</li>
+</ul>
+<pre><code>Identity Provider (Entra ID / Okta)
+        │
+        │ SCIM 2.0
+        ▼
+┌───────────────────────────┐
+│   GitHub Enterprise       │
+│                           │
+│   User Created → Seat     │
+│   Group Synced → Team     │
+│   User Disabled → Removed │
+└───────────────────────────┘
+</code></pre>
+<h3>Team Synchronization</h3>
+<ul>
+<li>Map IdP groups directly to GitHub teams</li>
+<li>Role changes in IdP propagate automatically</li>
+<li>Eliminates manual team membership management</li>
+</ul>
+<h3>🖥️ Demo: SSO &amp; SCIM Configuration</h3>
+<p><strong>Location</strong>: Enterprise → <strong>Identity provider</strong> tab (top of page)</p>
+<blockquote>
+<p><strong>Note</strong>: For EMU enterprises, SSO is configured via the <strong>Identity provider</strong> tab at the top of the enterprise page—not under &quot;Authentication security&quot; (which is the path for standard/non-EMU enterprises).</p>
+</blockquote>
+<ol>
+<li>Navigate to your enterprise → click the <strong>Identity provider</strong> tab at the top of the page</li>
+<li>Click <strong>Single sign-on configuration</strong> — show SAML/OIDC fields and IdP metadata</li>
+<li>Explain that SCIM provisioning is configured <strong>in the IdP application</strong> (Entra ID / Okta), not in the GitHub UI — show the IdP-side SCIM app if available</li>
+<li>Navigate to Enterprise → Identity provider → <strong>Groups</strong> to show synced IdP groups</li>
+<li>Navigate to Organization → <strong>Teams</strong> → select a team → <strong>Settings</strong> to show IdP group mapping</li>
+</ol>
+<h3>Two-Factor Authentication (2FA)</h3>
+<ul>
+<li><strong>Enterprise policy</strong>: Require 2FA for all members</li>
+<li><strong>Enforcement options</strong>:<ul>
+<li>Required for all enterprise members</li>
+<li>Required per organization</li>
+<li>Grace period for compliance</li>
+</ul>
+</li>
+<li><strong>Supported methods</strong>: TOTP apps, security keys (WebAuthn/FIDO2), passkeys, GitHub Mobile</li>
+</ul>
+<h3>SSH Key &amp; PAT Governance</h3>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Description</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SSH key requirements</td>
+<td>Require SSH certificate authorities</td>
+<td>Enterprise</td>
+</tr>
+<tr>
+<td>PAT restrictions</td>
+<td>Limit classic PATs, enforce fine-grained</td>
+<td>Org</td>
+</tr>
+<tr>
+<td>PAT approval workflow</td>
+<td>Require admin approval for token access</td>
+<td>Org</td>
+</tr>
+<tr>
+<td>IP allow lists</td>
+<td>Restrict access by IP range</td>
+<td>Enterprise, Org</td>
+</tr>
+</tbody></table>
+<h3>🖥️ Demo: Personal Access Token Policies</h3>
+<p><strong>Enterprise-level</strong>: Enterprise → <strong>Policies</strong> tab → <strong>Personal access tokens</strong><br><strong>Organization-level</strong>: Organization → Settings → sidebar: <strong>Personal access tokens</strong> → <strong>Settings</strong></p>
+<ol>
+<li>Navigate to Enterprise → Policies tab → Personal access tokens — show enterprise-wide PAT policies</li>
+<li>Navigate to Organization → Settings → Personal access tokens → Settings</li>
+<li>Show fine-grained PAT requirements and how to restrict classic PATs</li>
+<li>Demonstrate PAT approval workflow (require admin approval for token access)</li>
+</ol>
+<h3>Discussion Points</h3>
+<ul>
+<li>What is your current IdP and SSO setup?</li>
+<li>How do you handle offboarding today—manual or automated?</li>
+<li>Are you currently enforcing 2FA across all users?</li>
+</ul>
+<hr>
+<h2>3. Enterprise &amp; Organization Structure (15 min)</h2>
+<h3>Organizational Design Patterns</h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Description</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Single Org</strong></td>
+<td>All teams in one org</td>
+<td>Small enterprises (&lt;500 devs)</td>
+</tr>
+<tr>
+<td><strong>Business Unit Orgs</strong></td>
+<td>Org per BU/division</td>
+<td>Large enterprises with autonomy</td>
+</tr>
+<tr>
+<td><strong>Product Line Orgs</strong></td>
+<td>Org per product</td>
+<td>Product-centric companies</td>
+</tr>
+<tr>
+<td><strong>Environment Orgs</strong></td>
+<td>Org per env (dev/staging/prod)</td>
+<td>Strict environment isolation</td>
+</tr>
+</tbody></table>
+<h3>Enterprise Policy Hierarchy</h3>
+<pre><code>Enterprise Policies (highest precedence — can enforce or delegate)
+    ↓
+Organization Policies (can customize if delegated)
+    ↓
+Repository Settings (most specific — lowest precedence)
+</code></pre>
+<p><strong>Key principle</strong>: Higher levels can <strong>enforce</strong> settings or set <strong>&quot;No Policy&quot;</strong> to delegate decisions downward.</p>
+<h3>Enterprise-Level Policies</h3>
+<table>
+<thead>
+<tr>
+<th>Policy Area</th>
+<th>Options</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Repository visibility</td>
+<td>Public / Internal / Private</td>
+<td>Controls default and allowed repo types</td>
+</tr>
+<tr>
+<td>Repository forking</td>
+<td>Allow / Restrict</td>
+<td>Controls forking within and outside enterprise</td>
+</tr>
+<tr>
+<td>Base permissions</td>
+<td>None / Read / Write / Admin</td>
+<td>Default access for org members</td>
+</tr>
+<tr>
+<td>Repository creation</td>
+<td>All members / Admins only</td>
+<td>Who can create new repos</td>
+</tr>
+<tr>
+<td>Outside collaborators</td>
+<td>Allow / Restrict</td>
+<td>External contributor access</td>
+</tr>
+<tr>
+<td>Actions workflow permissions</td>
+<td>Allow all / Selected / Disable</td>
+<td>GitHub Actions governance</td>
+</tr>
+</tbody></table>
+<h3>🖥️ Demo: Enterprise Policies</h3>
+<p><strong>Location</strong>: Enterprise → <strong>Policies</strong> tab (⚖️ icon, top of page) → <strong>Member privileges</strong></p>
+<ol>
+<li>Navigate to your enterprise → click the <strong>Policies</strong> tab at the top of the page</li>
+<li>Click <strong>Member privileges</strong> in the sidebar</li>
+<li>Walk through each repository policy (base permissions, repo creation, forking, visibility, outside collaborators)</li>
+<li>Show &quot;Enforce&quot; vs. &quot;Allow&quot; vs. &quot;No Policy&quot; for each setting</li>
+<li>Demonstrate how org-level settings show &quot;Enforced by enterprise&quot;</li>
+</ol>
+<h3>Organization-Level Settings</h3>
+<p>Key org-level configurations:</p>
+<ul>
+<li><strong>Member privileges</strong>: Base permissions, repo creation, forking, pages</li>
+<li><strong>Team management</strong>: Team creation permissions, team visibility</li>
+<li><strong>Third-party access</strong>: OAuth app and GitHub App policies</li>
+<li><strong>Moderation</strong>: Interaction limits, code of conduct</li>
+<li><strong>Security</strong>: Dependency graph, Dependabot, secret scanning defaults</li>
+</ul>
+<h3>Custom Repository Roles</h3>
+<p>Define granular roles beyond the built-in Read/Triage/Write/Maintain/Admin:</p>
+<table>
+<thead>
+<tr>
+<th>Built-In Role</th>
+<th>Key Permissions</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Read</td>
+<td>View code, issues, PRs</td>
+</tr>
+<tr>
+<td>Triage</td>
+<td>Manage issues and PRs (no code push)</td>
+</tr>
+<tr>
+<td>Write</td>
+<td>Push code, manage issues/PRs</td>
+</tr>
+<tr>
+<td>Maintain</td>
+<td>Manage repo settings (no destructive actions)</td>
+</tr>
+<tr>
+<td>Admin</td>
+<td>Full control including settings and access</td>
+</tr>
+</tbody></table>
+<p><strong>Custom roles</strong> allow you to pick specific permissions (e.g., a &quot;Security Reviewer&quot; role that can view secret scanning alerts but not push code).</p>
+<h3>🖥️ Demo: Custom Repository Roles</h3>
+<p><strong>Location</strong>: Organization → Settings → Access section (sidebar) → <strong>Repository roles</strong></p>
+<ol>
+<li>Navigate to Organization → Settings → sidebar <strong>Access</strong> section → <strong>Repository roles</strong></li>
+<li>Show built-in roles and their permissions</li>
+<li>Create a custom role (e.g., &quot;Security Auditor&quot;)</li>
+<li>Assign specific permissions to the custom role</li>
+<li>Show how to apply the role to a team</li>
+</ol>
+<h3>Discussion Points</h3>
+<ul>
+<li>How many organizations does your enterprise currently have?</li>
+<li>What&#39;s your strategy for repository visibility defaults?</li>
+<li>Do you use custom roles today, or rely on built-in roles?</li>
+</ul>
+<hr>
+<h2>4. Repository Governance &amp; Branch Policies (20 min)</h2>
+<h3>Repository Management at Scale</h3>
+<h4>Repository Naming Conventions</h4>
+<p>Establish naming standards to keep repositories discoverable:</p>
+<pre><code>Pattern: &lt;team&gt;-&lt;project&gt;-&lt;component&gt;
+Examples:
+  platform-payments-api
+  mobile-ios-app
+  infra-terraform-modules
+  docs-internal-wiki
+</code></pre>
+<h4>Repository Templates</h4>
+<ul>
+<li>Create standardized templates with required files:<ul>
+<li><code>README.md</code> with project structure</li>
+<li><code>CODEOWNERS</code> file</li>
+<li><code>.github/PULL_REQUEST_TEMPLATE.md</code></li>
+<li><code>.github/ISSUE_TEMPLATE/</code> directory</li>
+<li><code>LICENSE</code> file</li>
+<li><code>.gitignore</code> for language/framework</li>
+<li>CI/CD workflow files</li>
+</ul>
+</li>
+</ul>
+<h4>Repository Properties &amp; Rulesets</h4>
+<p>Repository properties allow tagging repos with custom metadata:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Example Values</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>environment</code></td>
+<td>production, staging, dev</td>
+<td>Environment classification</td>
+</tr>
+<tr>
+<td><code>compliance-level</code></td>
+<td>high, medium, low</td>
+<td>Regulatory requirements</td>
+</tr>
+<tr>
+<td><code>team-owner</code></td>
+<td>platform, mobile, data</td>
+<td>Ownership tracking</td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>java, python, typescript</td>
+<td>Technology stack</td>
+</tr>
+</tbody></table>
+<h3>Branch Protection Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Purpose</th>
+<th>Recommended Setting</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Require PR reviews</td>
+<td>Enforce code review</td>
+<td>1-2 required reviewers</td>
+</tr>
+<tr>
+<td>Dismiss stale reviews</td>
+<td>Re-review after changes</td>
+<td>Enabled</td>
+</tr>
+<tr>
+<td>Require status checks</td>
+<td>CI must pass</td>
+<td>Enabled (required checks listed)</td>
+</tr>
+<tr>
+<td>Require signed commits</td>
+<td>Verify commit authorship</td>
+<td>Enabled for compliance-heavy repos</td>
+</tr>
+<tr>
+<td>Require linear history</td>
+<td>Clean git history</td>
+<td>Enabled (squash or rebase)</td>
+</tr>
+<tr>
+<td>Restrict pushes</td>
+<td>Limit direct pushes</td>
+<td>Only deploy bots</td>
+</tr>
+<tr>
+<td>Lock branch</td>
+<td>Prevent changes</td>
+<td>Use for release branches</td>
+</tr>
+</tbody></table>
+<h3>Repository Rulesets (Modern Approach)</h3>
+<p>Rulesets are the newer, more powerful replacement for branch protection rules:</p>
+<pre><code>Enterprise Ruleset (applies across all orgs)
+    ↓
+Organization Ruleset (applies to matching repos)
+    ↓
+Repository Ruleset (repo-specific rules)
+</code></pre>
+<p><strong>Advantages over branch protection</strong>:</p>
+<ul>
+<li>Apply rules across multiple repos from one place</li>
+<li>Target by repository properties (metadata-based)</li>
+<li>Stack multiple rulesets for layered governance</li>
+<li>Include tag protection (not just branches)</li>
+<li>Bypass lists for automation accounts</li>
+</ul>
+<h3>🖥️ Demo: Rulesets Configuration</h3>
+<p><strong>Enterprise-level</strong>: Enterprise → <strong>Policies</strong> tab → <strong>Code</strong> (sidebar) → New ruleset<br><strong>Organization-level</strong>: Organization → Settings → Code and automation → <strong>Repository</strong> → <strong>Rulesets</strong><br><strong>Repository-level</strong>: Repository → Settings → Code and automation → <strong>Rules</strong> → <strong>Rulesets</strong></p>
+<ol>
+<li>Navigate to Enterprise → Policies tab → <strong>Code</strong> → click <strong>New ruleset</strong></li>
+<li>Create a new ruleset targeting <code>main</code> branch</li>
+<li>Add rules: require PRs, status checks, signed commits</li>
+<li>Set enforcement status (Active, Evaluate, Disabled)</li>
+<li>Configure bypass list for CI/CD service accounts</li>
+<li>Show how to target repos by property (e.g., <code>compliance-level: high</code>)</li>
+</ol>
+<h3>CODEOWNERS</h3>
+<p>Enforce required reviewers based on file paths:</p>
+<pre><code># .github/CODEOWNERS
+
+# Default owners for everything
+*                       @org/engineering-leads
+
+# Infrastructure changes require platform team
+/infrastructure/        @org/platform-team
+*.tf                    @org/platform-team
+
+# Security-sensitive files require security review
+/auth/                  @org/security-team
+**/secrets.*            @org/security-team
+
+# API changes require API team review
+/api/                   @org/api-team
+openapi.yaml            @org/api-team
+
+# Documentation
+/docs/                  @org/docs-team
+</code></pre>
+<h3>🖥️ Demo: CODEOWNERS &amp; Branch Protection</h3>
+<ol>
+<li>Show a CODEOWNERS file in a repository</li>
+<li>Open a PR that modifies a file covered by CODEOWNERS</li>
+<li>Show how required reviewers are automatically assigned</li>
+<li>Demonstrate branch protection enforcement on PR merge</li>
+</ol>
+<h3>Inner Source &amp; Repository Visibility</h3>
+<table>
+<thead>
+<tr>
+<th>Visibility</th>
+<th>Who Can See</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Private</strong></td>
+<td>Explicit collaborators only</td>
+<td>Confidential projects</td>
+</tr>
+<tr>
+<td><strong>Internal</strong></td>
+<td>All enterprise members</td>
+<td>Inner source / shared libraries</td>
+</tr>
+<tr>
+<td><strong>Public</strong></td>
+<td>Everyone on the internet</td>
+<td>Open source projects</td>
+</tr>
+</tbody></table>
+<p><strong>Inner source best practices</strong>:</p>
+<ul>
+<li>Default to <code>Internal</code> for cross-team collaboration</li>
+<li>Use <code>CONTRIBUTING.md</code> for contribution guidelines</li>
+<li>Set up discovery with topics and repository descriptions</li>
+</ul>
+<h3>Discussion Points</h3>
+<ul>
+<li>What naming conventions do you use for repositories today?</li>
+<li>Are you using branch protection rules or rulesets currently?</li>
+<li>How do you manage code review requirements across teams?</li>
+</ul>
+<hr>
+<h2>5. GitHub Advanced Security (GHAS) (20 min)</h2>
+<h3>GHAS Overview</h3>
+<p>GitHub Advanced Security provides three key capabilities:</p>
+<pre><code>┌───────────────────────────────────────────────────────┐
+│              GitHub Advanced Security                 │
+├──────────────┬──────────────────┬─────────────────────┤
+│   SECRET        │   CODE          │   DEPENDENCY       │
+│   SCANNING      │   SCANNING      │   MANAGEMENT       │
+│                 │                 │                    │
+│  200+ patterns  │  CodeQL engine  │  Dependabot alerts │
+│  Custom regex   │  Custom queries │  Security updates  │
+│  Push protect   │  Default setup  │  Version updates   │
+│  Validity check │  Merge blocking │  License review    │
+└──────────────┴──────────────────┴─────────────────────┘
+</code></pre>
+<h3>Secret Scanning</h3>
+<p><strong>Purpose</strong>: Detect secrets (API keys, tokens, passwords) committed to repositories</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Default patterns</td>
+<td>200+ partner patterns (AWS, Azure, Slack, etc.)</td>
+<td>Org, Repo</td>
+</tr>
+<tr>
+<td>Custom patterns</td>
+<td>Define regex patterns for internal secrets</td>
+<td>Org, Repo</td>
+</tr>
+<tr>
+<td>Push protection</td>
+<td>Block pushes containing secrets before they land</td>
+<td>Org, Repo</td>
+</tr>
+<tr>
+<td>Validity checks</td>
+<td>Verify if detected secrets are still active</td>
+<td>Enterprise</td>
+</tr>
+<tr>
+<td>Non-provider patterns</td>
+<td>Generic high-entropy string detection</td>
+<td>Org</td>
+</tr>
+</tbody></table>
+<h4>Push Protection</h4>
+<ul>
+<li>Blocks commits containing detected secrets <strong>before</strong> they reach the repo</li>
+<li>Developer sees an inline warning with remediation guidance</li>
+<li>Admins can allow bypass with a reason (audit-logged)</li>
+</ul>
+<pre><code>Push Protection Flow:
+  Developer pushes code
+      ↓
+  GitHub scans for secrets
+      ↓
+  Secret detected? ──Yes──→ Push blocked + notification
+      ↓ No                  Developer removes secret
+  Push accepted              or requests bypass
+</code></pre>
+<h3>🖥️ Demo: Secret Scanning &amp; Push Protection</h3>
+<p><strong>Location</strong>: Organization → Settings → <strong>Security configurations</strong> (recommended) or <strong>Code security and analysis</strong> (legacy)</p>
+<blockquote>
+<p><strong>Note</strong>: GitHub now recommends using <strong>Security configurations</strong> to enable GHAS features at scale. This provides a &quot;GitHub recommended&quot; preset configuration. The legacy &quot;Code security and analysis&quot; page still exists but is being superseded.</p>
+</blockquote>
+<ol>
+<li>Navigate to Organization → Settings → <strong>Security configurations</strong></li>
+<li>Show the &quot;GitHub recommended&quot; security configuration preset</li>
+<li>Enable secret scanning and push protection for all repositories</li>
+<li>Navigate to Organization → Settings → Code security and analysis → <strong>Secret scanning</strong> for custom pattern creation</li>
+<li>Show the secret scanning alerts dashboard (Organization → <strong>Security</strong> tab)</li>
+<li>Demonstrate a push protection block (optional—requires test repo)</li>
+</ol>
+<h3>Code Scanning (CodeQL)</h3>
+<ul>
+<li><strong>Static analysis</strong> powered by CodeQL semantic analysis engine</li>
+<li><strong>Languages supported</strong>: JavaScript, TypeScript, Python, Java, C/C++, C#, Go, Ruby, Swift, Kotlin</li>
+<li><strong>Runs via</strong>: GitHub Actions workflow or third-party CI integration</li>
+</ul>
+<h4>Default Setup vs. Advanced Setup</h4>
+<table>
+<thead>
+<tr>
+<th>Setup Type</th>
+<th>Configuration</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Default</td>
+<td>Auto-configured, no workflow file needed</td>
+<td>Quick enablement at scale</td>
+</tr>
+<tr>
+<td>Advanced</td>
+<td>Custom <code>.github/workflows/codeql.yml</code></td>
+<td>Fine-tuned analysis, custom queries</td>
+</tr>
+</tbody></table>
+<h4>Code Scanning Policies</h4>
+<ul>
+<li><strong>Enterprise policy</strong>: Enforce code scanning for all repos</li>
+<li><strong>Merge protection</strong>: Block PRs that introduce new security alerts</li>
+<li><strong>Severity thresholds</strong>: Define which alert severities block merges</li>
+</ul>
+<h3>🖥️ Demo: Code Scanning Configuration</h3>
+<ol>
+<li>Navigate to a repository → Settings → Code security and analysis (or use <strong>Security configurations</strong> at org level for bulk enablement)</li>
+<li>Enable code scanning with default setup</li>
+<li>Show the Security tab → Code scanning alerts</li>
+<li>Walk through an alert: description, severity, remediation</li>
+<li>Show how to configure merge protection for code scanning</li>
+</ol>
+<h3>Dependabot</h3>
+<p>Dependabot provides three capabilities:</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>What It Does</th>
+<th>Configuration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Dependabot Alerts</strong></td>
+<td>Notifies of known vulnerabilities in dependencies</td>
+<td>Auto-enabled</td>
+</tr>
+<tr>
+<td><strong>Dependabot Security Updates</strong></td>
+<td>Auto-creates PRs to fix vulnerable dependencies</td>
+<td>Org/Repo setting</td>
+</tr>
+<tr>
+<td><strong>Dependabot Version Updates</strong></td>
+<td>Keeps dependencies up to date (not just security)</td>
+<td><code>dependabot.yml</code></td>
+</tr>
+</tbody></table>
+<h4>Dependabot Configuration</h4>
+<pre><code class="language-yaml"># .github/dependabot.yml
+version: 2
+updates:
+  - package-ecosystem: &quot;npm&quot;
+    directory: &quot;/&quot;
+    schedule:
+      interval: &quot;weekly&quot;
+    reviewers:
+      - &quot;org/platform-team&quot;
+    labels:
+      - &quot;dependencies&quot;
+    open-pull-requests-limit: 10
+    
+  - package-ecosystem: &quot;docker&quot;
+    directory: &quot;/&quot;
+    schedule:
+      interval: &quot;weekly&quot;
+</code></pre>
+<h3>Security Overview Dashboard</h3>
+<p><strong>Location</strong>: Enterprise or Organization → Security tab</p>
+<ul>
+<li>Unified view of all security alerts across repositories</li>
+<li>Filter by severity, tool, repository, and status</li>
+<li>Track remediation progress and SLA compliance</li>
+<li>Export data for compliance reporting</li>
+</ul>
+<h3>🖥️ Demo: Security Overview</h3>
+<ol>
+<li>Navigate to Organization → Security → Overview</li>
+<li>Show the risk summary and alert counts</li>
+<li>Filter by severity (Critical, High)</li>
+<li>Drill into a specific repository&#39;s alerts</li>
+<li>Show the coverage view (which repos have features enabled)</li>
+</ol>
+<h3>GHAS Enablement at Scale</h3>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>How</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Org-wide default</td>
+<td>Enable for all new repos automatically</td>
+<td>Broad coverage</td>
+</tr>
+<tr>
+<td>Security campaigns</td>
+<td>Target high-risk repos first</td>
+<td>Risk-based approach</td>
+</tr>
+<tr>
+<td>Gradual rollout</td>
+<td>Enable per team, measure, expand</td>
+<td>Change management</td>
+</tr>
+</tbody></table>
+<h3>Discussion Points</h3>
+<ul>
+<li>Which GHAS features are you most interested in enabling first?</li>
+<li>Do you have a process for triaging security alerts today?</li>
+<li>What compliance requirements drive your security scanning needs?</li>
+</ul>
+<hr>
+<h2>6. GitHub Copilot Governance (20 min)</h2>
+<h3>Copilot Enterprise vs. Business</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Business</th>
+<th>Enterprise</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Code completions</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Chat in IDE</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>CLI support</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Chat on github.com (PR summaries)</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Knowledge bases</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Enterprise policy controls</td>
+<td>Limited</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>Content exclusions (enterprise)</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+</tbody></table>
+<h3>Security Architecture</h3>
+<ul>
+<li><strong>Data handling</strong>: Prompts and suggestions processed in real-time</li>
+<li><strong>Training guarantee</strong>: Enterprise code is NOT used to train models</li>
+<li><strong>Telemetry</strong>: Metadata collected for usage analytics only</li>
+<li><strong>Data residency</strong>: Processed in Microsoft/GitHub infrastructure</li>
+</ul>
+<h3>Content Exclusions</h3>
+<p>Prevent sensitive code from being included in Copilot context.</p>
+<p><strong>Configuration</strong>: Organization → Settings → Copilot → <strong>Content exclusion</strong> (not a file in the repo)</p>
+<p>Example exclusion patterns to add in the UI:</p>
+<pre><code>**/*.env              → All .env files
+**/secrets/**         → Any secrets folder
+**/internal-api/**    → Internal API code
+src/crypto/**         → Cryptography implementations
+**/vendor/**          → Third-party code
+</code></pre>
+<h3>🖥️ Demo: Content Exclusions</h3>
+<ol>
+<li>Navigate to Organization Settings → Copilot → Content exclusion</li>
+<li>Add exclusion patterns for sensitive paths</li>
+<li>Show how exclusions propagate across repos</li>
+</ol>
+<h3>Public Code Filter</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Blocked</strong></td>
+<td>Reduces IP/licensing risk</td>
+<td>Fewer suggestions</td>
+</tr>
+<tr>
+<td><strong>Allowed</strong></td>
+<td>More suggestions available</td>
+<td>Requires developer judgment</td>
+</tr>
+</tbody></table>
+<p><strong>Recommendation</strong>: Block for regulated industries; Allow for internal tools/prototypes.</p>
+<h3>Copilot Policy Settings</h3>
+<blockquote>
+<p><strong>Note</strong>: At the enterprise level, Copilot policies are managed under the <strong>AI controls</strong> tab (not the Policies tab). At the organization level, they remain under Organization → Settings → Copilot.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Options</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Copilot in IDE</td>
+<td>Enabled / Disabled / No Policy</td>
+<td>Enterprise, Org</td>
+</tr>
+<tr>
+<td>Copilot Chat</td>
+<td>Enabled / Disabled / No Policy</td>
+<td>Enterprise, Org</td>
+</tr>
+<tr>
+<td>Copilot in CLI</td>
+<td>Enabled / Disabled / No Policy</td>
+<td>Enterprise, Org</td>
+</tr>
+<tr>
+<td>Knowledge Bases</td>
+<td>Enabled / Disabled</td>
+<td>Enterprise</td>
+</tr>
+<tr>
+<td>Public code filter</td>
+<td>Allow / Block</td>
+<td>Enterprise, Org</td>
+</tr>
+<tr>
+<td>Content exclusions</td>
+<td>Pattern-based</td>
+<td>Org, Repo</td>
+</tr>
+</tbody></table>
+<h3>🖥️ Demo: Copilot Policy Configuration</h3>
+<p><strong>Location</strong>: Enterprise → <strong>AI controls</strong> tab (🤖 icon, top of page) → <strong>Copilot</strong> (sidebar)</p>
+<blockquote>
+<p><strong>Note</strong>: Copilot policies have moved out of the &quot;Policies&quot; tab into their own top-level <strong>AI controls</strong> tab. The AI controls tab also includes sidebar sections for <strong>Agents</strong> and <strong>MCP</strong> policies.</p>
+</blockquote>
+<ol>
+<li>Navigate to your enterprise → click the <strong>AI controls</strong> tab at the top of the page</li>
+<li>Click <strong>Copilot</strong> in the sidebar — walk through each policy option</li>
+<li>Show enforcement options: toggle or dropdown for each policy</li>
+<li>Enable public code filter (Block)</li>
+<li>Navigate to org-level (Organization → Settings → Copilot) to show inheritance</li>
+<li>Show usage analytics dashboard</li>
+</ol>
+<h3>Custom Instructions</h3>
+<p>Create org-wide coding standards for Copilot with <code>.github/copilot-instructions.md</code>:</p>
+<pre><code class="language-markdown"># Copilot Instructions for [Org Name]
+
+## Code Style
+- Use TypeScript strict mode
+- Prefer functional components in React
+- All functions must have JSDoc comments
+
+## Security Requirements
+- Never hardcode credentials
+- Use parameterized queries for database access
+- Validate all user inputs
+
+## Testing
+- Include unit tests for all new functions
+- Minimum 80% code coverage
+</code></pre>
+<h3>Usage Analytics &amp; ROI</h3>
+<p><strong>Metrics available</strong>:</p>
+<ul>
+<li>Active users: Daily/weekly/monthly unique users</li>
+<li>Acceptance rate: % of suggestions accepted</li>
+<li>Language breakdown: Usage by programming language</li>
+<li>Lines of code suggested: Volume metrics</li>
+</ul>
+<p><strong>ROI tracking considerations</strong>:</p>
+<ul>
+<li>Time saved per developer (survey-based)</li>
+<li>Code review cycle time changes</li>
+<li>Onboarding time for new team members</li>
+<li>Developer satisfaction scores</li>
+</ul>
+<h3>Discussion Points</h3>
+<ul>
+<li>What concerns does your security team have about AI-assisted coding?</li>
+<li>Are there specific code areas you would want to exclude from Copilot context?</li>
+<li>How do you plan to measure Copilot ROI in your organization?</li>
+</ul>
+<hr>
+<h2>7. Billing, Licensing &amp; Seat Management (15 min)</h2>
+<h3>GitHub Enterprise Licensing Overview</h3>
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Licensing Model</th>
+<th>Included In Enterprise</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GitHub Enterprise Cloud</td>
+<td>Per-seat (user)</td>
+<td>✓ Base license</td>
+</tr>
+<tr>
+<td>GitHub Advanced Security</td>
+<td>Per-unique-committer</td>
+<td>Add-on</td>
+</tr>
+<tr>
+<td>GitHub Copilot Business</td>
+<td>Per-seat (assigned)</td>
+<td>Add-on</td>
+</tr>
+<tr>
+<td>GitHub Copilot Enterprise</td>
+<td>Per-seat (assigned)</td>
+<td>Add-on</td>
+</tr>
+<tr>
+<td>GitHub Actions</td>
+<td>Minutes + storage</td>
+<td>Included allocation + overage</td>
+</tr>
+<tr>
+<td>GitHub Packages</td>
+<td>Storage + transfer</td>
+<td>Included allocation + overage</td>
+</tr>
+<tr>
+<td>GitHub Large File Storage</td>
+<td>Storage + bandwidth</td>
+<td>Add-on</td>
+</tr>
+</tbody></table>
+<h3>Enterprise Seat Management</h3>
+<ul>
+<li><strong>Enterprise members</strong>: Users with access to at least one org</li>
+<li><strong>Billing seat</strong>: Consumed when user is a member of any org</li>
+<li><strong>Outside collaborators</strong>: Billed separately (if allowed)</li>
+<li><strong>Service accounts</strong>: Consume seats; plan accordingly</li>
+</ul>
+<h3>Cost Optimization Strategies</h3>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Action</th>
+<th>Expected Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Regular seat audits</td>
+<td>Remove inactive users (60+ days)</td>
+<td>5-15% cost reduction</td>
+</tr>
+<tr>
+<td>SCIM deprovisioning</td>
+<td>Auto-remove on IdP disable</td>
+<td>Prevents orphan seats</td>
+</tr>
+<tr>
+<td>Copilot seat reviews</td>
+<td>Reassign underutilized Copilot seats</td>
+<td>10-20% seat optimization</td>
+</tr>
+<tr>
+<td>Actions optimization</td>
+<td>Cache dependencies, optimize workflows</td>
+<td>Reduce minutes overage</td>
+</tr>
+<tr>
+<td>GHAS committer analysis</td>
+<td>Identify active committer count</td>
+<td>Right-size GHAS licensing</td>
+</tr>
+</tbody></table>
+<h3>🖥️ Demo: Billing &amp; Usage</h3>
+<p><strong>Location</strong>: Enterprise → <strong>Billing and licensing</strong> tab (top of page)</p>
+<blockquote>
+<p><strong>Note</strong>: Copilot seat/license assignment is also managed here: Billing and licensing → <strong>Licensing</strong> → Copilot section → <strong>Manage</strong>.</p>
+</blockquote>
+<ol>
+<li>Navigate to your enterprise → click the <strong>Billing and licensing</strong> tab at the top of the page</li>
+<li>Show seat count by product (Enterprise, GHAS, Copilot)</li>
+<li>Click <strong>Licensing</strong> to show Copilot seat assignment and management</li>
+<li>Review GitHub Actions minutes usage</li>
+<li>Show storage consumption (Packages, LFS)</li>
+<li>Demonstrate usage export for finance/procurement reporting</li>
+</ol>
+<h3>GitHub Actions Billing</h3>
+<table>
+<thead>
+<tr>
+<th>Plan</th>
+<th>Included Minutes</th>
+<th>Storage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Enterprise Cloud</td>
+<td>50,000 min/month</td>
+<td>50 GB</td>
+</tr>
+<tr>
+<td>Overage</td>
+<td>Per-minute billing</td>
+<td>Per-GB billing</td>
+</tr>
+</tbody></table>
+<p><strong>Minutes multiplier by runner type</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Runner OS</th>
+<th>Multiplier</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Linux</td>
+<td>1×</td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>2×</td>
+</tr>
+<tr>
+<td>macOS</td>
+<td>10×</td>
+</tr>
+</tbody></table>
+<h3>Spending Limits</h3>
+<ul>
+<li>Set monthly spending limits for Actions and Packages</li>
+<li>Configure alerts at spending thresholds</li>
+<li>Enterprise owners can set org-level spending limits</li>
+</ul>
+<h3>Discussion Points</h3>
+<ul>
+<li>Do you have a process for regular seat audits?</li>
+<li>How do you handle cost chargebacks to business units?</li>
+<li>Are you optimizing GitHub Actions runner usage?</li>
+</ul>
+<hr>
+<h2>8. Audit, Compliance &amp; Incident Response (15 min)</h2>
+<h3>Enterprise Audit Log</h3>
+<p>The audit log captures all administrative and security-relevant events across the enterprise.</p>
+<h4>Key Audit Event Categories</h4>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Example Events</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>org</code></td>
+<td>Member added/removed, settings changed</td>
+</tr>
+<tr>
+<td><code>repo</code></td>
+<td>Created, deleted, visibility changed, archived</td>
+</tr>
+<tr>
+<td><code>team</code></td>
+<td>Created, deleted, member added/removed</td>
+</tr>
+<tr>
+<td><code>oauth_application</code></td>
+<td>App authorized, token created</td>
+</tr>
+<tr>
+<td><code>copilot</code></td>
+<td>Policy changed, seat assigned/removed</td>
+</tr>
+<tr>
+<td><code>business</code></td>
+<td>Enterprise settings changed</td>
+</tr>
+<tr>
+<td><code>protected_branch</code></td>
+<td>Branch protection modified</td>
+</tr>
+<tr>
+<td><code>secret_scanning</code></td>
+<td>Alert created, resolved</td>
+</tr>
+<tr>
+<td><code>code_scanning</code></td>
+<td>Alert created, dismissed</td>
+</tr>
+<tr>
+<td><code>dependabot</code></td>
+<td>Alert created, auto-fix PR</td>
+</tr>
+</tbody></table>
+<h4>Audit Log Search Syntax</h4>
+<pre><code># Filter by action category
+action:org.add_member
+
+# Filter by actor
+actor:username
+
+# Filter by date range
+created:2026-01-01..2026-02-01
+
+# Combined filters
+action:repo.destroy actor:admin-user created:&gt;2026-01-15
+
+# Copilot-specific events
+action:copilot.policy_update
+action:copilot.seat_added
+action:copilot.content_exclusion_create
+</code></pre>
+<h3>🖥️ Demo: Audit Log</h3>
+<p><strong>Location</strong>: Enterprise → <strong>Settings</strong> tab → <strong>Audit log</strong></p>
+<ol>
+<li>Navigate to your enterprise → Settings tab → Audit log</li>
+<li>Demonstrate search syntax with filters</li>
+<li>Show event details (actor, timestamp, details)</li>
+<li>Filter for security-relevant events</li>
+<li>Show export options (JSON, CSV)</li>
+</ol>
+<h3>Audit Log Streaming</h3>
+<p>Stream audit events to external SIEM/monitoring systems:</p>
+<table>
+<thead>
+<tr>
+<th>Destination</th>
+<th>Integration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Amazon S3</td>
+<td>S3 bucket streaming</td>
+</tr>
+<tr>
+<td>Azure Blob Storage</td>
+<td>Blob container streaming</td>
+</tr>
+<tr>
+<td>Azure Event Hubs</td>
+<td>Real-time event streaming</td>
+</tr>
+<tr>
+<td>Google Cloud Storage</td>
+<td>GCS bucket streaming</td>
+</tr>
+<tr>
+<td>Datadog</td>
+<td>Direct integration</td>
+</tr>
+<tr>
+<td>Splunk</td>
+<td>HEC endpoint streaming</td>
+</tr>
+</tbody></table>
+<h3>🖥️ Demo: Audit Log Streaming Setup</h3>
+<ol>
+<li>Enterprise → Settings tab → Audit log → <strong>Log streaming</strong></li>
+<li>Show available streaming destinations</li>
+<li>Walk through configuration for one destination</li>
+<li>Show how to verify streaming is active</li>
+</ol>
+<h3>Compliance Certifications</h3>
+<p>GitHub Enterprise Cloud maintains:</p>
+<table>
+<thead>
+<tr>
+<th>Certification</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SOC 1 Type II</td>
+<td>✓ Current</td>
+</tr>
+<tr>
+<td>SOC 2 Type II</td>
+<td>✓ Current</td>
+</tr>
+<tr>
+<td>SOC 3</td>
+<td>✓ Current</td>
+</tr>
+<tr>
+<td>ISO 27001</td>
+<td>✓ Current</td>
+</tr>
+<tr>
+<td>ISO 27018</td>
+<td>✓ Current</td>
+</tr>
+<tr>
+<td>GDPR</td>
+<td>✓ Compliant</td>
+</tr>
+<tr>
+<td>FedRAMP (via Azure Gov)</td>
+<td>✓ Available</td>
+</tr>
+<tr>
+<td>CSA STAR</td>
+<td>✓ Current</td>
+</tr>
+</tbody></table>
+<h3>Compliance Reporting Checklist</h3>
+<p>For audit preparation, maintain documentation on:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Enterprise policy configurations (export/screenshot)</li>
+<li><input disabled="" type="checkbox"> SSO and SCIM configuration evidence</li>
+<li><input disabled="" type="checkbox"> 2FA enforcement verification</li>
+<li><input disabled="" type="checkbox"> GHAS enablement status across repos</li>
+<li><input disabled="" type="checkbox"> Copilot governance settings</li>
+<li><input disabled="" type="checkbox"> Branch protection / ruleset configurations</li>
+<li><input disabled="" type="checkbox"> Audit log retention and streaming setup</li>
+<li><input disabled="" type="checkbox"> Access review schedules and results</li>
+<li><input disabled="" type="checkbox"> Incident response procedures</li>
+</ul>
+<h3>Incident Response Framework</h3>
+<p>For security incidents involving GitHub Enterprise:</p>
+<pre><code>1. DETECT
+   ├── Audit log alerts
+   ├── Secret scanning notifications
+   ├── Code scanning alerts
+   └── SIEM correlation
+
+2. CONTAIN
+   ├── Disable compromised user/token (IdP)
+   ├── Revoke PATs and OAuth tokens
+   ├── Lock affected repositories
+   └── Disable Copilot if code exposure suspected
+
+3. INVESTIGATE
+   ├── Audit log review (actor, timeline, scope)
+   ├── Repository access logs
+   ├── Git history analysis
+   └── Secret scanning alert review
+
+4. REMEDIATE
+   ├── Rotate compromised credentials
+   ├── Update affected code
+   ├── Patch vulnerable dependencies
+   └── Restore from backup if needed
+
+5. RECOVER &amp; LEARN
+   ├── Re-enable services with updated policies
+   ├── Document findings and timeline
+   ├── Update runbooks and policies
+   └── Conduct blameless postmortem
+</code></pre>
+<hr>
+<h2>9. Operational Best Practices &amp; Wrap-up (15 min)</h2>
+<h3>Role-Based Administration Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Scope</th>
+<th>Key Responsibilities</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Enterprise Owner</strong></td>
+<td>All orgs</td>
+<td>Enterprise policies, billing, audit, SSO</td>
+</tr>
+<tr>
+<td><strong>Enterprise Admin</strong></td>
+<td>All orgs</td>
+<td>User management, support escalation</td>
+</tr>
+<tr>
+<td><strong>Organization Owner</strong></td>
+<td>Single org</td>
+<td>Org policies, team management, repo settings</td>
+</tr>
+<tr>
+<td><strong>Security Manager</strong></td>
+<td>Single org</td>
+<td>Security alerts, audit review (no code access)</td>
+</tr>
+<tr>
+<td><strong>Billing Manager</strong></td>
+<td>Enterprise</td>
+<td>Usage reports, spend management</td>
+</tr>
+<tr>
+<td><strong>Team Maintainer</strong></td>
+<td>Single team</td>
+<td>Team membership, repo assignments</td>
+</tr>
+</tbody></table>
+<p><strong>Best practice</strong>: Limit Enterprise Owners to 2-3 people. Use the Security Manager role for security teams who need alert visibility without code access.</p>
+<h3>Governance Operating Model</h3>
+<h4>Quarterly Reviews</h4>
+<ul>
+<li><input disabled="" type="checkbox"> Audit seat utilization (Enterprise, GHAS, Copilot)</li>
+<li><input disabled="" type="checkbox"> Review and update enterprise policies</li>
+<li><input disabled="" type="checkbox"> Validate SSO/SCIM configuration</li>
+<li><input disabled="" type="checkbox"> Check 2FA compliance rates</li>
+<li><input disabled="" type="checkbox"> Review Dependabot alert backlog</li>
+<li><input disabled="" type="checkbox"> Assess secret scanning coverage</li>
+<li><input disabled="" type="checkbox"> Update content exclusion patterns</li>
+<li><input disabled="" type="checkbox"> Review and prune inactive repositories</li>
+<li><input disabled="" type="checkbox"> Validate audit log streaming</li>
+</ul>
+<h4>Ongoing Operations</h4>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Frequency</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Seat audit / deprovisioning</td>
+<td>Monthly</td>
+<td>Enterprise Admin</td>
+</tr>
+<tr>
+<td>Security alert triage</td>
+<td>Weekly</td>
+<td>Security Manager</td>
+</tr>
+<tr>
+<td>Dependabot PR review</td>
+<td>Weekly</td>
+<td>Engineering Leads</td>
+</tr>
+<tr>
+<td>Copilot usage analysis</td>
+<td>Monthly</td>
+<td>Engineering Manager</td>
+</tr>
+<tr>
+<td>Audit log review</td>
+<td>Weekly</td>
+<td>Security Manager</td>
+</tr>
+<tr>
+<td>Policy configuration review</td>
+<td>Quarterly</td>
+<td>Enterprise Owner</td>
+</tr>
+<tr>
+<td>Compliance evidence collection</td>
+<td>Quarterly</td>
+<td>Compliance Team</td>
+</tr>
+<tr>
+<td>Emergency access review</td>
+<td>As needed</td>
+<td>Enterprise Owner</td>
+</tr>
+</tbody></table>
+<h3>GitHub Actions Governance</h3>
+<p>Control Actions usage across the enterprise:</p>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Options</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Actions permissions</td>
+<td>Allow all / Selected / Disable</td>
+<td>Allow selected (curated list)</td>
+</tr>
+<tr>
+<td>Allowed actions</td>
+<td>GitHub-authored / Verified / Specific</td>
+<td>GitHub-authored + verified marketplace</td>
+</tr>
+<tr>
+<td>Workflow permissions</td>
+<td>Read + write / Read-only</td>
+<td>Read-only (principle of least privilege)</td>
+</tr>
+<tr>
+<td>Fork PR policies</td>
+<td>Require approval for first-time contributors</td>
+<td>Enabled</td>
+</tr>
+<tr>
+<td>Self-hosted runners</td>
+<td>Enterprise / Org / Repo</td>
+<td>Enterprise-managed runner groups</td>
+</tr>
+</tbody></table>
+<h4>Runner Groups</h4>
+<p>Organize self-hosted runners for governance:</p>
+<pre><code>Enterprise Runner Group: &quot;production-runners&quot;
+├── Restricted to: production-org
+├── Allowed workflows: deployment.yml
+└── Labels: self-hosted, linux, production
+
+Enterprise Runner Group: &quot;general-runners&quot;
+├── Available to: all orgs
+├── Allowed workflows: any
+└── Labels: self-hosted, linux, general
+</code></pre>
+<h3>GitHub App &amp; OAuth Governance</h3>
+<ul>
+<li><strong>Enterprise policy</strong>: Restrict OAuth app and GitHub App access</li>
+<li><strong>App approval workflow</strong>: Require admin approval before granting access</li>
+<li><strong>Regular app audits</strong>: Review authorized integrations quarterly</li>
+<li><strong>IP allow lists</strong>: Restrict API access to known IP ranges</li>
+</ul>
+<h3>🖥️ Demo: Actions &amp; App Policies</h3>
+<ol>
+<li>Enterprise → <strong>Policies</strong> tab → <strong>Actions</strong> (sidebar) — show allowed actions configuration</li>
+<li>Show workflow permissions (read-only vs. read-write)</li>
+<li>Show runner groups and access restrictions</li>
+<li>Navigate to Organization → Settings → Third-party access → <strong>GitHub Apps</strong></li>
+<li>Show app approval workflow</li>
+</ol>
+<h3>Phased Enterprise Governance Rollout</h3>
+<pre><code>Phase 1: Foundation (Weeks 1-4)
+├── Configure SSO/SAML and SCIM provisioning
+├── Enforce 2FA across enterprise
+├── Set enterprise-level repository policies
+├── Configure audit log streaming
+└── Define org structure and membership
+
+Phase 2: Security (Weeks 5-8)
+├── Enable secret scanning + push protection (org-wide)
+├── Roll out code scanning (default setup) for critical repos
+├── Configure Dependabot alerts and security updates
+├── Create rulesets for branch protection
+└── Establish security alert triage process
+
+Phase 3: Developer Productivity (Weeks 9-12)
+├── Enable GitHub Copilot for pilot teams
+├── Configure Copilot content exclusions
+├── Set Copilot policies (public code filter, etc.)
+├── Create custom instructions for coding standards
+└── Establish usage metrics baseline
+
+Phase 4: Optimization (Ongoing)
+├── Regular seat audits and cost optimization
+├── Expand GHAS and Copilot coverage
+├── Refine policies based on feedback
+├── Automate compliance reporting
+└── Conduct quarterly governance reviews
+</code></pre>
+<h3>Internal Communication Templates</h3>
+<p><strong>For Developers</strong>:</p>
+<ul>
+<li>&quot;What data does GitHub process?&quot; → See enterprise data handling policy</li>
+<li>&quot;Is my code used to train AI?&quot; → No (Enterprise Copilot guarantee)</li>
+<li>&quot;Why can&#39;t I create public repos?&quot; → Enterprise policy for IP protection</li>
+<li>&quot;How do I request Copilot access?&quot; → Submit request through [internal portal]</li>
+</ul>
+<p><strong>For Managers</strong>:</p>
+<ul>
+<li>&quot;How do we track ROI?&quot; → Usage dashboards + developer surveys</li>
+<li>&quot;What compliance certifications does GitHub have?&quot; → SOC 2, ISO 27001, GDPR</li>
+<li>&quot;Can I see my team&#39;s usage data?&quot; → Org-level analytics available</li>
+</ul>
+<h3>Resources</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GitHub Enterprise Docs</td>
+<td><a href="https://docs.github.com/en/enterprise-cloud@latest">https://docs.github.com/en/enterprise-cloud@latest</a></td>
+</tr>
+<tr>
+<td>GitHub Advanced Security Docs</td>
+<td><a href="https://docs.github.com/en/code-security">https://docs.github.com/en/code-security</a></td>
+</tr>
+<tr>
+<td>GitHub Copilot Docs</td>
+<td><a href="https://docs.github.com/en/copilot">https://docs.github.com/en/copilot</a></td>
+</tr>
+<tr>
+<td>GitHub Trust Center</td>
+<td><a href="https://resources.github.com/security/">https://resources.github.com/security/</a></td>
+</tr>
+<tr>
+<td>GitHub Skills</td>
+<td><a href="https://skills.github.com/">https://skills.github.com/</a></td>
+</tr>
+<tr>
+<td>GitHub Changelog</td>
+<td><a href="https://github.blog/changelog/">https://github.blog/changelog/</a></td>
+</tr>
+<tr>
+<td>GitHub Status</td>
+<td><a href="https://www.githubstatus.com/">https://www.githubstatus.com/</a></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Q&amp;A Topics to Prepare For</h2>
+<ul>
+<li>Migration strategy from other platforms (GitLab, Bitbucket, Azure DevOps)</li>
+<li>GitHub Enterprise Server vs. Cloud trade-offs</li>
+<li>FedRAMP and government compliance requirements</li>
+<li>Self-hosted vs. GitHub-hosted runners cost comparison</li>
+<li>Large repository handling (monorepos, LFS)</li>
+<li>Disaster recovery and business continuity</li>
+<li>GitHub Connect (Server + Cloud hybrid)</li>
+<li>API rate limits and automation best practices</li>
+<li>Inner source program implementation</li>
+</ul>
+<hr>
+<h2>Post-Workshop Actions</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Audit current enterprise configuration against best practices</li>
+<li><input disabled="" type="checkbox"> Validate SSO/SCIM provisioning is complete and accurate</li>
+<li><input disabled="" type="checkbox"> Review and update enterprise and org-level policies</li>
+<li><input disabled="" type="checkbox"> Enable GHAS features (secret scanning, code scanning, Dependabot)</li>
+<li><input disabled="" type="checkbox"> Configure audit log streaming to your SIEM</li>
+<li><input disabled="" type="checkbox"> Define content exclusion requirements for Copilot</li>
+<li><input disabled="" type="checkbox"> Establish seat utilization review cadence</li>
+<li><input disabled="" type="checkbox"> Create internal governance policy document</li>
+<li><input disabled="" type="checkbox"> Set up quarterly governance review calendar</li>
+<li><input disabled="" type="checkbox"> Schedule follow-up session for Q&amp;A after initial implementation</li>
+</ul>
+<hr>
+<h2>Appendix: Key Admin URLs</h2>
+<blockquote>
+<p><strong>Note</strong>: GitHub&#39;s enterprise UI uses top-level tabs (Policies, AI controls, Settings, Billing and licensing). The URLs below reflect the current structure. Verify against the live UI as GitHub periodically updates navigation.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>URL</th>
+<th>Navigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Enterprise Settings</td>
+<td><code>github.com/enterprises/[name]/settings</code></td>
+<td>Enterprise → Settings tab</td>
+</tr>
+<tr>
+<td>Enterprise Policies</td>
+<td><code>github.com/enterprises/[name]/policies</code></td>
+<td>Enterprise → Policies tab</td>
+</tr>
+<tr>
+<td>Enterprise AI Controls (Copilot)</td>
+<td><code>github.com/enterprises/[name]/settings/copilot</code></td>
+<td>Enterprise → AI controls tab → Copilot</td>
+</tr>
+<tr>
+<td>Enterprise Billing</td>
+<td><code>github.com/enterprises/[name]/billing</code></td>
+<td>Enterprise → Billing and licensing tab</td>
+</tr>
+<tr>
+<td>Enterprise Audit Log</td>
+<td><code>github.com/enterprises/[name]/settings/audit-log</code></td>
+<td>Enterprise → Settings tab → Audit log</td>
+</tr>
+<tr>
+<td>Enterprise Members</td>
+<td><code>github.com/enterprises/[name]/people</code></td>
+<td>Enterprise → People</td>
+</tr>
+<tr>
+<td>Enterprise Identity Provider</td>
+<td><code>github.com/enterprises/[name]/settings/identity-provider</code></td>
+<td>Enterprise → Identity provider tab</td>
+</tr>
+<tr>
+<td>Org Settings</td>
+<td><code>github.com/organizations/[name]/settings</code></td>
+<td>Organization → Settings</td>
+</tr>
+<tr>
+<td>Org Security</td>
+<td><code>github.com/organizations/[name]/settings/security</code></td>
+<td>Organization → Settings → Security</td>
+</tr>
+<tr>
+<td>Org Copilot</td>
+<td><code>github.com/organizations/[name]/settings/copilot</code></td>
+<td>Organization → Settings → Copilot</td>
+</tr>
+<tr>
+<td>Org Rulesets</td>
+<td><code>github.com/organizations/[name]/settings/rules</code></td>
+<td>Organization → Settings → Rules → Rulesets</td>
+</tr>
+</tbody></table>
+<h2>Appendix: Policy Decision Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Repository Visibility</th>
+<th>Forking</th>
+<th>GHAS</th>
+<th>Copilot Public Filter</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>High-security / Regulated</td>
+<td>Private only</td>
+<td>Disabled</td>
+<td>All features on</td>
+<td>Blocked</td>
+<td>Selected actions only</td>
+</tr>
+<tr>
+<td>Standard enterprise</td>
+<td>Private + Internal</td>
+<td>Internal only</td>
+<td>Secret scanning + Dependabot</td>
+<td>Blocked</td>
+<td>GitHub + verified</td>
+</tr>
+<tr>
+<td>Inner source focused</td>
+<td>Internal default</td>
+<td>Internal allowed</td>
+<td>All features on</td>
+<td>Allowed</td>
+<td>All actions</td>
+</tr>
+<tr>
+<td>Open source program</td>
+<td>Public allowed</td>
+<td>Allowed</td>
+<td>All features on</td>
+<td>Allowed</td>
+<td>All actions</td>
+</tr>
+</tbody></table>
+<h2>Appendix: Pre-Workshop Checklist</h2>
+<p>Run through this before the workshop:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Verify enterprise owner access</li>
+<li><input disabled="" type="checkbox"> Confirm SSO/SAML is configured (or have test config ready)</li>
+<li><input disabled="" type="checkbox"> Ensure at least two organizations exist for policy demonstration</li>
+<li><input disabled="" type="checkbox"> Have GHAS enabled on at least one organization</li>
+<li><input disabled="" type="checkbox"> Confirm Copilot is enabled for at least one org</li>
+<li><input disabled="" type="checkbox"> Check audit log has recent entries for demo</li>
+<li><input disabled="" type="checkbox"> Verify screen sharing shows GitHub UI clearly</li>
+<li><input disabled="" type="checkbox"> Bookmark all demo URLs in a dedicated browser folder</li>
+<li><input disabled="" type="checkbox"> Prepare backup screenshots for each demo section</li>
+<li><input disabled="" type="checkbox"> Test repo available with CODEOWNERS, rulesets, and branch protection</li>
+</ul>
+<h3>Backup Plan</h3>
+<p>If live demos fail:</p>
+<ol>
+<li>Use screenshots captured during prep</li>
+<li>Switch to GitHub Docs walkthrough for the relevant section</li>
+<li>Engage audience with Q&amp;A while troubleshooting</li>
+<li>Use the GitHub Enterprise admin documentation as a guided tour</li>
+</ol>
+<hr>
+<p><em>Workshop materials prepared for comprehensive GitHub Enterprise Cloud administration and governance training</em></p>
+</article>  </main> </body></html>  <script type="module">document.querySelectorAll("pre").forEach(e=>{const t=document.createElement("button");t.className="copy-btn",t.textContent="Copy",t.addEventListener("click",async()=>{const o=(e.querySelector("code")||e).textContent||"";await navigator.clipboard.writeText(o),t.textContent="Copied!",t.classList.add("copied"),setTimeout(()=>{t.textContent="Copy",t.classList.remove("copied")},2e3)}),e.appendChild(t)});</script>

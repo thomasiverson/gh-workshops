@@ -1,0 +1,1185 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot Admin, Licensing &amp; Governance Workshop</title><link rel="stylesheet" href="/gh-workshops/_astro/index.tKAiv-SV.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1>GitHub Copilot Admin, Licensing &amp; Governance Workshop</h1>
+<p><strong>Duration</strong>: 1 hour 20 minutes<br><strong>Format</strong>: Presentation + Live Demo<br><strong>Audience</strong>: Mixed engineering teams (Admins + Managers)<br><strong>Focus</strong>: GitHub Copilot Enterprise</p>
+<hr>
+<h2>Workshop Overview</h2>
+<p>This session provides engineering teams with a practical understanding of GitHub Copilot Enterprise governance—covering licensing models, security controls, policy configuration, and operational best practices. The format combines presentation slides with live demos in the GitHub admin portal, enabling attendees to see real configurations in action.</p>
+<h3>Learning Objectives</h3>
+<ul>
+<li>Understand Copilot Enterprise licensing and seat management strategies</li>
+<li>Configure security controls including content exclusions and public code filters</li>
+<li>Understand Copilot&#39;s data protection architecture, trust guarantees, and compliance resources</li>
+<li>Navigate the policy hierarchy (Enterprise → Org → Repo)</li>
+<li>Use usage analytics for operational governance and compliance readiness</li>
+</ul>
+<hr>
+<h2>Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a href="#1-opening--context-setting-5-min">Opening &amp; Context Setting</a></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#2-licensing--seat-management-10-min">Licensing &amp; Seat Management</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#3-security-controls--ip-protection-15-min">Security Controls &amp; IP Protection</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#4-data-protection--trust-architecture-20-min">Data Protection &amp; Trust Architecture</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="#5-policy-configuration-15-min">Policy Configuration</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="#6-operational-governance-10-min">Operational Governance</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="#7-rollout-best-practices--wrap-up-5-min">Rollout Best Practices &amp; Wrap-up</a></td>
+<td>5 min</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>1. Opening &amp; Context Setting (5 min)</h2>
+<h3>Key Points</h3>
+<ul>
+<li>Workshop objectives and what attendees will walk away with</li>
+<li>Brief overview of Copilot Enterprise vs. Business capabilities</li>
+<li>Frame the &quot;why governance matters&quot; for AI-assisted development:<ul>
+<li>IP protection</li>
+<li>Compliance requirements</li>
+<li>Adoption consistency across teams</li>
+</ul>
+</li>
+</ul>
+<h3>Copilot Enterprise vs. Business Quick Compare</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Business</th>
+<th>Enterprise</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Code completions</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Chat in IDE</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>CLI support</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Chat on github.com (PR summaries)</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Knowledge bases</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Enterprise policy controls</td>
+<td>Limited</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>Content exclusions (enterprise)</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>2. Licensing &amp; Seat Management (10 min)</h2>
+<h3>Presentation Topics</h3>
+<ul>
+<li><strong>Licensing model</strong>: Per-seat, assigned at org or enterprise level</li>
+<li><strong>Seat allocation strategies</strong>:<ul>
+<li>Org-wide enablement (all members get access)</li>
+<li>Team-based enablement (selective assignment)</li>
+<li>Hybrid approach (default off, request-based)</li>
+</ul>
+</li>
+<li><strong>Cost visibility</strong>: Usage metrics dashboard, identifying inactive seats</li>
+<li><strong>Decision framework</strong>: Who should get seats first?<ul>
+<li>High-leverage roles (senior engineers, architects)</li>
+<li>Pilot teams for initial validation</li>
+<li>Teams with highest code velocity</li>
+</ul>
+</li>
+</ul>
+<h3>🖥️ Demo: Seat Assignment</h3>
+<p><strong>Location</strong>: Enterprise → <strong>AI controls</strong> tab → <strong>Copilot</strong></p>
+<ol>
+<li>Navigate to enterprise → click the <strong>AI controls</strong> tab at the top of the page</li>
+<li>Show Copilot access management panel</li>
+<li>Demonstrate seat assignment at enterprise level</li>
+<li>Show policy inheritance: Enterprise → Org → Repo</li>
+<li>Review usage metrics for cost optimization</li>
+</ol>
+<h3>Discussion Points</h3>
+<ul>
+<li>How do you currently track software license utilization?</li>
+<li>What&#39;s your process for onboarding new tools to engineering teams?</li>
+</ul>
+<hr>
+<h2>3. Security Controls &amp; IP Protection (15 min)</h2>
+<h3>Security Architecture Overview</h3>
+<ul>
+<li><strong>Data handling</strong>: How prompts and suggestions flow</li>
+<li><strong>Telemetry</strong>: What metadata is collected</li>
+<li><strong>Training guarantee</strong>: Enterprise code is NOT used to train models</li>
+<li><strong>Data residency</strong>: Where data is processed and stored</li>
+</ul>
+<h3>Content Exclusions</h3>
+<p>Prevent sensitive code from being included in Copilot context.</p>
+<p><strong>Configuration</strong>: Organization → Settings → Copilot → <strong>Content exclusion</strong></p>
+<p>Example exclusion patterns to add in the UI:</p>
+<pre><code>**/*.env              → All .env files
+**/secrets/**         → Any secrets folder
+**/internal-api/**    → Internal API code
+src/crypto/**         → Cryptography implementations
+</code></pre>
+<p><strong>Use cases</strong>:</p>
+<ul>
+<li>Proprietary algorithms</li>
+<li>Security-sensitive code</li>
+<li>Compliance-restricted content</li>
+</ul>
+<h3>🖥️ Demo: Content Exclusions</h3>
+<ol>
+<li>Navigate to Organization Settings → Copilot → Content Exclusions</li>
+<li>Add exclusion patterns</li>
+<li>Show how exclusions propagate to repos</li>
+</ol>
+<h3>Public Code Filter</h3>
+<ul>
+<li>Blocks suggestions that match publicly available code</li>
+<li>Reduces IP/licensing risk from open source code inclusion</li>
+<li>Configurable at org and enterprise level</li>
+</ul>
+<h3>🖥️ Demo: Public Code Filter</h3>
+<ol>
+<li>Enterprise Settings → Copilot → Suggestions matching public code</li>
+<li>Enable &quot;Block&quot; setting</li>
+<li>Discuss trade-offs (fewer suggestions vs. IP protection)</li>
+</ol>
+<h3>Audit Logging</h3>
+<table>
+<thead>
+<tr>
+<th>Event Type</th>
+<th>What&#39;s Captured</th>
+<th>Retention</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Policy changes</td>
+<td>Who changed what, when</td>
+<td>Per enterprise config</td>
+</tr>
+<tr>
+<td>Seat assignment</td>
+<td>User additions/removals</td>
+<td>Per enterprise config</td>
+</tr>
+<tr>
+<td>Feature enablement</td>
+<td>Copilot features toggled</td>
+<td>Per enterprise config</td>
+</tr>
+</tbody></table>
+<h3>Network Controls</h3>
+<ul>
+<li>Proxy configuration for enterprise networks</li>
+<li>IP allowlisting considerations</li>
+<li>Firewall rules for Copilot endpoints</li>
+</ul>
+<h3>Discussion Points</h3>
+<ul>
+<li>What code or data would you want excluded from Copilot context?</li>
+<li>Is the public code filter a priority for your compliance requirements?</li>
+<li>How do you currently handle IP protection in your development workflow?</li>
+</ul>
+<hr>
+<h2>4. Data Protection &amp; Trust Architecture (20 min)</h2>
+<h3>Key Points</h3>
+<p>This section covers how GitHub Copilot protects enterprise data end-to-end — from the moment a prompt leaves a developer&#39;s IDE to the suggestion returned. Understanding this architecture is essential for security review boards, vendor assessments, and regulatory compliance.</p>
+<h3>Copilot Data Flow Architecture</h3>
+<pre><code>┌──────────────┐         TLS 1.2+          ┌─────────────────────┐
+│              │ ────────────────────────►  │   Copilot Proxy     │
+│   IDE /      │    Prompt + context        │   (GitHub-hosted)   │
+│   Editor     │                            │                     │
+│              │  ◄──────────────────────── │   ┌───────────────┐ │
+│              │    Suggestion response     │   │ Azure OpenAI  │ │
+└──────────────┘         TLS 1.2+          │   │ Service       │ │
+                                            │   └───────────────┘ │
+                                            └─────────────────────┘
+                                                      │
+                                            ┌─────────▼─────────┐
+                                            │  NOT transmitted:  │
+                                            │  • Training pipeline│
+                                            │  • Other customers │
+                                            │  • Long-term store │
+                                            └────────────────────┘
+</code></pre>
+<p><strong>Key guarantees for Business &amp; Enterprise</strong>:</p>
+<ul>
+<li>Prompts and suggestions are <strong>encrypted in transit</strong> (TLS 1.2+) and <strong>encrypted at rest</strong></li>
+<li>Prompts and suggestions are <strong>NOT retained</strong> beyond the request lifecycle (no persistent storage)</li>
+<li>Enterprise code is <strong>NOT used to train</strong> GitHub Copilot models or any successor models</li>
+<li>Data is processed in <strong>isolated tenant boundaries</strong> — no cross-customer data sharing</li>
+</ul>
+<h3>Data Categories</h3>
+<p>Copilot processes four categories of data, each with specific handling rules:</p>
+<table>
+<thead>
+<tr>
+<th>Data Category</th>
+<th>What It Includes</th>
+<th align="center">Retained for Training?</th>
+<th>Retention (Business/Enterprise)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Prompts</strong></td>
+<td>Code context, chat messages, file snippets sent to generate suggestions</td>
+<td align="center">✗</td>
+<td>Not retained beyond request</td>
+</tr>
+<tr>
+<td><strong>Suggestions</strong></td>
+<td>AI-generated code completions, chat responses</td>
+<td align="center">✗</td>
+<td>Not retained beyond request</td>
+</tr>
+<tr>
+<td><strong>Feedback Data</strong></td>
+<td>Thumbs up/down reactions, optional comments, support tickets</td>
+<td align="center">✗</td>
+<td>Used for quality improvement only</td>
+</tr>
+<tr>
+<td><strong>User Engagement Data</strong></td>
+<td>Pseudonymous interaction metrics (accepted/dismissed completions, errors, usage patterns)</td>
+<td align="center">✗</td>
+<td>Aggregated for product analytics</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: For Individual (Free/Pro) plans, prompts and suggestions may be retained for up to 28 days for quality improvement. Business and Enterprise plans have <strong>zero retention</strong> for prompts and suggestions.</p>
+</blockquote>
+<h3>Data Residency</h3>
+<ul>
+<li>Copilot processes data in <strong>Microsoft Azure data centers</strong></li>
+<li>Enterprise customers can configure data residency preferences where available</li>
+<li>EU Data Boundary options are available for organizations with European regulatory requirements</li>
+<li>Data processing locations are documented in the <a href="https://copilot.github.trust.page/">GitHub Copilot Trust Center</a></li>
+</ul>
+<h3>Multi-Model Data Guarantees</h3>
+<p>When users select alternative models (e.g., Claude by Anthropic, Gemini by Google):</p>
+<ul>
+<li>Third-party model providers are <strong>contractually bound</strong> to not train on customer data</li>
+<li>Third-party providers do <strong>not retain customer code</strong> or prompts beyond the request</li>
+<li>The same enterprise data protection guarantees apply regardless of model selection</li>
+<li>GitHub acts as a unified data processor — customers maintain a single governance relationship</li>
+</ul>
+<h3>GitHub as Data Processor</h3>
+<ul>
+<li>For Business and Enterprise customers, GitHub operates as a <strong>data processor</strong> (not controller) under GDPR</li>
+<li>GitHub&#39;s Data Protection Agreement (DPA) covers Copilot data processing</li>
+<li>Third-party <strong>subprocessors</strong> are disclosed and governed by the same contractual protections</li>
+<li><strong>Agentic features</strong> (Coding Agent, MCP integrations, extensions) inherit the same data protection guarantees — no separate data flow or weaker protections for agent-mode operations</li>
+</ul>
+<h3>Trust Center &amp; Compliance Resources</h3>
+<p>The <a href="https://copilot.github.trust.page/">GitHub Copilot Trust Center</a> is the primary resource for security review boards and vendor assessments. It provides:</p>
+<p><strong>Compliance Certifications</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Certification</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SOC 1 Type II</td>
+<td>Financial reporting controls</td>
+</tr>
+<tr>
+<td>SOC 2 Type II</td>
+<td>Security, availability, confidentiality</td>
+</tr>
+<tr>
+<td>SOC 3</td>
+<td>Public-facing SOC 2 summary</td>
+</tr>
+<tr>
+<td>ISO 27001:2013</td>
+<td>Information security management</td>
+</tr>
+<tr>
+<td>CSA STAR Level 2</td>
+<td>Cloud security assurance</td>
+</tr>
+<tr>
+<td>TISAX</td>
+<td>Automotive industry information security</td>
+</tr>
+</tbody></table>
+<p><strong>Available Audit Artifacts</strong> (downloadable from Trust Center):</p>
+<ul>
+<li>SOC 1 and SOC 2 Type II reports (full audit reports)</li>
+<li>SOC 2 bridge letters (covering periods between audits)</li>
+<li>SOC 3 public report</li>
+<li>Bug bounty due diligence letters</li>
+</ul>
+<p><strong>IP Indemnification</strong>: GitHub provides intellectual property indemnification for Copilot Business and Enterprise customers, provided the public code filter is enabled and content is not generated from disallowed uses.</p>
+<h3>Using the Trust Center for Security Reviews</h3>
+<p>When presenting to a security review board or completing a vendor assessment:</p>
+<ol>
+<li><strong>Start with the Overview</strong> — high-level data handling commitments</li>
+<li><strong>Download SOC 2 report</strong> — detailed control descriptions and auditor attestations</li>
+<li><strong>Review the FAQ sections</strong> — Security, Privacy, IP &amp; Open Source, and Commercial FAQ categories address the most common vendor assessment questions</li>
+<li><strong>Check Updates</strong> — demonstrates GitHub&#39;s ongoing transparency and compliance posture</li>
+<li><strong>Reference the DPA</strong> — contractual commitments for data processing</li>
+</ol>
+<h3>🖥️ Demo: Trust Center Walkthrough (~3 min)</h3>
+<p><strong>URL</strong>: <a href="https://copilot.github.trust.page/">https://copilot.github.trust.page/</a></p>
+<ol>
+<li>Open the Trust Center and tour the main sections (Overview, Resources, FAQ, Updates, Media)</li>
+<li>Show compliance certification badges (SOC 1/2/3, ISO 27001, CSA STAR, TISAX)</li>
+<li>Navigate to Resources — show available SOC reports and bridge letters</li>
+<li>Open the FAQ — expand Security and Privacy sections to show depth of coverage</li>
+<li>Highlight the &quot;Updates&quot; feed — demonstrates ongoing transparency</li>
+</ol>
+<h3>Discussion Points</h3>
+<ul>
+<li>How would you present Copilot&#39;s data protection guarantees to your security review board?</li>
+<li>Which compliance certifications are most critical for your organization&#39;s vendor assessment?</li>
+<li>How does the multi-model data handling (Claude, Gemini) affect your risk posture compared to a single-provider approach?</li>
+<li>What additional data residency requirements does your organization have?</li>
+</ul>
+<hr>
+<h2>5. Policy Configuration (15 min)</h2>
+<h3>Policy Hierarchy</h3>
+<pre><code>Enterprise Policies (highest precedence)
+    ↓
+Organization Policies
+    ↓
+Repository Settings (lowest precedence)
+</code></pre>
+<p><strong>Key principle</strong>: Higher levels can enforce or delegate to lower levels</p>
+<h3>Key Policy Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Options</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Copilot in IDE</td>
+<td>Enabled / Disabled / No Policy</td>
+<td>Enterprise, Org</td>
+</tr>
+<tr>
+<td>Copilot Chat</td>
+<td>Enabled / Disabled / No Policy</td>
+<td>Enterprise, Org</td>
+</tr>
+<tr>
+<td>Copilot in CLI</td>
+<td>Enabled / Disabled / No Policy</td>
+<td>Enterprise, Org</td>
+</tr>
+<tr>
+<td>Knowledge Bases</td>
+<td>Enabled / Disabled</td>
+<td>Enterprise</td>
+</tr>
+<tr>
+<td>Public code filter</td>
+<td>Allow / Block</td>
+<td>Enterprise, Org</td>
+</tr>
+<tr>
+<td>Content exclusions</td>
+<td>Pattern-based</td>
+<td>Org, Repo</td>
+</tr>
+<tr>
+<td>Vision / image uploads</td>
+<td>Enabled / Disabled / No Policy</td>
+<td>Enterprise, Org</td>
+</tr>
+</tbody></table>
+<h3>🖥️ Demo: Policy Configuration</h3>
+<p><strong>Location</strong>: Enterprise → <strong>AI controls</strong> tab → <strong>Copilot</strong></p>
+<ol>
+<li>Navigate to enterprise → <strong>AI controls</strong> tab → <strong>Copilot</strong> in sidebar</li>
+<li>Walk through each policy option</li>
+<li>Show &quot;Enforce&quot; vs. &quot;Allow&quot; vs. &quot;No Policy&quot; settings</li>
+<li>Demonstrate org-level override (where permitted)</li>
+</ol>
+<h3>IDE-Level Controls</h3>
+<p>For VS Code, organizations can push settings via MDM or settings sync:</p>
+<pre><code class="language-json">// settings.json - Org-managed defaults
+{
+  &quot;github.copilot.enable&quot;: {
+    &quot;*&quot;: true,
+    &quot;plaintext&quot;: false,
+    &quot;markdown&quot;: true
+  }
+}
+</code></pre>
+<h3>Custom Instructions</h3>
+<p>Create org-wide coding standards with <code>.github/copilot-instructions.md</code>:</p>
+<pre><code class="language-markdown"># Copilot Instructions for [Org Name]
+
+## Code Style
+- Use TypeScript strict mode
+- Prefer functional components in React
+- All functions must have JSDoc comments
+
+## Security Requirements
+- Never hardcode credentials
+- Use parameterized queries for database access
+- Validate all user inputs
+
+## Testing
+- Include unit tests for all new functions
+- Minimum 80% code coverage
+</code></pre>
+<h3>Discussion Points</h3>
+<ul>
+<li>Which Copilot policies would you enforce at the enterprise level vs. delegate?</li>
+<li>Do you have existing coding standards that should be reflected in custom instructions?</li>
+<li>How would you approach knowledge base setup for your internal documentation?</li>
+</ul>
+<hr>
+<h2>6. Operational Governance (10 min)</h2>
+<h3>Role-Based Administration</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Capabilities</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Enterprise Owner</td>
+<td>Full policy control, billing, all orgs</td>
+</tr>
+<tr>
+<td>Organization Admin</td>
+<td>Org-level policies, seat management</td>
+</tr>
+<tr>
+<td>Billing Manager</td>
+<td>View usage, manage payment</td>
+</tr>
+<tr>
+<td>Security Manager</td>
+<td>Audit logs, compliance reports</td>
+</tr>
+</tbody></table>
+<h3>🖥️ Demo: Usage Analytics</h3>
+<p><strong>Location</strong>: Enterprise/Org Settings → Copilot → Usage</p>
+<p>Metrics available:</p>
+<ul>
+<li><strong>Active users</strong>: Daily/weekly/monthly unique users</li>
+<li><strong>Acceptance rate</strong>: % of suggestions accepted</li>
+<li><strong>Language breakdown</strong>: Usage by programming language</li>
+<li><strong>Lines of code suggested</strong>: Volume metrics</li>
+</ul>
+<h3>ROI Tracking</h3>
+<p>Consider tracking:</p>
+<ul>
+<li>Time saved per developer (survey-based)</li>
+<li>Code review cycle time changes</li>
+<li>Onboarding time for new team members</li>
+<li>Developer satisfaction scores</li>
+</ul>
+<h3>Compliance &amp; Audit Readiness</h3>
+<p><strong>Certifications</strong>:</p>
+<ul>
+<li>SOC 2 Type II</li>
+<li>GDPR compliant</li>
+<li>ISO 27001</li>
+</ul>
+<p><strong>Audit preparation</strong>:</p>
+<ul>
+<li>Export usage reports</li>
+<li>Document policy configurations</li>
+<li>Maintain change log for policy updates</li>
+</ul>
+<h3>Incident Response</h3>
+<p>If a security concern arises:</p>
+<ol>
+<li><strong>Immediate</strong>: Disable Copilot at enterprise level (kills all access)</li>
+<li><strong>Investigate</strong>: Review audit logs for affected timeframe</li>
+<li><strong>Scope</strong>: Identify affected users/repos via usage data</li>
+<li><strong>Remediate</strong>: Update policies, re-enable with restrictions</li>
+<li><strong>Document</strong>: Create incident report for compliance</li>
+</ol>
+<h3>Discussion Points</h3>
+<ul>
+<li>What roles are involved in Copilot governance at your organization?</li>
+<li>How would you handle a security concern related to Copilot suggestions?</li>
+<li>What metrics would be most valuable for your leadership reporting?</li>
+</ul>
+<hr>
+<h2>7. Rollout Best Practices &amp; Wrap-up (5 min)</h2>
+<h3>Phased Enablement Strategy</h3>
+<pre><code>Phase 1: Pilot (2-4 weeks)
+├── Select 2-3 teams (50-100 developers)
+├── Establish baseline metrics
+├── Gather feedback weekly
+└── Refine policies based on learnings
+
+Phase 2: Expand (4-8 weeks)
+├── Enable for additional orgs/teams
+├── Train team leads on governance
+├── Monitor usage and security metrics
+└── Address edge cases
+
+Phase 3: Enterprise-Wide
+├── Enable default access
+├── Maintain exceptions list
+├── Ongoing monitoring and optimization
+└── Regular policy reviews
+</code></pre>
+<h3>Internal Communication Templates</h3>
+<p><strong>Security FAQ for Developers</strong>:</p>
+<ul>
+<li>&quot;Is my code being used to train AI models?&quot; → No (Enterprise guarantee)</li>
+<li>&quot;Can Copilot access our private repos?&quot; → Only repos you have access to</li>
+<li>&quot;What happens to my prompts?&quot; → Processed, not retained for training</li>
+</ul>
+<h3>Training &amp; Enablement Resources</h3>
+<ul>
+<li><a href="https://docs.github.com/en/copilot">GitHub Copilot Documentation</a></li>
+<li><a href="https://skills.github.com/">GitHub Skills - Copilot</a></li>
+<li><a href="https://code.visualstudio.com/docs/copilot/overview">VS Code Copilot Extension Guide</a></li>
+</ul>
+<h3>Q&amp;A Topics to Prepare For</h3>
+<ul>
+<li>Cost justification and ROI metrics</li>
+<li>Integration with existing security tools (SIEM, DLP)</li>
+<li>Handling developer resistance or over-reliance</li>
+<li>Compliance with industry-specific regulations</li>
+</ul>
+<hr>
+<h2>Appendix: Quick Reference</h2>
+<h3>Key URLs</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Enterprise Copilot (AI Controls)</td>
+<td><code>github.com/enterprises/[name]/settings/copilot</code></td>
+</tr>
+<tr>
+<td>Org Copilot Settings</td>
+<td><code>github.com/organizations/[name]/settings/copilot</code></td>
+</tr>
+<tr>
+<td>Usage Dashboard</td>
+<td><code>github.com/enterprises/[name]/settings/copilot/usage</code></td>
+</tr>
+<tr>
+<td>Audit Log</td>
+<td><code>github.com/enterprises/[name]/settings/audit-log</code></td>
+</tr>
+</tbody></table>
+<h3>Policy Decision Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Recommended Setting</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>High-security environment</td>
+<td>Public code filter: Block, Content exclusions: Extensive</td>
+</tr>
+<tr>
+<td>Rapid adoption priority</td>
+<td>Org-wide enablement, Public code filter: Allow</td>
+</tr>
+<tr>
+<td>Compliance-heavy industry</td>
+<td>All audit features enabled, Content exclusions for PII</td>
+</tr>
+<tr>
+<td>Cost-conscious rollout</td>
+<td>Team-based enablement, Regular seat utilization reviews</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Post-Workshop Actions</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Review current Copilot configuration against best practices</li>
+<li><input disabled="" type="checkbox"> Identify pilot teams for initial rollout (if not yet deployed)</li>
+<li><input disabled="" type="checkbox"> Document content exclusion requirements with security team</li>
+<li><input disabled="" type="checkbox"> Establish usage metrics baseline</li>
+<li><input disabled="" type="checkbox"> Create internal Copilot governance policy document</li>
+<li><input disabled="" type="checkbox"> Schedule follow-up session for Q&amp;A after initial rollout</li>
+</ul>
+<hr>
+<h2>Live Demo Scripts (Instructor Reference)</h2>
+<blockquote>
+<p><strong>Environment</strong>: GitHub Enterprise with EMU<br><strong>Pre-requisites</strong>: Enterprise Owner access, at least one organization with Copilot enabled</p>
+</blockquote>
+<hr>
+<h3>Demo 1: Seat Assignment &amp; Policy Inheritance (Section 2)</h3>
+<p><strong>Objective</strong>: Show how Copilot access is managed at enterprise and org levels</p>
+<h4>Setup Before Demo</h4>
+<ul>
+<li>Ensure you have at least 2 organizations in your enterprise</li>
+<li>Have a test user account ready that you can toggle access for</li>
+</ul>
+<h4>Step-by-Step Script</h4>
+<ol>
+<li><p><strong>Navigate to Enterprise Copilot Settings</strong></p>
+<pre><code>URL: https://github.com/enterprises/[YOUR-ENTERPRISE]/settings/copilot/policies
+</code></pre>
+<ul>
+<li>Click your profile avatar (top-right) → &quot;Your enterprises&quot;</li>
+<li>Select your enterprise</li>
+<li>Click the <strong>AI controls</strong> tab at the top of the page → <strong>Copilot</strong> in the sidebar</li>
+</ul>
+</li>
+<li><p><strong>Show the Policy Options</strong></p>
+<ul>
+<li>Point out the three policy states:<ul>
+<li><strong>Enabled</strong>: All orgs get Copilot by default</li>
+<li><strong>Disabled</strong>: No orgs can use Copilot</li>
+<li><strong>No policy</strong>: Each org decides independently</li>
+</ul>
+</li>
+<li><strong>Talking point</strong>: &quot;This is your master switch. In regulated environments, you might start with &#39;Disabled&#39; and explicitly enable per-org.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Navigate to Access Management</strong></p>
+<pre><code>URL: https://github.com/enterprises/[YOUR-ENTERPRISE]/settings/copilot/seat_management
+</code></pre>
+<ul>
+<li>AI controls tab → Copilot → <strong>Seat management</strong></li>
+</ul>
+</li>
+<li><p><strong>Show Seat Assignment Options</strong></p>
+<ul>
+<li>Demonstrate the two assignment models:<ul>
+<li><strong>All members</strong>: Every enterprise member gets a seat</li>
+<li><strong>Selected members</strong>: Granular assignment</li>
+</ul>
+</li>
+<li>If using &quot;Selected members&quot;, show how to search and add users</li>
+</ul>
+</li>
+<li><p><strong>Show Organization-Level Inheritance</strong></p>
+<pre><code>URL: https://github.com/orgs/[YOUR-ORG]/settings/copilot/policies
+</code></pre>
+<ul>
+<li>Navigate to one of your organizations</li>
+<li>Settings → Copilot → Policies</li>
+<li><strong>Talking point</strong>: &quot;Notice how org settings show &#39;Enforced by enterprise&#39; for policies set at the enterprise level. Orgs can only configure what the enterprise delegates.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Demonstrate a Live Toggle (Optional)</strong></p>
+<ul>
+<li>If you have a test user, show adding/removing their seat</li>
+<li>Show how changes appear in the usage dashboard</li>
+</ul>
+</li>
+</ol>
+<h4>Key Points to Emphasize</h4>
+<ul>
+<li>EMU provides centralized identity management—users can&#39;t bypass enterprise policies</li>
+<li>Policy inheritance flows down: Enterprise → Org → Repo</li>
+<li>Seat count directly impacts billing</li>
+</ul>
+<hr>
+<h3>Demo 2: Content Exclusions (Section 3)</h3>
+<p><strong>Objective</strong>: Configure content exclusions to protect sensitive code</p>
+<h4>Setup Before Demo</h4>
+<ul>
+<li>Identify a repository that could serve as a &quot;sensitive&quot; example</li>
+<li>Consider creating a test repo with folders like <code>/secrets/</code> or <code>/proprietary/</code></li>
+</ul>
+<h4>Step-by-Step Script</h4>
+<ol>
+<li><p><strong>Navigate to Content Exclusions</strong></p>
+<pre><code>URL: https://github.com/orgs/[YOUR-ORG]/settings/copilot/content_exclusion
+</code></pre>
+<ul>
+<li>Organization Settings → Copilot → Content exclusion</li>
+</ul>
+</li>
+<li><p><strong>Explain the Interface</strong></p>
+<ul>
+<li><strong>Talking point</strong>: &quot;Content exclusions prevent Copilot from reading or suggesting code from specific paths. This is critical for protecting trade secrets, security-sensitive code, or compliance-restricted content.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Add an Exclusion Pattern</strong></p>
+<ul>
+<li><p>Click &quot;Add exclusion&quot;</p>
+</li>
+<li><p>Repository: Select a specific repo OR use <code>*</code> for all repos</p>
+</li>
+<li><p>Paths: Enter patterns like:</p>
+<pre><code>**/secrets/**
+**/*.env
+**/internal-api/**
+src/proprietary/**
+</code></pre>
+</li>
+<li><p>Click &quot;Save&quot;</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Explain Pattern Syntax</strong></p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>What it Excludes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>**/secrets/**</code></td>
+<td>Any <code>secrets</code> folder at any depth</td>
+</tr>
+<tr>
+<td><code>**/*.env</code></td>
+<td>All <code>.env</code> files anywhere</td>
+</tr>
+<tr>
+<td><code>src/auth/*</code></td>
+<td>Everything directly in <code>src/auth/</code></td>
+</tr>
+<tr>
+<td><code>*.key</code></td>
+<td>All <code>.key</code> files in repo root</td>
+</tr>
+</tbody></table>
+</li>
+<li><p><strong>Show the Exclusion List</strong></p>
+<ul>
+<li>After saving, show the list of active exclusions</li>
+<li><strong>Talking point</strong>: &quot;These exclusions take effect immediately. Developers don&#39;t need to do anything—Copilot simply won&#39;t include these paths in its context.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Verify Exclusion is Active (Optional Live Test)</strong></p>
+<ul>
+<li>Open VS Code with Copilot connected to your enterprise</li>
+<li>Navigate to an excluded file</li>
+<li>Show that Copilot doesn&#39;t provide suggestions in that context</li>
+<li><strong>Note</strong>: This requires VS Code setup; can skip if time-constrained</li>
+</ul>
+</li>
+</ol>
+<h4>Key Points to Emphasize</h4>
+<ul>
+<li>Exclusions are additive—you can set them at both org and repo level</li>
+<li>No developer action required; enforcement is automatic</li>
+<li>Audit log captures exclusion changes</li>
+</ul>
+<hr>
+<h3>Demo 3: Public Code Filter (Section 3)</h3>
+<p><strong>Objective</strong>: Enable the filter that blocks suggestions matching public code</p>
+<h4>Step-by-Step Script</h4>
+<ol>
+<li><p><strong>Navigate to Enterprise AI Controls → Copilot</strong></p>
+<pre><code>URL: https://github.com/enterprises/[YOUR-ENTERPRISE]/settings/copilot/policies
+</code></pre>
+</li>
+<li><p><strong>Locate the Public Code Setting</strong></p>
+<ul>
+<li>Find &quot;Suggestions matching public code&quot;</li>
+<li>Show the options:<ul>
+<li><strong>Allowed</strong>: Copilot may suggest code similar to public repositories</li>
+<li><strong>Blocked</strong>: Copilot filters out suggestions matching public code</li>
+<li><strong>No policy</strong>: Organizations decide</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Change the Setting (Live)</strong></p>
+<ul>
+<li>Select &quot;Blocked&quot;</li>
+<li>Click &quot;Save&quot;</li>
+<li><strong>Talking point</strong>: &quot;When blocked, Copilot runs a real-time check against its index of public code. If a suggestion matches, it&#39;s filtered out. This adds ~100ms latency but significantly reduces IP risk.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Show Organization Override (If No Policy Selected)</strong></p>
+<pre><code>URL: https://github.com/orgs/[YOUR-ORG]/settings/copilot/policies
+</code></pre>
+<ul>
+<li>If enterprise is set to &quot;No policy&quot;, show how orgs can set their own preference</li>
+<li><strong>Talking point</strong>: &quot;Some orgs may want this blocked for compliance, while internal tools teams might allow it for faster development. The hierarchy lets you be flexible.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Discuss Trade-offs</strong></p>
+<ul>
+<li><strong>Blocked</strong>: Fewer suggestions, more IP protection</li>
+<li><strong>Allowed</strong>: More suggestions, requires developer judgment</li>
+<li><strong>Recommendation</strong>: Start with &quot;Blocked&quot; for regulated industries; &quot;Allowed&quot; for internal tools/prototypes</li>
+</ul>
+</li>
+</ol>
+<h4>Key Points to Emphasize</h4>
+<ul>
+<li>This is not 100% foolproof—it catches exact and near matches, not all derivative code</li>
+<li>Developers should still review suggestions for licensing concerns</li>
+<li>Legal/compliance teams often require this as a baseline control</li>
+</ul>
+<hr>
+<h3>Demo 4: Trust Center Walkthrough (Section 4)</h3>
+<p><strong>Objective</strong>: Show how to navigate the Copilot Trust Center for security reviews and vendor assessments</p>
+<h4>Setup Before Demo</h4>
+<ul>
+<li>Open <a href="https://copilot.github.trust.page/">https://copilot.github.trust.page/</a> in a browser tab</li>
+<li>Ensure you can access the Resources page (some reports require NDA/access request)</li>
+</ul>
+<h4>Step-by-Step Script</h4>
+<ol>
+<li><p><strong>Open the Trust Center Overview</strong></p>
+<pre><code>URL: https://copilot.github.trust.page/
+</code></pre>
+<ul>
+<li>Show the main sections: Overview, Resources, FAQ, Updates, Media</li>
+<li>Point out the compliance certification badges (SOC 1, SOC 2, SOC 3, ISO 27001, CSA STAR, TISAX)</li>
+<li><strong>Talking point</strong>: &quot;This is your one-stop shop for security review materials. Powered by Vanta, it provides everything your security team needs for vendor assessments.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Navigate to Resources</strong></p>
+<pre><code>URL: https://copilot.github.trust.page/resources
+</code></pre>
+<ul>
+<li>Show the downloadable reports:<ul>
+<li>SOC 1 Type 2 Report</li>
+<li>SOC 2 Type 2 Report</li>
+<li>SOC 3 Report</li>
+<li>Bridge letters for inter-audit periods</li>
+<li>Bug bounty due diligence letters</li>
+</ul>
+</li>
+<li><strong>Talking point</strong>: &quot;SOC 2 Type II is usually what your auditors want. Bridge letters cover gaps between audit periods so you always have current attestation.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Tour the FAQ Sections</strong></p>
+<pre><code>URL: https://copilot.github.trust.page/faq
+</code></pre>
+<ul>
+<li>Expand 2-3 questions from the <strong>Security</strong> section:<ul>
+<li>&quot;How is Copilot data encrypted and protected during transit?&quot;</li>
+<li>&quot;What third party testing and certifications does GitHub Copilot have?&quot;</li>
+</ul>
+</li>
+<li>Expand 1-2 from the <strong>Privacy</strong> section:<ul>
+<li>&quot;Does GitHub Copilot use any of your code to train the GitHub&#39;s model?&quot;</li>
+<li>&quot;How long does GitHub retain Copilot data for Business and Enterprise customers?&quot;</li>
+</ul>
+</li>
+<li><strong>Talking point</strong>: &quot;These FAQ answers map directly to common security questionnaire items. You can reference these when filling out vendor assessments.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Show the Updates Feed</strong></p>
+<pre><code>URL: https://copilot.github.trust.page/updates
+</code></pre>
+<ul>
+<li>Show recent updates</li>
+<li><strong>Talking point</strong>: &quot;The updates feed demonstrates ongoing transparency. Subscribe to get notified of compliance changes — useful for continuous monitoring requirements.&quot;</li>
+</ul>
+</li>
+</ol>
+<h4>Key Points to Emphasize</h4>
+<ul>
+<li>The Trust Center is the authoritative source for Copilot security and compliance information</li>
+<li>SOC reports are available for download (some may require access request via NDA)</li>
+<li>FAQ sections cover the most common vendor assessment questions across Security, Privacy, IP/Open Source, and Commercial categories</li>
+<li>Subscribe to updates for ongoing compliance monitoring</li>
+</ul>
+<hr>
+<h3>Demo 5: Full Policy Walkthrough (Section 5)</h3>
+<p><strong>Objective</strong>: Tour all Copilot policy settings and explain each option</p>
+<h4>Step-by-Step Script</h4>
+<ol>
+<li><p><strong>Navigate to Enterprise AI Controls → Copilot</strong></p>
+<pre><code>URL: https://github.com/enterprises/[YOUR-ENTERPRISE]/settings/copilot/policies
+</code></pre>
+</li>
+<li><p><strong>Walk Through Each Policy Setting</strong></p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Location</th>
+<th>Options to Show</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Copilot in IDE</td>
+<td>Policies page</td>
+<td>Enabled / Disabled / No policy</td>
+</tr>
+<tr>
+<td>Copilot Chat</td>
+<td>Policies page</td>
+<td>Enabled / Disabled / No policy</td>
+</tr>
+<tr>
+<td>Copilot in CLI</td>
+<td>Policies page</td>
+<td>Enabled / Disabled / No policy</td>
+</tr>
+<tr>
+<td>Public code filter</td>
+<td>Policies page</td>
+<td>Allowed / Blocked / No policy</td>
+</tr>
+</tbody></table>
+</li>
+<li><p><strong>Explain &quot;Enforce&quot; vs &quot;No Policy&quot;</strong></p>
+<ul>
+<li><strong>Talking point</strong>: &quot;When you select &#39;Enabled&#39; or &#39;Disabled&#39;, you&#39;re enforcing that setting across all organizations. &#39;No policy&#39; delegates the decision downward.&quot;</li>
+<li>Show the visual indicator when a policy is enforced</li>
+</ul>
+</li>
+<li><p><strong>Navigate to Knowledge Bases (Enterprise Feature)</strong></p>
+<pre><code>URL: https://github.com/enterprises/[YOUR-ENTERPRISE]/settings/copilot/knowledge_bases
+</code></pre>
+<ul>
+<li><strong>Talking point</strong>: &quot;Knowledge bases let Copilot Chat reference your internal documentation. You can connect repos containing docs, wikis, or code examples.&quot;</li>
+<li>Show how to create a knowledge base (or show existing one)</li>
+</ul>
+</li>
+<li><p><strong>Show Organization-Level View</strong></p>
+<pre><code>URL: https://github.com/orgs/[YOUR-ORG]/settings/copilot/policies
+</code></pre>
+<ul>
+<li>Point out which settings show &quot;Enforced by enterprise policy&quot;</li>
+<li>Show which settings the org can still control</li>
+</ul>
+</li>
+<li><p><strong>Demonstrate a Policy Change</strong></p>
+<ul>
+<li>Toggle one setting (e.g., GitHub Copilot CLI from &quot;No policy&quot; to &quot;Enabled&quot;)</li>
+<li>Save and show the confirmation</li>
+<li><strong>Talking point</strong>: &quot;Changes take effect immediately. Users may need to restart their IDE to pick up new permissions.&quot;</li>
+</ul>
+</li>
+</ol>
+<h4>Key Points to Emphasize</h4>
+<ul>
+<li>EMU + enterprise policies = centralized control</li>
+<li>Start restrictive, then loosen based on feedback</li>
+<li>Document your policy decisions for audit purposes</li>
+</ul>
+<hr>
+<h3>Demo 6: Usage Analytics Dashboard (Section 6)</h3>
+<p><strong>Objective</strong>: Show how to monitor Copilot adoption and ROI metrics</p>
+<h4>Step-by-Step Script</h4>
+<ol>
+<li><p><strong>Navigate to Usage Dashboard</strong></p>
+<pre><code>URL: https://github.com/enterprises/[YOUR-ENTERPRISE]/settings/copilot/usage
+</code></pre>
+<ul>
+<li>Enterprise → AI controls tab → Copilot → Usage</li>
+</ul>
+</li>
+<li><p><strong>Tour the Dashboard Sections</strong></p>
+<p><strong>Active Users Section</strong></p>
+<ul>
+<li>Show daily/weekly/monthly active user counts</li>
+<li><strong>Talking point</strong>: &quot;This tells you actual adoption, not just seat assignment. If you have 500 seats but only 200 active users, you have optimization opportunities.&quot;</li>
+</ul>
+<p><strong>Acceptance Rate</strong></p>
+<ul>
+<li>Show the percentage of suggestions accepted</li>
+<li><strong>Talking point</strong>: &quot;High acceptance rates (60%+) indicate Copilot is providing relevant suggestions. Low rates might mean developers need training or your codebase has unique patterns Copilot hasn&#39;t learned.&quot;</li>
+</ul>
+<p><strong>Language Breakdown</strong></p>
+<ul>
+<li>Show which languages have highest usage</li>
+<li><strong>Talking point</strong>: &quot;This helps prioritize training and identify which teams are getting the most value.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Show Time Range Selector</strong></p>
+<ul>
+<li>Change from &quot;Last 7 days&quot; to &quot;Last 28 days&quot; or custom range</li>
+<li>Show how trends appear over time</li>
+</ul>
+</li>
+<li><p><strong>Export Data (If Available)</strong></p>
+<ul>
+<li>Show the export/download option</li>
+<li><strong>Talking point</strong>: &quot;For compliance and ROI reporting, you can export this data to share with leadership or audit teams.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Organization-Level Drill-Down</strong></p>
+<pre><code>URL: https://github.com/orgs/[YOUR-ORG]/settings/copilot/usage
+</code></pre>
+<ul>
+<li>Show how org admins see only their organization&#39;s metrics</li>
+<li><strong>Talking point</strong>: &quot;This lets team leads monitor their own adoption without enterprise-wide visibility.&quot;</li>
+</ul>
+</li>
+</ol>
+<h4>Metrics to Highlight</h4>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>What It Tells You</th>
+<th>Action If Low</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Active users / Seats</td>
+<td>Adoption rate</td>
+<td>Training, awareness</td>
+</tr>
+<tr>
+<td>Acceptance rate</td>
+<td>Suggestion quality</td>
+<td>Refine custom instructions</td>
+</tr>
+<tr>
+<td>Lines suggested</td>
+<td>Volume impact</td>
+<td>Calculate time savings</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>Demo 7: Audit Log Review (Section 6)</h3>
+<p><strong>Objective</strong>: Show where to find Copilot-related audit events</p>
+<h4>Step-by-Step Script</h4>
+<ol>
+<li><p><strong>Navigate to Enterprise Audit Log</strong></p>
+<pre><code>URL: https://github.com/enterprises/[YOUR-ENTERPRISE]/settings/audit-log
+</code></pre>
+</li>
+<li><p><strong>Filter for Copilot Events</strong></p>
+<ul>
+<li><p>In the search box, enter: <code>action:copilot</code></p>
+</li>
+<li><p>Or use specific filters:</p>
+<pre><code>action:copilot.policy_update
+action:copilot.seat_assignment
+action:copilot.content_exclusion
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p><strong>Show Event Details</strong></p>
+<ul>
+<li>Click on an event to expand details</li>
+<li>Point out:<ul>
+<li><strong>Actor</strong>: Who made the change</li>
+<li><strong>Timestamp</strong>: When it happened</li>
+<li><strong>Details</strong>: What specifically changed</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Export Audit Log</strong></p>
+<ul>
+<li>Show the &quot;Export&quot; button</li>
+<li><strong>Talking point</strong>: &quot;For compliance audits, you can export logs in JSON or CSV format. These integrate with your SIEM or compliance tools.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Discuss Retention</strong></p>
+<ul>
+<li><strong>Talking point</strong>: &quot;Enterprise audit logs are retained for [X days/months based on your plan]. For longer retention, set up streaming to external storage.&quot;</li>
+</ul>
+</li>
+</ol>
+<h4>Audit Events to Know</h4>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Trigger</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>copilot.seat_added</code></td>
+<td>User granted Copilot access</td>
+</tr>
+<tr>
+<td><code>copilot.seat_removed</code></td>
+<td>User access revoked</td>
+</tr>
+<tr>
+<td><code>copilot.policy_update</code></td>
+<td>Policy setting changed</td>
+</tr>
+<tr>
+<td><code>copilot.content_exclusion_create</code></td>
+<td>New exclusion added</td>
+</tr>
+<tr>
+<td><code>copilot.content_exclusion_delete</code></td>
+<td>Exclusion removed</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>Pre-Demo Checklist</h3>
+<p>Run through this before the workshop:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Verify enterprise owner access works</li>
+<li><input disabled="" type="checkbox"> Confirm at least one org has Copilot enabled</li>
+<li><input disabled="" type="checkbox"> Check that usage dashboard has data (use Copilot yourself to generate activity)</li>
+<li><input disabled="" type="checkbox"> Create a test repo with <code>/secrets/</code> folder for content exclusion demo</li>
+<li><input disabled="" type="checkbox"> Test screen sharing shows the GitHub UI clearly</li>
+<li><input disabled="" type="checkbox"> Have backup screenshots ready in case of connectivity issues</li>
+<li><input disabled="" type="checkbox"> Bookmark all demo URLs in a dedicated browser folder</li>
+</ul>
+<h3>Backup Plan</h3>
+<p>If live demo fails:</p>
+<ol>
+<li>Use screenshots captured during prep</li>
+<li>Switch to GitHub Docs walkthrough: <a href="https://docs.github.com/en/copilot/managing-copilot/managing-github-copilot-in-your-organization">https://docs.github.com/en/copilot/managing-copilot/managing-github-copilot-in-your-organization</a></li>
+<li>Engage audience with Q&amp;A while troubleshooting</li>
+</ol>
+<hr>
+<p><em>Workshop materials prepared for GitHub Copilot Enterprise governance training</em></p>
+</article>  </main> </body></html>  <script type="module">document.querySelectorAll("pre").forEach(e=>{const t=document.createElement("button");t.className="copy-btn",t.textContent="Copy",t.addEventListener("click",async()=>{const o=(e.querySelector("code")||e).textContent||"";await navigator.clipboard.writeText(o),t.textContent="Copied!",t.classList.add("copied"),setTimeout(()=>{t.textContent="Copy",t.classList.remove("copied")},2e3)}),e.appendChild(t)});</script>

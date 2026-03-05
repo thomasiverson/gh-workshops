@@ -1,0 +1,475 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub + Azure DevOps Integration Workshop Guide</title><link rel="stylesheet" href="/gh-workshops/_astro/index.tKAiv-SV.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1>GitHub + Azure DevOps Integration Workshop Guide</h1>
+<p><strong>Duration</strong>: 45–60 minutes<br><strong>Format</strong>: Presentation + Discussion + Architecture Diagrams<br><strong>Audience</strong>: Enterprise Admins, IT Decision Makers, Engineering Managers, Tech Leads<br><strong>Focus</strong>: Azure DevOps Integration as an Add-On Layer to GitHub Enterprise<br><strong>Prerequisite</strong>: Familiarity with GitHub Enterprise architecture patterns (EMU, Multi-Org, Mixed Cloud + GHES)</p>
+<hr>
+<h2>Workshop Overview</h2>
+<p>This workshop explores how to layer Azure DevOps (ADO) integration on top of an existing GitHub Enterprise architecture. ADO integration is <strong>not a standalone architecture</strong> — it augments whichever base GitHub pattern your organization has chosen (EMU, Multi-Org, or Mixed Cloud + GHES). This session covers the &quot;better together&quot; thesis, key integration points, decision criteria, and practical setup guidance.</p>
+<h3>Learning Objectives</h3>
+<p>After completing this workshop, participants will be able to:</p>
+<ul>
+<li>Explain how Azure DevOps integration layers on top of a base GitHub architecture</li>
+<li>Understand the &quot;better together&quot; thesis and the capability split between GitHub and ADO</li>
+<li>Configure AB# linking between GitHub and Azure DevOps Boards</li>
+<li>Evaluate when ADO integration adds value vs. when to go all-in on GitHub</li>
+<li>Plan a gradual migration path from ADO to GitHub</li>
+</ul>
+<h3>Workshop Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Section</th>
+<th>Time</th>
+<th>Focus</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a href="#1-ado-as-an-integration-layer-10-min">ADO as an Integration Layer</a></td>
+<td>10 min</td>
+<td>Framing, &quot;why coexistence,&quot; capability mapping</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#2-integration-architecture--ab-linking-15-min">Integration Architecture &amp; AB# Linking</a></td>
+<td>15 min</td>
+<td>Architecture diagram, AB# workflow, ADO Pipelines with GitHub repos</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#3-capability-matrix--decision-framework-10-min">Capability Matrix &amp; Decision Framework</a></td>
+<td>10 min</td>
+<td>&quot;What goes where,&quot; pros/cons/requirements, when to add/skip</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#4-qa--discussion-10-min">Q&amp;A &amp; Discussion</a></td>
+<td>10 min</td>
+<td>Open discussion, organization-specific questions</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>1. ADO as an Integration Layer (10 min)</h2>
+<h3>Key Concept</h3>
+<p><strong>ADO integration is NOT a standalone architecture.</strong> Azure DevOps integration sits <strong>on top of</strong> whichever base GitHub architecture you chose:</p>
+<table>
+<thead>
+<tr>
+<th>Base Architecture</th>
+<th>+ ADO Integration =</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🔵 EMU Only</td>
+<td>EMU enterprise with ADO Boards/Pipelines for work tracking and legacy CI</td>
+</tr>
+<tr>
+<td>🟢 Multi-Org</td>
+<td>Multi-Org enterprise with ADO Boards for project management layer</td>
+</tr>
+<tr>
+<td>🟠 Mixed Cloud + GHES</td>
+<td>Hybrid GitHub deployment with ADO for PM and existing pipelines</td>
+</tr>
+</tbody></table>
+<p><strong>You still need a base pattern.</strong> ADO does not replace your GitHub architecture — it augments it.</p>
+<h3>Why Coexistence?</h3>
+<p>Many enterprises have years of investment in Azure DevOps — work item types, Board queries, dashboards, pipeline YAML, artifact feeds, and test plans. Migrating everything at once is risky, expensive, and disruptive.</p>
+<p>The &quot;better together&quot; thesis is about using the right tool for the right job:</p>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Best Tool</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Source Code Management</strong></td>
+<td>GitHub</td>
+<td>Superior developer experience, Copilot integration, branch protection + rulesets</td>
+</tr>
+<tr>
+<td><strong>AI Code Assistance</strong></td>
+<td>GitHub Copilot</td>
+<td>Only available with GitHub repos</td>
+</tr>
+<tr>
+<td><strong>Security Scanning</strong></td>
+<td>GitHub</td>
+<td>GHAS — GitHub Advanced Security (includes Secret Protection + Code Security) — secret scanning, code scanning, Dependabot</td>
+</tr>
+<tr>
+<td><strong>Code Review</strong></td>
+<td>GitHub Pull Requests</td>
+<td>Industry-standard PR workflow, review assignments, CODEOWNERS</td>
+</tr>
+<tr>
+<td><strong>CI/CD (new projects)</strong></td>
+<td>GitHub Actions</td>
+<td>Tight GitHub integration, marketplace, reusable workflows</td>
+</tr>
+<tr>
+<td><strong>Work Item Tracking</strong></td>
+<td>Azure DevOps Boards</td>
+<td>Rich project management: custom work items, sprints, queries, dashboards</td>
+</tr>
+<tr>
+<td><strong>CI/CD (existing)</strong></td>
+<td>Azure DevOps Pipelines</td>
+<td>Preserve existing pipeline investment; migrate gradually</td>
+</tr>
+<tr>
+<td><strong>Test Management</strong></td>
+<td>Azure DevOps Test Plans</td>
+<td>Manual + automated test management — no GitHub equivalent</td>
+</tr>
+<tr>
+<td><strong>Artifact Management</strong></td>
+<td>Azure DevOps Artifacts</td>
+<td>Existing feeds, upstream sources, universal packages</td>
+</tr>
+</tbody></table>
+<h3>Discussion Points</h3>
+<ul>
+<li>What percentage of your development workflow currently lives in Azure DevOps?</li>
+<li>Which ADO capabilities are most critical to preserve during a GitHub adoption?</li>
+</ul>
+<hr>
+<h2>2. Integration Architecture &amp; AB# Linking (15 min)</h2>
+<h3>Architecture Overview</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│                                                                      │
+│                       DEVELOPER WORKFLOW                             │
+│                                                                      │
+│   ┌─────────────────────────────────┐  ┌──────────────────────────────┐ │
+│   │  GITHUB (Base Architecture) │  │  AZURE DEVOPS (Add-On)       │ │
+│   │  🔵 EMU / 🟢 Multi-Org /   │  │                              │ │
+│   │  🟠 Mixed                   │  │                              │ │
+│   │                             │  │                              │ │
+│   │  ┌───────────────────────┐  │  │  ┌────────────────────────┐ │ │
+│   │  │  📦 Repos             │──┼──┼──│  📋 Boards             │ │ │
+│   │  │  (Source of truth)    │  │  │  │  (Work items, sprints)  │ │ │
+│   │  └───────────────────────┘  │  │  └────────────────────────┘ │ │
+│   │           │   AB# Linking   │  │           │                  │ │
+│   │           ▼                 │  │           ▼                  │ │
+│   │  ┌───────────────────────┐  │  │  ┌────────────────────────┐ │ │
+│   │  │  🔄 Pull Requests     │  │  │  │  🧪 Test Plans         │ │ │
+│   │  │  (Code review, CI)    │  │  │  │  (Manual/automated)    │ │ │
+│   │  └───────────────────────┘  │  │  └────────────────────────┘ │ │
+│   │           │                 │  │                              │ │
+│   │           ▼                 │  │  ┌────────────────────────┐ │ │
+│   │  ┌───────────────────────┐  │  │  │  📦 Artifacts          │ │ │
+│   │  │  🤖 Copilot           │  │  │  │  (Packages, feeds)     │ │ │
+│   │  │  (AI code assistance) │  │  │  └────────────────────────┘ │ │
+│   │  └───────────────────────┘  │  │                              │ │
+│   │                             │  │  ┌────────────────────────┐ │ │
+│   │  ┌───────────────────────┐  │  │  │  🔧 Pipelines          │ │ │
+│   │  │  🔒 GHAS              │  │  │  │  (Existing — or        │ │ │
+│   │  │  (Secret scanning,   │  │  │  │   migrate to Actions)  │ │ │
+│   │  │   Code scanning,     │  │  │  └────────────────────────┘ │ │
+│   │  │   Dependabot)        │  │  │                              │ │
+│   │  └───────────────────────┘  │  │                              │ │
+│   │                             │  │                              │ │
+│   │  ┌───────────────────────┐  │  │                              │ │
+│   │  │  ⚡ Actions            │  │  │                              │ │
+│   │  │  (CI/CD — new work)   │  │  │                              │ │
+│   │  └───────────────────────┘  │  │                              │ │
+│   └─────────────────────────────┘  └──────────────────────────────┘ │
+│                                                                      │
+│   ┌──────────────────────────────────────────────────────────────┐   │
+│   │                   ENTRA ID (Shared Identity)                  │   │
+│   │       Single sign-on across both GitHub and Azure DevOps      │   │
+│   └──────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>Key Integration Point: AB# Linking</h3>
+<p>AB# linking is the primary integration between GitHub and Azure DevOps Boards:</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Syntax</strong></td>
+<td>Type <code>AB#12345</code> in a GitHub commit message, PR description, or issue description to link to ADO work item #12345. Note: <code>AB#</code> in PR titles or comments does <strong>not</strong> create a link.</td>
+</tr>
+<tr>
+<td><strong>How it works</strong></td>
+<td>GitHub sends a webhook to ADO, which creates a hyperlink on the work item</td>
+</tr>
+<tr>
+<td><strong>Setup</strong></td>
+<td>Install the <strong>Azure Boards</strong> GitHub App on your GitHub org</td>
+</tr>
+<tr>
+<td><strong>Supported directions</strong></td>
+<td>GitHub → ADO (commits, PRs, branches linked to work items)</td>
+</tr>
+<tr>
+<td><strong>State transitions</strong></td>
+<td>Configure ADO to auto-transition work items when PRs are merged <strong>into the default branch</strong> (e.g., <code>Fixes AB#12345</code> → moves to Done). State transitions do not apply for merges into non-default branches.</td>
+</tr>
+<tr>
+<td><strong>Visibility</strong></td>
+<td>ADO work items show linked GitHub PRs, commits, and branches in the Development section</td>
+</tr>
+</tbody></table>
+<h3>Example Developer Workflow</h3>
+<ol>
+<li>Developer picks up work item <code>AB#4567</code> in ADO Boards</li>
+<li>Creates branch in GitHub: <code>feature/AB4567-add-login</code></li>
+<li>Commits with message: <code>Add OAuth login flow AB#4567</code></li>
+<li>Opens PR in GitHub referencing <code>AB#4567</code> — ADO work item shows the linked PR</li>
+<li>Code review and CI happen entirely in GitHub</li>
+<li>PR merged → ADO work item automatically transitions to &quot;Done&quot;</li>
+<li>Project manager sees the completed work in ADO Boards dashboard</li>
+</ol>
+<h3>ADO Pipelines Building from GitHub Repos</h3>
+<p>Even when source code lives in GitHub, ADO Pipelines can still build it:</p>
+<p><strong>Setup Steps:</strong></p>
+<ol>
+<li>In Azure DevOps: <strong>Project Settings</strong> → <strong>Service Connections</strong> → <strong>New</strong> → <strong>GitHub</strong></li>
+<li>Authentication: Use <strong>GitHub App</strong> (recommended), <strong>OAuth</strong>, or <strong>PAT</strong></li>
+<li>Authorize the connection to the target GitHub org</li>
+<li>In ADO Pipeline YAML, reference the GitHub repo:</li>
+</ol>
+<pre><code class="language-yaml">resources:
+  repositories:
+    - repository: my-github-repo
+      type: github
+      endpoint: &#39;my-github-service-connection&#39;
+      name: &#39;contoso/my-app&#39;
+
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: &#39;ubuntu-latest&#39;
+
+steps:
+  - checkout: my-github-repo
+  - script: echo Building from GitHub repo
+</code></pre>
+<blockquote>
+<p><strong>Note</strong>: Over time, consider migrating ADO Pipelines to GitHub Actions for new projects. This reduces context-switching and takes advantage of Actions&#39; native GitHub integration (status checks, PR triggers, environment protection rules).</p>
+</blockquote>
+<h3>Discussion Points</h3>
+<ul>
+<li>Are your teams currently using AB# linking? If not, what&#39;s the barrier?</li>
+<li>How many ADO pipelines would need to build from GitHub repos during the transition?</li>
+</ul>
+<hr>
+<h2>3. Capability Matrix &amp; Decision Framework (10 min)</h2>
+<h3>What Goes Where — Capability Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>GitHub ✅</th>
+<th>Azure DevOps ✅</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Source Code</strong></td>
+<td>✅ Primary</td>
+<td>⚠️ Legacy repos</td>
+<td>All new repos in GitHub; migrate ADO Repos gradually</td>
+</tr>
+<tr>
+<td><strong>Code Review (PRs)</strong></td>
+<td>✅ Primary</td>
+<td>N/A</td>
+<td>All code review happens in GitHub</td>
+</tr>
+<tr>
+<td><strong>AI Code Assistance</strong></td>
+<td>✅ Copilot</td>
+<td>✗ Not available</td>
+<td>Copilot only works with GitHub repos</td>
+</tr>
+<tr>
+<td><strong>Security Scanning</strong></td>
+<td>✅ GHAS (includes Secret Protection + Code Security)</td>
+<td>⚠️ Defender for DevOps</td>
+<td>GitHub Advanced Security for comprehensive coverage</td>
+</tr>
+<tr>
+<td><strong>CI/CD</strong></td>
+<td>✅ Actions (new projects)</td>
+<td>✅ Pipelines (existing)</td>
+<td>New projects → Actions; existing → migrate over time</td>
+</tr>
+<tr>
+<td><strong>Work Tracking</strong></td>
+<td>⚠️ Issues / Projects</td>
+<td>✅ Boards (primary)</td>
+<td>ADO Boards for enterprise PM; GitHub Issues for dev-level tracking</td>
+</tr>
+<tr>
+<td><strong>Test Management</strong></td>
+<td>✗</td>
+<td>✅ Test Plans</td>
+<td>ADO remains the test management leader</td>
+</tr>
+<tr>
+<td><strong>Artifacts</strong></td>
+<td>⚠️ Packages</td>
+<td>✅ Artifacts</td>
+<td>Use whichever you&#39;ve standardized on</td>
+</tr>
+<tr>
+<td><strong>Wiki / Documentation</strong></td>
+<td>✅ Repo-based Markdown</td>
+<td>✅ Wiki</td>
+<td>GitHub repos + Markdown for docs-as-code</td>
+</tr>
+</tbody></table>
+<h3>Pros, Cons &amp; Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>✅ Pros</th>
+<th>✗ Cons</th>
+<th>📋 Requirements</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Leverage best of both platforms</td>
+<td>Two platforms = dual admin, dual training, dual cost</td>
+<td>GitHub Enterprise Cloud license</td>
+</tr>
+<tr>
+<td>Adopt Copilot + GHAS without full migration</td>
+<td>AB# linking is GitHub → ADO (not fully bidirectional)</td>
+<td>Azure DevOps organization + project</td>
+</tr>
+<tr>
+<td>Preserve ADO Boards investment (sprints, queries, dashboards)</td>
+<td>Developer context-switching between two systems</td>
+<td>Azure Boards GitHub App installed</td>
+</tr>
+<tr>
+<td>Gradual migration — move at your own pace</td>
+<td>Unified reporting requires custom dashboards (Power BI, etc.)</td>
+<td>Entra ID for shared SSO (strongly recommended)</td>
+</tr>
+<tr>
+<td>Shared identity via Entra ID</td>
+<td>Audit logging split across two systems</td>
+<td>Network connectivity between GH and ADO</td>
+</tr>
+<tr>
+<td>ADO Pipelines can build from GitHub repos (service connection)</td>
+<td>Artifact management may be split across both platforms</td>
+<td>Service connection configured (for ADO Pipelines)</td>
+</tr>
+<tr>
+<td>New projects start on GitHub; legacy stays in ADO</td>
+<td>Governance complexity — policies in two places</td>
+<td>Team training on AB# workflow</td>
+</tr>
+<tr>
+<td>Works with ANY base GitHub architecture (EMU, Multi-Org, Mixed)</td>
+<td>License cost for both platforms during coexistence</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3>When to Add ADO Integration</h3>
+<p><strong>Add ADO integration when:</strong></p>
+<ul>
+<li>✅ You have significant ADO Boards investment (custom work items, queries, dashboards)</li>
+<li>✅ You want to adopt Copilot and GHAS without disrupting existing workflows</li>
+<li>✅ You&#39;re doing a gradual migration from ADO Repos to GitHub Repos</li>
+<li>✅ Your project managers and stakeholders live in ADO Boards</li>
+<li>✅ You use ADO Test Plans and can&#39;t easily replace them</li>
+<li>✅ You&#39;re already on Entra ID (makes SSO across both platforms seamless)</li>
+</ul>
+<p><strong>Skip ADO integration if:</strong></p>
+<ul>
+<li>⚠️ You&#39;re starting fresh — go all-in on GitHub from the start</li>
+<li>⚠️ You can replace ADO Boards with GitHub Projects V2 (simpler stack = less overhead)</li>
+<li>⚠️ Total cost of running both platforms exceeds the one-time migration cost</li>
+<li>⚠️ Developers strongly prefer a single tool — context-switching harms productivity</li>
+</ul>
+<h3>Discussion Points</h3>
+<ul>
+<li>How much of your team&#39;s workflow lives in ADO Boards today?</li>
+<li>Could GitHub Projects V2 replace your ADO Boards usage, or is the investment too deep?</li>
+<li>Do you have ADO Pipelines that would be difficult to migrate to Actions?</li>
+<li>Is Entra ID already your identity provider for both GitHub and ADO?</li>
+</ul>
+<hr>
+<h2>4. Q&amp;A &amp; Discussion (10 min)</h2>
+<h3>Guided Discussion Questions</h3>
+<ol>
+<li><strong>Current State</strong>: What&#39;s your current split between GitHub and Azure DevOps?</li>
+<li><strong>Migration Appetite</strong>: Is your goal coexistence long-term, or gradual full migration to GitHub?</li>
+<li><strong>Copilot Priority</strong>: Is AI-assisted development a key driver for your GitHub adoption?</li>
+<li><strong>Stakeholder Impact</strong>: How will project managers and non-developer stakeholders be affected?</li>
+<li><strong>Timeline</strong>: What&#39;s your target timeline for the integration setup?</li>
+</ol>
+<h3>Recommended Next Steps</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Pilot AB# linking</strong> — Install the Azure Boards GitHub App on a pilot org and test AB# linking with a small team</li>
+<li><input disabled="" type="checkbox"> <strong>Audit ADO usage</strong> — Identify which ADO services are actively used (Boards, Pipelines, Test Plans, Artifacts, Repos)</li>
+<li><input disabled="" type="checkbox"> <strong>Define &quot;what goes where&quot;</strong> — Use the capability matrix to create a clear division of responsibility</li>
+<li><input disabled="" type="checkbox"> <strong>Set up shared identity</strong> — Ensure Entra ID SSO is configured for both GitHub and Azure DevOps</li>
+<li><input disabled="" type="checkbox"> <strong>Plan pipeline migration</strong> — For new projects, start with GitHub Actions; for existing, create a phased migration plan</li>
+<li><input disabled="" type="checkbox"> <strong>Build unified reporting</strong> — If needed, set up Power BI dashboards that pull from both GitHub and ADO</li>
+</ul>
+<hr>
+<h2>Appendix</h2>
+<h3>A. Key URLs</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Azure Boards + GitHub Integration</td>
+<td><code>https://learn.microsoft.com/en-us/azure/devops/boards/github/</code></td>
+</tr>
+<tr>
+<td>Azure Boards GitHub App</td>
+<td><code>https://github.com/marketplace/azure-boards</code></td>
+</tr>
+<tr>
+<td>ADO Service Connections</td>
+<td><code>https://learn.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints</code></td>
+</tr>
+<tr>
+<td>GitHub Actions Migration from ADO Pipelines</td>
+<td><code>https://docs.github.com/en/actions/migrating-to-github-actions/migrating-from-azure-pipelines-to-github-actions</code></td>
+</tr>
+</tbody></table>
+<h3>B. ADO + GitHub Integration Setup Checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Azure Boards GitHub App installed on GitHub org</li>
+<li><input disabled="" type="checkbox"> ADO project connected to GitHub org</li>
+<li><input disabled="" type="checkbox"> AB# linking tested (commit + PR)</li>
+<li><input disabled="" type="checkbox"> State transition rules configured (e.g., <code>Fixes AB#</code> → Done)</li>
+<li><input disabled="" type="checkbox"> Service connection created in ADO for GitHub (if using ADO Pipelines with GH repos)</li>
+<li><input disabled="" type="checkbox"> Entra ID SSO configured for both GitHub and Azure DevOps</li>
+<li><input disabled="" type="checkbox"> Team trained on AB# syntax and workflow</li>
+<li><input disabled="" type="checkbox"> Reporting dashboard built to span both platforms (Power BI or similar)</li>
+</ul>
+<h3>C. Backup Plan</h3>
+<p>If the presentation tool fails:</p>
+<ol>
+<li>Share the slide deck as a Markdown file or PDF</li>
+<li>Use this workshop document as a reference for discussion</li>
+<li>Focus on the capability matrix (Section 3) and pros/cons table</li>
+<li>Drive discussion with the guided questions in Section 4</li>
+</ol>
+<p><em>Workshop guide for GitHub + Azure DevOps Integration Workshop</em></p>
+</article>  </main> </body></html>  <script type="module">document.querySelectorAll("pre").forEach(e=>{const t=document.createElement("button");t.className="copy-btn",t.textContent="Copy",t.addEventListener("click",async()=>{const o=(e.querySelector("code")||e).textContent||"";await navigator.clipboard.writeText(o),t.textContent="Copied!",t.classList.add("copied"),setTimeout(()=>{t.textContent="Copy",t.classList.remove("copied")},2e3)}),e.appendChild(t)});</script>
