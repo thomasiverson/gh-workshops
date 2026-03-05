@@ -85,12 +85,12 @@
 </tr>
 <tr>
 <td>5</td>
-<td><a href="#5-custom-agents-chat-modes-25-min">Custom Agents (Chat Modes)</a></td>
+<td><a href="#5-agent-skills-25-min">Agent Skills</a></td>
 <td>25 min</td>
 </tr>
 <tr>
 <td>6</td>
-<td><a href="#6-agent-skills-25-min">Agent Skills</a></td>
+<td><a href="#6-custom-agents-chat-modes-25-min">Custom Agents (Chat Modes)</a></td>
 <td>25 min</td>
 </tr>
 <tr>
@@ -781,7 +781,263 @@ For each vulnerability found:
 <li>✅ You understand the three ways to invoke a prompt file</li>
 </ul>
 <hr>
-<h2>5. Custom Agents (Chat Modes) (25 min)</h2>
+<h2>5. Agent Skills (25 min)</h2>
+<h3>Key Points</h3>
+<ul>
+<li>Agent Skills are specialized instruction sets that Copilot auto-selects based on task relevance</li>
+<li>Stored in <code>.github/skills/&lt;skill-name&gt;/SKILL.md</code> (project) or <code>~/.copilot/skills/&lt;skill-name&gt;/SKILL.md</code> (personal)</li>
+<li>Unlike instructions (always loaded) and prompts (manually invoked), skills are <strong>automatically loaded when Copilot determines they&#39;re relevant</strong></li>
+<li>Skills are an <a href="https://github.com/agentskills/agentskills">open standard</a> — used by Copilot Coding Agent and Agent mode in VS Code</li>
+</ul>
+<h3>Skills vs Instructions</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Custom Instructions</th>
+<th>Agent Skills</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Location</strong></td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td><code>.github/skills/*/SKILL.md</code></td>
+</tr>
+<tr>
+<td><strong>When loaded</strong></td>
+<td>Always, every interaction</td>
+<td>Only when relevant to the task</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Simple, universal rules</td>
+<td>Detailed, specialized procedures</td>
+</tr>
+<tr>
+<td><strong>Can include</strong></td>
+<td>Markdown text only</td>
+<td>Markdown + scripts + resources</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Project-wide or file-scoped</td>
+<td>Project or personal</td>
+</tr>
+</tbody></table>
+<p><strong>Rule of thumb</strong>: Use instructions for &quot;always true&quot; rules. Use skills for &quot;when doing X, follow these steps.&quot;</p>
+<h3>Anatomy of a Skill</h3>
+<pre><code>.github/skills/
+└── api-route-creation/
+    ├── SKILL.md              # Required — instructions + frontmatter
+    ├── route-template.ts     # Optional — example files
+    └── test-template.ts      # Optional — additional resources
+</code></pre>
+<pre><code class="language-yaml">---
+name: api-route-creation
+description: Guide for creating new API routes in the Express.js backend.
+  Use this when asked to add new endpoints or entities.
+---
+
+Follow this process when creating new API routes:
+
+1. Create the entity model in `api/src/models/`
+2. Create the route file in `api/src/routes/`
+3. Follow the pattern from `api/src/routes/product.ts`
+4. Register the route in `api/src/index.ts`
+5. Add Swagger documentation annotations
+6. Create tests in `api/src/routes/&lt;entity&gt;.test.ts`
+</code></pre>
+<h3>Skill Scope</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Location</th>
+<th>Available In</th>
+<th>Shared</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Project</strong></td>
+<td><code>.github/skills/</code></td>
+<td>This repo only</td>
+<td>With collaborators via git</td>
+</tr>
+<tr>
+<td><strong>Personal</strong></td>
+<td><code>~/.copilot/skills/</code></td>
+<td>All your repos</td>
+<td>Only on your machine</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: <code>~</code> refers to your OS home directory — <code>C:\Users\&lt;username&gt;</code> on Windows, <code>/Users/&lt;username&gt;</code> on macOS, or <code>/home/&lt;username&gt;</code> on Linux.</p>
+</blockquote>
+<hr>
+<h3>🖥️ DEMO: Create a Skill from Scratch</h3>
+<ol>
+<li>Create the directory structure:</li>
+</ol>
+<pre><code class="language-bash">mkdir -p .github/skills/code-review-checklist
+</code></pre>
+<ol start="2">
+<li>Create <code>.github/skills/code-review-checklist/SKILL.md</code>:</li>
+</ol>
+<pre><code class="language-yaml">---
+name: code-review-checklist
+description: Checklist for reviewing TypeScript and Express.js code.
+  Use this when asked to review code, audit code quality, or check for
+  security and performance issues.
+---
+
+When reviewing TypeScript or Express.js code, follow this checklist:
+
+1. **Security**
+   - Check for unsanitized user input in route handlers
+   - Verify no hardcoded secrets, API keys, or credentials
+   - Ensure proper authentication/authorization checks on protected routes
+   - Look for SQL/NoSQL injection risks in database queries
+
+2. **Input Validation**
+   - Confirm all POST/PUT endpoints validate request body fields
+   - Check for missing type guards on `req.params` and `req.query`
+   - Verify appropriate HTTP status codes for validation failures (400, 422)
+
+3. **Error Handling**
+   - Ensure every route has try/catch with meaningful error responses
+   - Check that errors are logged but sensitive details are not leaked to clients
+   - Verify async errors are properly caught (no unhandled promise rejections)
+
+4. **Performance**
+   - Identify N+1 query patterns or unnecessary database calls
+   - Check for missing pagination on list endpoints
+   - Look for blocking synchronous operations in async handlers
+
+5. **Maintainability**
+   - Verify consistent naming conventions (camelCase for variables, PascalCase for types)
+   - Check for DRY violations — duplicated logic that should be extracted
+   - Ensure Swagger/OpenAPI annotations are present and accurate
+</code></pre>
+<ol start="3">
+<li>Show how Copilot auto-selects the skill — Open a new chat and select Agent Mode, then enter:</li>
+</ol>
+<pre><code>Review the product route handler for security and performance issues
+</code></pre>
+<ul>
+<li>Show the skill being loaded (Copilot will reference the checklist steps)</li>
+</ul>
+<p><strong>Talking point</strong>: &quot;You didn&#39;t invoke the skill — Copilot chose it because your prompt matched the skill&#39;s description. This is the key difference from prompt files.&quot;</p>
+<hr>
+<h3>🖥️ DEMO: Reference External Skill Collections</h3>
+<p>Show attendees where to find community skills:</p>
+<ul>
+<li><a href="https://github.com/anthropics/skills">anthropics/skills</a> — Anthropic&#39;s reference skills</li>
+<li><a href="https://github.com/github/awesome-copilot">github/awesome-copilot</a> — community-curated collection</li>
+</ul>
+<p><strong>Talking point</strong>: &quot;Skills are an open standard. You can use skills from the community or write your own.&quot;</p>
+<details>
+<summary><h3>🧪 Hands-On: Create an Agent Skill (12 min)</h3></summary>
+
+<p><strong>Exercise 1 — Create an API Route Creation Skill</strong></p>
+<ol>
+<li>Create the directory structure:</li>
+</ol>
+<pre><code class="language-bash">mkdir -p .github/skills/api-route-creation
+</code></pre>
+<ol start="2">
+<li>Create <code>.github/skills/api-route-creation/SKILL.md</code> with the following content:</li>
+</ol>
+<pre><code class="language-yaml">---
+name: api-route-creation
+description: Guide for creating new API routes in the Express.js backend.
+  Use this when asked to add new endpoints, entities, or REST resources.
+---
+
+Follow this process when creating new API routes:
+
+1. **Create the entity model** in `api/src/models/`
+   - Follow the TypeScript interface pattern from existing models
+   - Include all required and optional fields with proper types
+
+2. **Create the route file** in `api/src/routes/`
+   - Follow the pattern from `api/src/routes/product.ts`
+   - Implement full CRUD: GET (list), GET (by ID), POST, PUT, DELETE
+   - Add proper error handling with try/catch and appropriate HTTP status codes
+
+3. **Register the route** in `api/src/index.ts`
+   - Import the new route module
+   - Add it to the Express app with the correct base path
+
+4. **Add Swagger documentation**
+   - Add JSDoc annotations with @swagger tags on each endpoint
+   - Include request/response schemas, parameters, and example values
+
+5. **Create tests** in `api/src/routes/&lt;entity&gt;.test.ts`
+   - Follow the pattern from existing test files
+   - Test all CRUD operations and error scenarios
+   - Use vitest as the test framework
+</code></pre>
+<p><strong>Exercise 2 — Test the Skill Auto-Selection</strong></p>
+<p>The key difference between skills and prompts is that <strong>you don&#39;t invoke skills manually</strong> — Copilot selects them based on your prompt matching the skill&#39;s <code>description</code> field.</p>
+<ol>
+<li>Switch to <strong>Agent</strong> mode in Copilot Chat</li>
+<li>Enter a prompt that should trigger the skill:</li>
+</ol>
+<pre><code>I need to add a new &quot;Warehouse&quot; entity and API endpoints for managing warehouses. Each warehouse has a name, address, city, state, zipCode, and capacity.
+</code></pre>
+<ol start="3">
+<li>Watch Copilot work — it should follow the steps from your skill: create the model, create the route, register it, add Swagger docs</li>
+<li>Check whether the generated code follows the patterns you specified</li>
+</ol>
+<p><strong>Exercise 3 — Create a Second Skill</strong> (Bonus)</p>
+<p>Create a <code>react-component-creation</code> skill:</p>
+<pre><code class="language-bash">mkdir -p .github/skills/react-component-creation
+</code></pre>
+<p>Create <code>.github/skills/react-component-creation/SKILL.md</code>:</p>
+<pre><code class="language-yaml">---
+name: react-component-creation
+description: Guide for creating new React components in the frontend.
+  Use this when asked to add new pages, UI components, or frontend features.
+---
+
+Follow this process when creating new React components:
+
+1. **Create the component file** in `src/components/` or `src/pages/`
+   - Use functional components with TypeScript (.tsx)
+   - Use Tailwind CSS for all styling — no inline styles or CSS modules
+   - Export the component as the default export
+
+2. **Add routing** (if it&#39;s a page)
+   - Add the route to the router configuration
+   - Add a navigation link if appropriate
+
+3. **Connect to the API** (if needed)
+   - Use fetch or the existing API utility for data fetching
+   - Handle loading, error, and empty states
+   - Add TypeScript interfaces for API response types
+
+4. **Follow existing patterns**
+   - Reference `src/pages/Products.tsx` for page structure
+   - Reference `src/components/` for reusable component patterns
+</code></pre>
+<p>Test it by asking Copilot: <code>Create a Warehouses page that shows a list of all warehouses with their addresses</code></p>
+</details>
+
+<h3>Personal Skills</h3>
+<p>You can also create <strong>personal skills</strong> that apply across all your repos:</p>
+<ul>
+<li>Location: <code>~/.copilot/skills/*/SKILL.md</code> (where <code>~</code> is your OS home directory — e.g., <code>C:\Users\&lt;username&gt;</code> on Windows, <code>/Users/&lt;username&gt;</code> on macOS)</li>
+<li>These are private to your machine — not shared via git</li>
+<li>Great for personal coding preferences or tools only you use</li>
+</ul>
+<h3>Success Criteria</h3>
+<ul>
+<li>✅ You&#39;ve created <code>.github/skills/api-route-creation/SKILL.md</code> with a complete step-by-step guide</li>
+<li>✅ You&#39;ve tested the skill by asking Copilot to create a new entity and observed it following your steps</li>
+<li>✅ You understand the difference: instructions = always-on, skills = auto-selected, prompts = manually invoked</li>
+</ul>
+<hr>
+<h2>6. Custom Agents (Chat Modes) (25 min)</h2>
 <h3>Key Points</h3>
 <ul>
 <li>Agents are persistent chat personas stored in <code>.github/agents/*.agent.md</code></li>
@@ -1129,262 +1385,6 @@ README structure, API doc format, code comment standards...]
 <li>✅ You understand that agents persist for the entire chat session, unlike prompts</li>
 </ul>
 <hr>
-<h2>6. Agent Skills (25 min)</h2>
-<h3>Key Points</h3>
-<ul>
-<li>Agent Skills are specialized instruction sets that Copilot auto-selects based on task relevance</li>
-<li>Stored in <code>.github/skills/&lt;skill-name&gt;/SKILL.md</code> (project) or <code>~/.copilot/skills/&lt;skill-name&gt;/SKILL.md</code> (personal)</li>
-<li>Unlike instructions (always loaded) and prompts (manually invoked), skills are <strong>automatically loaded when Copilot determines they&#39;re relevant</strong></li>
-<li>Skills are an <a href="https://github.com/agentskills/agentskills">open standard</a> — used by Copilot Coding Agent and Agent mode in VS Code</li>
-</ul>
-<h3>Skills vs Instructions</h3>
-<table>
-<thead>
-<tr>
-<th>Aspect</th>
-<th>Custom Instructions</th>
-<th>Agent Skills</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>Location</strong></td>
-<td><code>.github/copilot-instructions.md</code></td>
-<td><code>.github/skills/*/SKILL.md</code></td>
-</tr>
-<tr>
-<td><strong>When loaded</strong></td>
-<td>Always, every interaction</td>
-<td>Only when relevant to the task</td>
-</tr>
-<tr>
-<td><strong>Best for</strong></td>
-<td>Simple, universal rules</td>
-<td>Detailed, specialized procedures</td>
-</tr>
-<tr>
-<td><strong>Can include</strong></td>
-<td>Markdown text only</td>
-<td>Markdown + scripts + resources</td>
-</tr>
-<tr>
-<td><strong>Scope</strong></td>
-<td>Project-wide or file-scoped</td>
-<td>Project or personal</td>
-</tr>
-</tbody></table>
-<p><strong>Rule of thumb</strong>: Use instructions for &quot;always true&quot; rules. Use skills for &quot;when doing X, follow these steps.&quot;</p>
-<h3>Anatomy of a Skill</h3>
-<pre><code>.github/skills/
-└── api-route-creation/
-    ├── SKILL.md              # Required — instructions + frontmatter
-    ├── route-template.ts     # Optional — example files
-    └── test-template.ts      # Optional — additional resources
-</code></pre>
-<pre><code class="language-yaml">---
-name: api-route-creation
-description: Guide for creating new API routes in the Express.js backend.
-  Use this when asked to add new endpoints or entities.
----
-
-Follow this process when creating new API routes:
-
-1. Create the entity model in `api/src/models/`
-2. Create the route file in `api/src/routes/`
-3. Follow the pattern from `api/src/routes/product.ts`
-4. Register the route in `api/src/index.ts`
-5. Add Swagger documentation annotations
-6. Create tests in `api/src/routes/&lt;entity&gt;.test.ts`
-</code></pre>
-<h3>Skill Scope</h3>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Location</th>
-<th>Available In</th>
-<th>Shared</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>Project</strong></td>
-<td><code>.github/skills/</code></td>
-<td>This repo only</td>
-<td>With collaborators via git</td>
-</tr>
-<tr>
-<td><strong>Personal</strong></td>
-<td><code>~/.copilot/skills/</code></td>
-<td>All your repos</td>
-<td>Only on your machine</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p><strong>Note</strong>: <code>~</code> refers to your OS home directory — <code>C:\Users\&lt;username&gt;</code> on Windows, <code>/Users/&lt;username&gt;</code> on macOS, or <code>/home/&lt;username&gt;</code> on Linux.</p>
-</blockquote>
-<hr>
-<h3>🖥️ DEMO: Create a Skill from Scratch</h3>
-<ol>
-<li>Create the directory structure:</li>
-</ol>
-<pre><code class="language-bash">mkdir -p .github/skills/code-review-checklist
-</code></pre>
-<ol start="2">
-<li>Create <code>.github/skills/code-review-checklist/SKILL.md</code>:</li>
-</ol>
-<pre><code class="language-yaml">---
-name: code-review-checklist
-description: Checklist for reviewing TypeScript and Express.js code.
-  Use this when asked to review code, audit code quality, or check for
-  security and performance issues.
----
-
-When reviewing TypeScript or Express.js code, follow this checklist:
-
-1. **Security**
-   - Check for unsanitized user input in route handlers
-   - Verify no hardcoded secrets, API keys, or credentials
-   - Ensure proper authentication/authorization checks on protected routes
-   - Look for SQL/NoSQL injection risks in database queries
-
-2. **Input Validation**
-   - Confirm all POST/PUT endpoints validate request body fields
-   - Check for missing type guards on `req.params` and `req.query`
-   - Verify appropriate HTTP status codes for validation failures (400, 422)
-
-3. **Error Handling**
-   - Ensure every route has try/catch with meaningful error responses
-   - Check that errors are logged but sensitive details are not leaked to clients
-   - Verify async errors are properly caught (no unhandled promise rejections)
-
-4. **Performance**
-   - Identify N+1 query patterns or unnecessary database calls
-   - Check for missing pagination on list endpoints
-   - Look for blocking synchronous operations in async handlers
-
-5. **Maintainability**
-   - Verify consistent naming conventions (camelCase for variables, PascalCase for types)
-   - Check for DRY violations — duplicated logic that should be extracted
-   - Ensure Swagger/OpenAPI annotations are present and accurate
-</code></pre>
-<ol start="3">
-<li>Show how Copilot auto-selects the skill — Open a new chat and select Agent Mode, then enter:</li>
-</ol>
-<pre><code>Review the product route handler for security and performance issues
-</code></pre>
-<ul>
-<li>Show the skill being loaded (Copilot will reference the checklist steps)</li>
-</ul>
-<p><strong>Talking point</strong>: &quot;You didn&#39;t invoke the skill — Copilot chose it because your prompt matched the skill&#39;s description. This is the key difference from prompt files.&quot;</p>
-<hr>
-<h3>🖥️ DEMO: Reference External Skill Collections</h3>
-<p>Show attendees where to find community skills:</p>
-<ul>
-<li><a href="https://github.com/anthropics/skills">anthropics/skills</a> — Anthropic&#39;s reference skills</li>
-<li><a href="https://github.com/github/awesome-copilot">github/awesome-copilot</a> — community-curated collection</li>
-</ul>
-<p><strong>Talking point</strong>: &quot;Skills are an open standard. You can use skills from the community or write your own.&quot;</p>
-<details>
-<summary><h3>🧪 Hands-On: Create an Agent Skill (12 min)</h3></summary>
-
-<p><strong>Exercise 1 — Create an API Route Creation Skill</strong></p>
-<ol>
-<li>Create the directory structure:</li>
-</ol>
-<pre><code class="language-bash">mkdir -p .github/skills/api-route-creation
-</code></pre>
-<ol start="2">
-<li>Create <code>.github/skills/api-route-creation/SKILL.md</code> with the following content:</li>
-</ol>
-<pre><code class="language-yaml">---
-name: api-route-creation
-description: Guide for creating new API routes in the Express.js backend.
-  Use this when asked to add new endpoints, entities, or REST resources.
----
-
-Follow this process when creating new API routes:
-
-1. **Create the entity model** in `api/src/models/`
-   - Follow the TypeScript interface pattern from existing models
-   - Include all required and optional fields with proper types
-
-2. **Create the route file** in `api/src/routes/`
-   - Follow the pattern from `api/src/routes/product.ts`
-   - Implement full CRUD: GET (list), GET (by ID), POST, PUT, DELETE
-   - Add proper error handling with try/catch and appropriate HTTP status codes
-
-3. **Register the route** in `api/src/index.ts`
-   - Import the new route module
-   - Add it to the Express app with the correct base path
-
-4. **Add Swagger documentation**
-   - Add JSDoc annotations with @swagger tags on each endpoint
-   - Include request/response schemas, parameters, and example values
-
-5. **Create tests** in `api/src/routes/&lt;entity&gt;.test.ts`
-   - Follow the pattern from existing test files
-   - Test all CRUD operations and error scenarios
-   - Use vitest as the test framework
-</code></pre>
-<p><strong>Exercise 2 — Test the Skill Auto-Selection</strong></p>
-<p>The key difference between skills and prompts is that <strong>you don&#39;t invoke skills manually</strong> — Copilot selects them based on your prompt matching the skill&#39;s <code>description</code> field.</p>
-<ol>
-<li>Switch to <strong>Agent</strong> mode in Copilot Chat</li>
-<li>Enter a prompt that should trigger the skill:</li>
-</ol>
-<pre><code>I need to add a new &quot;Warehouse&quot; entity and API endpoints for managing warehouses. Each warehouse has a name, address, city, state, zipCode, and capacity.
-</code></pre>
-<ol start="3">
-<li>Watch Copilot work — it should follow the steps from your skill: create the model, create the route, register it, add Swagger docs</li>
-<li>Check whether the generated code follows the patterns you specified</li>
-</ol>
-<p><strong>Exercise 3 — Create a Second Skill</strong> (Bonus)</p>
-<p>Create a <code>react-component-creation</code> skill:</p>
-<pre><code class="language-bash">mkdir -p .github/skills/react-component-creation
-</code></pre>
-<p>Create <code>.github/skills/react-component-creation/SKILL.md</code>:</p>
-<pre><code class="language-yaml">---
-name: react-component-creation
-description: Guide for creating new React components in the frontend.
-  Use this when asked to add new pages, UI components, or frontend features.
----
-
-Follow this process when creating new React components:
-
-1. **Create the component file** in `src/components/` or `src/pages/`
-   - Use functional components with TypeScript (.tsx)
-   - Use Tailwind CSS for all styling — no inline styles or CSS modules
-   - Export the component as the default export
-
-2. **Add routing** (if it&#39;s a page)
-   - Add the route to the router configuration
-   - Add a navigation link if appropriate
-
-3. **Connect to the API** (if needed)
-   - Use fetch or the existing API utility for data fetching
-   - Handle loading, error, and empty states
-   - Add TypeScript interfaces for API response types
-
-4. **Follow existing patterns**
-   - Reference `src/pages/Products.tsx` for page structure
-   - Reference `src/components/` for reusable component patterns
-</code></pre>
-<p>Test it by asking Copilot: <code>Create a Warehouses page that shows a list of all warehouses with their addresses</code></p>
-</details>
-
-<h3>Personal Skills</h3>
-<p>You can also create <strong>personal skills</strong> that apply across all your repos:</p>
-<ul>
-<li>Location: <code>~/.copilot/skills/*/SKILL.md</code> (where <code>~</code> is your OS home directory — e.g., <code>C:\Users\&lt;username&gt;</code> on Windows, <code>/Users/&lt;username&gt;</code> on macOS)</li>
-<li>These are private to your machine — not shared via git</li>
-<li>Great for personal coding preferences or tools only you use</li>
-</ul>
-<h3>Success Criteria</h3>
-<ul>
-<li>✅ You&#39;ve created <code>.github/skills/api-route-creation/SKILL.md</code> with a complete step-by-step guide</li>
-<li>✅ You&#39;ve tested the skill by asking Copilot to create a new entity and observed it following your steps</li>
-<li>✅ You understand the difference: instructions = always-on, skills = auto-selected, prompts = manually invoked</li>
-</ul>
-<hr>
 <h2>7. MCP Servers (Playwright + GitHub) (30 min)</h2>
 <h3>Key Points</h3>
 <ul>
@@ -1721,7 +1721,7 @@ Report pass/fail for each scenario.
 </tr>
 <tr>
 <td>Custom agents</td>
-<td><code>/agent</code> — use agents from <code>.github/agents/</code> (same files from Section 5)</td>
+<td><code>/agent</code> — use agents from <code>.github/agents/</code> (same files from Section 6)</td>
 </tr>
 <tr>
 <td>MCP servers</td>
@@ -2042,7 +2042,7 @@ Report pass/fail for each scenario.
 <hr>
 <h3>🖥️ DEMO: Show the Custom Agent → Coding Agent Handoff</h3>
 <ol>
-<li>Recall the <code>ImplementationIdeas.agent.md</code> from Section 5</li>
+<li>Recall the <code>ImplementationIdeas.agent.md</code> from Section 6</li>
 <li>Show the key line: <code>call GitHub&#39;s create_pull_request_with_copilot</code></li>
 <li>Explain: &quot;Custom agents (IDE-level) can delegate to the Coding Agent (cloud-level). Your IDE agent researches and plans, then hands off implementation to run autonomously.&quot;</li>
 </ol>
