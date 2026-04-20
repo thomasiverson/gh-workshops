@@ -1,0 +1,2062 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot: Zero to Agents Workshop — ODrive Embedded C++ Edition</title><link rel="stylesheet" href="/gh-workshops/_astro/index.tKAiv-SV.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-zero-to-agents-workshop--odrive-embedded-c-edition">GitHub Copilot: Zero to Agents Workshop — ODrive Embedded C++ Edition</h1>
+<p><strong>Duration</strong>: ~4 hours
+<strong>Format</strong>: Presentation + Live Demo + Hands-On
+<strong>Audience</strong>: Embedded C++ developers with basic Copilot exposure (completions/chat)
+<strong>Focus</strong>: Copilot customization, agentic workflows, and cloud agents for embedded firmware
+<strong>Repo</strong>: <a href="https://github.com/thomasiverson/ODrive-Custom">thomasiverson/ODrive-Custom</a> (ODrive motor controller firmware)</p>
+<hr>
+<h2 id="workshop-overview">Workshop Overview</h2>
+<p>This session takes embedded C++ developers from casual Copilot usage to full agentic development. Starting with chat modes and progressing through customization layers — instructions, prompts, agents, skills, and MCP servers — attendees build a complete understanding of how to tailor Copilot to embedded firmware workflows. The session extends to the standalone GitHub Copilot CLI for a full agentic terminal experience and closes with fully autonomous cloud agents (Coding Agent + PR Review Agent).</p>
+<p>The ODrive firmware is the perfect subject: a real-world STM32 motor controller with FreeRTOS, Field-Oriented Control (FOC), CAN/USB/UART communications, and strict embedded constraints (no heap, no exceptions, ISR safety). Every exercise uses production firmware code.</p>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li>Master Copilot&#39;s three chat modes: Ask, Agent, and Plan</li>
+<li>Create custom instructions that encode embedded C++ coding standards and safety rules</li>
+<li>Build reusable prompt files and custom agents for firmware workflows</li>
+<li>Author Agent Skills that Copilot auto-selects for motor control, debugging, and toolchain tasks</li>
+<li>Extend Copilot with MCP servers for GitHub integration</li>
+<li>Use the standalone GitHub Copilot CLI as an agentic terminal — interactive TUI, plan mode, file context, /review, and /delegate to Coding Agent</li>
+<li>Leverage cloud agents: Coding Agent for autonomous PR creation and Copilot Code Review for AI-powered PR reviews</li>
+</ul>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>With Copilot Pro, Business, or Enterprise license</td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Latest stable (or Insiders for preview features)</td>
+</tr>
+<tr>
+<td><strong>Copilot Extension</strong></td>
+<td>GitHub Copilot + GitHub Copilot Chat extensions installed</td>
+</tr>
+<tr>
+<td><strong>C/C++ Extension Pack</strong></td>
+<td>For IntelliSense, syntax highlighting, and debugging</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>For cloning the demo repository</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot CLI</strong></td>
+<td>Install from <a href="https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli">https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli</a> — required for Section 8</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: You do NOT need the ARM cross-compiler or hardware to complete the exercises. All exercises focus on code analysis, generation, and review — not compilation or flashing.</p>
+</blockquote>
+<hr>
+<h2 id="session-agenda">Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a href="#1-welcome-objectives--environment-setup-20-min">Welcome, Objectives &amp; Environment Setup</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#2-copilot-chat-modes-ask-agent-plan-25-min">Copilot Chat Modes: Ask, Agent, Plan</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#3-custom-instructions-25-min">Custom Instructions</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#4-custom-prompt-files-25-min">Custom Prompt Files</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="#5-agent-skills-25-min">Agent Skills</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="#6-custom-agents-chat-modes-25-min">Custom Agents (Chat Modes)</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="#7-mcp-servers-30-min">MCP Servers</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>8</td>
+<td><a href="#8-github-copilot-cli-the-agentic-terminal-30-min">GitHub Copilot CLI: The Agentic Terminal</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>9</td>
+<td><a href="#9-cloud-agents-coding-agent--pr-review-agent-20-min">Cloud Agents: Coding Agent + PR Review Agent</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>10</td>
+<td><a href="#10-wrap-up-customization-hierarchy-recap--qa-10-min">Wrap-Up, Customization Hierarchy Recap &amp; Q&amp;A</a></td>
+<td>10 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total: ~235 min core (~3h 55min)</strong></p>
+<hr>
+<h2 id="the-zero-to-agents-narrative-arc">The &quot;Zero to Agents&quot; Narrative Arc</h2>
+<p>This workshop follows a deliberate progression:</p>
+<pre><code>Chat Modes → Custom Instructions → Prompt Files → Agent Skills → Custom Agents → MCP → CLI → Cloud Agents
+ (explore)    (encode standards)   (reusable tasks) (auto-selected) (personas)   (tools) (terminal) (autonomous)
+</code></pre>
+<p>Each section builds on the previous one, showing how Copilot can be progressively customized from a general assistant to a specialized, autonomous embedded development partner.</p>
+<hr>
+<h2 id="1-welcome-objectives--environment-setup-20-min">1. Welcome, Objectives &amp; Environment Setup (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Workshop narrative: &quot;Zero → Customize → Extend → Agents&quot;</li>
+<li>This is NOT a Copilot basics session — we assume you&#39;ve used completions and chat</li>
+<li>By the end, you&#39;ll have built a fully customized Copilot environment with instructions, prompts, agents, skills, and MCP integration</li>
+<li>Everything we build today uses real files in the <code>.github/</code> directory — portable across your own repos</li>
+</ul>
+<h3 id="the-customization-hierarchy">The Customization Hierarchy</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>File Location</th>
+<th>When Loaded</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Custom Instructions</strong></td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>Always (every interaction)</td>
+<td>Simple rules, coding standards</td>
+</tr>
+<tr>
+<td><strong>Scoped Instructions</strong></td>
+<td><code>.github/instructions/*.instructions.md</code></td>
+<td>When matching files are active</td>
+<td>File/language-specific guidance</td>
+</tr>
+<tr>
+<td><strong>Prompt Files</strong></td>
+<td><code>.github/prompts/*.prompt.md</code></td>
+<td>On-demand (user invokes)</td>
+<td>Reusable task templates</td>
+</tr>
+<tr>
+<td><strong>Agents / Chat Modes</strong></td>
+<td><code>.github/agents/*.agent.md</code></td>
+<td>User selects in chat mode picker</td>
+<td>Persistent personas with tool chains</td>
+</tr>
+<tr>
+<td><strong>Agent Skills</strong></td>
+<td><code>.github/skills/*/SKILL.md</code></td>
+<td>Auto-selected by relevance</td>
+<td>Specialized task instructions</td>
+</tr>
+<tr>
+<td><strong>MCP Servers</strong></td>
+<td><code>.vscode/mcp.json</code></td>
+<td>When server is running</td>
+<td>External tool integration</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="-demo-the-odrive-firmware-project">🖥️ DEMO: The ODrive Firmware Project</h3>
+<ol>
+<li>Show the <a href="https://github.com/thomasiverson/ODrive-Custom">GitHub repo</a> in the browser</li>
+<li>Walk through the architecture:<ul>
+<li><strong>MCU</strong>: STM32F405 (ARM Cortex-M4F) with FreeRTOS</li>
+<li><strong>Core firmware</strong>: <code>Firmware/MotorControl/</code> — FOC, PID, encoder, trajectory planning</li>
+<li><strong>HAL layer</strong>: <code>Firmware/Drivers/STM32/</code> — GPIO, timers, SPI, DMA</li>
+<li><strong>Communication</strong>: <code>Firmware/communication/</code> — USB CDC, CAN, UART protocols</li>
+<li><strong>Python tools</strong>: <code>tools/odrive/</code> — CLI, DFU flashing, integration tests</li>
+</ul>
+</li>
+<li>Show the key source files: <code>motor.cpp</code>, <code>axis.cpp</code>, <code>encoder.cpp</code>, <code>foc.cpp</code>, <code>controller.cpp</code></li>
+<li>Point out the <code>.github/</code> directory structure — we&#39;ll explore and build customization files throughout the workshop</li>
+</ol>
+<details>
+<summary><h3 id="-hands-on-environment-setup-10-min">🧪 Hands-On: Environment Setup (10 min)</h3></summary>
+
+<p><strong>Step 1: Fork &amp; Clone</strong></p>
+<pre><code class="language-bash"># Fork the repo via GitHub UI, then:
+git clone https://github.com/&lt;YOUR-USERNAME&gt;/ODrive-Custom.git
+cd ODrive-Custom
+</code></pre>
+<p><strong>Step 2: Open in VS Code</strong></p>
+<pre><code class="language-bash">code .
+</code></pre>
+<p><strong>Step 3: Verify Copilot</strong></p>
+<ul>
+<li>VS Code: Open Command Palette → type &quot;Copilot&quot; → verify extension is active</li>
+<li>Open <code>src-ODrive/Firmware/MotorControl/motor.cpp</code> → verify syntax highlighting works</li>
+</ul>
+<p><strong>Step 4: Explore the Project</strong></p>
+<ul>
+<li>Browse <code>src-ODrive/Firmware/MotorControl/</code> — this is where motor control logic lives</li>
+<li>Browse <code>src-ODrive/Firmware/Drivers/STM32/</code> — hardware abstraction layer</li>
+<li>Browse <code>src-ODrive/docs/</code> — Sphinx documentation in RST format</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: No ARM toolchain or hardware required. All exercises focus on code analysis, generation, and review.</p>
+</blockquote>
+</details>
+
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Who has used Copilot Chat before? What modes have you tried?</li>
+<li>What&#39;s your biggest frustration with Copilot for C++ or embedded work? (Common answer: &quot;It doesn&#39;t understand our hardware constraints&quot; — tease Section 3)</li>
+</ul>
+<hr>
+<h2 id="2-copilot-chat-modes-ask-agent-plan-25-min">2. Copilot Chat Modes: Ask, Agent, Plan (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Copilot has three chat modes — each optimized for different tasks</li>
+<li>Most developers only use one or two — understanding all three unlocks the full value</li>
+<li>Modes are selected from the Copilot Chat mode picker (dropdown at the top)</li>
+<li>Agent mode also offers sub-types: Local, Background, and Cloud — controlling where and how the agent runs</li>
+</ul>
+<h3 id="mode-comparison">Mode Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Best For</th>
+<th>Context</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Ask</strong></td>
+<td>Exploring, learning, understanding code</td>
+<td>Reads codebase, open files, <code>@workspace</code></td>
+<td>Text explanations, code snippets in chat</td>
+</tr>
+<tr>
+<td><strong>Agent</strong></td>
+<td>Building features, editing code, running commands</td>
+<td>Full codebase, terminal, tools</td>
+<td>Creates/edits files (single or multi-file), runs commands</td>
+</tr>
+<tr>
+<td><strong>Plan</strong></td>
+<td>Analyzing, planning, proposing changes</td>
+<td>Reads codebase, images, context</td>
+<td>Implementation plans and proposals (no file changes)</td>
+</tr>
+</tbody></table>
+<h3 id="when-to-use-each-mode--decision-framework">When to Use Each Mode — Decision Framework</h3>
+<pre><code>&quot;I need to understand this FOC algorithm&quot;        → Ask
+&quot;I need to add a new CAN message handler&quot;        → Agent
+&quot;I need to plan a motor diagnostics module&quot;       → Plan
+</code></pre>
+<hr>
+<h3 id="-demo-ask-mode">🖥️ DEMO: Ask Mode</h3>
+<ol>
+<li>Open Copilot Chat → select <strong>Ask</strong> mode</li>
+<li>Enter:</li>
+</ol>
+<pre><code>Explain the motor control architecture in this project. How does the control loop work from the main task through FOC?
+</code></pre>
+<ol start="3">
+<li>Show how Copilot references <code>axis.cpp</code>, <code>motor.cpp</code>, <code>foc.cpp</code>, <code>controller.cpp</code> and traces the control flow</li>
+<li>Enter:</li>
+</ol>
+<pre><code>What communication protocols does this firmware support? How are they organized?
+</code></pre>
+<ol start="5">
+<li>Show Copilot analyzing USB, CAN, and UART handlers in <code>Firmware/communication/</code></li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Ask mode is your read-only expert. It understands the entire codebase — from high-level architecture down to individual register configurations. Perfect for onboarding to unfamiliar firmware.&quot;</p>
+<h3 id="agent-sub-types">Agent Sub-Types</h3>
+<p>When you select Agent mode, a second picker lets you choose the agent type — controlling where and how the agent runs:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Where It Runs</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Local</strong></td>
+<td>Your IDE, interactive</td>
+<td>Day-to-day coding, exploring, building features</td>
+</tr>
+<tr>
+<td><strong>Background</strong></td>
+<td>Your IDE, non-blocking</td>
+<td>Longer tasks you want to run while continuing other work</td>
+</tr>
+<tr>
+<td><strong>Cloud</strong></td>
+<td>GitHub servers</td>
+<td>Autonomous coding from GitHub Issues (see Section 9)</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: Throughout this workshop, we primarily use the <strong>Local</strong> agent type. Section 9 covers the <strong>Cloud</strong> agent type (Coding Agent) in detail.</p>
+</blockquote>
+<hr>
+<h3 id="-demo-plan-mode">🖥️ DEMO: Plan Mode</h3>
+<ol>
+<li>Open Copilot Chat → select <strong>Plan</strong> mode</li>
+<li>Enter:</li>
+</ol>
+<pre><code>I want to add a motor diagnostics module that tracks runtime statistics — total run time, fault counts, max temperature reached, and max current drawn. What&#39;s the best approach given the embedded constraints?
+</code></pre>
+<ol start="3">
+<li>Show Copilot analyzing the codebase and proposing a detailed implementation plan:<ul>
+<li>Which files need to change (<code>motor.hpp</code>, <code>motor.cpp</code>, <code>axis.cpp</code>)</li>
+<li>How to store diagnostics (static allocation, no heap)</li>
+<li>How to integrate with the existing control loop</li>
+<li>ISR safety considerations</li>
+</ul>
+</li>
+<li>Show that Plan mode does NOT create or modify any files — it only proposes</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Plan mode is your architect. It reads your codebase, analyzes embedded constraints, and proposes a plan — without touching any code. Essential before modifying safety-critical firmware.&quot;</p>
+<hr>
+<h3 id="-demo-agent-mode">🖥️ DEMO: Agent Mode</h3>
+<ol>
+<li>Switch to <strong>Agent</strong> mode</li>
+<li>Enter:</li>
+</ol>
+<pre><code>Add Doxygen documentation comments to the Motor class in motor.hpp. Include @brief, @param, and @return for each public method.
+</code></pre>
+<ol start="3">
+<li>Show Copilot:<ul>
+<li>Reading <code>motor.hpp</code> to understand the class interface</li>
+<li>Generating Doxygen comments that match the actual function signatures</li>
+<li>Editing the file directly</li>
+</ul>
+</li>
+<li>Show the documentation appearing inline</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Agent mode is your pair programmer. It can read files, write files, run terminal commands, and iterate until things work. It&#39;s the mode you&#39;ll use most in this workshop.&quot;</p>
+<details>
+<summary><h3 id="-hands-on-try-all-three-modes-8-min">🧪 Hands-On: Try All Three Modes (8 min)</h3></summary>
+
+<p><strong>Exercise 1 — Ask Mode</strong>:</p>
+<ol>
+<li>Open Copilot Chat → select <strong>Ask</strong> mode from the dropdown</li>
+<li>Open <code>src-ODrive/Firmware/MotorControl/foc.cpp</code> and enter:</li>
+</ol>
+<pre><code>Explain the Field-Oriented Control algorithm implemented in this file. What are the key mathematical transformations?
+</code></pre>
+<ol start="3">
+<li>Note how Copilot explains the Clarke and Park transforms, current sensing, and PWM generation</li>
+</ol>
+<p><strong>Exercise 2 — Plan Mode</strong>:</p>
+<ol>
+<li>Switch to <strong>Plan</strong> mode from the mode dropdown</li>
+<li>Enter:</li>
+</ol>
+<pre><code>How should I add comprehensive error handling to the encoder calibration sequence in encoder.cpp? Consider the embedded constraints: no exceptions, no heap allocation, ISR-safe data access.
+</code></pre>
+<ol start="3">
+<li>Review the plan Copilot proposes — note it doesn&#39;t change any files</li>
+</ol>
+<p><strong>Exercise 3 — Agent Mode</strong>:</p>
+<ol>
+<li>Switch to <strong>Agent</strong> mode and enter:</li>
+</ol>
+<pre><code>Add a brief comment block at the top of src-ODrive/Firmware/MotorControl/encoder.cpp explaining what the file does, the encoder types it supports, and the calibration sequence.
+</code></pre>
+<ol start="2">
+<li>Watch Copilot read the file, understand its purpose, and add documentation</li>
+</ol>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You can switch between Ask, Agent, and Plan modes</li>
+<li>✅ You&#39;ve received a codebase-aware answer from Ask mode about motor control architecture</li>
+<li>✅ You&#39;ve seen Plan mode propose changes without modifying files</li>
+<li>✅ Agent mode has edited a file directly</li>
+</ul>
+<hr>
+<h2 id="3-custom-instructions-25-min">3. Custom Instructions (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Custom instructions are the simplest way to personalize Copilot for your team</li>
+<li>They&#39;re loaded into EVERY Copilot interaction — invisible, always-on context</li>
+<li>Two types:<ul>
+<li><strong>Project-wide</strong>: <code>.github/copilot-instructions.md</code> — applies to all interactions in the repo</li>
+<li><strong>Scoped</strong>: <code>.github/instructions/*.instructions.md</code> — applies only when matching files are active (uses glob patterns in YAML frontmatter)</li>
+</ul>
+</li>
+</ul>
+<h3 id="what-goes-in-custom-instructions">What Goes in Custom Instructions?</h3>
+<table>
+<thead>
+<tr>
+<th>Good Candidates</th>
+<th>Bad Candidates</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Naming conventions (camelCase for vars, PascalCase for types)</td>
+<td>Entire API documentation</td>
+</tr>
+<tr>
+<td>Embedded constraints (no heap, no exceptions)</td>
+<td>Step-by-step tutorials</td>
+</tr>
+<tr>
+<td>ISR safety rules (volatile, atomics, critical sections)</td>
+<td>Complete code examples</td>
+</tr>
+<tr>
+<td>Hardware register patterns</td>
+<td>Business logic rules</td>
+</tr>
+<tr>
+<td>Build system references</td>
+<td>Long prose explanations</td>
+</tr>
+</tbody></table>
+<p><strong>Rule of thumb</strong>: Keep it concise. Instructions are loaded on every interaction — they consume context window.</p>
+<hr>
+<h3 id="-demo-generate-custom-instructions">🖥️ DEMO: Generate Custom Instructions</h3>
+<ol>
+<li>Open Copilot Chat → click the <strong>Gear</strong> icon (⚙️) in the chat window</li>
+<li>Select <strong>&quot;Generate Agent Instructions&quot;</strong></li>
+<li>Show Copilot analyzing the repo and generating a <code>copilot-instructions.md</code> file</li>
+<li>Review the generated content — it should reference:<ul>
+<li>ODrive firmware, STM32, FreeRTOS</li>
+<li>C++ coding standards (naming, no heap, no exceptions)</li>
+<li>Build system (Tup/Make, ARM GCC)</li>
+<li>Communication protocols (CAN, USB, UART)</li>
+</ul>
+</li>
+<li>Save the file to <code>.github/copilot-instructions.md</code></li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Copilot just analyzed an entire embedded firmware project and wrote its own instruction manual. This file will now be loaded into every interaction — ensuring Copilot always respects your embedded constraints.&quot;</p>
+<hr>
+<h3 id="-demo-create-scoped-instructions">🖥️ DEMO: Create Scoped Instructions</h3>
+<ol>
+<li>Create <code>.github/instructions/cpp_coding_standards.instructions.md</code>:</li>
+</ol>
+<pre><code class="language-markdown">---
+applyTo: &quot;**/*.cpp,**/*.c,**/*.h,**/*.hpp&quot;
+---
+# C++ Coding Standards for ODrive Firmware
+
+## Naming Conventions
+- Variables and functions: `camelCase`
+- Types and classes: `PascalCase`
+- Constants and macros: `UPPER_SNAKE_CASE`
+- Member variables: `trailing_underscore_`
+
+## Embedded Constraints
+- No dynamic memory allocation (no `new`, `malloc`, `std::vector`)
+- No exceptions (`noexcept` on all functions, use error codes)
+- Use `static` allocation and fixed-size arrays (`std::array`)
+- All ISR-shared variables must be `volatile` or use atomics
+- No blocking calls in ISR context
+- Bounded execution time in all control loop functions
+
+## Safety Rules
+- NEVER auto-execute: `make flash`, `odrivetool`, or any hardware operation
+- ALWAYS provide explicit warnings before hardware operations
+- Check array bounds before access
+- Validate all inputs at system boundaries
+</code></pre>
+<ol start="2">
+<li>Open <code>src-ODrive/Firmware/MotorControl/motor.cpp</code>, then ask Copilot in <strong>Ask</strong> mode:</li>
+</ol>
+<pre><code>How should I add a new method to the Motor class?
+</code></pre>
+<ol start="3">
+<li>Show how the scoped instructions influence the response — Copilot should now reference naming conventions, no-heap constraints, and error code patterns</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Scoped instructions activate only when you&#39;re editing C++ files. Python tools get different rules. Same repo, different standards per file type.&quot;</p>
+<hr>
+<h3 id="-demo-the-internal-framework-example">🖥️ DEMO: The Internal Framework Example</h3>
+<p>This is the power demo — teaching Copilot about a pattern it has NEVER seen.</p>
+<ol>
+<li>Add to <code>.github/copilot-instructions.md</code>:</li>
+</ol>
+<pre><code class="language-markdown">## Telemetry Requirements
+- All motor control methods must use the ODrive telemetry macros
+- Use ODRIVE_TRACE_BEGIN(name) at function entry
+- Use ODRIVE_TRACE_END() at function exit
+- Use ODRIVE_METRIC(name, value) for runtime measurements
+- These macros are defined in telemetry.h — assume it exists, never create it
+</code></pre>
+<ol start="2">
+<li>Switch to Agent mode and enter:</li>
+</ol>
+<pre><code>Add telemetry instrumentation to the Motor::update() method following our internal standards
+</code></pre>
+<ol start="3">
+<li>Show Copilot generating telemetry code (<code>#include &quot;telemetry.h&quot;</code>, <code>ODRIVE_TRACE_BEGIN(&quot;Motor::update&quot;)</code>) — code that references macros that don&#39;t exist publicly</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;These telemetry macros don&#39;t exist anywhere on the internet. But because we told Copilot about them in our custom instructions, it generates code using our internal patterns. Imagine this for YOUR company&#39;s internal libraries.&quot;</p>
+<blockquote>
+<p><strong>Note</strong>: The generated code won&#39;t compile because these macros are fictional. That&#39;s intentional — it demonstrates that custom instructions override Copilot&#39;s training data.</p>
+</blockquote>
+<h4 id="cleanup-revert-telemetry-changes">Cleanup: Revert Telemetry Changes</h4>
+<ol>
+<li>Stay in <strong>Agent</strong> mode and enter:</li>
+</ol>
+<pre><code>Revert the telemetry changes you just made, and remove the &quot;Telemetry Requirements&quot; section from .github/copilot-instructions.md. The telemetry macros are fictional.
+</code></pre>
+<ol start="2">
+<li>Verify Copilot removes the changes and the codebase is clean</li>
+</ol>
+<details>
+<summary><h3 id="-hands-on-create-your-instructions-12-min">🧪 Hands-On: Create Your Instructions (12 min)</h3></summary>
+
+<p><strong>Step 1: Establish a Baseline (Before Instructions)</strong></p>
+<ol>
+<li>Open Copilot Chat in <strong>Ask</strong> mode</li>
+<li>Open <code>src-ODrive/Firmware/MotorControl/motor.cpp</code> and ask:</li>
+</ol>
+<pre><code>How should I add a new method to the Motor class?
+</code></pre>
+<ol start="3">
+<li>Pay attention to: Does Copilot mention naming conventions? Does it know about no-heap constraints? Does it reference error codes vs exceptions?</li>
+</ol>
+<p><strong>Step 2: Generate Project-Wide Instructions</strong></p>
+<ol>
+<li>Open Copilot Chat → click the <strong>Gear</strong> icon (⚙️) in the chat window</li>
+<li>Select <strong>&quot;Generate Agent Instructions&quot;</strong></li>
+<li>Review the generated content — it should reference the ODrive tech stack and constraints</li>
+<li>Save to <code>.github/copilot-instructions.md</code></li>
+</ol>
+<p><strong>Step 3: Create Scoped C++ Instructions</strong></p>
+<ol>
+<li>Create <code>.github/instructions/cpp_coding_standards.instructions.md</code> with the following content:</li>
+</ol>
+<pre><code class="language-markdown">---
+applyTo: &quot;**/*.cpp,**/*.c,**/*.h,**/*.hpp&quot;
+---
+# C++ Coding Standards for ODrive Firmware
+
+## Naming Conventions
+- Variables and functions: `camelCase`
+- Types and classes: `PascalCase`
+- Constants and macros: `UPPER_SNAKE_CASE`
+- Member variables: `trailing_underscore_`
+
+## Embedded Constraints
+- No dynamic memory allocation (no `new`, `malloc`, `std::vector`)
+- No exceptions — use `enum class ErrorCode` with `[[nodiscard]]`
+- Use `static` allocation and `std::array` for fixed-size collections
+- All ISR-shared variables must be `volatile` or use atomics
+- No blocking calls in ISR context
+- Bounded execution time in control loop functions
+
+## Header Rules
+- Use `#pragma once` (not include guards)
+- System headers before project headers
+- Forward-declare when possible to reduce compile times
+</code></pre>
+<blockquote>
+<p><strong>Note</strong>: The <code>applyTo</code> field uses glob patterns. <code>**/*.cpp,**/*.c,**/*.h,**/*.hpp</code> means these instructions load whenever you have any C/C++ file open.</p>
+</blockquote>
+<p><strong>Step 4: Test the Difference (After Instructions)</strong></p>
+<ol>
+<li>Open <code>src-ODrive/Firmware/MotorControl/motor.cpp</code></li>
+<li>In Copilot Chat (<strong>Ask</strong> mode), ask the same question from Step 1:</li>
+</ol>
+<pre><code>How should I add a new method to the Motor class?
+</code></pre>
+<ol start="3">
+<li>Compare the response to your baseline. You should notice:<ul>
+<li>References to <code>camelCase</code> naming</li>
+<li>Mentions of no-heap constraints</li>
+<li>Error code patterns instead of exceptions</li>
+<li><code>[[nodiscard]]</code> and <code>noexcept</code> usage</li>
+</ul>
+</li>
+</ol>
+<p><strong>Step 5: Create a Python Scoped Instruction</strong> (Bonus)</p>
+<ol>
+<li>Create <code>.github/instructions/python_coding_standards.instructions.md</code>:</li>
+</ol>
+<pre><code class="language-markdown">---
+applyTo: &quot;**/*.py&quot;
+---
+# Python Coding Standards for ODrive Tools
+
+- Follow PEP 8 style guidelines
+- Use type hints on all function signatures
+- Use `logging` module instead of `print()` for diagnostic output
+- Use `pytest` for all test files
+- Prefix test functions with `test_`
+- Use `odrive` package conventions for CLI tool development
+</code></pre>
+<ol start="2">
+<li>Open a file in <code>src-ODrive/tools/</code> and ask Copilot about writing a utility function — observe the Python-specific guidance</li>
+</ol>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ <code>.github/copilot-instructions.md</code> exists in your repo</li>
+<li>✅ <code>.github/instructions/cpp_coding_standards.instructions.md</code> exists with <code>applyTo</code> for C/C++ files</li>
+<li>✅ You&#39;ve compared Copilot&#39;s responses before and after adding instructions and noticed the difference</li>
+<li>✅ You understand that instructions are always-on background context</li>
+</ul>
+<hr>
+<h2 id="4-custom-prompt-files-25-min">4. Custom Prompt Files (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Prompt files are reusable task templates stored in <code>.github/prompts/</code></li>
+<li>They have YAML frontmatter that configures mode, tools, and description</li>
+<li>Invoked via: Run button in the file, Command Palette → &quot;Prompts: Run Prompt&quot;, or typing <code>/prompt-name</code> in chat</li>
+<li>Unlike instructions (always loaded), prompts are on-demand — you choose when to run them</li>
+</ul>
+<h3 id="anatomy-of-a-prompt-file">Anatomy of a Prompt File</h3>
+<pre><code class="language-yaml">---
+mode: &#39;agent&#39;                    # Which mode to use (ask, agent, plan)
+description: &#39;Description here&#39;  # Shows in the prompt picker
+tools: [&#39;changes&#39;, &#39;codebase&#39;,   # Which tools the agent can use
+  &#39;editFiles&#39;, &#39;runCommands&#39;,
+  &#39;search&#39;, &#39;terminalLastCommand&#39;]
+---
+
+# Prompt Title
+
+## Context
+Describe what the prompt does and what context it needs.
+
+## Requirements
+List specific requirements, patterns, and constraints.
+
+## Success Criteria
+Define what &quot;done&quot; looks like.
+</code></pre>
+<hr>
+<h3 id="-demo-walk-through-embedded-specific-prompts">🖥️ DEMO: Walk Through Embedded-Specific Prompts</h3>
+<p><strong>Prompt 1: <code>review-code.prompt.md</code></strong> (Code review for embedded)</p>
+<ol>
+<li>Open <code>.github/prompts/review-code.prompt.md</code> (if it exists in your <code>src-ODrive/.github/prompts/</code>)</li>
+<li>Walk through the structure:<ul>
+<li>YAML frontmatter: <code>mode: &#39;agent&#39;</code></li>
+<li>Embedded-specific review criteria (ISR safety, volatile correctness, no heap)</li>
+<li>Structured output format (severity levels, file references, fix suggestions)</li>
+</ul>
+</li>
+<li><strong>Run the prompt</strong>: Click the Run button at the top of the file</li>
+<li>Show Agent mode activating, reading code, generating a structured review</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;This prompt encapsulates everything a senior embedded engineer checks during code review. Junior devs run this prompt and get senior-quality feedback.&quot;</p>
+<p><strong>Prompt 2: <code>debug-firmware.prompt.md</code></strong> (Firmware debugging workflow)</p>
+<ol>
+<li>Open <code>.github/prompts/debug-firmware.prompt.md</code></li>
+<li>Highlight key design decisions:<ul>
+<li>References OpenOCD/GDB debugging patterns</li>
+<li>Checks fault registers, hard fault analysis</li>
+<li>Follows a systematic debugging strategy: reproduce → isolate → examine → fix → verify</li>
+</ul>
+</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Not every prompt should generate code. This one structures a debugging session — it forces Copilot to think systematically about firmware issues.&quot;</p>
+<details>
+<summary><h3 id="-hands-on-create-and-run-prompt-files-12-min">🧪 Hands-On: Create and Run Prompt Files (12 min)</h3></summary>
+
+<p><strong>Exercise 1 — Explore the Existing Prompts</strong></p>
+<ol>
+<li>Open <code>src-ODrive/.github/prompts/</code> in the file explorer</li>
+<li>Browse the available prompts — <code>review-code</code>, <code>debug-firmware</code>, <code>check-safety</code>, <code>add-doxygen</code>, <code>toolchain</code></li>
+<li>Open one and read through its structure — note the YAML frontmatter, context, and requirements</li>
+</ol>
+<p><strong>Exercise 2 — Create a Safety Audit Prompt</strong></p>
+<ol>
+<li>Create a new file: <code>.github/prompts/safety-audit.prompt.md</code></li>
+<li>Add the following content:</li>
+</ol>
+<pre><code class="language-yaml">---
+mode: &#39;agent&#39;
+description: &#39;Audit firmware code for embedded safety violations&#39;
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;editFiles&#39;, &#39;changes&#39;]
+---
+
+# Embedded Safety Audit
+
+## Objective
+Analyze the ODrive firmware for common embedded safety violations.
+
+## Check For
+- Dynamic memory allocation in real-time paths (malloc, new, std::vector)
+- Missing volatile on ISR-shared variables
+- Blocking calls in interrupt handlers
+- Unbounded loops in control loop functions
+- Missing null pointer checks before dereference
+- Integer overflow in fixed-point math or timer calculations
+- Race conditions between ISR and main loop access to shared state
+- Missing critical sections around multi-word variable access
+
+## Output Format
+For each violation found:
+1. **Location**: File and line number
+2. **Severity**: Critical / High / Medium / Low
+3. **Description**: What the safety violation is
+4. **Fix**: Suggested remediation with code changes
+
+## Constraints
+- Follow the project&#39;s coding standards from copilot-instructions.md
+- Do not modify test files
+- Respect ISR timing constraints — fixes must not increase ISR execution time
+- Create a summary report at the end
+</code></pre>
+<ol start="3">
+<li>Run the prompt and review the findings</li>
+</ol>
+<p><strong>Exercise 3 — Create a Doxygen Documentation Prompt</strong></p>
+<ol>
+<li>Create <code>.github/prompts/add-doxygen.prompt.md</code>:</li>
+</ol>
+<pre><code class="language-yaml">---
+mode: &#39;agent&#39;
+description: &#39;Add Doxygen documentation to undocumented C++ classes and functions&#39;
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;editFiles&#39;]
+---
+
+# Add Doxygen Documentation
+
+## Objective
+Add comprehensive Doxygen documentation comments to undocumented public APIs.
+
+## Requirements
+- Use `/** ... */` style comments
+- Include @brief, @param, @return, @note as appropriate
+- Document units for physical quantities (amps, radians, RPM, etc.)
+- Document thread safety (ISR-safe, requires critical section, etc.)
+- Follow existing documentation style in the codebase
+
+## Scope
+Focus on the file(s) currently open in the editor. Do not modify files outside the current context.
+</code></pre>
+<ol start="2">
+<li>Open <code>src-ODrive/Firmware/MotorControl/motor.hpp</code> and run the prompt</li>
+</ol>
+<p><strong>Exercise 4 — Design Your Own Prompt</strong> (Bonus)</p>
+<p>Think about a repetitive task in embedded work. Create a prompt for it. Ideas:</p>
+<ul>
+<li><strong><code>optimize-critical.prompt.md</code></strong> — analyze control loop code for performance improvements</li>
+<li><strong><code>generate-tests.prompt.md</code></strong> — generate doctest unit tests for a module</li>
+<li><strong><code>check-volatile.prompt.md</code></strong> — audit ISR-shared variables for missing volatile qualifiers</li>
+</ul>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You&#39;ve explored the existing prompt files and understand their structure</li>
+<li>✅ You&#39;ve created <code>safety-audit.prompt.md</code> and run it successfully</li>
+<li>✅ You understand the three ways to invoke a prompt file</li>
+<li>✅ You understand that prompts are on-demand — unlike instructions which are always loaded</li>
+</ul>
+<hr>
+<h2 id="5-agent-skills-25-min">5. Agent Skills (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Agent Skills are specialized instruction sets that Copilot auto-selects based on task relevance</li>
+<li>Stored in <code>.github/skills/&lt;skill-name&gt;/SKILL.md</code> (project) or <code>~/.copilot/skills/&lt;skill-name&gt;/SKILL.md</code> (personal)</li>
+<li>Unlike instructions (always loaded) and prompts (manually invoked), skills are <strong>automatically loaded when Copilot determines they&#39;re relevant</strong></li>
+<li>Skills are an <a href="https://github.com/agentskills/agentskills">open standard</a> — used by Copilot Coding Agent and Agent mode in VS Code</li>
+</ul>
+<h3 id="skills-vs-instructions">Skills vs Instructions</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Custom Instructions</th>
+<th>Agent Skills</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Location</strong></td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td><code>.github/skills/*/SKILL.md</code></td>
+</tr>
+<tr>
+<td><strong>When loaded</strong></td>
+<td>Always, every interaction</td>
+<td>Only when relevant to the task</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Simple, universal rules</td>
+<td>Detailed, specialized procedures</td>
+</tr>
+<tr>
+<td><strong>Can include</strong></td>
+<td>Markdown text only</td>
+<td>Markdown + scripts + resources</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Project-wide or file-scoped</td>
+<td>Project or personal</td>
+</tr>
+</tbody></table>
+<p><strong>Rule of thumb</strong>: Use instructions for &quot;always true&quot; rules (naming, no heap). Use skills for &quot;when doing X, follow these steps&quot; (when building firmware, when debugging CAN).</p>
+<h3 id="odrive-skills-architecture">ODrive Skills Architecture</h3>
+<p>The repo includes 9 specialized skills:</p>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>odrive-toolchain</code></td>
+<td>Build firmware, run tests, search code, inspect errors</td>
+</tr>
+<tr>
+<td><code>can-protocol</code></td>
+<td>CAN bus communication — message formatting, DBC generation</td>
+</tr>
+<tr>
+<td><code>firmware-debugging</code></td>
+<td>STM32 debugging — OpenOCD/GDB, hard fault analysis, FreeRTOS inspection</td>
+</tr>
+<tr>
+<td><code>stm32-peripherals</code></td>
+<td>Timer/PWM, ADC, DMA, GPIO, CubeMX interpretation</td>
+</tr>
+<tr>
+<td><code>python-odrivetool</code></td>
+<td>odrivetool CLI, DFU firmware updates, test orchestration</td>
+</tr>
+<tr>
+<td><code>cpp-testing</code></td>
+<td>Test-driven development with doctest framework</td>
+</tr>
+<tr>
+<td><code>ada-cpp-migration</code></td>
+<td>Ada to Modern C++ migration patterns</td>
+</tr>
+<tr>
+<td><code>odrive-ops</code></td>
+<td>CI/CD, releases, and deployment operations</td>
+</tr>
+<tr>
+<td><code>foc-tuning</code></td>
+<td>Field-Oriented Control tuning and optimization</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="-demo-explore-an-existing-skill">🖥️ DEMO: Explore an Existing Skill</h3>
+<ol>
+<li>Open <code>.github/skills/can-protocol/SKILL.md</code></li>
+<li>Walk through the structure:<ul>
+<li>YAML frontmatter with <code>name</code> and <code>description</code></li>
+<li>Detailed step-by-step CAN message formatting rules</li>
+<li>References to ODrive CAN protocol documentation</li>
+<li>DBC file generation patterns</li>
+</ul>
+</li>
+<li>Show how Copilot auto-selects the skill — Open a new chat in Agent mode and enter:</li>
+</ol>
+<pre><code>I need to add a new CAN message for reporting motor temperature. The message ID should be 0x009 and include temperature in centi-degrees.
+</code></pre>
+<ol start="4">
+<li>Show the skill being loaded — Copilot follows the CAN protocol patterns</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;You didn&#39;t invoke the skill — Copilot chose it because your prompt matched the skill&#39;s description. This is the key difference from prompt files.&quot;</p>
+<hr>
+<h3 id="-demo-create-a-skill-from-scratch">🖥️ DEMO: Create a Skill from Scratch</h3>
+<ol>
+<li>Create the directory structure:</li>
+</ol>
+<pre><code class="language-bash">mkdir -p .github/skills/code-review-checklist
+</code></pre>
+<ol start="2">
+<li>Create <code>.github/skills/code-review-checklist/SKILL.md</code>:</li>
+</ol>
+<pre><code class="language-yaml">---
+name: code-review-checklist
+description: Checklist for reviewing embedded C++ code.
+  Use this when asked to review code, audit code quality, or check for
+  safety and performance issues in firmware.
+---
+
+When reviewing embedded C++ code, follow this checklist:
+
+1. **ISR Safety**
+   - Verify all ISR-shared variables are `volatile` or use atomics
+   - Check that ISR handlers have bounded execution time
+   - Ensure no blocking calls (mutex locks, sleep, allocation) in ISR context
+   - Verify critical sections protect multi-word shared data
+
+2. **Memory Safety**
+   - No dynamic allocation in real-time paths (no `new`, `malloc`, `std::vector`)
+   - Check array bounds before access
+   - Verify no use-after-free or dangling pointer scenarios
+   - Confirm `std::array` or fixed-size buffers are used
+
+3. **Error Handling**
+   - Verify error codes (not exceptions) are used throughout
+   - Check `[[nodiscard]]` on functions returning error codes
+   - Ensure errors are logged but sensitive details are not leaked
+
+4. **Performance**
+   - Identify unnecessary copies (use `const&amp;` for read-only parameters)
+   - Check for blocking operations in the control loop
+   - Look for unbounded loops or recursive calls
+
+5. **Style**
+   - Verify consistent naming conventions (camelCase, PascalCase, UPPER_SNAKE_CASE)
+   - Check Doxygen documentation on public APIs
+   - Confirm `#pragma once` in headers
+</code></pre>
+<ol start="3">
+<li>Test auto-selection:</li>
+</ol>
+<pre><code>Review the encoder.cpp file for safety and performance issues
+</code></pre>
+<details>
+<summary><h3 id="-hands-on-create-an-agent-skill-12-min">🧪 Hands-On: Create an Agent Skill (12 min)</h3></summary>
+
+<p><strong>Exercise 1 — Create a Firmware Debugging Skill</strong></p>
+<ol>
+<li>Create the directory structure:</li>
+</ol>
+<pre><code class="language-bash">mkdir -p .github/skills/firmware-debug-guide
+</code></pre>
+<ol start="2">
+<li>Create <code>.github/skills/firmware-debug-guide/SKILL.md</code>:</li>
+</ol>
+<pre><code class="language-yaml">---
+name: firmware-debug-guide
+description: Guide for debugging ODrive firmware issues.
+  Use this when asked to debug motor control problems, hard faults,
+  encoder errors, or communication failures.
+---
+
+Follow this process when debugging firmware issues:
+
+1. **Identify the symptom**
+   - Motor not spinning: check axis state machine in `axis.cpp`
+   - Hard fault: examine `CFSR`, `HFSR`, `BFAR` registers
+   - Encoder errors: check calibration state in `encoder.cpp`
+   - CAN timeout: verify baud rate and message IDs in communication layer
+
+2. **Trace the control path**
+   - Entry point: `Axis::run_control_loop()` in `axis.cpp`
+   - Controller: `Controller::update()` in `controller.cpp`
+   - Motor output: `Motor::update()` in `motor.cpp`
+   - FOC: `FOCAlgorithm()` in `foc.cpp`
+
+3. **Check common failure modes**
+   - Uninitialized calibration values
+   - Encoder rollover at 32-bit boundary
+   - PWM timing conflicts between axes
+   - Stack overflow in FreeRTOS tasks
+
+4. **Verify the fix**
+   - Check ISR safety of any changes
+   - Ensure fix doesn&#39;t increase control loop execution time
+   - Verify fix on both axis0 and axis1
+</code></pre>
+<p><strong>Exercise 2 — Test the Skill Auto-Selection</strong></p>
+<ol>
+<li>Switch to <strong>Agent</strong> mode in Copilot Chat</li>
+<li>Enter a prompt that should trigger the skill:</li>
+</ol>
+<pre><code>The motor on axis0 stutters during acceleration. Where should I look to debug this?
+</code></pre>
+<ol start="3">
+<li>Watch Copilot work — it should follow the debugging steps from your skill</li>
+</ol>
+<p><strong>Exercise 3 — Explore Existing Skills</strong> (Bonus)</p>
+<p>Browse the skills in <code>src-ODrive/.github/skills/</code> — open <code>odrive-toolchain/SKILL.md</code> and <code>stm32-peripherals/SKILL.md</code> to see how production skills are structured</p>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You&#39;ve explored at least one existing skill and understand its structure</li>
+<li>✅ You&#39;ve created a skill and tested its auto-selection</li>
+<li>✅ You understand the difference: instructions = always-on, skills = auto-selected, prompts = manually invoked</li>
+</ul>
+<hr>
+<h2 id="6-custom-agents-chat-modes-25-min">6. Custom Agents (Chat Modes) (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Agents are persistent chat personas stored in <code>.github/agents/*.agent.md</code></li>
+<li>They appear in the Copilot Chat mode picker alongside Ask, Agent, and Plan</li>
+<li>Each agent can specify its own model, tool set, and behavior</li>
+<li>Agents vs Prompts:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Prompt Files</th>
+<th>Custom Agents</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Location</strong></td>
+<td><code>.github/prompts/</code></td>
+<td><code>.github/agents/</code></td>
+</tr>
+<tr>
+<td><strong>Extension</strong></td>
+<td><code>.prompt.md</code></td>
+<td><code>.agent.md</code></td>
+</tr>
+<tr>
+<td><strong>Invocation</strong></td>
+<td>On-demand (Run button, <code>/name</code>)</td>
+<td>Selected as active chat mode</td>
+</tr>
+<tr>
+<td><strong>Persistence</strong></td>
+<td>Single execution</td>
+<td>Active for entire chat session</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Specific tasks</td>
+<td>Ongoing personas/workflows</td>
+</tr>
+</tbody></table>
+<h3 id="odrive-agent-architecture">ODrive Agent Architecture</h3>
+<p>The repo includes 6 specialized agents:</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Role</th>
+<th>Tools</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ODrive Engineer</strong></td>
+<td>Primary orchestrator — firmware, motor control, hardware</td>
+<td>Read/write, terminal, search, skills</td>
+</tr>
+<tr>
+<td><strong>ODrive Toolchain</strong></td>
+<td>Build, compile, test, code navigation</td>
+<td>Read/write, terminal</td>
+</tr>
+<tr>
+<td><strong>ODrive Code Reviewer</strong></td>
+<td>Code review — style, safety, embedded best practices</td>
+<td>Read-only, search</td>
+</tr>
+<tr>
+<td><strong>ODrive QA</strong></td>
+<td>Quality assurance and testing</td>
+<td>Read/write, terminal</td>
+</tr>
+<tr>
+<td><strong>ODrive Ops</strong></td>
+<td>CI/CD workflows, releases, deployments</td>
+<td>Read/write, terminal</td>
+</tr>
+<tr>
+<td><strong>Ada to C++ Migrator</strong></td>
+<td>Specialized Ada → Modern C++ migration</td>
+<td>Read/write, search</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="-demo-part-a--meet-the-odrive-engineer-agent">🖥️ DEMO: Part A — Meet the ODrive Engineer Agent</h3>
+<ol>
+<li>Open <code>src-ODrive/.github/agents/ODrive-Engineer.agent.md</code></li>
+<li>Walk through the structure:<ul>
+<li><strong>Tools</strong>: <code>vscode</code>, <code>execute</code>, <code>read</code>, <code>edit</code>, <code>search</code>, <code>web</code>, <code>agent</code>, <code>todo</code></li>
+<li><strong>Skills hierarchy</strong>: Routes tasks to specialized skills based on domain</li>
+<li><strong>Persona</strong>: Primary development orchestrator for embedded firmware</li>
+</ul>
+</li>
+<li>Show the agent appearing in the Copilot Chat mode picker</li>
+<li>Select <strong>ODrive Engineer</strong> and give it a task:</li>
+</ol>
+<pre><code>Add a method to the Motor class that returns the current motor temperature in degrees Celsius. Include proper Doxygen documentation and error handling.
+</code></pre>
+<ol start="5">
+<li>Show the agent:<ul>
+<li>Reading existing code patterns in <code>motor.hpp</code> and <code>motor.cpp</code></li>
+<li>Following naming conventions from the instructions</li>
+<li>Using error codes instead of exceptions</li>
+<li>Adding Doxygen documentation</li>
+</ul>
+</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;This agent knows it&#39;s working on embedded firmware. It follows naming conventions, avoids heap allocation, and uses error codes — all because of the persona and skills we&#39;ve built.&quot;</p>
+<hr>
+<h3 id="-demo-part-b--create-a-code-reviewer-agent">🖥️ DEMO: Part B — Create a Code Reviewer Agent</h3>
+<p>Create <code>.github/agents/ODrive-Reviewer.agent.md</code>:</p>
+<pre><code class="language-yaml">---
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;usages&#39;, &#39;problems&#39;]
+description: Review ODrive firmware code for safety, performance, and embedded best practices
+model: Claude Sonnet 4
+---
+
+You are a senior embedded systems code reviewer for the ODrive motor controller project.
+
+When reviewing code:
+
+1. **ISR Safety**: Check volatile correctness, atomics, critical sections, bounded ISR execution
+2. **Memory Safety**: No dynamic allocation, bounds checking, no use-after-free
+3. **Performance**: No blocking in control loop, minimize copies, bounded execution time
+4. **Best Practices**: Error codes (not exceptions), Doxygen docs, naming conventions
+
+Always provide:
+- Severity level (Critical / Warning / Suggestion)
+- Specific file and line references
+- Concrete fix recommendations with code examples
+
+Be direct and opinionated. Don&#39;t say &quot;consider&quot; — say &quot;change this to...&quot;
+Focus on embedded-specific issues that static analyzers might miss.
+</code></pre>
+<ol>
+<li>Show the new agent appearing in the mode picker</li>
+<li>Point out the differences from ODrive Engineer:<ul>
+<li><strong>Read-only tools</strong> — <code>codebase</code>, <code>search</code>, <code>usages</code>, <code>problems</code> (no <code>editFiles</code>, no <code>runCommands</code>)</li>
+<li><strong>Custom model</strong> — explicitly sets <code>Claude Sonnet 4</code></li>
+<li><strong>Different persona</strong> — reviewer, not builder</li>
+</ul>
+</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Same file format, completely different behavior. ODrive Engineer builds features. ODrive Reviewer only reads and reports. The tool list controls what an agent can do.&quot;</p>
+<h3 id="agent-progression-summary">Agent Progression Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Tools</th>
+<th>Model</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ODrive Engineer</strong></td>
+<td>Local read/write + skills</td>
+<td>Default</td>
+<td>Worker — builds features, orchestrates skills</td>
+</tr>
+<tr>
+<td><strong>ODrive Reviewer</strong></td>
+<td>Local read-only</td>
+<td>Claude Sonnet 4</td>
+<td>Reviewer — analyzes, doesn&#39;t edit</td>
+</tr>
+<tr>
+<td><strong>ODrive QA</strong></td>
+<td>Local read/write</td>
+<td>Default</td>
+<td>Tester — generates tests, runs validation</td>
+</tr>
+</tbody></table>
+<details>
+<summary><h3 id="-hands-on-explore-and-create-custom-agents-10-min">🧪 Hands-On: Explore and Create Custom Agents (10 min)</h3></summary>
+
+<p><strong>Exercise 1 — Use the ODrive Engineer Agent</strong></p>
+<ol>
+<li>Open the Copilot Chat mode picker (dropdown at the top)</li>
+<li>Select <strong>ODrive Engineer</strong> from the list</li>
+<li>Give it a task:</li>
+</ol>
+<pre><code>Add a watchdog timeout counter to the Axis class that increments when the control loop exceeds its deadline. Store the count in a uint32_t member variable.
+</code></pre>
+<ol start="4">
+<li>Watch the agent work — it should follow embedded constraints and naming conventions</li>
+</ol>
+<p><strong>Exercise 2 — Build a Code Reviewer Agent</strong></p>
+<ol>
+<li>Create <code>.github/agents/ODrive-Reviewer.agent.md</code> with the content from the demo above</li>
+<li>Check the mode picker — &quot;ODrive Reviewer&quot; should appear immediately</li>
+</ol>
+<p><strong>Exercise 3 — Test Your Reviewer Agent</strong></p>
+<ol>
+<li>Select <strong>ODrive Reviewer</strong> from the mode picker</li>
+<li>Ask it to review specific firmware code:</li>
+</ol>
+<pre><code>Review the motor control loop in motor.cpp for safety and performance issues
+</code></pre>
+<ol start="3">
+<li>Notice how the agent stays in character — every response follows the embedded review format</li>
+<li>Ask a follow-up:</li>
+</ol>
+<pre><code>Now review the ISR safety of the encoder.cpp calibration sequence
+</code></pre>
+<p><strong>Exercise 4 — Create Your Own Agent</strong> (Bonus)</p>
+<p><strong>Option A: <code>ODrive-DocWriter.agent.md</code></strong></p>
+<pre><code class="language-yaml">---
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;editFiles&#39;]
+description: Generate and maintain firmware documentation
+model: Claude Sonnet 4
+---
+
+You are a technical writer specializing in embedded systems documentation.
+Focus on Doxygen comments, architecture docs, and register descriptions.
+Document units (amps, radians, RPM) and thread safety for all public APIs.
+</code></pre>
+<p><strong>Option B: <code>ODrive-TestEngineer.agent.md</code></strong></p>
+<pre><code class="language-yaml">---
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;editFiles&#39;, &#39;runCommands&#39;, &#39;problems&#39;]
+description: Design and write embedded C++ tests using doctest
+model: Claude Sonnet 4
+---
+
+You are a test engineer for embedded C++ firmware.
+Use doctest framework. Test boundary conditions, error paths, and ISR interactions.
+All test code must be statically allocated — no heap in test fixtures.
+</code></pre>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You&#39;ve used the ODrive Engineer agent to complete a task</li>
+<li>✅ You&#39;ve created the ODrive Reviewer agent and tested it with a review request</li>
+<li>✅ You understand the progression: simple local agent → read-only agent → specialized agent</li>
+<li>✅ You understand that agents persist for the entire chat session, unlike prompts</li>
+</ul>
+<hr>
+<h2 id="7-mcp-servers-30-min">7. MCP Servers (30 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>MCP (Model Context Protocol) extends Copilot with external tools</li>
+<li>Configured in <code>.vscode/mcp.json</code> — part of the repo, shared with the team</li>
+<li>Two server types: <strong>HTTP</strong> (remote, OAuth-authenticated) and <strong>stdio</strong> (local, runs a process)</li>
+<li>For embedded projects, the <strong>GitHub MCP</strong> server is the most immediately useful — interact with issues, PRs, and repo data from chat</li>
+</ul>
+<h3 id="mcp-configuration">MCP Configuration</h3>
+<p>Create or update <code>.vscode/mcp.json</code>:</p>
+<pre><code class="language-json">{
+  &quot;servers&quot;: {
+    &quot;github&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://api.githubcopilot.com/mcp/&quot;
+    }
+  }
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Server</th>
+<th>Type</th>
+<th>Auth</th>
+<th>Requires</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub</strong></td>
+<td>HTTP (remote)</td>
+<td>OAuth (automatic)</td>
+<td>Nothing extra</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="-demo-verify-mcp-servers">🖥️ DEMO: Verify MCP Servers</h3>
+<p>MCP servers auto-start when Copilot needs them — no manual launch required.</p>
+<ol>
+<li>Open the Command Palette → <code>MCP: List servers</code></li>
+<li>Show the GitHub server listed</li>
+<li>For <strong>GitHub</strong>: The first time Copilot calls a GitHub MCP tool, an OAuth authentication flow will open in your browser. Approve it once and it&#39;s cached.</li>
+</ol>
+<blockquote>
+<p><strong>Note</strong>: If MCP servers don&#39;t appear or Copilot doesn&#39;t use them, verify the VS Code setting <code>chat.mcp.discovery.enabled</code> is set to <code>true</code> (Settings → search &quot;MCP&quot;).</p>
+</blockquote>
+<blockquote>
+<p><strong>Important</strong>: When Copilot calls an MCP tool for the first time, VS Code displays a <strong>tool approval dialog</strong>. Click the <strong>dropdown arrow (▼)</strong> next to &quot;Allow&quot; to see session-wide and workspace-wide approval options. <strong>Recommended for this workshop</strong>: Select <strong>&quot;Allow Tools from GitHub Without Review in this Session&quot;</strong>.</p>
+</blockquote>
+<hr>
+<h3 id="-demo-github-mcp--managing-firmware-issues-from-chat">🖥️ DEMO: GitHub MCP — Managing Firmware Issues from Chat</h3>
+<ol>
+<li>Switch to Agent mode</li>
+<li>Enter:</li>
+</ol>
+<pre><code>Check which issues are currently open in this repo
+</code></pre>
+<ol start="3">
+<li>Show Copilot fetching issues via the GitHub API</li>
+<li>Enter:</li>
+</ol>
+<pre><code>Create a GitHub Issue titled &quot;Add motor temperature monitoring to CAN protocol&quot; with a description that includes acceptance criteria: temperature reported in centi-degrees, message ID 0x009, update rate 10Hz
+</code></pre>
+<ol start="5">
+<li>Show the issue being created with meaningful content</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;You just managed your firmware project&#39;s issues without leaving VS Code. For embedded teams that track hardware bugs, protocol changes, and calibration tasks in GitHub Issues, this keeps you in flow.&quot;</p>
+<hr>
+<h3 id="-demo-using-github-mcp-for-code-context">🖥️ DEMO: Using GitHub MCP for Code Context</h3>
+<ol>
+<li>Enter:</li>
+</ol>
+<pre><code>Look at the recent pull requests in this repo and summarize what firmware changes have been made recently
+</code></pre>
+<ol start="2">
+<li>Show Copilot fetching PR data and providing a summary</li>
+<li>Enter:</li>
+</ol>
+<pre><code>Create an issue for each of the top 3 TODO comments found in the MotorControl directory, with appropriate labels
+</code></pre>
+<ol start="4">
+<li>Show Copilot scanning code and creating actionable issues</li>
+</ol>
+<details>
+<summary><h3 id="-hands-on-mcp-servers--github-integration-15-min">🧪 Hands-On: MCP Servers — GitHub Integration (15 min)</h3></summary>
+
+<p><strong>Exercise 1 — Verify MCP Server Configuration</strong></p>
+<ol>
+<li>Open or create <code>.vscode/mcp.json</code> and confirm the <code>github</code> server is defined</li>
+<li>Verify the VS Code setting: Open Settings (<code>Ctrl+,</code>) → search for <code>chat.mcp.discovery.enabled</code> → ensure it&#39;s checked (true)</li>
+</ol>
+<p><strong>Exercise 2 — Explore Issues from Chat</strong></p>
+<ol>
+<li>Switch to <strong>Agent</strong> mode in Copilot Chat</li>
+<li>Ask Copilot to explore your repo:</li>
+</ol>
+<pre><code>Check which issues are currently open in this repo
+</code></pre>
+<ol start="3">
+<li>Watch Copilot fetch issues via the GitHub API</li>
+</ol>
+<p><strong>Exercise 3 — Create Issues from Chat</strong></p>
+<ol>
+<li>Create an issue directly from chat:</li>
+</ol>
+<pre><code>Create a GitHub Issue titled &quot;Add Doxygen documentation to Motor class&quot; with a description that lists all undocumented public methods in motor.hpp
+</code></pre>
+<ol start="2">
+<li>Verify the issue was created by checking in your browser or asking: <code>Show me the issue you just created</code></li>
+</ol>
+<p><strong>Exercise 4 — Combine Code Analysis with GitHub</strong> (Bonus)</p>
+<pre><code>Scan the MotorControl directory for any TODO or FIXME comments. For each one found, create a GitHub Issue with the comment text, file location, and a suggested priority label.
+</code></pre>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ GitHub MCP server is configured in <code>.vscode/mcp.json</code> and auto-starts when needed</li>
+<li>✅ You&#39;ve used GitHub MCP to list or create issues from Copilot Chat</li>
+<li>✅ You understand that MCP connects Copilot to the real world beyond just code files</li>
+</ul>
+<hr>
+<h2 id="8-github-copilot-cli-the-agentic-terminal-30-min">8. GitHub Copilot CLI: The Agentic Terminal (30 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>The standalone <strong><code>copilot</code> CLI</strong> is a full AI agent in your terminal — interactive sessions with tool approvals, file editing, command execution, and plan mode</li>
+<li>It supports the <strong>same customization files</strong> from Sections 3–6: instructions, agents, skills, and MCP servers — everything transfers from VS Code</li>
+<li><code>/delegate</code> bridges the CLI to the Coding Agent (Section 9) — start work locally, hand it off to the cloud mid-session</li>
+<li>Session persistence with <code>--resume</code>/<code>--continue</code> means you can pick up right where you left off</li>
+</ul>
+<h3 id="what-the-github-copilot-cli-can-do">What the GitHub Copilot CLI Can Do</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>How It Works</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Interactive agentic sessions</td>
+<td><code>copilot</code> — full TUI with tool approval, file editing, command execution</td>
+</tr>
+<tr>
+<td>Plan mode</td>
+<td>Shift+Tab — structured implementation plans before code</td>
+</tr>
+<tr>
+<td>File context</td>
+<td><code>@path/to/file</code> — include specific files directly in prompts</td>
+</tr>
+<tr>
+<td>Delegate to Coding Agent</td>
+<td><code>/delegate</code> or <code>&amp;</code> prefix — hand off current work to GitHub cloud</td>
+</tr>
+<tr>
+<td>Session resume</td>
+<td><code>--resume</code> / <code>--continue</code> — pick up where you left off</td>
+</tr>
+<tr>
+<td>Custom agents</td>
+<td><code>/agent</code> — use agents from <code>.github/agents/</code> (same files from Section 6)</td>
+</tr>
+<tr>
+<td>MCP servers</td>
+<td><code>/mcp add</code> — GitHub MCP built-in, add more on the fly</td>
+</tr>
+<tr>
+<td>Code review</td>
+<td><code>/review</code> — analyze changes before committing</td>
+</tr>
+<tr>
+<td>Programmatic mode</td>
+<td><code>copilot -p &quot;prompt&quot; --allow-tool &#39;shell(git)&#39;</code> — scriptable, headless</td>
+</tr>
+</tbody></table>
+<h3 id="github-copilot-cli-vs-vs-code-agent-mode">GitHub Copilot CLI vs VS Code Agent Mode</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>VS Code Agent Mode</th>
+<th>GitHub Copilot CLI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Where</strong></td>
+<td>IDE sidebar/editor</td>
+<td>Terminal (any terminal)</td>
+</tr>
+<tr>
+<td><strong>Plan mode</strong></td>
+<td>Chat mode picker</td>
+<td>Shift+Tab toggle</td>
+</tr>
+<tr>
+<td><strong>Tool approval</strong></td>
+<td>Accept/Reject in chat</td>
+<td>Interactive TUI (Yes / Yes for session / No)</td>
+</tr>
+<tr>
+<td><strong>Custom instructions</strong></td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>Same file — shared</td>
+</tr>
+<tr>
+<td><strong>Custom agents</strong></td>
+<td><code>.github/agents/*.agent.md</code></td>
+<td>Same files — shared</td>
+</tr>
+<tr>
+<td><strong>MCP servers</strong></td>
+<td><code>.vscode/mcp.json</code></td>
+<td><code>/mcp add</code> + <code>~/.copilot/mcp-config.json</code></td>
+</tr>
+<tr>
+<td><strong>Delegate to cloud</strong></td>
+<td>Not available</td>
+<td><code>/delegate</code> or <code>&amp;</code> — hands off to Coding Agent</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Visual coding, multi-file edits</td>
+<td>Terminal-native devs, CI scripting, quick tasks</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="-demo-the-agentic-terminal">🖥️ DEMO: The Agentic Terminal</h3>
+<h4 id="part-a-launch-and-explore-3-min">Part A: Launch and Explore (3 min)</h4>
+<ol>
+<li>Open a <strong>standalone terminal</strong> (not VS Code&#39;s integrated terminal):<ul>
+<li><strong>Windows</strong>: Open <strong>Windows Terminal</strong> (<code>Win+X</code> → Terminal) or <strong>PowerShell</strong></li>
+<li><strong>macOS</strong>: Open <strong>Terminal.app</strong> or <strong>iTerm2</strong></li>
+</ul>
+</li>
+<li>Navigate to the project root:</li>
+</ol>
+<pre><code class="language-bash">cd path/to/ODrive-Custom/src-ODrive
+</code></pre>
+<ol start="3">
+<li>Launch the interactive session:</li>
+</ol>
+<pre><code class="language-bash">copilot
+</code></pre>
+<ol start="4">
+<li>Show the <strong>trusted directory TUI prompt</strong> — approve the project directory</li>
+<li>Enter a natural language question:</li>
+</ol>
+<pre><code>Explain the motor control architecture — trace the path from the main FreeRTOS task through the control loop to PWM output
+</code></pre>
+<ol start="6">
+<li>Show Copilot reading files, understanding the embedded architecture</li>
+<li>Toggle into <strong>plan mode</strong> with Shift+Tab and enter:</li>
+</ol>
+<pre><code>Plan how to add a motor temperature safety shutdown feature that disables the motor if temperature exceeds a configurable threshold
+</code></pre>
+<ol start="8">
+<li>Show the structured plan output</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;This is the same Copilot agent you used in VS Code — but in your terminal. Plan mode, file editing, tool approval, custom agents. If you live in the terminal, you don&#39;t have to leave.&quot;</p>
+<h4 id="part-b-build-a-feature-live-4-min">Part B: Build a Feature Live (4 min)</h4>
+<ol>
+<li>Switch back to ask/execute mode (Shift+Tab)</li>
+<li>Enter:</li>
+</ol>
+<pre><code>Add a getUptime() method to the Axis class that returns the total time in seconds since the axis was last armed. Use a uint32_t counter incremented in the control loop. Follow the patterns in @Firmware/MotorControl/axis.hpp
+</code></pre>
+<ol start="3">
+<li>Show the <strong>tool approval TUI</strong> — approve &quot;Yes for session&quot;</li>
+<li>Show it creating the method, following existing patterns</li>
+</ol>
+<h4 id="part-c-delegate--hand-off-to-the-cloud-3-min">Part C: /delegate — Hand Off to the Cloud (3 min)</h4>
+<ol>
+<li>Enter:</li>
+</ol>
+<pre><code>/delegate Add unit tests for the new getUptime method and create a PR
+</code></pre>
+<ol start="2">
+<li>Show Copilot committing changes and creating a Coding Agent session</li>
+<li>Show the URL to the PR and agent session on GitHub</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;We started work locally in the terminal and handed it off to the cloud. Perfect bridge to Section 9.&quot;</p>
+<h4 id="part-d-bonus-capabilities-quick-fire-2-min">Part D: Bonus Capabilities Quick-Fire (2 min)</h4>
+<ol>
+<li><code>/review</code> — inline code review of recent changes</li>
+<li><code>/context</code> — token usage breakdown</li>
+<li><code>/agent</code> — available agents (including ODrive Engineer, ODrive Reviewer, etc.)</li>
+<li><code>!git status</code> — shell escape without a model call</li>
+<li><code>/usage</code> — session statistics</li>
+</ol>
+<details>
+<summary><h3 id="-hands-on-try-the-github-copilot-cli-15-min">🧪 Hands-On: Try the GitHub Copilot CLI (15 min)</h3></summary>
+
+<p><strong>Exercise 1 — Launch and Explore</strong>:</p>
+<ol>
+<li>Open a standalone terminal and navigate to the project:</li>
+</ol>
+<pre><code class="language-bash">cd path/to/ODrive-Custom/src-ODrive
+</code></pre>
+<ol start="2">
+<li>Launch:</li>
+</ol>
+<pre><code class="language-bash">copilot
+</code></pre>
+<ol start="3">
+<li>Approve the trusted directory</li>
+<li>Ask a question:</li>
+</ol>
+<pre><code>What communication protocols does this firmware support? List the handler files for each.
+</code></pre>
+<p><strong>Exercise 2 — File Context with <code>@</code></strong>:</p>
+<pre><code>Explain what @Firmware/MotorControl/foc.cpp does and describe the FOC algorithm steps
+</code></pre>
+<p><strong>Exercise 3 — Plan Mode</strong>:</p>
+<ol>
+<li>Press Shift+Tab to enter plan mode</li>
+<li>Enter:</li>
+</ol>
+<pre><code>Plan how to add a new CAN message for reporting motor diagnostics — fault count, total runtime, and max temperature
+</code></pre>
+<ol start="3">
+<li>Review the plan, then press Shift+Tab to return to execute mode</li>
+</ol>
+<p><strong>Exercise 4 — Build Something</strong>:</p>
+<pre><code>Add a static method Motor::getInstanceCount() that returns the number of Motor instances created. Use a static uint8_t counter. Follow patterns in @Firmware/MotorControl/motor.hpp
+</code></pre>
+<p><strong>Exercise 5 — Explore Slash Commands</strong> (Bonus):</p>
+<pre><code>/agent
+</code></pre>
+<p>View available agents</p>
+<pre><code>/review
+</code></pre>
+<p>Review recent changes</p>
+<pre><code>!git log --oneline -5
+</code></pre>
+<p>Shell escape</p>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You&#39;ve launched <code>copilot</code> and approved the trusted directory prompt</li>
+<li>✅ You&#39;ve asked a codebase-aware question about the firmware architecture</li>
+<li>✅ You&#39;ve used <code>@path/to/file</code> to include file context in a prompt</li>
+<li>✅ You&#39;ve toggled into plan mode with Shift+Tab</li>
+<li>✅ You&#39;ve used at least one slash command (<code>/review</code>, <code>/context</code>, <code>/agent</code>, or <code>/usage</code>)</li>
+<li>✅ You understand how <code>/delegate</code> bridges local CLI work to the cloud Coding Agent</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How does the <code>copilot</code> CLI compare to Agent mode in VS Code for embedded work?</li>
+<li>The CLI reads the same custom instructions, agents, and skills. How does one config across IDE + terminal benefit your team?</li>
+<li>What security policies would your org need around <code>--allow-all-tools</code> vs. per-tool approval?</li>
+</ul>
+<hr>
+<h2 id="9-cloud-agents-coding-agent--pr-review-agent-20-min">9. Cloud Agents: Coding Agent + PR Review Agent (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Cloud agents operate at the platform level — they run on GitHub, not in your IDE</li>
+<li>Two key cloud agents:<ul>
+<li><strong>Coding Agent</strong>: Assign a GitHub Issue to Copilot → it codes autonomously and creates a PR</li>
+<li><strong>PR Review Agent (Copilot Code Review)</strong>: Request Copilot as a reviewer on a PR → it provides AI-powered code review comments</li>
+</ul>
+</li>
+</ul>
+<h3 id="part-a-copilot-coding-agent-10-min">Part A: Copilot Coding Agent (10 min)</h3>
+<p><strong>Concept</strong>:</p>
+<ul>
+<li>Assign any GitHub Issue to Copilot — it creates a branch, implements the solution, and opens a PR</li>
+<li>Works asynchronously — takes ~5-30 minutes depending on complexity</li>
+<li>Requires: Branch protection rule on <code>main</code> (PR required, at least 1 reviewer)</li>
+</ul>
+<h3 id="your-customization-files-work-in-the-cloud-too">Your Customization Files Work in the Cloud Too</h3>
+<p>Coding Agent reads ALL of your customization files — everything you&#39;ve built throughout this workshop:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+<th>Used By</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>Embedded coding standards, safety rules</td>
+<td>IDE Agent + Coding Agent</td>
+</tr>
+<tr>
+<td><code>.github/skills/*/SKILL.md</code></td>
+<td>Specialized procedures (auto-selected)</td>
+<td>IDE Agent + Coding Agent</td>
+</tr>
+</tbody></table>
+<p><strong>Key insight</strong>: Everything you built today — instructions, skills, agents — Coding Agent uses all of it. Your team&#39;s embedded safety standards apply even when AI codes autonomously.</p>
+<hr>
+<h3 id="-demo-assign-an-issue-to-coding-agent">🖥️ DEMO: Assign an Issue to Coding Agent</h3>
+<ol>
+<li>Open the GitHub repo in the browser</li>
+<li>Create a new issue:<ul>
+<li>Title: <code>Add motor temperature reporting to CAN protocol</code></li>
+<li>Description: <code>Add a CAN message (ID 0x009) that reports motor temperature in centi-degrees Celsius. Update the CAN protocol handler in Firmware/communication/ to send this message at 10Hz. Follow existing CAN message patterns.</code></li>
+</ul>
+</li>
+<li>Click <strong>Assignees</strong> → type and select <strong>Copilot</strong></li>
+<li>Show the Coding Agent session starting</li>
+<li>Explain what happens next:<ul>
+<li>Copilot creates a feature branch</li>
+<li>Reads the codebase — instructions, skills, existing CAN patterns</li>
+<li>Implements the solution following embedded constraints</li>
+<li>Opens a PR with a description of changes</li>
+</ul>
+</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Copilot will read your instructions, your skills — everything we&#39;ve set up today — and write firmware code that follows your embedded constraints. No heap allocation, proper volatile usage, CAN protocol patterns.&quot;</p>
+<h3 id="part-b-copilot-code-review--pr-review-agent-10-min">Part B: Copilot Code Review / PR Review Agent (10 min)</h3>
+<p><strong>Concept</strong>:</p>
+<ul>
+<li>Add Copilot as a reviewer on any PR — it provides AI-powered code review</li>
+<li>Especially valuable for embedded code: catches ISR safety issues, volatile misuse, memory leaks</li>
+<li>Complementary to human review, not a replacement</li>
+</ul>
+<hr>
+<h3 id="-demo-request-copilot-review-on-a-pr">🖥️ DEMO: Request Copilot Review on a PR</h3>
+<ol>
+<li>Open a PR in the repo</li>
+<li>Click <strong>Reviewers</strong> → Add <strong>Copilot</strong> as a reviewer</li>
+<li>Wait for the review to appear (typically 1-3 minutes)</li>
+<li>Walk through the review comments:<ul>
+<li>Show inline code suggestions with diffs</li>
+<li>Show severity indicators</li>
+<li>Show embedded-specific catches (volatile, ISR safety, bounds checking)</li>
+</ul>
+</li>
+<li>Compare with human review — Copilot catches pattern-based issues; humans catch intent and domain logic</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;For embedded code, Copilot is especially good at catching volatile misuse, unbounded loops in ISR context, and missing null checks. These are exactly the bugs that are hardest to find in production firmware.&quot;</p>
+<h3 id="key-differences-agent-mode-vs-coding-agent">Key Differences: Agent Mode vs Coding Agent</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Agent Mode (IDE)</th>
+<th>Coding Agent (Cloud)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Where</strong></td>
+<td>Your IDE</td>
+<td>GitHub servers</td>
+</tr>
+<tr>
+<td><strong>How</strong></td>
+<td>Interactive chat</td>
+<td>Assign a GitHub Issue</td>
+</tr>
+<tr>
+<td><strong>Sync</strong></td>
+<td>Real-time, interactive</td>
+<td>Async, autonomous</td>
+</tr>
+<tr>
+<td><strong>Duration</strong></td>
+<td>Minutes (you&#39;re watching)</td>
+<td>5-30 min (you&#39;re doing other work)</td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>File changes in your workspace</td>
+<td>A Pull Request</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Iterative work, exploration</td>
+<td>Well-defined tasks, delegation</td>
+</tr>
+</tbody></table>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>When would you use Coding Agent vs Agent Mode for firmware tasks?</li>
+<li>How does this change your team&#39;s issue workflow?</li>
+<li>What guardrails would you put in place? (Branch protection, required human review, hardware testing before merge)</li>
+</ul>
+<hr>
+<h2 id="10-wrap-up-customization-hierarchy-recap--qa-10-min">10. Wrap-Up, Customization Hierarchy Recap &amp; Q&amp;A (10 min)</h2>
+<h3 id="the-full-customization-stack">The Full Customization Stack</h3>
+<p>You&#39;ve now built every layer:</p>
+<pre><code>┌────────────────────────────────────────────────────────────┐
+│                    CLOUD AGENTS                            │
+│  Coding Agent (async PRs) + PR Review Agent (code review) │
+└────────────────────────────────┬───────────────────────────┘
+                                 │
+┌────────────────────────────────▼───────────────────────────┐
+│                    MCP SERVERS                              │
+│  GitHub (issues, PRs, repo data)                           │
+└────────────────────────────────┬───────────────────────────┘
+                                 │
+┌────────────────────────────────▼───────────────────────────┐
+│                    AGENT SKILLS                             │
+│  .github/skills/*/SKILL.md — auto-selected by relevance    │
+│  (toolchain, CAN, debugging, STM32, testing, FOC tuning)   │
+└────────────────────────────────┬───────────────────────────┘
+                                 │
+┌────────────────────────────────▼───────────────────────────┐
+│                CUSTOM AGENTS (CHAT MODES)                   │
+│  .github/agents/*.agent.md — persistent personas           │
+│  (Engineer, Reviewer, QA, Toolchain, Ops, Migrator)        │
+└────────────────────────────────┬───────────────────────────┘
+                                 │
+┌────────────────────────────────▼───────────────────────────┐
+│                  CUSTOM PROMPT FILES                        │
+│  .github/prompts/*.prompt.md — reusable task templates     │
+│  (safety-audit, debug-firmware, review-code, add-doxygen)  │
+└────────────────────────────────┬───────────────────────────┘
+                                 │
+┌────────────────────────────────▼───────────────────────────┐
+│                  CUSTOM INSTRUCTIONS                        │
+│  .github/copilot-instructions.md — always-on context       │
+│  .github/instructions/*.instructions.md — scoped rules     │
+│  (C++ standards, Python standards, embedded constraints)    │
+└────────────────────────────────┬───────────────────────────┘
+                                 │
+┌────────────────────────────────▼───────────────────────────┐
+│                      CHAT MODES                              │
+│  Ask (explore) → Plan (design) → Agent (build)             │
+└────────────────────────────────────────────────────────────┘
+
+  GitHub Copilot CLI (§8) — Agentic terminal: TUI, plan mode, /delegate
+</code></pre>
+<h3 id="key-takeaways">Key Takeaways</h3>
+<ol>
+<li><strong>Modes are your foundation</strong> — Ask for understanding firmware, Plan for designing features, Agent for building</li>
+<li><strong>Custom Instructions encode embedded constraints</strong> — no heap, no exceptions, volatile correctness, ISR safety</li>
+<li><strong>Prompt Files create consistency</strong> — reusable templates for safety audits, debugging, documentation</li>
+<li><strong>Agents are persistent personas</strong> — ODrive Engineer builds, ODrive Reviewer catches bugs, ODrive QA tests</li>
+<li><strong>Skills are auto-selected</strong> — CAN protocol, firmware debugging, STM32 peripherals — loaded when relevant</li>
+<li><strong>MCP extends Copilot&#39;s reach</strong> — manage GitHub issues and PRs without leaving your editor</li>
+<li><strong>Cloud agents close the loop</strong> — from issue to PR to code review, all AI-assisted</li>
+</ol>
+<h3 id="what-you-built-today">What You Built Today</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>§3 — Custom Instructions</td>
+</tr>
+<tr>
+<td><code>.github/instructions/cpp_coding_standards.instructions.md</code></td>
+<td>§3 — Scoped Instructions</td>
+</tr>
+<tr>
+<td><code>.github/prompts/safety-audit.prompt.md</code></td>
+<td>§4 — Custom Prompt Files</td>
+</tr>
+<tr>
+<td><code>.github/skills/code-review-checklist/SKILL.md</code> or <code>firmware-debug-guide/SKILL.md</code></td>
+<td>§5 — Agent Skills</td>
+</tr>
+<tr>
+<td><code>.github/agents/ODrive-Reviewer.agent.md</code></td>
+<td>§6 — Custom Agents</td>
+</tr>
+<tr>
+<td><code>.vscode/mcp.json</code> (GitHub MCP)</td>
+<td>§7 — MCP Servers</td>
+</tr>
+<tr>
+<td>GitHub Copilot CLI agentic terminal session</td>
+<td>§8 — GitHub Copilot CLI</td>
+</tr>
+</tbody></table>
+<h3 id="resources">Resources</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GitHub Copilot Docs</td>
+<td><a href="https://docs.github.com/en/copilot">https://docs.github.com/en/copilot</a></td>
+</tr>
+<tr>
+<td>Copilot in the CLI</td>
+<td><a href="https://docs.github.com/en/copilot/github-copilot-in-the-cli">https://docs.github.com/en/copilot/github-copilot-in-the-cli</a></td>
+</tr>
+<tr>
+<td>Custom Instructions</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/configure-custom-instructions">https://docs.github.com/en/copilot/how-tos/configure-custom-instructions</a></td>
+</tr>
+<tr>
+<td>Prompt Files</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/copilot-prompts">https://docs.github.com/en/copilot/how-tos/copilot-prompts</a></td>
+</tr>
+<tr>
+<td>Agent Skills</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/agents/about-agent-skills">https://docs.github.com/en/copilot/concepts/agents/about-agent-skills</a></td>
+</tr>
+<tr>
+<td>MCP Servers</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/using-extensions/using-mcp-in-copilot">https://docs.github.com/en/copilot/how-tos/using-extensions/using-mcp-in-copilot</a></td>
+</tr>
+<tr>
+<td>Copilot Coding Agent</td>
+<td><a href="https://docs.github.com/en/copilot/using-github-copilot/using-copilot-coding-agent">https://docs.github.com/en/copilot/using-github-copilot/using-copilot-coding-agent</a></td>
+</tr>
+<tr>
+<td>Copilot Code Review</td>
+<td><a href="https://docs.github.com/en/copilot/using-github-copilot/code-review">https://docs.github.com/en/copilot/using-github-copilot/code-review</a></td>
+</tr>
+<tr>
+<td>Copilot Trust Center</td>
+<td><a href="https://resources.github.com/copilot-trust-center/">https://resources.github.com/copilot-trust-center/</a></td>
+</tr>
+<tr>
+<td>ODrive Documentation</td>
+<td><a href="https://docs.odriverobotics.com/">https://docs.odriverobotics.com/</a></td>
+</tr>
+<tr>
+<td>Workshop Repo</td>
+<td><a href="https://github.com/thomasiverson/ODrive-Custom">https://github.com/thomasiverson/ODrive-Custom</a></td>
+</tr>
+<tr>
+<td>Community Skills</td>
+<td><a href="https://github.com/github/awesome-copilot">https://github.com/github/awesome-copilot</a></td>
+</tr>
+</tbody></table>
+<h3 id="qa-topics-to-prepare-for">Q&amp;A Topics to Prepare For</h3>
+<ul>
+<li>How do instructions/prompts/skills propagate across forks?</li>
+<li>Can we restrict which MCP servers developers use?</li>
+<li>How do we measure ROI on Copilot customization for embedded projects?</li>
+<li>Does Coding Agent respect branch protection rules?</li>
+<li>How do skills interact with custom instructions? (Both loaded? Priority?)</li>
+<li>Is Copilot safe for safety-critical code? (Answer: AI-assisted, human-verified — same review standards apply)</li>
+</ul>
+<hr>
+<h2 id="post-workshop-actions">Post-Workshop Actions</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Commit and push all customization files you created today (instructions, prompts, agents, skills)</li>
+<li><input disabled="" type="checkbox"> Review the Coding Agent PR when it completes</li>
+<li><input disabled="" type="checkbox"> Share the <code>.github/</code> customization files with your team</li>
+<li><input disabled="" type="checkbox"> Identify 3-5 internal frameworks, HAL patterns, or hardware constraints to encode as custom instructions</li>
+<li><input disabled="" type="checkbox"> Create 2-3 prompt files for your most common repetitive firmware tasks</li>
+<li><input disabled="" type="checkbox"> Build an Agent Skill for your team&#39;s most specialized workflow (protocol, debugging, testing)</li>
+<li><input disabled="" type="checkbox"> Enable Copilot Code Review on your repositories</li>
+<li><input disabled="" type="checkbox"> Schedule a follow-up session to share learnings and iterate on customizations</li>
+</ul>
+<hr>
+<h2 id="appendix-quick-reference">Appendix: Quick Reference</h2>
+<h3 id="customization-file-locations">Customization File Locations</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Path</th>
+<th>Extension</th>
+<th>Auto-loaded?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Project instructions</td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td><code>.md</code></td>
+<td>Yes — always</td>
+</tr>
+<tr>
+<td>Scoped instructions</td>
+<td><code>.github/instructions/</code></td>
+<td><code>.instructions.md</code></td>
+<td>Yes — when matching files active</td>
+</tr>
+<tr>
+<td>Prompt files</td>
+<td><code>.github/prompts/</code></td>
+<td><code>.prompt.md</code></td>
+<td>No — invoked manually</td>
+</tr>
+<tr>
+<td>Agents / Chat modes</td>
+<td><code>.github/agents/</code></td>
+<td><code>.agent.md</code></td>
+<td>No — selected in mode picker</td>
+</tr>
+<tr>
+<td>Project skills</td>
+<td><code>.github/skills/*/</code></td>
+<td><code>SKILL.md</code></td>
+<td>Yes — auto-selected by relevance</td>
+</tr>
+<tr>
+<td>Personal skills</td>
+<td><code>~/.copilot/skills/*/</code></td>
+<td><code>SKILL.md</code></td>
+<td>Yes — auto-selected by relevance</td>
+</tr>
+<tr>
+<td>MCP config</td>
+<td><code>.vscode/mcp.json</code></td>
+<td><code>.json</code></td>
+<td>Auto-started when needed</td>
+</tr>
+</tbody></table>
+<h3 id="prompt-file-frontmatter-reference">Prompt File Frontmatter Reference</h3>
+<pre><code class="language-yaml">---
+mode: &#39;agent&#39;              # &#39;ask&#39;, &#39;agent&#39;, or &#39;plan&#39;
+description: &#39;Text&#39;        # Shown in the prompt picker
+tools: [&#39;tool1&#39;, &#39;tool2&#39;]  # Available tools for agent mode
+---
+</code></pre>
+<p><strong>Common tools</strong>: <code>changes</code>, <code>codebase</code>, <code>editFiles</code>, <code>fetch</code>, <code>findTestFiles</code>, <code>githubRepo</code>, <code>problems</code>, <code>runCommands</code>, <code>runTasks</code>, <code>search</code>, <code>terminalLastCommand</code>, <code>testFailure</code>, <code>usages</code></p>
+<h3 id="agent-file-frontmatter-reference">Agent File Frontmatter Reference</h3>
+<pre><code class="language-yaml">---
+tools: [&#39;tool1&#39;, &#39;tool2&#39;]     # Available tools
+description: &#39;Text&#39;           # Shown in mode picker
+model: &#39;Claude Sonnet 4.5&#39;    # Model to use (optional)
+---
+</code></pre>
+<h3 id="skill-file-frontmatter-reference">Skill File Frontmatter Reference</h3>
+<pre><code class="language-yaml">---
+name: skill-name              # Lowercase, hyphens for spaces
+description: &#39;When to use&#39;    # Copilot matches this to prompts
+license: &#39;MIT&#39;                # Optional
+---
+</code></pre>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Copilot not active</td>
+<td>Check extension is installed and signed in</td>
+</tr>
+<tr>
+<td>MCP server won&#39;t start</td>
+<td>Check <code>MCP: List servers</code> for status, verify <code>chat.mcp.discovery.enabled</code> is <code>true</code></td>
+</tr>
+<tr>
+<td>GitHub MCP auth error</td>
+<td>Re-authenticate via OAuth, or use PAT with correct scopes</td>
+</tr>
+<tr>
+<td>Agent mode not available</td>
+<td>Update VS Code and Copilot extension to latest</td>
+</tr>
+<tr>
+<td>Skills not loading</td>
+<td>Verify <code>SKILL.md</code> filename (case-sensitive), check description matches prompt</td>
+</tr>
+<tr>
+<td>Custom instructions ignored</td>
+<td>Verify file is in <code>.github/</code> root, check for syntax errors</td>
+</tr>
+<tr>
+<td><code>copilot</code> CLI not available</td>
+<td>Install the standalone GitHub Copilot CLI — see <a href="https://docs.github.com/en/copilot/github-copilot-in-the-cli">https://docs.github.com/en/copilot/github-copilot-in-the-cli</a></td>
+</tr>
+<tr>
+<td>C++ IntelliSense not working</td>
+<td>Install the C/C++ Extension Pack, configure <code>c_cpp_properties.json</code></td>
+</tr>
+</tbody></table>
+<h3 id="relationship-to-existing-lessons">Relationship to Existing Lessons</h3>
+<p>This workshop synthesizes the lesson modules available in the <code>lessons/</code> directory. For deeper dives on individual topics:</p>
+<table>
+<thead>
+<tr>
+<th>Workshop Section</th>
+<th>Related Lesson</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>§2 Chat Modes</td>
+<td><a href="../lessons/02-basic%20features/readme.md">Lesson 02 — Basic Features</a></td>
+</tr>
+<tr>
+<td>§3 Custom Instructions</td>
+<td><a href="../lessons/03-planning/readme.md">Lesson 03 — Planning &amp; Steering</a></td>
+</tr>
+<tr>
+<td>§4 Prompt Files</td>
+<td><a href="../lessons/03-planning/readme.md">Lesson 03 — Planning &amp; Steering</a></td>
+</tr>
+<tr>
+<td>§5 Agent Skills</td>
+<td><a href="../lessons/04-agentic-patterns/readme.md">Lesson 04 — Agentic Patterns</a></td>
+</tr>
+<tr>
+<td>§6 Custom Agents</td>
+<td><a href="../lessons/04-agentic-patterns/readme.md">Lesson 04 — Agentic Patterns</a></td>
+</tr>
+<tr>
+<td>§7 MCP Servers</td>
+<td><a href="../lessons/03-planning/readme.md">Lesson 03 — Planning &amp; Steering</a></td>
+</tr>
+<tr>
+<td>§8 Copilot CLI</td>
+<td><a href="../lessons/07-copilot-cli/readme.md">Lesson 07 — Copilot CLI</a></td>
+</tr>
+<tr>
+<td>§9 Cloud Agents</td>
+<td><a href="../lessons/08-parallel-agents/readme.md">Lesson 08 — Parallel Agents</a></td>
+</tr>
+<tr>
+<td>— (C++ patterns)</td>
+<td><a href="../lessons/05-best-practices/readme.md">Lesson 05 — Best Practices</a></td>
+</tr>
+<tr>
+<td>— (Debugging)</td>
+<td><a href="../lessons/06-debugging/readme.md">Lesson 06 — Debugging</a></td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Workshop guide for GitHub Copilot: Zero to Agents — ODrive Embedded C++ Edition</em>
+<em>Workshop repo: <a href="https://github.com/thomasiverson/ODrive-Custom">thomasiverson/ODrive-Custom</a></em></p>
+</article>  </main> </body></html>  <script type="module">document.querySelectorAll("pre").forEach(e=>{const t=document.createElement("button");t.className="copy-btn",t.textContent="Copy",t.addEventListener("click",async()=>{const o=(e.querySelector("code")||e).textContent||"";await navigator.clipboard.writeText(o),t.textContent="Copied!",t.classList.add("copied"),setTimeout(()=>{t.textContent="Copy",t.classList.remove("copied")},2e3)}),e.appendChild(t)});</script>
