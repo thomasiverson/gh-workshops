@@ -72,8 +72,8 @@ npm run dev
 <tr>
 <td>2</td>
 <td>Session 7: Evaluating Agentic Output</td>
-<td>34 min</td>
-<td>5 exercises</td>
+<td>42 min</td>
+<td>6 exercises</td>
 </tr>
 <tr>
 <td>3</td>
@@ -488,6 +488,87 @@ echo &quot;Tests: $([ $TEST -eq 0 ] &amp;&amp; echo &#39;PASS&#39; || echo &#39;
 <li>✅ Generated code with a basic prompt and scored it</li>
 <li>✅ Improved instructions based on weaknesses</li>
 <li>✅ Regenerated and observed measurable improvement</li>
+</ul>
+<hr>
+<h3 id="exercise-26--cost-aware-model-selection-8-min">Exercise 2.6 — Cost-Aware Model Selection (8 min)</h3>
+<p><strong>Objective</strong>: Understand model cost tiers and calculate the cost impact of model selection.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Review the model cost tiers</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Models</th>
+<th>Multiplier</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Free</strong></td>
+<td>GPT-4.1, GPT-4o, GPT-5 mini</td>
+<td>0x</td>
+</tr>
+<tr>
+<td><strong>Budget</strong></td>
+<td>Claude Haiku 4.5, Gemini 3 Flash, GPT-5.4 nano</td>
+<td>0.25–0.33x</td>
+</tr>
+<tr>
+<td><strong>Standard</strong></td>
+<td>Claude Sonnet 4/4.5/4.6, Gemini 2.5 Pro, GPT-5.2/5.4</td>
+<td>1x</td>
+</tr>
+<tr>
+<td><strong>Premium</strong></td>
+<td>Claude Opus 4.5/4.6 (3x), Opus 4.7 / GPT-5.5 (7.5x)</td>
+<td>3–7.5x</td>
+</tr>
+</tbody></table>
+<p><strong>Step 2: Calculate cost for three scenarios</strong></p>
+<p>For each scenario, identify which model tier you&#39;d use and the cost in premium requests:</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Your Model Choice</th>
+<th>Multiplier</th>
+<th>Cost (requests)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Quick question: &quot;What does this function do?&quot;</td>
+<td>___</td>
+<td>___</td>
+<td>___</td>
+</tr>
+<tr>
+<td>Code review of an API route</td>
+<td>___</td>
+<td>___</td>
+<td>___</td>
+</tr>
+<tr>
+<td>Complex architecture decision (multi-file refactor)</td>
+<td>___</td>
+<td>___</td>
+<td>___</td>
+</tr>
+</tbody></table>
+<p><strong>Step 3: Enable auto model selection</strong></p>
+<p>In VS Code, open the model picker in Copilot Chat and select <strong>Auto</strong>. This gives a 10% discount on multipliers.</p>
+<p>Send a chat message and hover over the response to see which model was selected.</p>
+<p><strong>Step 4: Compare your daily cost</strong></p>
+<p>Estimate: if you send ~50 prompts per day, what&#39;s the cost difference between:</p>
+<ul>
+<li>All prompts on GPT-4o (0x) = ___</li>
+<li>All prompts on Claude Sonnet (1x) = ___</li>
+<li>All prompts on Claude Opus 4.7 (7.5x) = ___</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Can identify the four model cost tiers</li>
+<li>✅ Calculated cost for three different scenarios</li>
+<li>✅ Enabled auto model selection and observed the selected model</li>
+<li>✅ Understand the daily cost difference between model tiers</li>
 </ul>
 </details>
 
