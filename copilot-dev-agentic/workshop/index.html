@@ -12,7 +12,7 @@
 <h3 id="learning-objectives">Learning Objectives</h3>
 <ul>
 <li>Understand how agentic loops work: the plan → act → observe → reflect cycle</li>
-<li>Trace the Ralph loop — how Copilot&#39;s Coding Agent iterates through code changes and self-corrects</li>
+<li>Trace the Ralph loop — the iterative pattern Copilot&#39;s Coding Agent uses to validate and self-correct</li>
 <li>Use Copilot as a structured reasoning partner (rubber duck debugging with AI)</li>
 <li>Distinguish between single-agent and multi-agent architecture patterns</li>
 <li>Identify orchestration topologies: sequential, parallel, and hierarchical</li>
@@ -371,9 +371,9 @@
 <h2 id="44-the-ralph-loop-deep-dive-15-min">4.4. The Ralph Loop Deep Dive (15 min)</h2>
 <h3 id="key-points">Key Points</h3>
 <ul>
-<li><strong>Ralph</strong> is the internal name for GitHub Copilot&#39;s Coding Agent — the autonomous agent that creates PRs</li>
-<li>The Ralph loop is a specialized agentic loop with built-in validation gates</li>
-<li>Key difference from basic agent mode: Ralph runs in a sandboxed environment and iterates until tests pass or it hits a retry limit</li>
+<li>The <strong>Ralph loop</strong> is the iterative pattern used by Copilot&#39;s Coding Agent — a cycle of edit → validate → fix until all checks pass</li>
+<li>It is a specialized agentic loop with built-in validation gates</li>
+<li>Key difference from basic agent mode: the Coding Agent runs in a sandboxed environment and iterates until tests pass or it hits a retry limit</li>
 </ul>
 <h3 id="ralph-loop-internals">Ralph Loop Internals</h3>
 <pre><code>┌─────────────────────────────────────────────────┐
