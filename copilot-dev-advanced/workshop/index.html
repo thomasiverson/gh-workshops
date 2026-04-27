@@ -1,0 +1,1352 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot Developer Training — Advanced Topics</title><link rel="stylesheet" href="/gh-workshops/_astro/index.tKAiv-SV.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-developer-training--advanced-topics">GitHub Copilot Developer Training — Advanced Topics</h1>
+<p><strong>Duration</strong>: ~3 hours 10 minutes (190 min)<br><strong>Format</strong>: Presentation + Live Demo + Hands-On<br><strong>Audience</strong>: Developers extending GitHub Copilot with integrations, evaluation frameworks, and diagnostic tools<br><strong>Focus</strong>: Extensions, MCP, evaluating AI output, and troubleshooting Copilot<br><strong>Repo</strong>: <a href="https://github.com/microsoft/GitHubCopilot_Customized">microsoft/GitHubCopilot_Customized</a> (OctoCAT Supply)</p>
+<blockquote>
+<p><strong>Part of the Copilot Developer Training curriculum</strong> (<a href="../copilot-dev-foundations/copilot-dev-foundations-workshop.md">Foundations</a> · <a href="../copilot-dev-agentic/copilot-dev-agentic-workshop.md">Agentic Patterns</a> · <a href="../copilot-dev-advanced/copilot-dev-advanced-workshop.md">Advanced Topics</a>). This module can be delivered standalone.</p>
+</blockquote>
+<hr>
+<h2 id="workshop-overview">Workshop Overview</h2>
+<p>This module covers the advanced topics that round out a developer&#39;s Copilot proficiency: extending Copilot with third-party integrations and MCP servers, building evaluation frameworks to measure AI output quality, and mastering the diagnostic tools needed when things go wrong.</p>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li>Understand VS Code chat participants and GitHub Copilot Extensions</li>
+<li>Configure and use MCP (Model Context Protocol) servers for external tool integration</li>
+<li>Define success criteria and quality rubrics for AI-generated code</li>
+<li>Build automated and human-in-the-loop evaluation workflows</li>
+<li>Navigate Copilot&#39;s output logs, debug mode, and agent debug traces</li>
+<li>Collect and export diagnostics for troubleshooting</li>
+</ul>
+<h3 id="prerequisites--what-you-should-know">Prerequisites / What You Should Know</h3>
+<p>If you&#39;re taking this module standalone (without Modules 1–2), you should be comfortable with these concepts:</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Quick Summary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Chat Modes</strong></td>
+<td>Ask (read-only), Agent (edits files), Plan (proposes changes)</td>
+</tr>
+<tr>
+<td><strong>Custom Instructions</strong></td>
+<td><code>.github/copilot-instructions.md</code> (always-on) + file-targeted <code>.github/instructions/*.instructions.md</code></td>
+</tr>
+<tr>
+<td><strong>Custom Agents</strong></td>
+<td><code>.github/agents/*.md</code> — specialized personas with tool and model selection</td>
+</tr>
+<tr>
+<td><strong>Agentic Loops</strong></td>
+<td>Agent mode iterates: plan → act → observe → reflect</td>
+</tr>
+<tr>
+<td><strong>Agent Patterns</strong></td>
+<td>Single-agent/multi-skill (Copilot Agent mode), multi-agent (specialized agents for different domains)</td>
+</tr>
+<tr>
+<td><strong>Context Window</strong></td>
+<td>Finite token budget; instructions, context, history, and output all compete for space</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>If you attended Modules 1–2</strong>, skip this section — you&#39;ve covered all of the above.</p>
+</blockquote>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>With Copilot Pro, Business, or Enterprise license</td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Latest stable (or Insiders for preview features)</td>
+</tr>
+<tr>
+<td><strong>Copilot Extension</strong></td>
+<td>GitHub Copilot + GitHub Copilot Chat extensions installed</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>Version 18 or higher</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>For cloning the demo repository</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="session-agenda">Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Session 6</strong></td>
+<td><strong>Extensions &amp; MCP</strong></td>
+<td><strong>60 min</strong></td>
+</tr>
+<tr>
+<td>6.1</td>
+<td><a href="#61-opening--ai-safety-third-party-trust-5-min">Opening &amp; AI Safety: &quot;Third-Party Trust&quot;</a></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>6.2</td>
+<td><a href="#62-vs-code-chat-participants-10-min">VS Code Chat Participants</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>6.3</td>
+<td><a href="#63-github-copilot-extensions-15-min">GitHub Copilot Extensions</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>6.4</td>
+<td><a href="#64-mcp-architecture-15-min">MCP Architecture</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>6.5</td>
+<td><a href="#65-mcp-configuration-10-min">MCP Configuration</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>6.6</td>
+<td><a href="#66-session-6-summary--discussion-5-min">Session 6 Summary &amp; Discussion</a></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td></td>
+<td>☕ Break</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td><strong>Session 7</strong></td>
+<td><strong>Evaluating Agentic Output</strong></td>
+<td><strong>70 min</strong></td>
+</tr>
+<tr>
+<td>7.1</td>
+<td><a href="#71-opening--ai-safety-when-to-trust-when-to-verify-5-min">Opening &amp; AI Safety: &quot;When to Trust, When to Verify&quot;</a></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>7.2</td>
+<td><a href="#72-defining-success-criteria-15-min">Defining Success Criteria</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>7.3</td>
+<td><a href="#73-output-quality-rubrics-15-min">Output Quality Rubrics</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>7.4</td>
+<td><a href="#74-evaluation-methods-15-min">Evaluation Methods</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>7.5</td>
+<td><a href="#75-tracking--improvement-15-min">Tracking &amp; Improvement</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>7.6</td>
+<td><a href="#76-session-7-summary--discussion-5-min">Session 7 Summary &amp; Discussion</a></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td></td>
+<td>☕ Break</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td><strong>Session 8</strong></td>
+<td><strong>Troubleshooting &amp; Diagnostics</strong></td>
+<td><strong>60 min</strong></td>
+</tr>
+<tr>
+<td>8.1</td>
+<td><a href="#81-opening--ai-safety-debugging-the-black-box-5-min">Opening &amp; AI Safety: &quot;Debugging the Black Box&quot;</a></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>8.2</td>
+<td><a href="#82-output-log-channels-15-min">Output Log Channels</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>8.3</td>
+<td><a href="#83-chat-debug-mode-15-min">Chat Debug Mode</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>8.4</td>
+<td><a href="#84-agent-debug-logs-15-min">Agent Debug Logs</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>8.5</td>
+<td><a href="#85-diagnostics-collection--curriculum-wrap-up-10-min">Diagnostics Collection &amp; Curriculum Wrap-Up</a></td>
+<td>10 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total: ~190 min (~3h 10min) including breaks</strong></p>
+<hr>
+<h2 id="61-opening--ai-safety-third-party-trust-5-min">6.1. Opening &amp; AI Safety: &quot;Third-Party Trust&quot; (5 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Extensions and MCP servers are third-party code that runs alongside Copilot — they can access your codebase and execute actions</li>
+<li>Trust decisions matter: who built it? What data does it access? What actions can it take?</li>
+<li><strong>Evaluate before installing</strong>: read permissions, check the publisher, review community feedback</li>
+<li>Organization admins can control which extensions and MCP servers are allowed</li>
+</ul>
+<h3 id="trust-evaluation-checklist">Trust Evaluation Checklist</h3>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>What to Check</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Who built it?</strong></td>
+<td>Verified publisher, GitHub organization, or known vendor</td>
+</tr>
+<tr>
+<td><strong>What does it access?</strong></td>
+<td>File system, network, terminal, API tokens</td>
+</tr>
+<tr>
+<td><strong>What can it do?</strong></td>
+<td>Read-only vs. write access; can it execute commands?</td>
+</tr>
+<tr>
+<td><strong>Is it maintained?</strong></td>
+<td>Recent updates, active issue tracker, responsive maintainer</td>
+</tr>
+<tr>
+<td><strong>Is it scoped?</strong></td>
+<td>Does it request minimum necessary permissions?</td>
+</tr>
+</tbody></table>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How does your team currently vet VS Code extensions?</li>
+<li>What&#39;s your organization&#39;s policy on third-party AI integrations?</li>
+</ul>
+<hr>
+<h2 id="62-vs-code-chat-participants-10-min">6.2. VS Code Chat Participants (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Chat participants are specialized handlers built into VS Code that route your questions to domain-specific logic</li>
+<li>They&#39;re the <code>@</code> mentions you use in chat: <code>@workspace</code>, <code>@vscode</code>, <code>@terminal</code></li>
+<li>Each participant has access to different data and capabilities</li>
+</ul>
+<h3 id="built-in-participants">Built-in Participants</h3>
+<table>
+<thead>
+<tr>
+<th>Participant</th>
+<th>What It Accesses</th>
+<th>Capabilities</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@workspace</code></td>
+<td>File tree, file contents, symbols, dependencies</td>
+<td>Project structure, cross-file search, symbol lookup</td>
+</tr>
+<tr>
+<td><code>@vscode</code></td>
+<td>Settings, extensions, keybindings, commands</td>
+<td>Editor configuration, extension recommendations</td>
+</tr>
+<tr>
+<td><code>@terminal</code></td>
+<td>Recent terminal output, command history</td>
+<td>Error diagnosis, command suggestions</td>
+</tr>
+</tbody></table>
+<h3 id="how-participants-work-under-the-hood">How Participants Work Under the Hood</h3>
+<ol>
+<li>You type <code>@workspace How is auth implemented?</code></li>
+<li>VS Code routes the message to the <code>@workspace</code> participant</li>
+<li>The participant searches your project (file tree, symbols, content)</li>
+<li>Relevant code snippets and file references are injected into the context</li>
+<li>The augmented context is sent to the model for response</li>
+</ol>
+<h3 id="-demo-participant-capabilities">🖥️ Demo: Participant Capabilities</h3>
+<ol>
+<li><code>@workspace</code> — Ask &quot;What is the database schema for orders?&quot; — show it finding the schema across files</li>
+<li><code>@vscode</code> — Ask &quot;How do I configure format on save?&quot; — show it referencing VS Code settings</li>
+<li><code>@terminal</code> — After a failed <code>npm test</code>, ask &quot;Why did the test fail?&quot; — show it reading terminal output</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which participant do you use most? Which do you underuse?</li>
+<li>How does <code>@workspace</code> decide which files are relevant to your question?</li>
+</ul>
+<hr>
+<h2 id="63-github-copilot-extensions-15-min">6.3. GitHub Copilot Extensions (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Copilot Extensions</strong> are GitHub Apps that add chat capabilities to Copilot</li>
+<li>They appear as <code>@extension-name</code> participants in chat — you interact with them through natural language</li>
+<li>Extensions can access external services (Docker, Azure, Sentry, etc.) and bring domain-specific knowledge into Copilot</li>
+</ul>
+<h3 id="extension-capabilities">Extension Capabilities</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Chat responses</strong></td>
+<td>Answer questions with domain knowledge</td>
+<td><code>@docker How do I optimize this Dockerfile?</code></td>
+</tr>
+<tr>
+<td><strong>Code actions</strong></td>
+<td>Generate or modify code based on external context</td>
+<td><code>@azure Generate a Bicep template for this architecture</code></td>
+</tr>
+<tr>
+<td><strong>Tool invocation</strong></td>
+<td>Call external APIs and return results</td>
+<td><code>@sentry What are the top errors this week?</code></td>
+</tr>
+</tbody></table>
+<h3 id="marketplace-discovery">Marketplace Discovery</h3>
+<ul>
+<li>Browse at <a href="https://github.com/marketplace?type=apps&copilot_app=true">https://github.com/marketplace?type=apps&amp;copilot_app=true</a></li>
+<li>Filter by category: development tools, security, cloud, productivity</li>
+<li>Check: publisher verification, install count, recent activity</li>
+</ul>
+<h3 id="-demo-using-a-copilot-extension">🖥️ Demo: Using a Copilot Extension</h3>
+<ol>
+<li>Show the Copilot Extensions marketplace</li>
+<li>Install an extension (e.g., Docker, GitHub Models, or Azure)</li>
+<li>Use it in chat: <code>@extension-name [question]</code></li>
+<li>Show how the response includes domain-specific knowledge beyond Copilot&#39;s base training</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What external services would benefit from a Copilot Extension in your workflow?</li>
+<li>How do extensions differ from MCP servers (covered next)?</li>
+<li>What security considerations apply to extensions that access external services?</li>
+</ul>
+<hr>
+<h2 id="64-mcp-architecture-15-min">6.4. MCP Architecture (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>MCP (Model Context Protocol)</strong> is an open standard for connecting AI models to external tools and data sources</li>
+<li>Think of it as &quot;USB for AI&quot; — a standard interface that any tool can implement</li>
+<li>MCP separates three roles: <strong>Host</strong> (VS Code), <strong>Client</strong> (Copilot), and <strong>Server</strong> (the tool provider)</li>
+</ul>
+<h3 id="mcp-architecture">MCP Architecture</h3>
+<pre><code>┌─────────────────┐
+│     VS Code     │  ← HOST: manages connections
+│    (Host)       │
+├─────────────────┤
+│   Copilot       │  ← CLIENT: sends requests to servers
+│   (Client)      │
+└────────┬────────┘
+         │
+    ┌────┴────┐
+    │         │
+    ▼         ▼
+┌────────┐ ┌────────┐
+│ MCP    │ │ MCP    │  ← SERVERS: provide tools, resources, prompts
+│Server A│ │Server B│
+│(GitHub)│ │(File   │
+│        │ │System) │
+└────────┘ └────────┘
+</code></pre>
+<h3 id="mcp-capabilities">MCP Capabilities</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Tools</strong></td>
+<td>Functions the model can call</td>
+<td><code>create_issue</code>, <code>run_query</code>, <code>deploy_app</code></td>
+</tr>
+<tr>
+<td><strong>Resources</strong></td>
+<td>Data the model can read</td>
+<td>Database schemas, API specs, documentation</td>
+</tr>
+<tr>
+<td><strong>Prompts</strong></td>
+<td>Reusable prompt templates</td>
+<td>&quot;Summarize this PR&quot;, &quot;Review for security&quot;</td>
+</tr>
+</tbody></table>
+<h3 id="transport-types">Transport Types</h3>
+<table>
+<thead>
+<tr>
+<th>Transport</th>
+<th>How It Works</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>stdio</strong></td>
+<td>Runs as a local process, communicates via stdin/stdout</td>
+<td>Local tools, file system, CLIs</td>
+</tr>
+<tr>
+<td><strong>SSE</strong></td>
+<td>Server-sent events over HTTP</td>
+<td>Remote servers, web services</td>
+</tr>
+<tr>
+<td><strong>Streamable HTTP</strong></td>
+<td>HTTP with streaming responses</td>
+<td>Modern remote servers</td>
+</tr>
+</tbody></table>
+<h3 id="mcp-vs-copilot-extensions">MCP vs. Copilot Extensions</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>MCP Servers</th>
+<th>Copilot Extensions</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Standard</strong></td>
+<td>Open protocol (any client)</td>
+<td>GitHub-specific</td>
+</tr>
+<tr>
+<td><strong>Installation</strong></td>
+<td>Configure in <code>.vscode/mcp.json</code></td>
+<td>Install from GitHub Marketplace</td>
+</tr>
+<tr>
+<td><strong>Runs where</strong></td>
+<td>Locally or remote server</td>
+<td>GitHub&#39;s infrastructure</td>
+</tr>
+<tr>
+<td><strong>Access scope</strong></td>
+<td>What you configure</td>
+<td>What the app requests</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Custom internal tools</td>
+<td>Polished third-party integrations</td>
+</tr>
+</tbody></table>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What internal tools or services would you expose via MCP?</li>
+<li>How does the host/client/server separation improve security?</li>
+<li>When would you choose MCP over a Copilot Extension (or vice versa)?</li>
+</ul>
+<hr>
+<h2 id="65-mcp-configuration-10-min">6.5. MCP Configuration (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>MCP servers are configured in <code>.vscode/mcp.json</code> in your workspace</li>
+<li>Each entry specifies a server name, command/transport, and optional environment variables</li>
+<li>VS Code discovers the servers on startup and makes their tools available in chat</li>
+</ul>
+<h3 id="configuration-syntax">Configuration Syntax</h3>
+<pre><code class="language-json">{
+  &quot;servers&quot;: {
+    &quot;github&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;-y&quot;, &quot;@modelcontextprotocol/server-github&quot;],
+      &quot;env&quot;: {
+        &quot;GITHUB_PERSONAL_ACCESS_TOKEN&quot;: &quot;${input:github-token}&quot;
+      }
+    },
+    &quot;filesystem&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;-y&quot;, &quot;@modelcontextprotocol/server-filesystem&quot;, &quot;./src&quot;]
+    }
+  }
+}
+</code></pre>
+<h3 id="security-considerations">Security Considerations</h3>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Token exposure</strong></td>
+<td>Use <code>${input:name}</code> for secrets — VS Code prompts at runtime, never stored in file</td>
+</tr>
+<tr>
+<td><strong>File access scope</strong></td>
+<td>Limit filesystem servers to specific directories</td>
+</tr>
+<tr>
+<td><strong>Network access</strong></td>
+<td>Review what remote servers the MCP server contacts</td>
+</tr>
+<tr>
+<td><strong>Command execution</strong></td>
+<td>Only configure servers from trusted sources</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-mcp-server-setup">🖥️ Demo: MCP Server Setup</h3>
+<ol>
+<li>Create <code>.vscode/mcp.json</code> with a filesystem server pointing to the <code>api/</code> directory</li>
+<li>Open chat — show the MCP tools appearing in the tool list</li>
+<li>Ask Copilot to use the filesystem tool: &quot;List all TypeScript files in the API directory&quot;</li>
+<li>Add a GitHub MCP server — show it pulling issue data into the chat context</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What <code>.vscode/mcp.json</code> configuration would you set up first for your project?</li>
+<li>How would you share MCP configurations across your team?</li>
+<li>What&#39;s the security review process for adding a new MCP server?</li>
+</ul>
+<hr>
+<h2 id="66-session-6-summary--discussion-5-min">6.6. Session 6 Summary &amp; Discussion (5 min)</h2>
+<h3 id="key-takeaways">Key Takeaways</h3>
+<ul>
+<li>VS Code chat participants (<code>@workspace</code>, <code>@vscode</code>, <code>@terminal</code>) route questions to specialized handlers</li>
+<li>Copilot Extensions bring third-party domain knowledge into chat via GitHub Apps</li>
+<li>MCP is the open standard for tool integration — configure in <code>.vscode/mcp.json</code></li>
+<li>Always evaluate trust, permissions, and security before adding extensions or MCP servers</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What&#39;s the first extension or MCP server you&#39;ll set up after this session?</li>
+<li>How does MCP change what&#39;s possible with Copilot in your workflow?</li>
+<li>What governance process would you recommend for your org&#39;s MCP server list?</li>
+</ul>
+<hr>
+<h2 id="-break--10-minutes">☕ Break — 10 Minutes</h2>
+<hr>
+<h2 id="71-opening--ai-safety-when-to-trust-when-to-verify-5-min">7.1. Opening &amp; AI Safety: &quot;When to Trust, When to Verify&quot; (5 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Not all AI output deserves the same level of scrutiny — risk should drive verification effort</li>
+<li><strong>Low risk</strong>: Boilerplate code, test scaffolding, documentation → quick glance</li>
+<li><strong>Medium risk</strong>: Business logic, API routes, data transformations → careful review</li>
+<li><strong>High risk</strong>: Security code, authentication, financial calculations, infrastructure → thorough verification + testing</li>
+<li>The goal is a <strong>trust calibration</strong> framework — not &quot;trust everything&quot; or &quot;verify everything&quot;</li>
+</ul>
+<h3 id="risk-based-verification">Risk-Based Verification</h3>
+<table>
+<thead>
+<tr>
+<th>Risk Level</th>
+<th>Code Type</th>
+<th>Verification Level</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🟢 <strong>Low</strong></td>
+<td>Boilerplate, scaffolding, docs</td>
+<td>Quick scan</td>
+</tr>
+<tr>
+<td>🟡 <strong>Medium</strong></td>
+<td>Business logic, API routes</td>
+<td>Code review + tests</td>
+</tr>
+<tr>
+<td>🔴 <strong>High</strong></td>
+<td>Auth, security, financial, infra</td>
+<td>Deep review + security scan + tests</td>
+</tr>
+</tbody></table>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Where does your team currently draw the trust/verify line?</li>
+<li>Has AI-generated code ever introduced a bug that made it to production?</li>
+</ul>
+<hr>
+<h2 id="72-defining-success-criteria-15-min">7.2. Defining Success Criteria (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Before using Copilot for a task, define what &quot;good output&quot; looks like</li>
+<li>Success criteria prevent the trap of accepting the first thing that compiles</li>
+<li>Different task types need different criteria</li>
+</ul>
+<h3 id="success-criteria-by-task-type">Success Criteria by Task Type</h3>
+<table>
+<thead>
+<tr>
+<th>Task Type</th>
+<th>Correctness</th>
+<th>Style</th>
+<th>Performance</th>
+<th>Security</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Bug fix</strong></td>
+<td>Fix resolves the issue; no regressions</td>
+<td>Matches existing code style</td>
+<td>No performance degradation</td>
+<td>No new vulnerabilities</td>
+</tr>
+<tr>
+<td><strong>New feature</strong></td>
+<td>Meets requirements; handles edge cases</td>
+<td>Follows project patterns</td>
+<td>Acceptable response time</td>
+<td>Input validation, auth checks</td>
+</tr>
+<tr>
+<td><strong>Refactoring</strong></td>
+<td>Same behavior; tests still pass</td>
+<td>Improved readability</td>
+<td>Equal or better performance</td>
+<td>No security regression</td>
+</tr>
+<tr>
+<td><strong>Test generation</strong></td>
+<td>Tests are meaningful; cover edge cases</td>
+<td>Consistent test structure</td>
+<td>Tests run in &lt; 30s</td>
+<td>No test data leaks</td>
+</tr>
+</tbody></table>
+<h3 id="defining-criteria-before-coding">Defining Criteria Before Coding</h3>
+<p><strong>Template</strong>:</p>
+<pre><code>Task: [what you&#39;re asking Copilot to do]
+Success looks like:
+  - Functional: [what the code should do]
+  - Quality: [readability, patterns, style]
+  - Constraints: [performance, security, compatibility]
+  - Not acceptable: [what the code should NOT do]
+</code></pre>
+<h3 id="-demo-criteria-driven-prompting">🖥️ Demo: Criteria-Driven Prompting</h3>
+<ol>
+<li>Define success criteria for a task: &quot;Add pagination to the products API endpoint&quot;</li>
+<li>Include criteria in the prompt: &quot;Must be cursor-based, max 100 items, no offset, include Link headers&quot;</li>
+<li>Evaluate the output against the criteria — does it meet each one?</li>
+<li>Compare to asking without criteria: &quot;Add pagination to products&quot;</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How often do you define success criteria before writing code (with or without AI)?</li>
+<li>What&#39;s the minimum criteria you&#39;d set for every Copilot interaction?</li>
+<li>How do success criteria change for different team roles (junior vs. senior dev)?</li>
+</ul>
+<hr>
+<h2 id="73-output-quality-rubrics-15-min">7.3. Output Quality Rubrics (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>A <strong>rubric</strong> is a structured scoring system for evaluating AI output quality</li>
+<li>Rubrics make evaluation consistent, repeatable, and shareable across a team</li>
+<li>Score each dimension independently — a fix that&#39;s correct but unreadable still needs work</li>
+</ul>
+<h3 id="rubric-template">Rubric Template</h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Score 1 (Poor)</th>
+<th>Score 2 (Acceptable)</th>
+<th>Score 3 (Good)</th>
+<th>Score 4 (Excellent)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Correctness</strong></td>
+<td>Doesn&#39;t work</td>
+<td>Works for happy path</td>
+<td>Handles common edge cases</td>
+<td>Handles all edge cases, robust</td>
+</tr>
+<tr>
+<td><strong>Completeness</strong></td>
+<td>Missing major parts</td>
+<td>Core functionality present</td>
+<td>Fully implements requirements</td>
+<td>Exceeds requirements with thoughtful additions</td>
+</tr>
+<tr>
+<td><strong>Code Style</strong></td>
+<td>Inconsistent, unreadable</td>
+<td>Mostly consistent</td>
+<td>Follows project patterns</td>
+<td>Clean, idiomatic, well-structured</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Has vulnerabilities</td>
+<td>No obvious issues</td>
+<td>Validates input, handles errors</td>
+<td>Defense in depth, follows OWASP</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Unacceptable</td>
+<td>Adequate</td>
+<td>Efficient</td>
+<td>Optimized with appropriate trade-offs</td>
+</tr>
+</tbody></table>
+<h3 id="applying-a-rubric">Applying a Rubric</h3>
+<p><strong>Example — Agent-generated pagination code:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Correctness</td>
+<td>3</td>
+<td>Works, handles empty results and large pages</td>
+</tr>
+<tr>
+<td>Completeness</td>
+<td>2</td>
+<td>Missing Link header, no total count</td>
+</tr>
+<tr>
+<td>Code Style</td>
+<td>3</td>
+<td>Matches existing Express route patterns</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>2</td>
+<td>No input validation on page size parameter</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>3</td>
+<td>Uses cursor-based approach, efficient</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>2.6</strong></td>
+<td>Needs: input validation + Link headers</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-rubric-evaluation">🖥️ Demo: Rubric Evaluation</h3>
+<ol>
+<li>Ask Agent mode to add a search feature to the products API</li>
+<li>Score the output against the rubric dimensions</li>
+<li>Show where it falls short — ask Copilot to fix the specific weaknesses</li>
+<li>Re-score — show the improvement</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What dimensions matter most for your team&#39;s code quality standards?</li>
+<li>How would you automate parts of the rubric (e.g., lint = style, tests = correctness)?</li>
+<li>Would you share rubrics across the team, or let each developer customize theirs?</li>
+</ul>
+<hr>
+<h2 id="74-evaluation-methods-15-min">7.4. Evaluation Methods (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Evaluation happens at two levels: <strong>automated</strong> (machines check) and <strong>human-in-the-loop</strong> (developers review)</li>
+<li>The best approach combines both in a verification pipeline</li>
+<li>Automated checks catch the obvious; human review catches the subtle</li>
+</ul>
+<h3 id="automated-evaluation">Automated Evaluation</h3>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>What It Validates</th>
+<th>Tool</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Lint</strong></td>
+<td>Code style, syntax, unused variables</td>
+<td>ESLint, Prettier</td>
+</tr>
+<tr>
+<td><strong>Type check</strong></td>
+<td>Type safety, interface compliance</td>
+<td>TypeScript compiler</td>
+</tr>
+<tr>
+<td><strong>Tests</strong></td>
+<td>Functional correctness</td>
+<td>Vitest, Jest</td>
+</tr>
+<tr>
+<td><strong>Build</strong></td>
+<td>Compilation, bundling</td>
+<td>Vite, tsc</td>
+</tr>
+<tr>
+<td><strong>Security scan</strong></td>
+<td>Known vulnerabilities, SAST</td>
+<td>CodeQL, Semgrep</td>
+</tr>
+</tbody></table>
+<h3 id="human-in-the-loop-evaluation">Human-in-the-Loop Evaluation</h3>
+<table>
+<thead>
+<tr>
+<th>Review Focus</th>
+<th>What to Look For</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Logic</strong></td>
+<td>Does the code actually solve the problem?</td>
+</tr>
+<tr>
+<td><strong>Architecture</strong></td>
+<td>Does it fit the existing patterns?</td>
+</tr>
+<tr>
+<td><strong>Edge cases</strong></td>
+<td>What happens with unexpected input?</td>
+</tr>
+<tr>
+<td><strong>Maintainability</strong></td>
+<td>Will another developer understand this in 6 months?</td>
+</tr>
+<tr>
+<td><strong>Over-engineering</strong></td>
+<td>Did the AI add unnecessary complexity?</td>
+</tr>
+</tbody></table>
+<h3 id="the-verification-pipeline">The Verification Pipeline</h3>
+<pre><code>┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│  Agent   │───►│  Lint    │───►│  Type    │───►│  Test    │───►│  Human   │
+│  Output  │    │  Check   │    │  Check   │    │  Suite   │    │  Review  │
+└──────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────┘
+                   ▼ Fail          ▼ Fail          ▼ Fail          ▼ Reject
+              Auto-reject     Auto-reject     Auto-reject     Send back
+</code></pre>
+<h3 id="batch-evaluation">Batch Evaluation</h3>
+<p>For systematic quality assessment across many tasks:</p>
+<ol>
+<li>Define a set of representative prompts (10-20 tasks)</li>
+<li>Run each through Copilot</li>
+<li>Score outputs against the rubric</li>
+<li>Track aggregate scores over time</li>
+<li>Identify patterns: which task types does Copilot handle well vs. poorly?</li>
+</ol>
+<h3 id="-demo-automated-evaluation-pipeline">🖥️ Demo: Automated Evaluation Pipeline</h3>
+<ol>
+<li>Generate code with Agent mode</li>
+<li>Run the lint + type check + test pipeline</li>
+<li>Show a failure — observe how the automated gate catches the issue</li>
+<li>Fix the issue and re-run — show the pipeline passing</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What automated checks does your team already have in CI?</li>
+<li>How would you adapt your PR review process for AI-generated code?</li>
+<li>What&#39;s the right balance between automated and human evaluation?</li>
+</ul>
+<hr>
+<h2 id="75-tracking--improvement-15-min">7.5. Tracking &amp; Improvement (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Evaluation without tracking is a one-time exercise — tracking creates a feedback loop</li>
+<li>Monitor quality trends over time: are your prompts/instructions improving?</li>
+<li>The feedback loop: evaluate → identify weakness → improve instructions → re-evaluate</li>
+</ul>
+<h3 id="metrics-to-track">Metrics to Track</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>How to Measure</th>
+<th>What It Tells You</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>First-pass acceptance rate</strong></td>
+<td>% of agent output accepted without changes</td>
+<td>How well your instructions/prompts work</td>
+</tr>
+<tr>
+<td><strong>Iteration count</strong></td>
+<td>Number of follow-up prompts needed</td>
+<td>Prompt quality and task complexity alignment</td>
+</tr>
+<tr>
+<td><strong>Rubric scores</strong></td>
+<td>Average scores per dimension over time</td>
+<td>Where Copilot consistently under- or over-performs</td>
+</tr>
+<tr>
+<td><strong>Time savings</strong></td>
+<td>Time with Copilot vs. estimated manual time</td>
+<td>ROI of AI-assisted development</td>
+</tr>
+</tbody></table>
+<h3 id="the-feedback-loop">The Feedback Loop</h3>
+<pre><code>┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│ Generate │───►│ Evaluate │───►│ Identify │───►│ Improve  │
+│ code     │    │ with     │    │ weakness │    │ prompts/ │
+│          │    │ rubric   │    │          │    │ instruct │
+└──────────┘    └──────────┘    └──────────┘    └────┬─────┘
+     ▲                                               │
+     └───────────────────────────────────────────────┘
+</code></pre>
+<h3 id="trust-calibration-by-task-type">Trust Calibration by Task Type</h3>
+<table>
+<thead>
+<tr>
+<th>Task Type</th>
+<th>Trust Level</th>
+<th>Verification Effort</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Boilerplate / scaffolding</td>
+<td>High</td>
+<td>Quick scan</td>
+</tr>
+<tr>
+<td>CRUD endpoints</td>
+<td>High</td>
+<td>Test coverage check</td>
+</tr>
+<tr>
+<td>Business logic</td>
+<td>Medium</td>
+<td>Code review + tests</td>
+</tr>
+<tr>
+<td>Algorithm implementation</td>
+<td>Medium-Low</td>
+<td>Deep review + benchmarks</td>
+</tr>
+<tr>
+<td>Security-critical code</td>
+<td>Low</td>
+<td>Full security review</td>
+</tr>
+<tr>
+<td>Infrastructure / IaC</td>
+<td>Low</td>
+<td>Plan review + dry run</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-feedback-loop-in-action">🖥️ Demo: Feedback Loop in Action</h3>
+<ol>
+<li>Generate a utility function — score it (e.g., correctness: 3, style: 2)</li>
+<li>Identify the style weakness — add a specific instruction to <code>copilot-instructions.md</code></li>
+<li>Regenerate the same function — show the improved style score</li>
+<li>Discuss how this scales across a team</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What metrics would be most valuable for your team to track?</li>
+<li>How do you currently measure developer productivity? How would AI change that?</li>
+<li>What feedback loops already exist in your development process?</li>
+</ul>
+<hr>
+<h2 id="76-session-7-summary--discussion-5-min">7.6. Session 7 Summary &amp; Discussion (5 min)</h2>
+<h3 id="key-takeaways">Key Takeaways</h3>
+<ul>
+<li>Define success criteria before asking Copilot to generate code</li>
+<li>Use rubrics to make evaluation consistent and repeatable</li>
+<li>Combine automated checks with human review in a verification pipeline</li>
+<li>Track metrics over time — use the feedback loop to continuously improve prompts and instructions</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What&#39;s the first quality metric you&#39;ll start tracking?</li>
+<li>How would you introduce rubric-based evaluation to your team?</li>
+<li>What&#39;s the biggest quality challenge with AI-generated code in your experience?</li>
+</ul>
+<hr>
+<h2 id="-break--10-minutes">☕ Break — 10 Minutes</h2>
+<hr>
+<h2 id="81-opening--ai-safety-debugging-the-black-box-5-min">8.1. Opening &amp; AI Safety: &quot;Debugging the Black Box&quot; (5 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>AI models are often treated as black boxes — input goes in, output comes out, and it&#39;s unclear why</li>
+<li>Copilot provides transparency tools: logs, debug mode, and traces that show what the model received and how it reasoned</li>
+<li>Transparency builds trust — when you can see the context, you can understand the output</li>
+<li><strong>Debugging AI is different from debugging code</strong>: you&#39;re debugging the context and instructions, not an algorithm</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Have you ever been confused by a Copilot response? How did you investigate?</li>
+<li>How does transparency change your trust in AI-generated output?</li>
+</ul>
+<hr>
+<h2 id="82-output-log-channels-15-min">8.2. Output Log Channels (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>VS Code has multiple output channels related to Copilot — each logs different information</li>
+<li>The main channels: <strong>GitHub Copilot</strong>, <strong>GitHub Copilot Chat</strong>, and language-specific log channels</li>
+<li>Output logs are your first diagnostic tool — they show connection status, errors, and feature availability</li>
+</ul>
+<h3 id="output-channels">Output Channels</h3>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>What It Logs</th>
+<th>When to Check</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Copilot</strong></td>
+<td>Completion events, model selection, errors</td>
+<td>Completions not appearing or wrong</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot Chat</strong></td>
+<td>Chat request/response cycles, tool calls</td>
+<td>Chat responses are wrong or slow</td>
+</tr>
+<tr>
+<td><strong>Language Server</strong></td>
+<td>Language-specific analysis, symbols</td>
+<td>Code navigation or analysis issues</td>
+</tr>
+</tbody></table>
+<h3 id="how-to-access">How to Access</h3>
+<ol>
+<li>Open the Output panel: <code>Ctrl+Shift+U</code> (Windows) / <code>Cmd+Shift+U</code> (Mac)</li>
+<li>Select the channel from the dropdown</li>
+<li>Look for errors (red), warnings (yellow), and info messages</li>
+</ol>
+<h3 id="common-log-patterns">Common Log Patterns</h3>
+<table>
+<thead>
+<tr>
+<th>Log Pattern</th>
+<th>Meaning</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Request failed: 401</code></td>
+<td>Authentication expired</td>
+<td>Re-sign in to GitHub</td>
+</tr>
+<tr>
+<td><code>Request failed: 429</code></td>
+<td>Rate limit exceeded</td>
+<td>Wait or switch to a lower-tier model</td>
+</tr>
+<tr>
+<td><code>Context truncated</code></td>
+<td>Context window overflow</td>
+<td>Reduce attached context or start fresh session</td>
+</tr>
+<tr>
+<td><code>Model not available</code></td>
+<td>Selected model is down or restricted</td>
+<td>Switch to a different model</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-reading-output-logs">🖥️ Demo: Reading Output Logs</h3>
+<ol>
+<li>Open the Copilot output channel — show the log stream</li>
+<li>Trigger a completion — identify the log entry for that event</li>
+<li>Show an error scenario (e.g., disconnect network briefly) — identify the error in logs</li>
+<li>Show the Chat output channel — trace a chat request through the logs</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How often do you check output logs when Copilot behaves unexpectedly?</li>
+<li>What&#39;s the most common error you&#39;ve seen in Copilot logs?</li>
+</ul>
+<hr>
+<h2 id="83-chat-debug-mode-15-min">8.3. Chat Debug Mode (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Chat debug mode reveals what Copilot sees: the full context sent to the model, token counts, timing, and model selection</li>
+<li>Enable via VS Code setting: <code>github.copilot.chat.debugMode</code></li>
+<li>This is the single most useful diagnostic tool for understanding &quot;why did Copilot say that?&quot;</li>
+</ul>
+<h3 id="what-debug-mode-reveals">What Debug Mode Reveals</h3>
+<table>
+<thead>
+<tr>
+<th>Information</th>
+<th>Why It Matters</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Full context sent</strong></td>
+<td>See exactly what the model received — instructions, files, history</td>
+</tr>
+<tr>
+<td><strong>Token counts</strong></td>
+<td>Input tokens, output tokens, total — identify bloat</td>
+</tr>
+<tr>
+<td><strong>Model used</strong></td>
+<td>Which model actually handled the request</td>
+</tr>
+<tr>
+<td><strong>Timing</strong></td>
+<td>How long each phase took (context assembly, model call, rendering)</td>
+</tr>
+<tr>
+<td><strong>Tool calls</strong></td>
+<td>Which tools (search, file read, terminal) were invoked and their results</td>
+</tr>
+</tbody></table>
+<h3 id="how-to-enable">How to Enable</h3>
+<pre><code class="language-json">{
+  &quot;github.copilot.chat.debugMode&quot;: true
+}
+</code></pre>
+<p>After enabling, debug information appears in the chat output channel and optionally inline with responses.</p>
+<h3 id="debug-output-anatomy">Debug Output Anatomy</h3>
+<p>A typical debug output shows:</p>
+<pre><code>[DEBUG] Context assembly:
+  System prompt: 1,247 tokens
+  Repository instructions: 312 tokens
+  File-targeted instructions: 0 tokens
+  Attached context (#file): 3,891 tokens
+  Conversation history: 2,104 tokens
+  Current message: 87 tokens
+  ────────────────────────
+  Total input: 7,641 tokens
+
+[DEBUG] Model: gpt-4o
+[DEBUG] Response: 342 tokens (1.2s)
+[DEBUG] Tool calls: workspace.search (284ms), file.read (12ms)
+</code></pre>
+<h3 id="-demo-chat-debug-mode-walkthrough">🖥️ Demo: Chat Debug Mode Walkthrough</h3>
+<ol>
+<li>Enable <code>github.copilot.chat.debugMode</code> in VS Code settings</li>
+<li>Send a chat message — open the output channel to see the debug dump</li>
+<li>Point out: instructions loaded, context composition, token counts</li>
+<li>Send a message with a large <code>#file</code> reference — show the token count jump</li>
+<li>Show how different models appear in the debug output</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What surprised you about the context composition in debug mode?</li>
+<li>How would you use token count information to optimize your prompts?</li>
+<li>When should you enable debug mode vs. leave it off?</li>
+</ul>
+<hr>
+<h2 id="84-agent-debug-logs-15-min">8.4. Agent Debug Logs (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Agent mode creates detailed logs of every iteration in its agentic loop</li>
+<li>These logs show: plan, tool calls, results, decisions, and error recovery</li>
+<li>Agent debug logs are essential for understanding why the agent took a particular approach</li>
+</ul>
+<h3 id="agent-log-location">Agent Log Location</h3>
+<p>Agent debug logs are written to a session-specific log file. Access them via:</p>
+<ol>
+<li>Command Palette → &quot;GitHub Copilot: Open Agent Debug Log&quot;</li>
+<li>Or find them in the workspace storage directory</li>
+</ol>
+<h3 id="understanding-agent-iteration-logs">Understanding Agent Iteration Logs</h3>
+<p>Each iteration in the agent loop creates a log entry:</p>
+<pre><code>[Iteration 1] Plan: Add validation middleware to orders route
+  Tool: file.read → api/routes/orders.ts (success, 2,341 tokens)
+  Tool: file.read → api/routes/products.ts (success, 1,892 tokens)
+  Tool: file.write → api/middleware/validate-order.ts (created)
+  Tool: file.edit → api/routes/orders.ts (modified lines 12-18)
+  Tool: terminal.run → npm run lint (exit code: 1)
+  Result: FAIL — lint error on line 5: &#39;Request&#39; is not defined
+
+[Iteration 2] Fix: Add missing import
+  Tool: file.edit → api/middleware/validate-order.ts (modified line 1)
+  Tool: terminal.run → npm run lint (exit code: 0)
+  Tool: terminal.run → npm test (exit code: 0)
+  Result: PASS — all validation gates passed
+</code></pre>
+<h3 id="tool-call-traces">Tool Call Traces</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Tool name</strong></td>
+<td>Which tool was called (<code>file.read</code>, <code>terminal.run</code>, etc.)</td>
+</tr>
+<tr>
+<td><strong>Arguments</strong></td>
+<td>What was passed to the tool (file path, command)</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>Success/failure, output content, token count</td>
+</tr>
+<tr>
+<td><strong>Duration</strong></td>
+<td>How long the tool call took</td>
+</tr>
+<tr>
+<td><strong>Decision</strong></td>
+<td>What the agent decided to do next based on the result</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-tracing-an-agent-failure">🖥️ Demo: Tracing an Agent Failure</h3>
+<ol>
+<li>Give Agent mode a task that will fail on first attempt (e.g., &quot;Add a feature that requires a missing dependency&quot;)</li>
+<li>Open the agent debug log — trace through the iterations</li>
+<li>Show where the agent detected the failure (observe phase) and how it adjusted (reflect phase)</li>
+<li>Point out the tool call trace: what was read, what was written, what commands ran</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How would you use agent debug logs to improve your agent instructions?</li>
+<li>What patterns in the logs indicate the agent is stuck?</li>
+<li>How do agent debug logs compare to traditional application debugging?</li>
+</ul>
+<hr>
+<h2 id="85-diagnostics-collection--curriculum-wrap-up-10-min">8.5. Diagnostics Collection &amp; Curriculum Wrap-Up (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>When filing issues or requesting support, a diagnostics bundle provides all the information needed</li>
+<li>VS Code can export Copilot diagnostics including: extension version, log files, configuration, and system info</li>
+<li>Always sanitize diagnostics before sharing — remove tokens, secrets, and proprietary code</li>
+</ul>
+<h3 id="diagnostics-collection">Diagnostics Collection</h3>
+<ol>
+<li>Command Palette → &quot;GitHub Copilot: Collect Diagnostics&quot;</li>
+<li>Review the generated file — redact any sensitive content</li>
+<li>Attach to GitHub issues or support requests</li>
+</ol>
+<h3 id="diagnostic-toolkit-cheat-sheet">Diagnostic Toolkit Cheat Sheet</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Command / Location</th>
+<th>What You Get</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Output logs</strong></td>
+<td><code>Ctrl+Shift+U</code> → select channel</td>
+<td>Real-time log stream</td>
+</tr>
+<tr>
+<td><strong>Debug mode</strong></td>
+<td><code>github.copilot.chat.debugMode: true</code></td>
+<td>Context composition, token counts</td>
+</tr>
+<tr>
+<td><strong>Agent debug log</strong></td>
+<td>Command Palette → &quot;Open Agent Debug Log&quot;</td>
+<td>Iteration traces, tool calls</td>
+</tr>
+<tr>
+<td><strong>Diagnostics export</strong></td>
+<td>Command Palette → &quot;Collect Diagnostics&quot;</td>
+<td>Full diagnostic bundle</td>
+</tr>
+<tr>
+<td><strong>Extension version</strong></td>
+<td>Extensions panel → GitHub Copilot → version</td>
+<td>Confirm you&#39;re on latest</td>
+</tr>
+<tr>
+<td><strong>Network check</strong></td>
+<td>Output logs → look for 401/429/timeout</td>
+<td>Connection and auth issues</td>
+</tr>
+</tbody></table>
+<h3 id="curriculum-wrap-up--all-8-sessions-complete">Curriculum Wrap-Up — All 8 Sessions Complete</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Sessions</th>
+<th>Core Themes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Foundations</strong> (Module 1)</td>
+<td>1–3</td>
+<td>Chat interface, context management, models &amp; tokens</td>
+</tr>
+<tr>
+<td><strong>Agentic Patterns</strong> (Module 2)</td>
+<td>4–5</td>
+<td>Agentic loops, self-correction, rubber duck, patterns &amp; antipatterns</td>
+</tr>
+<tr>
+<td><strong>Advanced Topics</strong> (Module 3)</td>
+<td>6–8</td>
+<td>Extensions, MCP, evaluation, troubleshooting</td>
+</tr>
+</tbody></table>
+<h3 id="what-to-do-next">What to Do Next</h3>
+<ul>
+<li>Set up <code>.github/copilot-instructions.md</code> in your primary repository</li>
+<li>Create 1-2 custom agents for your team&#39;s common workflows</li>
+<li>Configure MCP servers for your internal tools</li>
+<li>Establish an evaluation rubric and start tracking quality metrics</li>
+<li>Share learnings with your team — the best way to learn is to teach</li>
+</ul>
+<h3 id="further-learning">Further Learning</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Copilot Documentation</strong></td>
+<td><a href="https://docs.github.com/en/copilot">https://docs.github.com/en/copilot</a></td>
+</tr>
+<tr>
+<td><strong>MCP Specification</strong></td>
+<td><a href="https://modelcontextprotocol.io">https://modelcontextprotocol.io</a></td>
+</tr>
+<tr>
+<td><strong>OctoCAT Supply Demo Repo</strong></td>
+<td><a href="https://github.com/microsoft/GitHubCopilot_Customized">https://github.com/microsoft/GitHubCopilot_Customized</a></td>
+</tr>
+<tr>
+<td><strong>VS Code Copilot Features</strong></td>
+<td><a href="https://code.visualstudio.com/docs/copilot/overview">https://code.visualstudio.com/docs/copilot/overview</a></td>
+</tr>
+</tbody></table>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Across all 8 sessions, what&#39;s the single most impactful concept for your daily work?</li>
+<li>What&#39;s the first change you&#39;ll make to your team&#39;s Copilot setup?</li>
+<li>What topics would you want to explore in a follow-up session?</li>
+</ul>
+<hr>
+<p><em>Workshop guide for GitHub Copilot Developer Training — Advanced Topics (Module 3 of 3)</em></p>
+</article>  </main> </body></html>  <script type="module">document.querySelectorAll("pre").forEach(e=>{const t=document.createElement("button");t.className="copy-btn",t.textContent="Copy",t.addEventListener("click",async()=>{const o=(e.querySelector("code")||e).textContent||"";await navigator.clipboard.writeText(o),t.textContent="Copied!",t.classList.add("copied"),setTimeout(()=>{t.textContent="Copy",t.classList.remove("copied")},2e3)}),e.appendChild(t)});</script>

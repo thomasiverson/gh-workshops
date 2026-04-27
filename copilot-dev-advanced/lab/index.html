@@ -1,0 +1,700 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot Developer Training — Advanced Topics — Hands-On Lab Guide</title><link rel="stylesheet" href="/gh-workshops/_astro/index.tKAiv-SV.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-developer-training--advanced-topics--hands-on-lab-guide">GitHub Copilot Developer Training — Advanced Topics — Hands-On Lab Guide</h1>
+<p><strong>Duration</strong>: ~75 minutes of hands-on exercises (across a ~3-hour module)<br><strong>Format</strong>: Step-by-step lab exercises aligned to workshop sessions<br><strong>Audience</strong>: Developers extending, evaluating, and debugging GitHub Copilot<br><strong>Repo</strong>: <a href="https://github.com/microsoft/GitHubCopilot_Customized">microsoft/GitHubCopilot_Customized</a> (OctoCAT Supply)</p>
+<blockquote>
+<p><strong>Part of the Copilot Developer Training curriculum</strong> (<a href="../copilot-dev-foundations/copilot-dev-foundations-LAB.md">Foundations LAB</a> · <a href="../copilot-dev-agentic/copilot-dev-agentic-LAB.md">Agentic Patterns LAB</a> · <a href="../copilot-dev-advanced/copilot-dev-advanced-LAB.md">Advanced Topics LAB</a>). This lab can be completed standalone.</p>
+</blockquote>
+<hr>
+<h2 id="lab-overview">Lab Overview</h2>
+<p>These labs cover extending Copilot with MCP servers, building evaluation frameworks, and mastering diagnostic tools for troubleshooting.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>With Copilot Pro, Business, or Enterprise license</td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Latest stable (or Insiders for preview features)</td>
+</tr>
+<tr>
+<td><strong>Copilot Extension</strong></td>
+<td>GitHub Copilot + GitHub Copilot Chat extensions installed</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>Version 18 or higher</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>For cloning the demo repository</td>
+</tr>
+</tbody></table>
+<h3 id="setup-checkpoint">Setup Checkpoint</h3>
+<p>Ensure your environment is ready. If you completed Modules 1–2, your repo should be set up. If starting fresh:</p>
+<pre><code class="language-bash">git clone https://github.com/&lt;YOUR-USERNAME&gt;/GitHubCopilot_Customized.git
+cd GitHubCopilot_Customized
+npm install
+npm run build
+npm run dev
+</code></pre>
+<p>Ensure these are in place:</p>
+<ul>
+<li>✅ <code>.github/copilot-instructions.md</code> exists (create one with basic TypeScript standards if missing)</li>
+<li>✅ API running at <code>http://localhost:3000</code></li>
+<li>✅ Frontend running at <code>http://localhost:5137</code></li>
+<li>✅ <code>github.copilot.chat.debugMode</code> set to <code>true</code> in VS Code settings</li>
+</ul>
+<h3 id="lab-summary">Lab Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Workshop Section</th>
+<th>Duration</th>
+<th>Exercises</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Session 6: Extensions &amp; MCP</td>
+<td>36 min</td>
+<td>5 exercises</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Session 7: Evaluating Agentic Output</td>
+<td>34 min</td>
+<td>5 exercises</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Session 8: Troubleshooting &amp; Diagnostics</td>
+<td>36 min</td>
+<td>5 exercises</td>
+</tr>
+</tbody></table>
+<hr>
+<details>
+<summary><h2 id="lab-1-extensions--mcp-36-min">Lab 1: Extensions & MCP (36 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Session</strong>: 6 — Extensions &amp; MCP</p>
+</blockquote>
+<h3 id="exercise-11--participant-exploration-5-min">Exercise 1.1 — Participant Exploration (5 min)</h3>
+<p><strong>Objective</strong>: Use each built-in chat participant and document their capabilities.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Test @workspace</strong></p>
+<pre><code>@workspace What are the main database entities in this project and how are they related?
+</code></pre>
+<p>Note: How does it find this information? Does it reference specific files?</p>
+<p><strong>Step 2: Test @vscode</strong></p>
+<pre><code>@vscode How do I configure auto-format on save for TypeScript files?
+</code></pre>
+<p>Note: Does it provide VS Code-specific settings (not generic advice)?</p>
+<p><strong>Step 3: Test @terminal</strong></p>
+<p>Run a command in the terminal first:</p>
+<pre><code class="language-bash">npm run lint
+</code></pre>
+<p>Then ask:</p>
+<pre><code>@terminal Summarize the output of the last command. Were there any warnings?
+</code></pre>
+<p><strong>Step 4: Document findings</strong></p>
+<table>
+<thead>
+<tr>
+<th>Participant</th>
+<th>What It Knows</th>
+<th>Limitations</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@workspace</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>@vscode</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>@terminal</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Used all three built-in participants</li>
+<li>✅ Documented what each knows and doesn&#39;t know</li>
+<li>✅ Understand when to use each one</li>
+</ul>
+<hr>
+<h3 id="exercise-12--extension-installation-8-min">Exercise 1.2 — Extension Installation (8 min)</h3>
+<p><strong>Objective</strong>: Find, install, and use a GitHub Copilot Extension.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Browse the marketplace</strong></p>
+<p>Open <a href="https://github.com/marketplace?type=apps&copilot_app=true">https://github.com/marketplace?type=apps&amp;copilot_app=true</a> in your browser.</p>
+<p><strong>Step 2: Find a relevant extension</strong></p>
+<p>Look for an extension relevant to your tech stack. Options include:</p>
+<ul>
+<li>Docker</li>
+<li>GitHub Models</li>
+<li>Azure</li>
+<li>Sentry</li>
+</ul>
+<p><strong>Step 3: Install and use</strong></p>
+<p>Follow the extension&#39;s installation instructions. Then use it in chat:</p>
+<pre><code>@extension-name [your question]
+</code></pre>
+<p><strong>Step 4: Evaluate</strong></p>
+<ul>
+<li>Is the response more domain-specific than Copilot&#39;s default?</li>
+<li>What additional context does the extension have access to?</li>
+<li>Would you recommend this to your team?</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Browsed the Copilot Extensions marketplace</li>
+<li>✅ Installed at least one extension</li>
+<li>✅ Used the extension in a chat conversation</li>
+<li>✅ Evaluated whether it adds value for your workflow</li>
+</ul>
+<hr>
+<h3 id="exercise-13--mcp-server-setup-10-min">Exercise 1.3 — MCP Server Setup (10 min)</h3>
+<p><strong>Objective</strong>: Configure a local MCP server and use its tools in chat.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create the MCP configuration</strong></p>
+<p>Create <code>.vscode/mcp.json</code>:</p>
+<pre><code class="language-json">{
+  &quot;servers&quot;: {
+    &quot;filesystem&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [
+        &quot;-y&quot;,
+        &quot;@modelcontextprotocol/server-filesystem&quot;,
+        &quot;./api&quot;
+      ]
+    }
+  }
+}
+</code></pre>
+<p><strong>Step 2: Reload VS Code</strong></p>
+<p>Reload the window (Command Palette → &quot;Developer: Reload Window&quot;) so VS Code picks up the new MCP configuration.</p>
+<p><strong>Step 3: Verify the server</strong></p>
+<p>Open the chat panel. You should see MCP tools available. Try:</p>
+<pre><code>Use the filesystem tools to list all TypeScript files in the api directory
+</code></pre>
+<p><strong>Step 4: Use MCP tools for a task</strong></p>
+<pre><code>Using the filesystem tools, find all files that contain &quot;order&quot; in their name
+and summarize what each one does
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created <code>.vscode/mcp.json</code> with a filesystem server</li>
+<li>✅ MCP tools appear in the chat tool list</li>
+<li>✅ Successfully used MCP tools in a conversation</li>
+</ul>
+<hr>
+<h3 id="exercise-14--mcp-configuration-from-scratch-5-min">Exercise 1.4 — MCP Configuration from Scratch (5 min)</h3>
+<p><strong>Objective</strong>: Write a complete MCP configuration with multiple servers.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Add a GitHub server</strong></p>
+<p>Update <code>.vscode/mcp.json</code> to include a GitHub server:</p>
+<pre><code class="language-json">{
+  &quot;servers&quot;: {
+    &quot;filesystem&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [
+        &quot;-y&quot;,
+        &quot;@modelcontextprotocol/server-filesystem&quot;,
+        &quot;./api&quot;
+      ]
+    },
+    &quot;github&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [
+        &quot;-y&quot;,
+        &quot;@modelcontextprotocol/server-github&quot;
+      ],
+      &quot;env&quot;: {
+        &quot;GITHUB_PERSONAL_ACCESS_TOKEN&quot;: &quot;${input:github-pat}&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<p><strong>Step 2: Reload and verify</strong></p>
+<p>Reload VS Code. You should see both servers&#39; tools available.</p>
+<blockquote>
+<p><strong>Note</strong>: The GitHub server requires a Personal Access Token. When prompted, enter one with <code>repo</code> scope (or skip this server if you don&#39;t have one handy).</p>
+</blockquote>
+<p><strong>Step 3: Test the GitHub server</strong></p>
+<pre><code>Using GitHub tools, list the open issues on this repository
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Configured multiple MCP servers in one file</li>
+<li>✅ Used <code>${input:}</code> for secret management</li>
+<li>✅ Both servers&#39; tools appear in the chat</li>
+</ul>
+<hr>
+<h3 id="exercise-15--mcp-tool-usage-in-context-8-min">Exercise 1.5 — MCP Tool Usage in Context (8 min)</h3>
+<p><strong>Objective</strong>: Use MCP tools as part of a larger task.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Combine MCP with Copilot</strong></p>
+<p>In Agent mode, ask:</p>
+<pre><code>Use the filesystem tools to analyze the API route files. Then suggest
+a new endpoint for managing deliveries, following the patterns you found.
+Create the files.
+</code></pre>
+<p><strong>Step 2: Observe tool usage</strong></p>
+<p>Watch the chat output for tool invocations. Note:</p>
+<ul>
+<li>Which MCP tools were called?</li>
+<li>What did the tools return?</li>
+<li>How did Copilot use the tool results?</li>
+</ul>
+<p><strong>Step 3: Evaluate</strong></p>
+<ul>
+<li>Did MCP tools give Copilot better context than <code>#file</code> references?</li>
+<li>When would you use MCP tools vs. <code>@workspace</code> vs. <code>#file</code>?</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Used MCP tools as part of an Agent mode task</li>
+<li>✅ Observed tool calls and results in the chat</li>
+<li>✅ Can articulate when MCP adds value over built-in context</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-2-evaluating-agentic-output-34-min">Lab 2: Evaluating Agentic Output (34 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Session</strong>: 7 — Evaluating Agentic Output</p>
+</blockquote>
+<h3 id="exercise-21--defining-success-criteria-5-min">Exercise 2.1 — Defining Success Criteria (5 min)</h3>
+<p><strong>Objective</strong>: Define success criteria for a task before using Copilot.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Choose a task</strong></p>
+<p>Task: &quot;Add pagination to the products API endpoint&quot;</p>
+<p><strong>Step 2: Write success criteria</strong></p>
+<p>Before asking Copilot, write your criteria:</p>
+<pre><code>Task: Add pagination to the products API endpoint
+Success criteria:
+  - Functional: Cursor-based pagination, max 100 items per page
+  - Quality: Matches existing route patterns in the project
+  - Constraints: Include Link headers, total count in response
+  - Security: Validate page size input (reject negative, &gt; 100)
+  - Not acceptable: Offset-based pagination, no input validation
+</code></pre>
+<p><strong>Step 3: Execute with criteria in the prompt</strong></p>
+<p>Include the criteria directly:</p>
+<pre><code>Add cursor-based pagination to the products GET endpoint.
+Requirements:
+- Max 100 items per page, default 20
+- Include Link headers (next, prev) in response
+- Include total count in response body
+- Validate page size (reject negative or &gt; 100 with 400 error)
+- Follow the existing route patterns in this project
+Do NOT use offset-based pagination.
+</code></pre>
+<p><strong>Step 4: Evaluate against criteria</strong></p>
+<p>Check each criterion. Did the output meet them all?</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Wrote success criteria before generating code</li>
+<li>✅ Included criteria in the prompt</li>
+<li>✅ Evaluated output against each criterion</li>
+</ul>
+<hr>
+<h3 id="exercise-22--rubric-creation-8-min">Exercise 2.2 — Rubric Creation (8 min)</h3>
+<p><strong>Objective</strong>: Build a quality rubric for evaluating AI-generated code.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create your rubric</strong></p>
+<p>Create a file <code>evaluation-rubric.md</code> in your project root (this is for your reference, not committed):</p>
+<pre><code class="language-markdown"># Code Quality Rubric
+
+| Dimension | 1 (Poor) | 2 (OK) | 3 (Good) | 4 (Excellent) |
+|-----------|----------|--------|----------|----------------|
+| Correctness | Doesn&#39;t work | Happy path only | Common edges | All edges, robust |
+| Completeness | Missing parts | Core present | Full requirements | Exceeds requirements |
+| Code Style | Inconsistent | Mostly OK | Follows patterns | Clean, idiomatic |
+| Security | Vulnerabilities | No obvious issues | Validates input | Defense in depth |
+| Performance | Unacceptable | Adequate | Efficient | Optimized |
+| Testability | No tests | Basic tests | Good coverage | Edge case tests |
+</code></pre>
+<p><strong>Step 2: Customize dimensions</strong></p>
+<p>Add or modify dimensions for your specific project. Consider:</p>
+<ul>
+<li>Documentation (JSDoc coverage)</li>
+<li>Error handling (graceful failures)</li>
+<li>Type safety (strict TypeScript compliance)</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created a rubric with at least 5 dimensions</li>
+<li>✅ Each dimension has clear scoring definitions</li>
+<li>✅ Rubric is customized for your project&#39;s needs</li>
+</ul>
+<hr>
+<h3 id="exercise-23--rubric-application-8-min">Exercise 2.3 — Rubric Application (8 min)</h3>
+<p><strong>Objective</strong>: Generate code and score it against your rubric.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Generate code</strong></p>
+<p>In Agent mode:</p>
+<pre><code>Add a search feature to the products API. Support searching by name
+and category with partial matching. Include tests.
+</code></pre>
+<p><strong>Step 2: Score each dimension</strong></p>
+<p>Review the generated code and score it:</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Correctness</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Completeness</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Code Style</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Security</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Performance</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Testability</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Average</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Step 3: Identify the weakest dimension</strong></p>
+<p>Ask Copilot to fix only the weakest area:</p>
+<pre><code>The search feature you generated scores low on [dimension].
+Specifically: [your notes]. Please improve only this aspect.
+</code></pre>
+<p><strong>Step 4: Re-score</strong></p>
+<p>Score the improved version. Did the targeted fix work?</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Scored AI-generated code against all rubric dimensions</li>
+<li>✅ Identified the weakest dimension</li>
+<li>✅ Targeted improvement improved the score</li>
+</ul>
+<hr>
+<h3 id="exercise-24--automated-validation-pipeline-8-min">Exercise 2.4 — Automated Validation Pipeline (8 min)</h3>
+<p><strong>Objective</strong>: Set up automated checks that validate agent output.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Ask the agent to add a feature with validation</strong></p>
+<pre><code>Add a new API endpoint for managing supplier contacts.
+After creating the files, run these commands:
+1. npm run lint
+2. npx tsc --noEmit
+3. npm test
+Report the results of each command.
+</code></pre>
+<p><strong>Step 2: Observe the pipeline</strong></p>
+<p>Watch the agent run each validation step. Note:</p>
+<ul>
+<li>Did lint pass on the first try?</li>
+<li>Did type checking pass?</li>
+<li>Did tests pass?</li>
+<li>If not, did the agent self-correct?</li>
+</ul>
+<p><strong>Step 3: Create a validation script</strong></p>
+<p>Create <code>scripts/validate-output.sh</code>:</p>
+<pre><code class="language-bash">#!/bin/bash
+echo &quot;=== Lint Check ===&quot;
+npm run lint
+LINT=$?
+
+echo &quot;=== Type Check ===&quot;
+npx tsc --noEmit
+TYPE=$?
+
+echo &quot;=== Tests ===&quot;
+npm test
+TEST=$?
+
+echo &quot;=== Results ===&quot;
+echo &quot;Lint: $([ $LINT -eq 0 ] &amp;&amp; echo &#39;PASS&#39; || echo &#39;FAIL&#39;)&quot;
+echo &quot;Types: $([ $TYPE -eq 0 ] &amp;&amp; echo &#39;PASS&#39; || echo &#39;FAIL&#39;)&quot;
+echo &quot;Tests: $([ $TEST -eq 0 ] &amp;&amp; echo &#39;PASS&#39; || echo &#39;FAIL&#39;)&quot;
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Agent ran lint, type check, and tests</li>
+<li>✅ Observed at least one validation gate in action</li>
+<li>✅ Created a reusable validation script</li>
+</ul>
+<hr>
+<h3 id="exercise-25--feedback-loop-5-min">Exercise 2.5 — Feedback Loop (5 min)</h3>
+<p><strong>Objective</strong>: Improve a prompt based on rubric evaluation.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Generate code with a basic prompt</strong></p>
+<pre><code>Add email validation to the supplier creation endpoint
+</code></pre>
+<p>Score the output against your rubric. Note the overall score.</p>
+<p><strong>Step 2: Improve the prompt</strong></p>
+<p>Based on weaknesses in the first output, add specific instructions to <code>copilot-instructions.md</code>:</p>
+<pre><code class="language-markdown">## Validation Patterns
+- All input validation must use a dedicated validation function (not inline)
+- Validation errors must return 400 with { success: false, error: &quot;description&quot; }
+- Include both format validation and business rule validation
+</code></pre>
+<p><strong>Step 3: Regenerate with the same prompt</strong></p>
+<p>Start a new session. Ask the same question:</p>
+<pre><code>Add email validation to the supplier creation endpoint
+</code></pre>
+<p><strong>Step 4: Re-score and compare</strong></p>
+<p>Score the new output. Did the improved instructions raise the score?</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Generated code with a basic prompt and scored it</li>
+<li>✅ Improved instructions based on weaknesses</li>
+<li>✅ Regenerated and observed measurable improvement</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-3-troubleshooting--diagnostics-36-min">Lab 3: Troubleshooting & Diagnostics (36 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Session</strong>: 8 — Troubleshooting &amp; Diagnostics</p>
+</blockquote>
+<h3 id="exercise-31--output-log-exploration-5-min">Exercise 3.1 — Output Log Exploration (5 min)</h3>
+<p><strong>Objective</strong>: Navigate output log channels and identify a completion event.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Open the Output panel</strong></p>
+<p>Press <code>Ctrl+Shift+U</code> (Windows) or <code>Cmd+Shift+U</code> (Mac).</p>
+<p><strong>Step 2: Select &quot;GitHub Copilot&quot;</strong></p>
+<p>Choose the &quot;GitHub Copilot&quot; channel from the dropdown.</p>
+<p><strong>Step 3: Trigger a completion</strong></p>
+<p>Open a TypeScript file and start typing. Watch for new log entries.</p>
+<p><strong>Step 4: Identify the completion event</strong></p>
+<p>Find the log entry that corresponds to your completion. Note:</p>
+<ul>
+<li>Model used</li>
+<li>Response time</li>
+<li>Any warnings or errors</li>
+</ul>
+<p><strong>Step 5: Check the Chat channel</strong></p>
+<p>Switch to &quot;GitHub Copilot Chat&quot; channel. Send a chat message and find the corresponding log entry.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Navigated to the correct output channels</li>
+<li>✅ Identified a completion event in the logs</li>
+<li>✅ Found a chat request/response in the logs</li>
+</ul>
+<hr>
+<h3 id="exercise-32--chat-debug-mode-analysis-8-min">Exercise 3.2 — Chat Debug Mode Analysis (8 min)</h3>
+<p><strong>Objective</strong>: Use debug mode to analyze context composition.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Verify debug mode is on</strong></p>
+<p>Confirm <code>github.copilot.chat.debugMode</code> is <code>true</code> in settings.</p>
+<p><strong>Step 2: Send a simple message</strong></p>
+<pre><code>What is the OctoCAT Supply project about?
+</code></pre>
+<p>Open the Output panel → &quot;GitHub Copilot Chat&quot;. Find the debug output. Note:</p>
+<ul>
+<li>System prompt tokens: ___</li>
+<li>Repository instructions tokens: ___</li>
+<li>Total input tokens: ___</li>
+<li>Model used: ___</li>
+<li>Response time: ___</li>
+</ul>
+<p><strong>Step 3: Send a context-heavy message</strong></p>
+<pre><code>@workspace #file:api/routes/orders.ts #file:api/routes/products.ts Compare the error handling patterns in these two route files
+</code></pre>
+<p>Note the new token counts:</p>
+<ul>
+<li>Attached context tokens: ___</li>
+<li>Total input tokens: ___</li>
+<li>Difference from simple message: ___</li>
+</ul>
+<p><strong>Step 4: Send a message with conversation history</strong></p>
+<p>Continue the conversation with 3-4 follow-up questions. Watch the &quot;Conversation history&quot; token count grow.</p>
+<p><strong>Step 5: Start a fresh session</strong></p>
+<p>Open a new chat session. Send the context-heavy message again. Note:</p>
+<ul>
+<li>Conversation history tokens: ___ (should be 0)</li>
+<li>Total tokens saved: ___</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Read debug output and identified token counts</li>
+<li>✅ Measured the token cost of <code>#file</code> attachments</li>
+<li>✅ Observed conversation history growing</li>
+<li>✅ Confirmed fresh sessions reduce total token usage</li>
+</ul>
+<hr>
+<h3 id="exercise-33--agent-debug-trace-10-min">Exercise 3.3 — Agent Debug Trace (10 min)</h3>
+<p><strong>Objective</strong>: Trace a full agent iteration through debug logs.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Give the agent a task that requires multiple steps</strong></p>
+<pre><code>Add a new endpoint GET /api/products/low-stock that returns products
+with inventory below a threshold (default 10, configurable via query param).
+Include input validation and tests.
+</code></pre>
+<p><strong>Step 2: Open agent debug logs</strong></p>
+<p>Command Palette → &quot;GitHub Copilot: Open Agent Debug Log&quot; (or check the Output panel for detailed agent logs).</p>
+<p><strong>Step 3: Trace the full iteration</strong></p>
+<p>Find and document each step:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Tool Call</th>
+<th>Arguments</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>...</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Step 4: Identify decision points</strong></p>
+<p>For each iteration, note what the agent decided and why:</p>
+<ul>
+<li>After reading files: what approach did it choose?</li>
+<li>After lint/test results: did it self-correct?</li>
+<li>Final decision: how did it determine the task was complete?</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Traced at least 3 tool calls through the debug log</li>
+<li>✅ Documented the agent&#39;s decision at each step</li>
+<li>✅ Identified at least one self-correction (if any occurred)</li>
+</ul>
+<hr>
+<h3 id="exercise-34--failure-diagnosis-8-min">Exercise 3.4 — Failure Diagnosis (8 min)</h3>
+<p><strong>Objective</strong>: Diagnose a failing scenario using logs.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create a scenario that will fail</strong></p>
+<p>Give the agent a task with a deliberate constraint that conflicts:</p>
+<pre><code>Create a new endpoint that uses the &#39;lodash&#39; library to sort products by price.
+Do not install any new packages. Run lint and tests after.
+</code></pre>
+<p>The agent should fail (lodash isn&#39;t installed) and need to find an alternative.</p>
+<p><strong>Step 2: Trace the failure in logs</strong></p>
+<p>When the agent encounters the error:</p>
+<ul>
+<li>What log entry shows the failure?</li>
+<li>What error message appears?</li>
+<li>What does the agent do next?</li>
+</ul>
+<p><strong>Step 3: Document the diagnosis</strong></p>
+<pre><code>Symptom: [what you observed]
+Root cause: [what the logs revealed]
+Agent response: [how the agent handled it]
+Resolution: [what ultimately happened]
+</code></pre>
+<p><strong>Step 4: Assess</strong></p>
+<p>Did the agent&#39;s self-correction handle the failure well? Would you have intervened differently?</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created a scenario that triggers a failure</li>
+<li>✅ Found the failure in the debug logs</li>
+<li>✅ Traced the agent&#39;s error recovery process</li>
+<li>✅ Documented the diagnosis</li>
+</ul>
+<hr>
+<h3 id="exercise-35--diagnostics-export-5-min">Exercise 3.5 — Diagnostics Export (5 min)</h3>
+<p><strong>Objective</strong>: Collect and export a diagnostics bundle.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Collect diagnostics</strong></p>
+<p>Command Palette → &quot;GitHub Copilot: Collect Diagnostics&quot;</p>
+<p><strong>Step 2: Review the output</strong></p>
+<p>Open the generated file and review:</p>
+<ul>
+<li>Extension version</li>
+<li>VS Code version</li>
+<li>Authentication status</li>
+<li>Configuration settings</li>
+<li>Recent log entries</li>
+</ul>
+<p><strong>Step 3: Redact sensitive data</strong></p>
+<p>Identify any sensitive information in the diagnostics:</p>
+<ul>
+<li>Personal access tokens</li>
+<li>Repository names (if private)</li>
+<li>User-specific settings</li>
+</ul>
+<p>Note what you&#39;d redact before sharing with support.</p>
+<p><strong>Step 4: Create a diagnostic checklist</strong></p>
+<p>Based on what you&#39;ve learned, write a personal troubleshooting checklist:</p>
+<pre><code>When Copilot isn&#39;t working:
+1. Check: [first thing to check]
+2. Check: [second thing to check]
+3. Check: [third thing to check]
+...
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Successfully collected diagnostics</li>
+<li>✅ Reviewed the diagnostic output</li>
+<li>✅ Identified sensitive data that would need redaction</li>
+<li>✅ Created a personal troubleshooting checklist</li>
+</ul>
+</details>
+
+<hr>
+<p><em>Lab guide for GitHub Copilot Developer Training — Advanced Topics (Module 3 of 3)</em></p>
+</article>  </main> </body></html>  <script type="module">document.querySelectorAll("pre").forEach(e=>{const t=document.createElement("button");t.className="copy-btn",t.textContent="Copy",t.addEventListener("click",async()=>{const o=(e.querySelector("code")||e).textContent||"";await navigator.clipboard.writeText(o),t.textContent="Copied!",t.classList.add("copied"),setTimeout(()=>{t.textContent="Copy",t.classList.remove("copied")},2e3)}),e.appendChild(t)});</script>

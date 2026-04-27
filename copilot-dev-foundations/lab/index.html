@@ -1,0 +1,539 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot Developer Training — Foundations — Hands-On Lab Guide</title><link rel="stylesheet" href="/gh-workshops/_astro/index.tKAiv-SV.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-developer-training--foundations--hands-on-lab-guide">GitHub Copilot Developer Training — Foundations — Hands-On Lab Guide</h1>
+<p><strong>Duration</strong>: ~75 minutes of hands-on exercises (across a ~3-hour module)<br><strong>Format</strong>: Step-by-step lab exercises aligned to workshop sessions<br><strong>Audience</strong>: Developers starting with GitHub Copilot<br><strong>Repo</strong>: <a href="https://github.com/microsoft/GitHubCopilot_Customized">microsoft/GitHubCopilot_Customized</a> (OctoCAT Supply)</p>
+<blockquote>
+<p><strong>Part of the Copilot Developer Training curriculum</strong> (<a href="../copilot-dev-foundations/copilot-dev-foundations-LAB.md">Foundations LAB</a> · <a href="../copilot-dev-agentic/copilot-dev-agentic-LAB.md">Agentic Patterns LAB</a> · <a href="../copilot-dev-advanced/copilot-dev-advanced-LAB.md">Advanced Topics LAB</a>). This lab can be completed standalone.</p>
+</blockquote>
+<hr>
+<h2 id="lab-overview">Lab Overview</h2>
+<p>These labs cover the foundational skills for working with GitHub Copilot: chat interface, context management, instructions, and model/token awareness. Each lab maps to a workshop session.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>With Copilot Pro, Business, or Enterprise license</td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Latest stable (or Insiders for preview features)</td>
+</tr>
+<tr>
+<td><strong>Copilot Extension</strong></td>
+<td>GitHub Copilot + GitHub Copilot Chat extensions installed</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>Version 18 or higher</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>For cloning the demo repository</td>
+</tr>
+</tbody></table>
+<h3 id="setup-checkpoint">Setup Checkpoint</h3>
+<p>Before starting, ensure your environment is ready:</p>
+<pre><code class="language-bash">git clone https://github.com/&lt;YOUR-USERNAME&gt;/GitHubCopilot_Customized.git
+cd GitHubCopilot_Customized
+npm install
+npm run build
+npm run dev
+</code></pre>
+<ul>
+<li>✅ API running at <code>http://localhost:3000</code></li>
+<li>✅ Frontend running at <code>http://localhost:5137</code></li>
+<li>✅ Copilot extension active in VS Code</li>
+</ul>
+<h3 id="lab-summary">Lab Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Workshop Section</th>
+<th>Duration</th>
+<th>Exercises</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Session 1: Copilot Chat Tour</td>
+<td>28 min</td>
+<td>5 exercises</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Session 2: Memory &amp; Context</td>
+<td>31 min</td>
+<td>5 exercises</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Session 3: Models, Agents &amp; Tokens</td>
+<td>33 min</td>
+<td>5 exercises</td>
+</tr>
+</tbody></table>
+<hr>
+<details>
+<summary><h2 id="lab-1-copilot-chat-tour-28-min">Lab 1: Copilot Chat Tour (28 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Session</strong>: 1 — Copilot Chat Tour</p>
+</blockquote>
+<h3 id="exercise-11--inline-completions-5-min">Exercise 1.1 — Inline Completions (5 min)</h3>
+<p><strong>Objective</strong>: Practice accepting, rejecting, and partially accepting inline completions.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create a new file</strong></p>
+<p>Create a new file <code>api/utils/order-helpers.ts</code>.</p>
+<p><strong>Step 2: Write a comment and accept a completion</strong></p>
+<p>Type the following comment and press Enter:</p>
+<pre><code class="language-typescript">// Calculate the total price for an order including tax and discount
+</code></pre>
+<p>Wait for ghost text to appear. Press <strong>Tab</strong> to accept the full suggestion.</p>
+<p><strong>Step 3: Try partial accept</strong></p>
+<p>Write a new function signature:</p>
+<pre><code class="language-typescript">function validateOrderItems(items: OrderItem[]): ValidationResult {
+</code></pre>
+<p>When ghost text appears, use <strong>Ctrl+Right</strong> (Windows) or <strong>Cmd+Right</strong> (Mac) to accept word-by-word.</p>
+<p><strong>Step 4: Try pattern continuation</strong></p>
+<p>Start an array of status values:</p>
+<pre><code class="language-typescript">const ORDER_STATUSES = [&#39;pending&#39;,
+</code></pre>
+<p>Accept the completion — Copilot should continue the pattern.</p>
+<p><strong>Step 5: Reject a completion</strong></p>
+<p>Write a comment that&#39;s ambiguous, see the suggestion, and press <strong>Esc</strong> to reject it. Then rephrase your comment more precisely and compare the new suggestion.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Accepted a full completion with Tab</li>
+<li>✅ Partially accepted with Ctrl+Right (word-by-word)</li>
+<li>✅ Observed pattern continuation</li>
+<li>✅ Rejected a completion and got a better one with a clearer comment</li>
+</ul>
+<hr>
+<h3 id="exercise-12--slash-command-explain-5-min">Exercise 1.2 — Slash Command: /explain (5 min)</h3>
+<p><strong>Objective</strong>: Use <code>/explain</code> to understand unfamiliar code.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Find a complex function</strong></p>
+<p>Open <code>api/routes/orders.ts</code> and select the main POST handler (the function that creates a new order).</p>
+<p><strong>Step 2: Run /explain</strong></p>
+<p>Open the Chat panel (<code>Ctrl+Shift+I</code>) and type:</p>
+<pre><code>/explain
+</code></pre>
+<p>with the code selected.</p>
+<p><strong>Step 3: Evaluate the explanation</strong></p>
+<ul>
+<li>Does it correctly describe what the function does?</li>
+<li>Does it identify the key logic steps?</li>
+<li>Does it mention error handling?</li>
+</ul>
+<p><strong>Step 4: Compare with a different function</strong></p>
+<p>Select a simpler utility function and run <code>/explain</code> again. Compare the depth of explanation.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Used <code>/explain</code> on selected code</li>
+<li>✅ Explanation accurately describes the function&#39;s purpose</li>
+<li>✅ Compared explanations for complex vs. simple functions</li>
+</ul>
+<hr>
+<h3 id="exercise-13--slash-command-fix-5-min">Exercise 1.3 — Slash Command: /fix (5 min)</h3>
+<p><strong>Objective</strong>: Use <code>/fix</code> to correct a deliberate bug.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Introduce a bug</strong></p>
+<p>Open <code>api/utils/order-helpers.ts</code> (or any utility file) and introduce a deliberate error. For example, change a <code>&gt;</code> to <code>&lt;</code> in a comparison, or misspell a variable name.</p>
+<p><strong>Step 2: Select the buggy code</strong></p>
+<p>Select the lines containing the bug.</p>
+<p><strong>Step 3: Run /fix</strong></p>
+<pre><code>/fix
+</code></pre>
+<p><strong>Step 4: Evaluate the fix</strong></p>
+<ul>
+<li>Did Copilot identify the correct issue?</li>
+<li>Is the fix appropriate?</li>
+<li>Did it change anything else it shouldn&#39;t have?</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Introduced a deliberate bug</li>
+<li>✅ <code>/fix</code> correctly identified and resolved the issue</li>
+<li>✅ Verified the fix didn&#39;t introduce side effects</li>
+</ul>
+<hr>
+<h3 id="exercise-14--context-targeting-8-min">Exercise 1.4 — Context Targeting (8 min)</h3>
+<p><strong>Objective</strong>: Compare responses with and without explicit context.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Ask without context</strong></p>
+<p>In the Chat panel (Ask mode), type:</p>
+<pre><code>How does this project handle database connections?
+</code></pre>
+<p>Note the response — it may be generic or partially accurate.</p>
+<p><strong>Step 2: Ask with @workspace</strong></p>
+<pre><code>@workspace How does this project handle database connections?
+</code></pre>
+<p>Compare — <code>@workspace</code> should find the actual database configuration files.</p>
+<p><strong>Step 3: Ask with specific #file</strong></p>
+<pre><code>@workspace #file:api/db/connection.ts How does this project handle database connections?
+</code></pre>
+<p>Compare all three responses for precision and accuracy.</p>
+<p><strong>Step 4: Try @terminal</strong></p>
+<p>Run a command that produces an error (e.g., <code>npm run nonexistent</code>), then ask:</p>
+<pre><code>@terminal What went wrong with the last command?
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Compared responses: no context vs. <code>@workspace</code> vs. <code>#file</code></li>
+<li>✅ Observed the quality improvement with explicit context</li>
+<li>✅ Used <code>@terminal</code> to diagnose a command error</li>
+</ul>
+<hr>
+<h3 id="exercise-15--session-management-5-min">Exercise 1.5 — Session Management (5 min)</h3>
+<p><strong>Objective</strong>: Practice creating and switching between chat sessions.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create session for exploration</strong></p>
+<p>Open a new chat session. Ask an exploratory question:</p>
+<pre><code>@workspace What are the main entities in this project&#39;s data model?
+</code></pre>
+<p><strong>Step 2: Create session for a task</strong></p>
+<p>Open a second chat session (click the + icon). Start a different conversation:</p>
+<pre><code>@workspace #file:api/routes/products.ts What improvements could be made to this route?
+</code></pre>
+<p><strong>Step 3: Switch between sessions</strong></p>
+<p>Switch back to session 1. Ask a follow-up question. Note that the context from session 1 is preserved and session 2&#39;s context is separate.</p>
+<p><strong>Step 4: Clear a session</strong></p>
+<p>In one of the sessions, type <code>/clear</code> and note the history is erased.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created at least 2 separate chat sessions</li>
+<li>✅ Verified context is separate between sessions</li>
+<li>✅ Used <code>/clear</code> to reset a session</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-2-memory--context-31-min">Lab 2: Memory & Context (31 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Session</strong>: 2 — Memory &amp; Context</p>
+</blockquote>
+<h3 id="exercise-21--repository-instructions-8-min">Exercise 2.1 — Repository Instructions (8 min)</h3>
+<p><strong>Objective</strong>: Create <code>.github/copilot-instructions.md</code> and observe Copilot following your rules.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create the instructions file</strong></p>
+<p>Create <code>.github/copilot-instructions.md</code> with the following content:</p>
+<pre><code class="language-markdown"># Copilot Instructions
+
+## Coding Standards
+- Use TypeScript strict mode for all new files
+- Prefer `const` over `let`; never use `var`
+- Use named exports, not default exports
+- All functions must have JSDoc comments with @param and @return tags
+
+## Testing
+- Use Vitest for all unit tests
+- Test files go in `__tests__/` directories alongside source files
+
+## API Conventions
+- All API responses must include a `success` boolean field
+- Error responses must include an `error` field with a descriptive message
+- Use HTTP status codes correctly (201 for created, 400 for bad input, etc.)
+</code></pre>
+<p><strong>Step 2: Generate code and verify</strong></p>
+<p>In Agent mode, ask:</p>
+<pre><code>Create a new utility function in api/utils/ that validates email addresses. Include tests.
+</code></pre>
+<p><strong>Step 3: Check compliance</strong></p>
+<ul>
+<li>Does the generated code use <code>const</code> instead of <code>let</code>?</li>
+<li>Does it have JSDoc comments?</li>
+<li>Are tests in a <code>__tests__/</code> directory?</li>
+<li>Does it use named exports?</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created <code>.github/copilot-instructions.md</code></li>
+<li>✅ Generated code follows the instructions</li>
+<li>✅ Verified at least 3 rules are being followed</li>
+</ul>
+<hr>
+<h3 id="exercise-22--user-instructions-5-min">Exercise 2.2 — User Instructions (5 min)</h3>
+<p><strong>Objective</strong>: Add personal preferences via VS Code settings.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Open VS Code settings (JSON)</strong></p>
+<p>Open Command Palette → &quot;Preferences: Open User Settings (JSON)&quot;</p>
+<p><strong>Step 2: Add instruction</strong></p>
+<p>Add the following:</p>
+<pre><code class="language-json">{
+  &quot;github.copilot.chat.codeGeneration.instructions&quot;: [
+    {
+      &quot;text&quot;: &quot;Always include error handling with try-catch blocks. Log errors with console.error before re-throwing.&quot;
+    }
+  ]
+}
+</code></pre>
+<p><strong>Step 3: Test it</strong></p>
+<p>Ask Copilot to generate a new function. Verify it includes try-catch with console.error.</p>
+<p><strong>Step 4: Observe layering</strong></p>
+<p>Note that both user instructions AND repository instructions are applied simultaneously.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Added user-level instruction in VS Code settings</li>
+<li>✅ Generated code includes the personal preference (try-catch)</li>
+<li>✅ Both user and repo instructions are respected</li>
+</ul>
+<hr>
+<h3 id="exercise-23--file-targeted-instructions-8-min">Exercise 2.3 — File-Targeted Instructions (8 min)</h3>
+<p><strong>Objective</strong>: Create file-targeted instructions with <code>applyTo</code> patterns.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create test instructions</strong></p>
+<p>Create <code>.github/instructions/tests.instructions.md</code>:</p>
+<pre><code class="language-yaml">---
+applyTo: &quot;**/*.test.*&quot;
+---
+</code></pre>
+<pre><code class="language-markdown"># Test File Instructions
+- Use Vitest `describe` / `it` / `expect` pattern
+- Mock external dependencies with `vi.mock()`
+- Each test file should test exactly one module
+- Include at least one test for the happy path and one for error handling
+- Use descriptive test names that explain the expected behavior
+</code></pre>
+<p><strong>Step 2: Create API instructions</strong></p>
+<p>Create <code>.github/instructions/api-routes.instructions.md</code>:</p>
+<pre><code class="language-yaml">---
+applyTo: &quot;api/routes/**/*.ts&quot;
+---
+</code></pre>
+<pre><code class="language-markdown"># API Route Instructions
+- Use Express Router for all route definitions
+- Validate all request body fields before processing
+- Return consistent response shapes: { success: boolean, data?: T, error?: string }
+- Include OpenAPI JSDoc annotations for Swagger documentation
+</code></pre>
+<p><strong>Step 3: Verify file-targeted loading</strong></p>
+<p>Open a test file and ask Copilot to generate additional tests. Then open an API route file and ask for a new endpoint. Verify each uses its targeted instructions.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created file-targeted instructions with <code>applyTo</code> frontmatter</li>
+<li>✅ Test-specific instructions apply when editing test files</li>
+<li>✅ API-specific instructions apply when editing route files</li>
+</ul>
+<hr>
+<h3 id="exercise-24--context-quality-comparison-5-min">Exercise 2.4 — Context Quality Comparison (5 min)</h3>
+<p><strong>Objective</strong>: Demonstrate how explicit context improves output quality.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Vague prompt</strong></p>
+<pre><code>Create a new API endpoint for managing suppliers
+</code></pre>
+<p>Note the response — it may use generic patterns.</p>
+<p><strong>Step 2: Precise prompt with context</strong></p>
+<pre><code>@workspace #file:api/routes/products.ts #file:api/services/products.ts Create a new API endpoint for managing suppliers, following the exact same pattern as products
+</code></pre>
+<p><strong>Step 3: Compare</strong></p>
+<ul>
+<li>Does the precise version match the project&#39;s actual patterns?</li>
+<li>Are the file names, imports, and structure consistent?</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Generated code with and without explicit context</li>
+<li>✅ Observed measurable quality improvement with <code>#file</code> references</li>
+<li>✅ Precise version matches existing project patterns</li>
+</ul>
+<hr>
+<h3 id="exercise-25--context-truncation-experiment-5-min">Exercise 2.5 — Context Truncation Experiment (5 min)</h3>
+<p><strong>Objective</strong>: Observe how large context affects Copilot&#39;s behavior.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Open a large file</strong></p>
+<p>Open the largest file in the project (check with <code>@workspace What is the largest TypeScript file in this project?</code>).</p>
+<p><strong>Step 2: Ask about the end of the file</strong></p>
+<p>Ask a question about something near the end of the file:</p>
+<pre><code>#file:path/to/large-file.ts What does the last function in this file do?
+</code></pre>
+<p><strong>Step 3: Use selection instead</strong></p>
+<p>Select just the last function and ask:</p>
+<pre><code>#selection Explain this function
+</code></pre>
+<p><strong>Step 4: Compare accuracy</strong></p>
+<p>The <code>#selection</code> approach should be more accurate because it sends less context but more relevant context.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Observed potential inaccuracy when referencing a very large file</li>
+<li>✅ Achieved better results using <code>#selection</code> for targeted questions</li>
+<li>✅ Understand why smaller, targeted context often beats large file references</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-3-models-agents--token-management-33-min">Lab 3: Models, Agents & Token Management (33 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Session</strong>: 3 — Models, Agents &amp; Token Management</p>
+</blockquote>
+<h3 id="exercise-31--model-comparison-8-min">Exercise 3.1 — Model Comparison (8 min)</h3>
+<p><strong>Objective</strong>: Compare output from different models for the same task.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Choose a task</strong></p>
+<p>Use this prompt for all comparisons:</p>
+<pre><code>@workspace #file:api/routes/orders.ts Review this file for potential improvements. List specific suggestions with code examples.
+</code></pre>
+<p><strong>Step 2: Try with GPT-4o</strong></p>
+<p>Select GPT-4o from the model picker. Send the prompt. Note:</p>
+<ul>
+<li>Response time</li>
+<li>Number of suggestions</li>
+<li>Depth of analysis</li>
+<li>Code example quality</li>
+</ul>
+<p><strong>Step 3: Try with Claude Sonnet</strong></p>
+<p>Switch to Claude Sonnet. Send the same prompt. Note the same dimensions.</p>
+<p><strong>Step 4: Try with a third model (if available)</strong></p>
+<p>Switch to another available model and compare.</p>
+<p><strong>Step 5: Document findings</strong></p>
+<p>Create a brief comparison table in a new chat session:</p>
+<pre><code>Help me create a comparison table from these observations:
+Model A was [fast/slow] and gave [X] suggestions...
+Model B was [fast/slow] and gave [Y] suggestions...
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Compared at least 2 models with the same prompt</li>
+<li>✅ Documented differences in speed, depth, and style</li>
+<li>✅ Identified which model you&#39;d prefer for code reviews</li>
+</ul>
+<hr>
+<h3 id="exercise-32--token-analysis-5-min">Exercise 3.2 — Token Analysis (5 min)</h3>
+<p><strong>Objective</strong>: Enable debug mode and observe token usage.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Enable debug mode</strong></p>
+<p>Open VS Code settings and add:</p>
+<pre><code class="language-json">{
+  &quot;github.copilot.chat.debugMode&quot;: true
+}
+</code></pre>
+<p><strong>Step 2: Send a simple message</strong></p>
+<pre><code>What is this project about?
+</code></pre>
+<p>Open the Output panel (<code>Ctrl+Shift+U</code>) → select &quot;GitHub Copilot Chat&quot;. Find the debug output showing token counts.</p>
+<p><strong>Step 3: Send a context-heavy message</strong></p>
+<pre><code>@workspace #file:api/routes/orders.ts #file:api/routes/products.ts #file:api/services/orders.ts Compare these three files and suggest common patterns to extract
+</code></pre>
+<p>Note the token count increase.</p>
+<p><strong>Step 4: Compare token usage</strong></p>
+<p>How many more tokens did the context-heavy prompt use? What&#39;s the ratio?</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Enabled debug mode and found token counts in the output panel</li>
+<li>✅ Compared token usage between simple and complex prompts</li>
+<li>✅ Can identify the token cost of attaching files with <code>#file</code></li>
+</ul>
+<hr>
+<h3 id="exercise-33--custom-agent-creation-10-min">Exercise 3.3 — Custom Agent Creation (10 min)</h3>
+<p><strong>Objective</strong>: Create a custom agent with specific instructions and tools.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create the agent file</strong></p>
+<p>Create <code>.github/agents/reviewer.md</code>:</p>
+<pre><code class="language-yaml">---
+description: &quot;Reviews code for security vulnerabilities and best practices&quot;
+tools:
+  - codebase
+  - githubRepo
+model: claude-sonnet-4
+---
+</code></pre>
+<pre><code class="language-markdown"># Security Reviewer Agent
+
+You are a security-focused code reviewer. When reviewing code:
+
+1. Check for OWASP Top 10 vulnerabilities (especially injection, XSS, CSRF)
+2. Verify input validation and sanitization on all user inputs
+3. Check authentication and authorization patterns
+4. Flag hardcoded secrets, tokens, or credentials
+5. Review error handling (no stack traces leaked to users)
+
+For each issue found:
+- State the vulnerability type
+- Show the problematic code
+- Provide a corrected code example
+- Rate severity: 🔴 Critical, 🟡 Medium, 🟢 Low
+</code></pre>
+<p><strong>Step 2: Use the agent</strong></p>
+<p>Open the chat mode picker (dropdown at the top of the chat panel). Select &quot;Security Reviewer.&quot;</p>
+<pre><code>Review the orders API route for security issues
+</code></pre>
+<p><strong>Step 3: Compare with default agent</strong></p>
+<p>Switch back to Agent mode and ask the same question. Compare the depth and focus of security analysis.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created a custom agent file with instructions and tools</li>
+<li>✅ Agent appears in the chat mode picker</li>
+<li>✅ Agent provides focused security-oriented feedback</li>
+<li>✅ Response differs noticeably from default Agent mode</li>
+</ul>
+<hr>
+<h3 id="exercise-34--decision-cheat-sheet-5-min">Exercise 3.4 — Decision Cheat Sheet (5 min)</h3>
+<p><strong>Objective</strong>: Build a personal reference for when to use each Copilot feature.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Use Copilot to help build the reference</strong></p>
+<p>In Ask mode:</p>
+<pre><code>Help me create a quick-reference decision table for when to use:
+- Inline completions vs. chat
+- Ask mode vs. Agent mode vs. Plan mode
+- Default Agent vs. custom agents
+- @workspace vs. #file vs. #selection
+
+Format as a markdown table with columns: Scenario | Best Tool | Why
+</code></pre>
+<p><strong>Step 2: Customize for your workflow</strong></p>
+<p>Edit the generated table to match your specific use cases and tech stack.</p>
+<p><strong>Step 3: Save it</strong></p>
+<p>Save the reference as a personal note or add it to your team&#39;s documentation.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Generated a decision reference table with Copilot&#39;s help</li>
+<li>✅ Customized it for your specific workflow</li>
+<li>✅ Have a reusable reference for daily use</li>
+</ul>
+<hr>
+<h3 id="exercise-35--setup-steps-5-min">Exercise 3.5 — Setup Steps (5 min)</h3>
+<p><strong>Objective</strong>: Write a <code>copilot-setup-steps.yml</code> for the demo repository.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create the file</strong></p>
+<p>Create <code>.github/copilot-setup-steps.yml</code>:</p>
+<pre><code class="language-yaml">steps:
+  - name: Install dependencies
+    run: npm install
+  - name: Build the project
+    run: npm run build
+  - name: Run linting
+    run: npm run lint
+  - name: Run tests
+    run: npm test
+</code></pre>
+<p><strong>Step 2: Verify the commands work</strong></p>
+<p>Run each command manually in your terminal to confirm they succeed:</p>
+<pre><code class="language-bash">npm install
+npm run build
+npm run lint
+npm test
+</code></pre>
+<p><strong>Step 3: Consider additions</strong></p>
+<p>Think about what else the Coding Agent might need. Would it need environment variables? Database setup? Add any missing steps.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created <code>copilot-setup-steps.yml</code> with appropriate steps</li>
+<li>✅ All commands run successfully locally</li>
+<li>✅ Considered additional setup the Coding Agent might need</li>
+</ul>
+</details>
+
+<hr>
+<p><em>Lab guide for GitHub Copilot Developer Training — Foundations (Module 1 of 3)</em></p>
+</article>  </main> </body></html>  <script type="module">document.querySelectorAll("pre").forEach(e=>{const t=document.createElement("button");t.className="copy-btn",t.textContent="Copy",t.addEventListener("click",async()=>{const o=(e.querySelector("code")||e).textContent||"";await navigator.clipboard.writeText(o),t.textContent="Copied!",t.classList.add("copied"),setTimeout(()=>{t.textContent="Copy",t.classList.remove("copied")},2e3)}),e.appendChild(t)});</script>

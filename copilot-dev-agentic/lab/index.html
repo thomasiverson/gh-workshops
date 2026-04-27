@@ -1,0 +1,564 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot Developer Training — Agentic Patterns — Hands-On Lab Guide</title><link rel="stylesheet" href="/gh-workshops/_astro/index.tKAiv-SV.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-developer-training--agentic-patterns--hands-on-lab-guide">GitHub Copilot Developer Training — Agentic Patterns — Hands-On Lab Guide</h1>
+<p><strong>Duration</strong>: ~60 minutes of hands-on exercises (across a ~2-hour module)<br><strong>Format</strong>: Step-by-step lab exercises aligned to workshop sessions<br><strong>Audience</strong>: Developers exploring agentic workflows with GitHub Copilot<br><strong>Repo</strong>: <a href="https://github.com/microsoft/GitHubCopilot_Customized">microsoft/GitHubCopilot_Customized</a> (OctoCAT Supply)</p>
+<blockquote>
+<p><strong>Part of the Copilot Developer Training curriculum</strong> (<a href="../copilot-dev-foundations/copilot-dev-foundations-LAB.md">Foundations LAB</a> · <a href="../copilot-dev-agentic/copilot-dev-agentic-LAB.md">Agentic Patterns LAB</a> · <a href="../copilot-dev-advanced/copilot-dev-advanced-LAB.md">Advanced Topics LAB</a>). This lab can be completed standalone.</p>
+</blockquote>
+<hr>
+<h2 id="lab-overview">Lab Overview</h2>
+<p>These labs explore agentic workflows: watching the agentic loop in action, tracing debug logs, practicing rubber duck debugging with AI, and designing agent architectures.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>With Copilot Pro, Business, or Enterprise license</td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Latest stable (or Insiders for preview features)</td>
+</tr>
+<tr>
+<td><strong>Copilot Extension</strong></td>
+<td>GitHub Copilot + GitHub Copilot Chat extensions installed</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>Version 18 or higher</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>For cloning the demo repository</td>
+</tr>
+</tbody></table>
+<h3 id="setup-checkpoint">Setup Checkpoint</h3>
+<p>Ensure your environment is ready. If you&#39;re joining from Module 1, your repo should already be set up. If starting fresh:</p>
+<pre><code class="language-bash">git clone https://github.com/&lt;YOUR-USERNAME&gt;/GitHubCopilot_Customized.git
+cd GitHubCopilot_Customized
+npm install
+npm run build
+npm run dev
+</code></pre>
+<p>Ensure your repo has a <code>.github/copilot-instructions.md</code> file. If not, create one:</p>
+<pre><code class="language-markdown"># Copilot Instructions
+- Use TypeScript strict mode
+- Prefer `const` over `let`; never use `var`
+- All functions must have JSDoc comments
+- Use Vitest for unit tests
+</code></pre>
+<ul>
+<li>✅ API running at <code>http://localhost:3000</code></li>
+<li>✅ Frontend running at <code>http://localhost:5137</code></li>
+<li>✅ <code>.github/copilot-instructions.md</code> present</li>
+</ul>
+<h3 id="lab-summary">Lab Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Workshop Section</th>
+<th>Duration</th>
+<th>Exercises</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Session 4: Agentic Loops &amp; Rubber Duck</td>
+<td>39 min</td>
+<td>5 exercises</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Session 5: Agent Patterns &amp; Antipatterns</td>
+<td>34 min</td>
+<td>5 exercises</td>
+</tr>
+</tbody></table>
+<hr>
+<details>
+<summary><h2 id="lab-1-agentic-loops--the-rubber-duck-pattern-39-min">Lab 1: Agentic Loops & the Rubber Duck Pattern (39 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Session</strong>: 4 — Agentic Loops &amp; the Rubber Duck Pattern</p>
+</blockquote>
+<h3 id="exercise-11--agent-mode-loop-observation-10-min">Exercise 1.1 — Agent Mode Loop Observation (10 min)</h3>
+<p><strong>Objective</strong>: Give Agent mode a multi-step task and observe the plan → act → observe → reflect cycle.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Start a multi-step task</strong></p>
+<p>In Agent mode, ask:</p>
+<pre><code>Add input validation to the orders POST endpoint. Validate that:
+1. All required fields are present (customerId, items)
+2. Items array is not empty
+3. Each item has a valid productId and positive quantity
+4. Return appropriate 400 errors with descriptive messages
+Include unit tests for the validation logic.
+</code></pre>
+<p><strong>Step 2: Watch the cycle</strong></p>
+<p>As the agent works, identify each phase:</p>
+<ul>
+<li><strong>Plan</strong>: Does the agent describe its approach before starting?</li>
+<li><strong>Act</strong>: Which files does it create or modify? What commands does it run?</li>
+<li><strong>Observe</strong>: Does it read lint/test output?</li>
+<li><strong>Reflect</strong>: Does it adjust based on results?</li>
+</ul>
+<p><strong>Step 3: Document the cycle</strong></p>
+<p>In a separate text file, note:</p>
+<pre><code>Phase 1 - Plan: [what the agent said it would do]
+Phase 2 - Act: [files changed, commands run]
+Phase 3 - Observe: [what output it read]
+Phase 4 - Reflect: [how it adjusted]
+Iterations: [how many cycles before completion]
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Agent completed a multi-step task</li>
+<li>✅ Identified all four phases of the loop</li>
+<li>✅ Documented the number of iterations</li>
+</ul>
+<hr>
+<h3 id="exercise-12--debug-log-tracing-8-min">Exercise 1.2 — Debug Log Tracing (8 min)</h3>
+<p><strong>Objective</strong>: Enable agent debug logs and trace an iteration through the log output.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Enable debug mode</strong></p>
+<p>If not already enabled:</p>
+<pre><code class="language-json">{
+  &quot;github.copilot.chat.debugMode&quot;: true
+}
+</code></pre>
+<p><strong>Step 2: Give Agent mode a task that requires iteration</strong></p>
+<pre><code>Refactor the products service to use a repository pattern. Create a ProductRepository class that handles all database operations, and update the service to use it. Run the tests after.
+</code></pre>
+<p><strong>Step 3: Open the agent debug log</strong></p>
+<p>Command Palette → &quot;GitHub Copilot: Open Agent Debug Log&quot; (or check the Output panel → &quot;GitHub Copilot Chat&quot; channel).</p>
+<p><strong>Step 4: Trace through the log</strong></p>
+<p>Find and identify:</p>
+<ul>
+<li>Tool calls: <code>file.read</code>, <code>file.write</code>, <code>file.edit</code>, <code>terminal.run</code></li>
+<li>Arguments: which files were read, what commands ran</li>
+<li>Results: success/failure, exit codes</li>
+<li>Decisions: what the agent did after each result</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Found and opened agent debug logs</li>
+<li>✅ Identified at least 3 different tool calls</li>
+<li>✅ Traced one full iteration (act → observe → reflect)</li>
+</ul>
+<hr>
+<h3 id="exercise-13--forced-self-correction-8-min">Exercise 1.3 — Forced Self-Correction (8 min)</h3>
+<p><strong>Objective</strong>: Give the agent a task with a constraint that forces at least one self-correction cycle.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create a tricky task</strong></p>
+<pre><code>Create a new API endpoint GET /api/orders/stats that returns order statistics:
+- Total number of orders
+- Average order value
+- Most ordered product
+
+Important constraints:
+- Do NOT use any new npm packages
+- The endpoint must pass the existing lint rules
+- Add tests that verify all three statistics
+</code></pre>
+<p><strong>Step 2: Watch for self-correction</strong></p>
+<p>The constraints (no new packages + lint + tests) should force at least one correction cycle. Watch for:</p>
+<ul>
+<li>Agent tries an approach → lint fails → agent fixes</li>
+<li>Agent generates tests → tests fail → agent adjusts implementation</li>
+<li>Agent uses a pattern that doesn&#39;t match existing conventions → reflects and changes approach</li>
+</ul>
+<p><strong>Step 3: Count corrections</strong></p>
+<p>Note how many times the agent corrected itself and what triggered each correction.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Agent encountered at least one error during execution</li>
+<li>✅ Agent self-corrected without manual intervention</li>
+<li>✅ Identified what triggered the self-correction</li>
+</ul>
+<hr>
+<h3 id="exercise-14--rubber-duck-design-session-8-min">Exercise 1.4 — Rubber Duck Design Session (8 min)</h3>
+<p><strong>Objective</strong>: Use Copilot as a structured reasoning partner to critique a design decision.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Describe a design plan</strong></p>
+<p>In Ask mode or Plan mode, present a design decision:</p>
+<pre><code>I&#39;m planning to add real-time order notifications to the OctoCAT Supply app. My plan:
+1. Add WebSocket support using Socket.io
+2. When an order status changes, emit an event to all connected clients
+3. Frontend listens and updates the UI without page refresh
+4. Store a notification history table in the database
+
+What am I missing? What could go wrong?
+</code></pre>
+<p><strong>Step 2: Ask for devil&#39;s advocate</strong></p>
+<pre><code>Play devil&#39;s advocate. What are the top 3 risks with this approach?
+What would you do differently?
+</code></pre>
+<p><strong>Step 3: Refine based on feedback</strong></p>
+<p>Take Copilot&#39;s critique and revise your plan:</p>
+<pre><code>Based on your feedback, here&#39;s my revised approach:
+[Your updated plan]
+Does this address the concerns you raised?
+</code></pre>
+<p><strong>Step 4: Document insights</strong></p>
+<p>Note the blind spots Copilot identified that you hadn&#39;t considered.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Presented a design plan to Copilot</li>
+<li>✅ Received meaningful critique (at least 2 actionable insights)</li>
+<li>✅ Refined the plan based on feedback</li>
+<li>✅ Documented blind spots discovered</li>
+</ul>
+<hr>
+<h3 id="exercise-15--rubber-duck-prompt-template-5-min">Exercise 1.5 — Rubber Duck Prompt Template (5 min)</h3>
+<p><strong>Objective</strong>: Create a reusable prompt template for rubber-duck plan reviews.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create a prompt file</strong></p>
+<p>Create <code>.github/prompts/rubber-duck-review.prompt.md</code>:</p>
+<pre><code class="language-markdown">---
+description: &quot;Structured review of a design plan — rubber duck pattern&quot;
+mode: ask
+---
+# Rubber Duck Design Review
+
+I&#39;m about to implement a design decision and want your critique.
+
+## My Plan
+{{input}}
+
+## Review Checklist
+Please evaluate against these dimensions:
+1. **Correctness**: Will this approach work as described?
+2. **Edge cases**: What scenarios haven&#39;t I considered?
+3. **Performance**: Will this scale? Any bottlenecks?
+4. **Security**: Any vulnerabilities or data exposure risks?
+5. **Maintenance**: Will this be easy to maintain and debug?
+6. **Alternatives**: Is there a simpler approach I should consider?
+
+For each dimension, rate: ✅ Good / ⚠️ Needs attention / ❌ Risky
+
+Conclude with your top 3 recommendations.
+</code></pre>
+<p><strong>Step 2: Test the template</strong></p>
+<p>Use the prompt file to review a design idea:</p>
+<ol>
+<li>Open Command Palette → &quot;Chat: Run Prompt File&quot;</li>
+<li>Select <code>rubber-duck-review.prompt.md</code></li>
+<li>Enter a design plan when prompted</li>
+</ol>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created a reusable rubber duck prompt template</li>
+<li>✅ Template includes structured evaluation dimensions</li>
+<li>✅ Tested the template with a real design idea</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-2-agent-patterns--antipatterns-34-min">Lab 2: Agent Patterns & Antipatterns (34 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Session</strong>: 5 — Agent Patterns &amp; Antipatterns</p>
+</blockquote>
+<h3 id="exercise-21--single-agent-multi-skill-design-8-min">Exercise 2.1 — Single-Agent Multi-Skill Design (8 min)</h3>
+<p><strong>Objective</strong>: Create a custom agent with multiple skills for a specific workflow.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Design the agent</strong></p>
+<p>Create <code>.github/agents/full-stack-dev.md</code>:</p>
+<pre><code class="language-yaml">---
+description: &quot;Full-stack development agent for OctoCAT Supply features&quot;
+tools:
+  - codebase
+  - terminal
+  - fetch
+---
+</code></pre>
+<pre><code class="language-markdown"># Full-Stack Developer Agent
+
+You are a full-stack developer working on the OctoCAT Supply application.
+
+## Architecture Knowledge
+- Frontend: React 18+ with TypeScript, Tailwind CSS, Vite
+- Backend: Express.js with TypeScript, OpenAPI/Swagger
+- Testing: Vitest for unit tests
+
+## Workflow
+When asked to add a feature:
+1. Check existing patterns in similar files
+2. Create backend (service + route) first
+3. Add API tests
+4. Create frontend component
+5. Run lint and tests after each major change
+
+## Rules
+- Follow existing file naming conventions
+- Use the repository&#39;s coding standards
+- Never modify database schema directly — create a migration
+</code></pre>
+<p><strong>Step 2: Test the agent</strong></p>
+<p>Select the agent from the mode picker and ask:</p>
+<pre><code>Add a &quot;supplier contact&quot; feature — new field on the supplier entity with
+an API endpoint to update it and a frontend form component to edit it
+</code></pre>
+<p><strong>Step 3: Evaluate</strong></p>
+<ul>
+<li>Did the agent follow the prescribed workflow?</li>
+<li>Did it check existing patterns first?</li>
+<li>Did it handle both frontend and backend?</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created a multi-skill agent with clear workflow instructions</li>
+<li>✅ Agent follows the prescribed steps</li>
+<li>✅ Agent handles cross-cutting tasks (frontend + backend)</li>
+</ul>
+<hr>
+<h3 id="exercise-22--multi-agent-design-8-min">Exercise 2.2 — Multi-Agent Design (8 min)</h3>
+<p><strong>Objective</strong>: Create two specialized agents and compare their output.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create a frontend specialist</strong></p>
+<p>Create <code>.github/agents/frontend-expert.md</code>:</p>
+<pre><code class="language-yaml">---
+description: &quot;Frontend specialist for React and Tailwind&quot;
+tools:
+  - codebase
+---
+</code></pre>
+<pre><code class="language-markdown"># Frontend Expert
+
+You specialize in React 18+ with TypeScript and Tailwind CSS.
+
+Focus areas:
+- Component design and composition
+- State management patterns
+- Accessibility (WCAG 2.1 AA)
+- Responsive design
+- Performance (lazy loading, memoization)
+
+When reviewing frontend code, evaluate:
+- Component responsibility (single responsibility principle)
+- Props interface design
+- Accessibility attributes (aria-labels, semantic HTML)
+- Tailwind class organization
+</code></pre>
+<p><strong>Step 2: Create a backend specialist</strong></p>
+<p>Create <code>.github/agents/api-expert.md</code>:</p>
+<pre><code class="language-yaml">---
+description: &quot;Backend API specialist for Express and TypeScript&quot;
+tools:
+  - codebase
+  - terminal
+---
+</code></pre>
+<pre><code class="language-markdown"># API Expert
+
+You specialize in Express.js APIs with TypeScript.
+
+Focus areas:
+- REST API design (resource naming, HTTP methods, status codes)
+- Input validation and sanitization
+- Error handling patterns
+- Database query optimization
+- OpenAPI/Swagger documentation
+
+When reviewing API code, evaluate:
+- Route organization and naming
+- Request validation
+- Response consistency
+- Error handling completeness
+</code></pre>
+<p><strong>Step 3: Compare specialized vs. general</strong></p>
+<p>Ask both agents and the default Agent mode the same question:</p>
+<pre><code>What improvements would you suggest for the products feature?
+</code></pre>
+<p>Compare: does each specialist focus on their domain? Is the feedback more detailed?</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created two specialized agents with distinct focus areas</li>
+<li>✅ Each agent provides domain-specific feedback</li>
+<li>✅ Compared specialized output vs. default Agent mode</li>
+</ul>
+<hr>
+<h3 id="exercise-23--antipattern-identification-5-min">Exercise 2.3 — Antipattern Identification (5 min)</h3>
+<p><strong>Objective</strong>: Review sample agent configurations and identify antipatterns.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Review this agent config</strong></p>
+<p>Consider this hypothetical agent file (do NOT create it — just review):</p>
+<pre><code class="language-yaml">---
+description: &quot;Does everything&quot;
+tools:
+  - codebase
+  - terminal
+  - fetch
+  - githubRepo
+  - browser
+---
+# Universal Agent
+Handle any task: frontend, backend, database, DevOps,
+testing, documentation, code review, deployment, monitoring,
+and security scanning. Use all available tools.
+</code></pre>
+<p><strong>Step 2: Identify antipatterns</strong></p>
+<p>Which of the 8 antipatterns does this agent exhibit? Make a list:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Antipattern</th>
+<th>Present?</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>God Agent</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Context Stuffing</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Missing Guardrails</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Over-Delegation</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Tool Sprawl</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>No Validation Loop</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Prompt Injection Blind Spot</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Stale Instructions</td>
+<td>?</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Step 3: Propose fixes</strong></p>
+<p>For each antipattern you identified, write a one-sentence fix.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Identified at least 3 antipatterns in the sample config</li>
+<li>✅ Explained why each is a problem</li>
+<li>✅ Proposed a fix for each</li>
+</ul>
+<hr>
+<h3 id="exercise-24--antipattern-refactoring-8-min">Exercise 2.4 — Antipattern Refactoring (8 min)</h3>
+<p><strong>Objective</strong>: Take a poorly designed agent and refactor it to follow best practices.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Start with the bad agent</strong></p>
+<p>Create <code>.github/agents/bad-reviewer.md</code>:</p>
+<pre><code class="language-yaml">---
+description: &quot;Reviews code&quot;
+tools:
+  - codebase
+  - terminal
+  - fetch
+  - githubRepo
+  - browser
+---
+</code></pre>
+<pre><code class="language-markdown"># Code Reviewer
+Review code. Check everything. Find all bugs. Fix everything you find.
+Make the code better. Use all tools available.
+</code></pre>
+<p><strong>Step 2: Identify the problems</strong></p>
+<ul>
+<li>Too vague (&quot;check everything&quot;)</li>
+<li>Too many tools</li>
+<li>No scope limits</li>
+<li>No structured output</li>
+<li>Might modify code when asked to review</li>
+</ul>
+<p><strong>Step 3: Refactor</strong></p>
+<p>Rewrite the agent as a well-designed reviewer:</p>
+<ul>
+<li>Focused description</li>
+<li>Limited tools (only <code>codebase</code>)</li>
+<li>Clear scope (review only, don&#39;t modify)</li>
+<li>Structured output format</li>
+<li>Explicit rules about what NOT to do</li>
+</ul>
+<p><strong>Step 4: Test both</strong></p>
+<p>Use the bad reviewer and your refactored version on the same file. Compare output quality.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Identified at least 3 problems with the bad agent</li>
+<li>✅ Refactored to follow best practices</li>
+<li>✅ Refactored agent produces noticeably better output</li>
+</ul>
+<hr>
+<h3 id="exercise-25--pattern-selection-exercise-5-min">Exercise 2.5 — Pattern Selection Exercise (5 min)</h3>
+<p><strong>Objective</strong>: Given scenarios, justify which agent pattern and topology to use.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Evaluate each scenario</strong></p>
+<p>For each scenario below, decide: which pattern (single/single, single/multi, multi/multi) and which topology (sequential, parallel, hierarchical)?</p>
+<p><strong>Scenario A</strong>: &quot;Fix this lint error in one file&quot;</p>
+<ul>
+<li>Pattern: ___</li>
+<li>Topology: ___</li>
+<li>Justification: ___</li>
+</ul>
+<p><strong>Scenario B</strong>: &quot;Add a new full-stack feature with frontend component, API endpoint, database migration, and tests&quot;</p>
+<ul>
+<li>Pattern: ___</li>
+<li>Topology: ___</li>
+<li>Justification: ___</li>
+</ul>
+<p><strong>Scenario C</strong>: &quot;Review a PR for security, performance, and code style — each reviewed by a different specialist&quot;</p>
+<ul>
+<li>Pattern: ___</li>
+<li>Topology: ___</li>
+<li>Justification: ___</li>
+</ul>
+<p><strong>Scenario D</strong>: &quot;Migrate 20 API endpoints from JavaScript to TypeScript&quot;</p>
+<ul>
+<li>Pattern: ___</li>
+<li>Topology: ___</li>
+<li>Justification: ___</li>
+</ul>
+<p><strong>Step 2: Discuss with a neighbor (or with Copilot)</strong></p>
+<pre><code>I chose [pattern] with [topology] for this scenario: [description].
+Am I right? What&#39;s a better approach?
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Completed pattern/topology selection for all 4 scenarios</li>
+<li>✅ Provided justification for each choice</li>
+<li>✅ Discussed or validated at least one choice</li>
+</ul>
+</details>
+
+<hr>
+<p><em>Lab guide for GitHub Copilot Developer Training — Agentic Patterns (Module 2 of 3)</em></p>
+</article>  </main> </body></html>  <script type="module">document.querySelectorAll("pre").forEach(e=>{const t=document.createElement("button");t.className="copy-btn",t.textContent="Copy",t.addEventListener("click",async()=>{const o=(e.querySelector("code")||e).textContent||"";await navigator.clipboard.writeText(o),t.textContent="Copied!",t.classList.add("copied"),setTimeout(()=>{t.textContent="Copy",t.classList.remove("copied")},2e3)}),e.appendChild(t)});</script>

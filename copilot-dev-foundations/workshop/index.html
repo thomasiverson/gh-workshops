@@ -1,0 +1,1203 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot Developer Training — Foundations</title><link rel="stylesheet" href="/gh-workshops/_astro/index.tKAiv-SV.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-developer-training--foundations">GitHub Copilot Developer Training — Foundations</h1>
+<p><strong>Duration</strong>: ~3 hours 15 minutes (195 min)<br><strong>Format</strong>: Presentation + Live Demo + Hands-On<br><strong>Audience</strong>: Developers starting with GitHub Copilot and AI-assisted development<br><strong>Focus</strong>: Copilot chat interface, context management, model selection, and token mechanics<br><strong>Repo</strong>: <a href="https://github.com/microsoft/GitHubCopilot_Customized">microsoft/GitHubCopilot_Customized</a> (OctoCAT Supply)</p>
+<blockquote>
+<p><strong>Part of the Copilot Developer Training curriculum</strong> (<a href="../copilot-dev-foundations/copilot-dev-foundations-workshop.md">Foundations</a> · <a href="../copilot-dev-agentic/copilot-dev-agentic-workshop.md">Agentic Patterns</a> · <a href="../copilot-dev-advanced/copilot-dev-advanced-workshop.md">Advanced Topics</a>). This module can be delivered standalone.</p>
+</blockquote>
+<hr>
+<h2 id="workshop-overview">Workshop Overview</h2>
+<p>This module covers the foundational skills every developer needs to use GitHub Copilot effectively. Starting with a tour of the chat interface and progressing through context management, memory, and model selection, attendees build a solid understanding of how Copilot works under the hood — and how to make it work better for their teams.</p>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li>Navigate Copilot&#39;s chat interface: inline completions, slash commands, <code>@</code> participants, and <code>#</code> context variables</li>
+<li>Manage multi-session workflows and know when to start fresh</li>
+<li>Create repository, workspace, and file-targeted instructions that encode team standards</li>
+<li>Understand context window mechanics: composition, priority, and truncation</li>
+<li>Compare available models and select the right one for each task</li>
+<li>Build custom agents with specific instructions and tools</li>
+<li>Monitor and manage token consumption effectively</li>
+</ul>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>With Copilot Pro, Business, or Enterprise license</td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Latest stable (or Insiders for preview features)</td>
+</tr>
+<tr>
+<td><strong>Copilot Extension</strong></td>
+<td>GitHub Copilot + GitHub Copilot Chat extensions installed</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>Version 18 or higher</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>For cloning the demo repository</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="session-agenda">Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Session 1</strong></td>
+<td><strong>Copilot Chat Tour</strong></td>
+<td><strong>60 min</strong></td>
+</tr>
+<tr>
+<td>1.1</td>
+<td><a href="#11-opening--ai-safety-ai-as-partner-not-replacement-10-min">Opening &amp; AI Safety: &quot;AI as Partner, Not Replacement&quot;</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>1.2</td>
+<td><a href="#12-inline-completions-10-min">Inline Completions</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>1.3</td>
+<td><a href="#13-chat-interface--slash-commands-10-min">Chat Interface &amp; Slash Commands</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>1.4</td>
+<td><a href="#14-context--participants---variables-15-min">Context: @ Participants &amp; # Variables</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>1.5</td>
+<td><a href="#15-multi-session-management-10-min">Multi-Session Management</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>1.6</td>
+<td><a href="#16-session-1-summary--discussion-5-min">Session 1 Summary &amp; Discussion</a></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td></td>
+<td>☕ Break</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td><strong>Session 2</strong></td>
+<td><strong>Memory &amp; Context</strong></td>
+<td><strong>60 min</strong></td>
+</tr>
+<tr>
+<td>2.1</td>
+<td><a href="#21-opening--ai-safety-what-gets-shared-5-min">Opening &amp; AI Safety: &quot;What Gets Shared?&quot;</a></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>2.2</td>
+<td><a href="#22-context-window-fundamentals-10-min">Context Window Fundamentals</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>2.3</td>
+<td><a href="#23-repository-level-instructions-15-min">Repository-Level Instructions</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>2.4</td>
+<td><a href="#24-instruction-layering-10-min">Instruction Layering</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>2.5</td>
+<td><a href="#25-context-quality--prompt-crafting-15-min">Context Quality &amp; Prompt Crafting</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>2.6</td>
+<td><a href="#26-session-2-summary--discussion-5-min">Session 2 Summary &amp; Discussion</a></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td></td>
+<td>☕ Break</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td><strong>Session 3</strong></td>
+<td><strong>Models, Agents &amp; Token Management</strong></td>
+<td><strong>75 min</strong></td>
+</tr>
+<tr>
+<td>3.1</td>
+<td><a href="#31-opening--ai-safety-model-selection--capability-vs-risk-5-min">Opening &amp; AI Safety: &quot;Model Selection — Capability vs. Risk&quot;</a></td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>3.2</td>
+<td><a href="#32-model-landscape-15-min">Model Landscape</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>3.3</td>
+<td><a href="#33-token-mechanics-15-min">Token Mechanics</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>3.4</td>
+<td><a href="#34-built-in-vs-custom-agents-15-min">Built-in vs Custom Agents</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>3.5</td>
+<td><a href="#35-token-management--budgeting-15-min">Token Management &amp; Budgeting</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>3.6</td>
+<td><a href="#36-copilot-setup-stepsyml--summary-10-min">copilot-setup-steps.yml &amp; Summary</a></td>
+<td>10 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total: ~195 min (~3h 15min) including breaks</strong></p>
+<hr>
+<h2 id="11-opening--ai-safety-ai-as-partner-not-replacement-10-min">1.1. Opening &amp; AI Safety: &quot;AI as Partner, Not Replacement&quot; (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>AI-assisted development is a partnership — Copilot suggests, you decide</li>
+<li>Every session in this curriculum opens with an AI safety and human-machine partnership discussion</li>
+<li>The goal is not to replace developer judgment but to amplify it</li>
+<li><strong>Critical principle</strong>: AI output requires human review. Copilot is a junior developer with infinite energy — fast but sometimes confidently wrong</li>
+</ul>
+<h3 id="discussion-prompt">Discussion Prompt</h3>
+<blockquote>
+<p>💡 <strong>Think about this</strong>: When should you trust AI suggestions vs. verify them? Where is the line between productive acceleration and dangerous over-reliance?</p>
+</blockquote>
+<h3 id="key-concepts">Key Concepts</h3>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Human-in-the-loop</strong></td>
+<td>Every AI suggestion should pass through human judgment before shipping</td>
+</tr>
+<tr>
+<td><strong>Trust calibration</strong></td>
+<td>Trust level should match task risk — low risk = more trust, high risk = more verification</td>
+</tr>
+<tr>
+<td><strong>Augmentation mindset</strong></td>
+<td>AI handles the routine; you handle the creative and critical</td>
+</tr>
+<tr>
+<td><strong>Feedback loop</strong></td>
+<td>When AI is wrong, correcting it makes the next interaction better</td>
+</tr>
+</tbody></table>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What types of code would you let Copilot write without close review?</li>
+<li>Where would you draw the line on AI autonomy in your current projects?</li>
+<li>How does your team currently handle code review — and how might AI fit in?</li>
+</ul>
+<hr>
+<h2 id="12-inline-completions-10-min">1.2. Inline Completions (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Ghost text appears as you type — grey suggestions inline with your code</li>
+<li><strong>Tab</strong> to accept the full suggestion, <strong>Esc</strong> to dismiss</li>
+<li><strong>Ctrl+Right</strong> (Windows) / <strong>Cmd+Right</strong> (Mac) for partial/word-by-word accept</li>
+<li>Copilot uses the current file, open tabs, and recent edits as context</li>
+<li>Completions work best with clear variable names and descriptive comments</li>
+</ul>
+<h3 id="completion-strategies">Completion Strategies</h3>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Technique</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Comment-driven</strong></td>
+<td>Write a descriptive comment, then let Copilot complete the code</td>
+</tr>
+<tr>
+<td><strong>Signature-first</strong></td>
+<td>Write the function signature with typed parameters — Copilot infers the body</td>
+</tr>
+<tr>
+<td><strong>Test-driven</strong></td>
+<td>Write test names/assertions — Copilot generates the implementation</td>
+</tr>
+<tr>
+<td><strong>Pattern continuation</strong></td>
+<td>Start a pattern (e.g., first array element), Copilot continues it</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-inline-completions-in-action">🖥️ Demo: Inline Completions in Action</h3>
+<ol>
+<li>Open a TypeScript file in the OctoCAT Supply repo</li>
+<li>Write a comment: <code>// Validate that the order total matches the sum of line items</code></li>
+<li>Show the ghost text appearing — accept with Tab</li>
+<li>Write a function signature: <code>function calculateDiscount(price: number, quantity: number): number</code></li>
+<li>Show Copilot completing the body</li>
+<li>Demonstrate partial accept with Ctrl+Right</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How do completions compare to traditional code snippets or IntelliSense?</li>
+<li>What patterns have you found that trigger the best completions?</li>
+<li>When do completions get in the way?</li>
+</ul>
+<hr>
+<h2 id="13-chat-interface--slash-commands-10-min">1.3. Chat Interface &amp; Slash Commands (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Three ways to interact with Copilot chat: <strong>Chat panel</strong> (sidebar), <strong>Inline chat</strong> (<code>Ctrl+I</code>), <strong>Quick chat</strong> (<code>Ctrl+Shift+I</code>)</li>
+<li>Each has a different use case — panel for conversation, inline for targeted edits, quick for fast questions</li>
+<li>Slash commands are shortcuts that set the interaction mode</li>
+</ul>
+<h3 id="slash-commands-reference">Slash Commands Reference</h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+<th>Example Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/explain</code></td>
+<td>Explain selected code</td>
+<td>Understanding unfamiliar code</td>
+</tr>
+<tr>
+<td><code>/fix</code></td>
+<td>Fix errors in selected code</td>
+<td>Quick bug fixes</td>
+</tr>
+<tr>
+<td><code>/tests</code></td>
+<td>Generate tests for selection</td>
+<td>Adding test coverage</td>
+</tr>
+<tr>
+<td><code>/doc</code></td>
+<td>Generate documentation</td>
+<td>Adding JSDoc/docstrings</td>
+</tr>
+<tr>
+<td><code>/new</code></td>
+<td>Create a new file or project</td>
+<td>Scaffolding</td>
+</tr>
+<tr>
+<td><code>/clear</code></td>
+<td>Clear conversation history</td>
+<td>Starting fresh</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-slash-commands-walkthrough">🖥️ Demo: Slash Commands Walkthrough</h3>
+<ol>
+<li>Select a complex function in the API routes → run <code>/explain</code></li>
+<li>Introduce a deliberate bug → run <code>/fix</code> → show the correction</li>
+<li>Select a utility function → run <code>/tests</code> → show generated test cases</li>
+<li>Run <code>/doc</code> on an undocumented function → show the generated JSDoc</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which slash command do you think you&#39;ll use most in daily work?</li>
+<li>How do inline chat and panel chat differ in your workflow?</li>
+<li>What tasks are better suited to slash commands vs. natural language prompts?</li>
+</ul>
+<hr>
+<h2 id="14-context--participants---variables-15-min">1.4. Context: @ Participants &amp; # Variables (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong><code>@</code> Participants</strong> route your question to a specialized handler with domain knowledge</li>
+<li><strong><code>#</code> Variables</strong> attach specific context to your prompt — files, selections, editors</li>
+<li>Combining both gives Copilot precise context instead of guessing</li>
+</ul>
+<h3 id="-participants">@ Participants</h3>
+<table>
+<thead>
+<tr>
+<th>Participant</th>
+<th>Domain</th>
+<th>What It Knows</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@workspace</code></td>
+<td>Your codebase</td>
+<td>Project structure, file contents, dependencies</td>
+</tr>
+<tr>
+<td><code>@vscode</code></td>
+<td>VS Code editor</td>
+<td>Settings, extensions, keybindings, editor state</td>
+</tr>
+<tr>
+<td><code>@terminal</code></td>
+<td>Terminal output</td>
+<td>Recent command results, error messages</td>
+</tr>
+</tbody></table>
+<h3 id="-context-variables"># Context Variables</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Attaches</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>#file</code></td>
+<td>A specific file&#39;s contents</td>
+<td>&quot;Look at this file specifically&quot;</td>
+</tr>
+<tr>
+<td><code>#selection</code></td>
+<td>Current text selection</td>
+<td>&quot;Focus on this code block&quot;</td>
+</tr>
+<tr>
+<td><code>#editor</code></td>
+<td>Currently active editor</td>
+<td>&quot;Consider what I&#39;m looking at&quot;</td>
+</tr>
+<tr>
+<td><code>#codebase</code></td>
+<td>Full project search</td>
+<td>&quot;Search the whole repo for relevant code&quot;</td>
+</tr>
+</tbody></table>
+<h3 id="context-composition">Context Composition</h3>
+<p>When you type <code>@workspace #file:api/routes.ts &quot;add error handling&quot;</code>, Copilot assembles:</p>
+<ol>
+<li>System prompt + your repository instructions</li>
+<li>The <code>@workspace</code> handler&#39;s project knowledge</li>
+<li>The specific file content from <code>#file</code></li>
+<li>Your natural language question</li>
+<li>Recent conversation history</li>
+</ol>
+<h3 id="-demo-precise-context-targeting">🖥️ Demo: Precise Context Targeting</h3>
+<ol>
+<li>Ask a vague question: &quot;How does authentication work?&quot; — note the generic response</li>
+<li>Ask with context: <code>@workspace #file:api/middleware/auth.ts How does authentication work?</code> — note the precise response</li>
+<li>Show <code>@terminal</code> after a failed build — Copilot reads the error output</li>
+<li>Demonstrate <code>#selection</code> for inline code questions</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How does explicitly providing context change the quality of responses?</li>
+<li>When would you use <code>#codebase</code> vs. <code>#file</code>?</li>
+<li>What information does <code>@workspace</code> have access to that you might not expect?</li>
+</ul>
+<hr>
+<h2 id="15-multi-session-management-10-min">1.5. Multi-Session Management (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Each chat session maintains its own conversation history and context</li>
+<li>Long sessions accumulate context — which can help (continuity) or hurt (noise)</li>
+<li>Create new sessions for unrelated tasks to avoid context pollution</li>
+<li>Session history contributes to the context window — old messages can push out relevant code context</li>
+</ul>
+<h3 id="session-strategy">Session Strategy</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Related follow-up questions</td>
+<td>Continue the current session</td>
+</tr>
+<tr>
+<td>New feature or bug in a different area</td>
+<td>Start a new session</td>
+</tr>
+<tr>
+<td>Session is giving confused responses</td>
+<td>Clear with <code>/clear</code> or start fresh</td>
+</tr>
+<tr>
+<td>Exploring vs. implementing</td>
+<td>Use separate sessions — explore in one, build in another</td>
+</tr>
+<tr>
+<td>Context window is full</td>
+<td>Start a new session to reclaim space</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-session-management">🖥️ Demo: Session Management</h3>
+<ol>
+<li>Show creating a new chat session</li>
+<li>Demonstrate switching between sessions</li>
+<li>Show how old context accumulates — ask the same question at the start vs. after 20 messages</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How many chat sessions do you typically have open?</li>
+<li>When do you notice session quality degrading?</li>
+<li>What&#39;s your strategy for organizing sessions by task?</li>
+</ul>
+<hr>
+<h2 id="16-session-1-summary--discussion-5-min">1.6. Session 1 Summary &amp; Discussion (5 min)</h2>
+<h3 id="key-takeaways">Key Takeaways</h3>
+<ul>
+<li>Copilot has multiple interaction surfaces: completions, chat panel, inline chat, quick chat</li>
+<li>Slash commands are shortcuts for common tasks</li>
+<li><code>@</code> participants and <code>#</code> variables give you precise context control</li>
+<li>Session management prevents context pollution and improves response quality</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What was the most surprising capability you saw in Session 1?</li>
+<li>How would you introduce these features to a teammate who hasn&#39;t used Copilot?</li>
+<li>Which interaction mode (completions, chat, inline) do you think fits your workflow best?</li>
+</ul>
+<hr>
+<h2 id="-break--10-minutes">☕ Break — 10 Minutes</h2>
+<hr>
+<h2 id="21-opening--ai-safety-what-gets-shared-5-min">2.1. Opening &amp; AI Safety: &quot;What Gets Shared?&quot; (5 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Copilot processes your code context to generate suggestions — understanding what data flows where is critical</li>
+<li><strong>Copilot Business/Enterprise</strong>: Prompts and suggestions are NOT retained by GitHub or used for model training</li>
+<li><strong>Copilot Individual/Pro</strong>: By default, prompts may be used to improve the model (opt-out available)</li>
+<li>Content exclusions allow organizations to prevent specific files/repos from being used as context</li>
+<li><strong>Telemetry vs. context</strong>: Usage telemetry (feature usage, acceptance rates) is separate from code context</li>
+</ul>
+<h3 id="data-flow">Data Flow</h3>
+<table>
+<thead>
+<tr>
+<th>Data Type</th>
+<th>Sent to GitHub?</th>
+<th>Retained?</th>
+<th>Used for Training?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Code context</strong> (open files, selections)</td>
+<td>Yes (for suggestions)</td>
+<td>No (Business/Enterprise)</td>
+<td>No (Business/Enterprise)</td>
+</tr>
+<tr>
+<td><strong>Chat messages</strong></td>
+<td>Yes (for responses)</td>
+<td>No (Business/Enterprise)</td>
+<td>No (Business/Enterprise)</td>
+</tr>
+<tr>
+<td><strong>Usage telemetry</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No (aggregated only)</td>
+</tr>
+<tr>
+<td><strong>Content exclusions</strong></td>
+<td>Never sent</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+</tbody></table>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Does your organization have specific data residency requirements?</li>
+<li>Which files in your repos would you want excluded from Copilot context?</li>
+<li>How does this compare to other AI tools your team might be using?</li>
+</ul>
+<hr>
+<h2 id="22-context-window-fundamentals-10-min">2.2. Context Window Fundamentals (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>The context window is the total amount of text the model can process in one interaction</li>
+<li>Everything competes for space: system prompt, instructions, conversation history, code context, and the model&#39;s output</li>
+<li>When the window fills, older content gets truncated — the model literally forgets earlier parts of the conversation</li>
+<li>Different models have different window sizes (8K to 200K+ tokens)</li>
+</ul>
+<h3 id="context-window-composition">Context Window Composition</h3>
+<p>In a typical Copilot chat interaction, the context window is assembled in this priority order:</p>
+<ol>
+<li><strong>System prompt</strong> — Copilot&#39;s base instructions (always included, you can&#39;t change this)</li>
+<li><strong>Repository instructions</strong> — <code>.github/copilot-instructions.md</code> (always included if present)</li>
+<li><strong>File-targeted instructions</strong> — <code>.github/instructions/*.instructions.md</code> (if matching files are active)</li>
+<li><strong>Attached context</strong> — <code>#file</code>, <code>#selection</code>, <code>@workspace</code> results</li>
+<li><strong>Conversation history</strong> — recent messages in the current session</li>
+<li><strong>Active editor content</strong> — the file you&#39;re currently viewing</li>
+</ol>
+<h3 id="truncation-priority">Truncation Priority</h3>
+<p>When the window fills, items are removed in roughly this order (most expendable first):</p>
+<ol>
+<li>Old conversation messages (earliest turns dropped)</li>
+<li>Distant file content (files not directly referenced)</li>
+<li>Large attached files (trimmed to fit)</li>
+<li>Active editor content is prioritized</li>
+<li>Instructions and system prompt are preserved longest</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Have you noticed Copilot &quot;forgetting&quot; things during long sessions? Now you know why</li>
+<li>How does knowing the priority order change how you structure prompts?</li>
+</ul>
+<hr>
+<h2 id="23-repository-level-instructions-15-min">2.3. Repository-Level Instructions (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><code>.github/copilot-instructions.md</code> is loaded into <strong>every</strong> Copilot interaction in the repository</li>
+<li>This is your team&#39;s &quot;always-on&quot; configuration — coding standards, naming conventions, framework preferences</li>
+<li>Keep it concise — every token spent here reduces space for code context</li>
+<li>Write rules as clear, actionable directives — not vague guidelines</li>
+</ul>
+<h3 id="example-copilot-instructionsmd">Example: copilot-instructions.md</h3>
+<pre><code class="language-markdown"># Copilot Instructions
+
+## Coding Standards
+- Use TypeScript strict mode for all new files
+- Prefer `const` over `let`; never use `var`
+- Use named exports, not default exports
+- All functions must have JSDoc comments with @param and @return tags
+
+## Testing
+- Use Vitest for all unit tests
+- Test files go in `__tests__/` directories alongside source files
+- Minimum one test per exported function
+
+## Architecture
+- API routes follow REST conventions: GET /resources, POST /resources, GET /resources/:id
+- Use Express middleware for cross-cutting concerns (auth, logging, validation)
+- Database queries go in `/api/services/`, not in route handlers
+</code></pre>
+<h3 id="-demo-creating-copilot-instructionsmd">🖥️ Demo: Creating copilot-instructions.md</h3>
+<ol>
+<li>Create <code>.github/copilot-instructions.md</code> in the OctoCAT Supply repo</li>
+<li>Add coding standards specific to the project</li>
+<li>Ask Copilot to generate a new API endpoint — observe it following the instructions</li>
+<li>Modify an instruction (e.g., change test framework from Vitest to Jest) — regenerate and compare</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What coding standards would you put in your team&#39;s copilot-instructions.md?</li>
+<li>How do you balance comprehensive instructions vs. context window cost?</li>
+<li>Who should own and maintain this file in your organization?</li>
+</ul>
+<hr>
+<h2 id="24-instruction-layering-10-min">2.4. Instruction Layering (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Instructions can be set at multiple levels — each has a different scope and priority</li>
+<li>This creates a layering system: general rules at the top, specific overrides at the bottom</li>
+</ul>
+<h3 id="instruction-layers">Instruction Layers</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Location</th>
+<th>Scope</th>
+<th>When Loaded</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>User</strong></td>
+<td>VS Code <code>settings.json</code> → <code>github.copilot.chat.codeGeneration.instructions</code></td>
+<td>All repos for this user</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>Workspace</strong></td>
+<td><code>.vscode/settings.json</code> → <code>github.copilot.chat.codeGeneration.instructions</code></td>
+<td>This workspace</td>
+<td>Always (overrides user)</td>
+</tr>
+<tr>
+<td><strong>Repository</strong></td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>This repo (all users)</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>File-targeted</strong></td>
+<td><code>.github/instructions/*.instructions.md</code> with <code>applyTo</code> frontmatter</td>
+<td>Matching files only</td>
+<td>When matching files are active</td>
+</tr>
+</tbody></table>
+<h3 id="file-targeted-instructions">File-Targeted Instructions</h3>
+<p>File-targeted instructions have YAML frontmatter with an <code>applyTo</code> glob pattern:</p>
+<pre><code class="language-yaml">---
+applyTo: &quot;**/*.test.ts&quot;
+---
+# Test File Instructions
+- Use Vitest `describe` / `it` / `expect` pattern
+- Mock external dependencies with `vi.mock()`
+- Each test file should test one module only
+</code></pre>
+<h3 id="-demo-layered-instructions">🖥️ Demo: Layered Instructions</h3>
+<ol>
+<li>Show user-level instructions in VS Code settings</li>
+<li>Create <code>.github/instructions/tests.instructions.md</code> with <code>applyTo: &quot;**/*.test.*&quot;</code></li>
+<li>Create <code>.github/instructions/api.instructions.md</code> with <code>applyTo: &quot;api/**/*.ts&quot;</code></li>
+<li>Open a test file — ask Copilot to generate tests — observe test-specific instructions applied</li>
+<li>Open an API route file — ask Copilot to add a feature — observe API-specific instructions applied</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How would you split instructions between repo-wide and file-targeted?</li>
+<li>What file patterns in your project would benefit from targeted instructions?</li>
+<li>How do you handle instruction conflicts between layers?</li>
+</ul>
+<hr>
+<h2 id="25-context-quality--prompt-crafting-15-min">2.5. Context Quality &amp; Prompt Crafting (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>The quality of Copilot&#39;s output is directly proportional to the quality of context you provide</li>
+<li>Vague prompts produce vague code; precise prompts produce precise code</li>
+<li>Explicit file references (<code>#file</code>) beat implicit context every time</li>
+<li>Structure your prompts: what you want → where it should go → constraints → examples</li>
+</ul>
+<h3 id="effective-prompt-patterns">Effective Prompt Patterns</h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Specific reference</strong></td>
+<td><code>@workspace #file:api/routes/orders.ts Add input validation to the POST handler</code></td>
+</tr>
+<tr>
+<td><strong>Constraint-driven</strong></td>
+<td><code>Generate a function that handles pagination — max 100 items per page, cursor-based, no offset</code></td>
+</tr>
+<tr>
+<td><strong>Example-guided</strong></td>
+<td><code>Create a service like #file:api/services/products.ts but for the Suppliers entity</code></td>
+</tr>
+<tr>
+<td><strong>Negative constraint</strong></td>
+<td><code>Refactor this without using any third-party libraries</code></td>
+</tr>
+</tbody></table>
+<h3 id="anti-patterns">Anti-Patterns</h3>
+<table>
+<thead>
+<tr>
+<th>Anti-Pattern</th>
+<th>Problem</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>&quot;Make it better&quot;</strong></td>
+<td>Too vague — Copilot guesses what &quot;better&quot; means</td>
+<td>Specify dimensions: faster, more readable, fewer allocations</td>
+</tr>
+<tr>
+<td><strong>Wall of context</strong></td>
+<td>Attaching 10 files overwhelms the context window</td>
+<td>Attach only the 1-2 files directly relevant</td>
+</tr>
+<tr>
+<td><strong>Ignoring truncation</strong></td>
+<td>Long conversations lose early context</td>
+<td>Start fresh sessions for new tasks</td>
+</tr>
+<tr>
+<td><strong>No constraints</strong></td>
+<td>Copilot picks arbitrary patterns</td>
+<td>State your framework, style, and architecture preferences</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-context-quality-comparison">🖥️ Demo: Context Quality Comparison</h3>
+<ol>
+<li>Ask without context: &quot;Create a new API endpoint for suppliers&quot;</li>
+<li>Ask with context: <code>@workspace #file:api/routes/products.ts #file:api/services/products.ts Create a new API endpoint for suppliers following the same pattern</code></li>
+<li>Compare the two outputs side-by-side — precision, accuracy, adherence to project patterns</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What&#39;s the minimum context you need for a good response?</li>
+<li>How do you know when you&#39;ve provided too much context?</li>
+<li>What prompt patterns have worked well for your specific tech stack?</li>
+</ul>
+<hr>
+<h2 id="26-session-2-summary--discussion-5-min">2.6. Session 2 Summary &amp; Discussion (5 min)</h2>
+<h3 id="key-takeaways">Key Takeaways</h3>
+<ul>
+<li>The context window is finite — everything competes for space</li>
+<li><code>.github/copilot-instructions.md</code> is your team&#39;s always-on configuration</li>
+<li>Instruction layering (user → workspace → repo → file-targeted) gives you precise control</li>
+<li>Quality prompts with explicit references beat vague questions every time</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How would you structure instructions for your team&#39;s primary repository?</li>
+<li>What&#39;s the biggest &quot;context quality&quot; improvement you can make immediately?</li>
+<li>How do file-targeted instructions change your approach to project-specific patterns?</li>
+</ul>
+<hr>
+<h2 id="-break--10-minutes">☕ Break — 10 Minutes</h2>
+<hr>
+<h2 id="31-opening--ai-safety-model-selection--capability-vs-risk-5-min">3.1. Opening &amp; AI Safety: &quot;Model Selection — Capability vs. Risk&quot; (5 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Different models have different strengths, costs, and risk profiles</li>
+<li>More capable models aren&#39;t always better — they may be slower, more expensive, or overkill for the task</li>
+<li>Model selection should be intentional: match the model to the task complexity</li>
+<li>Some models are better at reasoning, others at speed, others at following instructions precisely</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Has your team experimented with switching models? What did you notice?</li>
+<li>How do you balance speed vs. quality in your daily work?</li>
+</ul>
+<hr>
+<h2 id="32-model-landscape-15-min">3.2. Model Landscape (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Copilot supports multiple models — you can switch between them in VS Code</li>
+<li>Each model has different characteristics: context window size, speed, reasoning depth, and cost tier</li>
+</ul>
+<h3 id="model-comparison">Model Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Speed</th>
+<th>Reasoning</th>
+<th>Context Window</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GPT-4o</strong></td>
+<td>Fast</td>
+<td>Strong</td>
+<td>128K tokens</td>
+<td>General-purpose coding, good balance</td>
+</tr>
+<tr>
+<td><strong>GPT-4.1</strong></td>
+<td>Fast</td>
+<td>Very strong</td>
+<td>1M tokens</td>
+<td>Large codebase work, complex multi-file tasks</td>
+</tr>
+<tr>
+<td><strong>Claude Sonnet</strong></td>
+<td>Fast</td>
+<td>Strong</td>
+<td>200K tokens</td>
+<td>Nuanced code review, detailed explanations</td>
+</tr>
+<tr>
+<td><strong>Claude Opus</strong></td>
+<td>Slower</td>
+<td>Excellent</td>
+<td>200K tokens</td>
+<td>Complex architecture, deep reasoning tasks</td>
+</tr>
+<tr>
+<td><strong>Gemini</strong></td>
+<td>Fast</td>
+<td>Good</td>
+<td>1M+ tokens</td>
+<td>Very large context tasks</td>
+</tr>
+<tr>
+<td><strong>o1 / o3-mini</strong></td>
+<td>Slower</td>
+<td>Exceptional</td>
+<td>200K tokens</td>
+<td>Complex algorithmic problems, mathematical reasoning</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: Model availability depends on your Copilot license tier and organization settings. Models are updated frequently — check GitHub documentation for the latest list.</p>
+</blockquote>
+<h3 id="model-strengths-matrix">Model Strengths Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Task Type</th>
+<th>Recommended Model</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Quick completions &amp; chat</td>
+<td>GPT-4o</td>
+<td>Fast, good enough for most tasks</td>
+</tr>
+<tr>
+<td>Multi-file refactoring</td>
+<td>GPT-4.1 or Claude Sonnet</td>
+<td>Large context + strong reasoning</td>
+</tr>
+<tr>
+<td>Architecture decisions</td>
+<td>Claude Opus or o3</td>
+<td>Deep reasoning, nuanced analysis</td>
+</tr>
+<tr>
+<td>Code review</td>
+<td>Claude Sonnet</td>
+<td>Detailed, catches subtle issues</td>
+</tr>
+<tr>
+<td>Algorithm design</td>
+<td>o1 / o3-mini</td>
+<td>Exceptional at step-by-step reasoning</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-model-switching">🖥️ Demo: Model Switching</h3>
+<ol>
+<li>Open VS Code chat — show the model picker dropdown</li>
+<li>Ask the same question to GPT-4o and Claude Sonnet — compare response style and speed</li>
+<li>Give a complex reasoning task to o3-mini — show the &quot;thinking&quot; time vs. output quality</li>
+<li>Discuss when the speed-quality trade-off matters</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which model do you currently use? Have you tried switching?</li>
+<li>For your team&#39;s typical tasks, which model seems like the best default?</li>
+<li>When would you deliberately choose a slower, more capable model?</li>
+</ul>
+<hr>
+<h2 id="33-token-mechanics-15-min">3.3. Token Mechanics (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>A <strong>token</strong> is the basic unit the model processes — roughly 4 characters in English, varies for code</li>
+<li><strong>Input tokens</strong>: everything you send (system prompt + instructions + context + your message)</li>
+<li><strong>Output tokens</strong>: what the model generates in response — these cost more</li>
+<li>The context window is measured in tokens, not characters or lines</li>
+</ul>
+<h3 id="token-fundamentals">Token Fundamentals</h3>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1 token ≈</strong></td>
+<td>~4 English characters, ~¾ of a word</td>
+</tr>
+<tr>
+<td><strong>Code tokenization</strong></td>
+<td>Varies by language — Python is more token-efficient than Java</td>
+</tr>
+<tr>
+<td><strong>Input cost</strong></td>
+<td>Lower per token — you&#39;re sending context</td>
+</tr>
+<tr>
+<td><strong>Output cost</strong></td>
+<td>Higher per token — the model is generating</td>
+</tr>
+<tr>
+<td><strong>Context window</strong></td>
+<td>Maximum input + output tokens combined</td>
+</tr>
+</tbody></table>
+<h3 id="where-tokens-go-in-a-copilot-interaction">Where Tokens Go in a Copilot Interaction</h3>
+<pre><code>┌─────────────────────────────────────────────────────┐
+│                 Context Window (128K)                │
+├─────────────────────────────────────────────────────┤
+│ System Prompt                              ~2K      │
+│ Repository Instructions                    ~1K      │
+│ File-Targeted Instructions                 ~0.5K    │
+│ @workspace / #file Context                 ~10-50K  │
+│ Conversation History                       ~5-20K   │
+│ Your Current Message                       ~0.5K    │
+│ ─────────────────────────────────────────────────── │
+│ Model Output (generated)                   ~1-4K    │
+│ ─────────────────────────────────────────────────── │
+│ Remaining / Unused                         varies   │
+└─────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="token-usage-visibility">Token Usage Visibility</h3>
+<ul>
+<li><strong>VS Code</strong>: Enable chat debug mode (<code>github.copilot.chat.debugMode</code>) to see token counts per interaction</li>
+<li><strong>GitHub Dashboard</strong>: Organization admins can view Copilot usage at <a href="https://github.com/organizations/YOUR-ORG/settings/copilot/usage">https://github.com/organizations/YOUR-ORG/settings/copilot/usage</a></li>
+<li><strong>Premium requests</strong>: Some models (o1, Claude Opus) consume premium request allocation</li>
+</ul>
+<h3 id="-demo-token-visibility">🖥️ Demo: Token Visibility</h3>
+<ol>
+<li>Enable <code>github.copilot.chat.debugMode</code> in VS Code settings</li>
+<li>Send a chat message — show the debug output with token counts</li>
+<li>Send the same message with a large <code>#file</code> attachment — show the token count increase</li>
+<li>Show the GitHub org usage dashboard (screenshot or live)</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How does token awareness change how you structure prompts?</li>
+<li>What&#39;s the cost impact of always-on repository instructions that are 500 tokens vs. 50 tokens?</li>
+<li>How would you monitor token usage across a team?</li>
+</ul>
+<hr>
+<h2 id="34-built-in-vs-custom-agents-15-min">3.4. Built-in vs Custom Agents (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Built-in agents</strong> (<code>@workspace</code>, <code>@vscode</code>, <code>@terminal</code>) are provided by Copilot with specialized domain knowledge</li>
+<li><strong>Custom agents</strong> are defined in <code>.github/agents/*.md</code> files — you create personas with specific instructions, tools, and model preferences</li>
+<li>Custom agents appear in the chat mode picker alongside Ask/Agent/Plan</li>
+</ul>
+<h3 id="built-in-agent-capabilities">Built-in Agent Capabilities</h3>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>What It Accesses</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@workspace</code></td>
+<td>File tree, file contents, symbols, dependencies</td>
+<td>Project-wide questions, cross-file understanding</td>
+</tr>
+<tr>
+<td><code>@vscode</code></td>
+<td>Settings, extensions, keybindings, themes</td>
+<td>Editor configuration, extension questions</td>
+</tr>
+<tr>
+<td><code>@terminal</code></td>
+<td>Recent terminal output, command history</td>
+<td>Build errors, test failures, runtime issues</td>
+</tr>
+</tbody></table>
+<h3 id="custom-agent-anatomy">Custom Agent Anatomy</h3>
+<pre><code class="language-yaml">---
+description: &quot;Reviews code for security vulnerabilities and suggests fixes&quot;
+tools:
+  - codebase
+  - githubRepo
+  - fetch
+model: claude-sonnet-4
+---
+# Security Reviewer Agent
+
+You are a security-focused code reviewer. When asked to review code:
+
+1. Check for OWASP Top 10 vulnerabilities
+2. Identify injection risks (SQL, XSS, command injection)
+3. Verify input validation and sanitization
+4. Check authentication and authorization patterns
+5. Flag hardcoded secrets or credentials
+
+Always explain WHY something is a risk and provide a corrected code example.
+</code></pre>
+<h3 id="prompt-decision-flowchart">Prompt Decision Flowchart</h3>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>If Yes →</th>
+<th>If No →</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Quick question, no code changes?</td>
+<td><strong>Ask mode</strong></td>
+<td>↓</td>
+</tr>
+<tr>
+<td>Need a plan before coding?</td>
+<td><strong>Plan mode</strong></td>
+<td>↓</td>
+</tr>
+<tr>
+<td>Need code changes to files?</td>
+<td><strong>Agent mode</strong></td>
+<td>↓</td>
+</tr>
+<tr>
+<td>Need a specialized persona?</td>
+<td><strong>Custom agent</strong></td>
+<td>Use Agent mode</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-creating-a-custom-agent">🖥️ Demo: Creating a Custom Agent</h3>
+<ol>
+<li>Create <code>.github/agents/reviewer.md</code> with security review instructions</li>
+<li>Open the chat mode picker — show the new agent appearing</li>
+<li>Select the agent — ask it to review an API route</li>
+<li>Compare the response to asking the same question in default Agent mode</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What specialized agents would be most useful for your team?</li>
+<li>How do you decide between custom instructions and a custom agent?</li>
+<li>What tools would you give your custom agents access to?</li>
+</ul>
+<hr>
+<h2 id="35-token-management--budgeting-15-min">3.5. Token Management &amp; Budgeting (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Token management isn&#39;t just about cost — it&#39;s about response quality</li>
+<li>Bloated context = diluted attention = worse responses</li>
+<li>Strategies: context pruning, focused prompts, model selection, instruction optimization</li>
+</ul>
+<h3 id="token-management-strategies">Token Management Strategies</h3>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Technique</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Prune instructions</strong></td>
+<td>Keep <code>copilot-instructions.md</code> under 100 lines</td>
+<td>Frees ~500-1000 tokens per interaction</td>
+</tr>
+<tr>
+<td><strong>Use file-targeted instructions</strong></td>
+<td>Move file-specific rules to <code>applyTo</code> files</td>
+<td>Only loads when relevant</td>
+</tr>
+<tr>
+<td><strong>Start fresh sessions</strong></td>
+<td>New session for new tasks</td>
+<td>Eliminates accumulated history</td>
+</tr>
+<tr>
+<td><strong>Choose the right model</strong></td>
+<td>GPT-4o for simple tasks, Opus for complex</td>
+<td>Matches cost to task complexity</td>
+</tr>
+<tr>
+<td><strong>Be specific</strong></td>
+<td>Reference exact files instead of <code>#codebase</code></td>
+<td>Reduces irrelevant context</td>
+</tr>
+</tbody></table>
+<h3 id="premium-request-tracking">Premium Request Tracking</h3>
+<table>
+<thead>
+<tr>
+<th>Model Tier</th>
+<th>Premium Multiplier</th>
+<th>Best Used For</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Base</strong> (GPT-4o)</td>
+<td>1x</td>
+<td>Daily coding tasks</td>
+</tr>
+<tr>
+<td><strong>Mid</strong> (Claude Sonnet)</td>
+<td>1x</td>
+<td>Code review, explanations</td>
+</tr>
+<tr>
+<td><strong>Premium</strong> (Claude Opus, o1)</td>
+<td>Higher multiplier</td>
+<td>Complex architecture, deep reasoning</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: Premium request limits and multipliers vary by plan tier. Check your organization&#39;s Copilot settings for current allocations.</p>
+</blockquote>
+<h3 id="monitoring-consumption">Monitoring Consumption</h3>
+<ul>
+<li><strong>Individual</strong>: VS Code debug mode shows per-interaction token usage</li>
+<li><strong>Organization</strong>: GitHub admin dashboard shows team-wide consumption trends</li>
+<li><strong>Alerts</strong>: Set up notifications when premium request usage approaches limits</li>
+</ul>
+<h3 id="-demo-token-conscious-prompting">🖥️ Demo: Token-Conscious Prompting</h3>
+<ol>
+<li>Show a bloated prompt (10 files attached, long conversation history) — note the token count</li>
+<li>Refactor to a focused prompt (1 file, clear question) — note the dramatic difference</li>
+<li>Show the premium request dashboard for an org</li>
+<li>Demonstrate model switching for a simple task (GPT-4o) vs. complex task (Claude Opus)</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How would you implement a token budget for your team?</li>
+<li>What&#39;s the ROI calculation for premium model usage?</li>
+<li>How do you balance individual productivity vs. team-wide token consumption?</li>
+</ul>
+<hr>
+<h2 id="36-copilot-setup-stepsyml--summary-10-min">3.6. copilot-setup-steps.yml &amp; Summary (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><code>copilot-setup-steps.yml</code> defines the environment setup commands that run when Copilot&#39;s Coding Agent starts working on your repository</li>
+<li>Without it, the Coding Agent may not be able to build, test, or lint your project</li>
+<li>Think of it as a &quot;first day onboarding script&quot; for the AI developer</li>
+</ul>
+<h3 id="example-copilot-setup-stepsyml">Example: copilot-setup-steps.yml</h3>
+<pre><code class="language-yaml">steps:
+  - name: Install dependencies
+    run: npm install
+  - name: Build the project
+    run: npm run build
+  - name: Run linting
+    run: npm run lint
+  - name: Run tests
+    run: npm test
+</code></pre>
+<h3 id="key-takeaways--module-1-complete">Key Takeaways — Module 1 Complete</h3>
+<table>
+<thead>
+<tr>
+<th>Session</th>
+<th>Core Concept</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Session 1</strong></td>
+<td>Copilot has multiple interaction modes — completions, chat, inline, slash commands, context targeting</td>
+</tr>
+<tr>
+<td><strong>Session 2</strong></td>
+<td>Context is finite and layered — instructions, files, conversation all compete for space</td>
+</tr>
+<tr>
+<td><strong>Session 3</strong></td>
+<td>Models vary in capability and cost — match the model to the task; manage tokens intentionally</td>
+</tr>
+</tbody></table>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What&#39;s the first thing you&#39;ll set up in your own repository after this module?</li>
+<li>Which concept from today will have the biggest impact on your daily workflow?</li>
+<li>What questions do you still have about Copilot foundations?</li>
+</ul>
+<hr>
+<p><em>Workshop guide for GitHub Copilot Developer Training — Foundations (Module 1 of 3)</em></p>
+</article>  </main> </body></html>  <script type="module">document.querySelectorAll("pre").forEach(e=>{const t=document.createElement("button");t.className="copy-btn",t.textContent="Copy",t.addEventListener("click",async()=>{const o=(e.querySelector("code")||e).textContent||"";await navigator.clipboard.writeText(o),t.textContent="Copied!",t.classList.add("copied"),setTimeout(()=>{t.textContent="Copy",t.classList.remove("copied")},2e3)}),e.appendChild(t)});</script>

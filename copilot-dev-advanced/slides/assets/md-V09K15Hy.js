@@ -1,0 +1,11 @@
+import{_ as r}from"./slidev/CodeBlockWrapper.vue_vue_type_script_setup_true_lang-CKH6cXp_.js";import{o as p,b as d,w as t,g as s,d as u,m,D as n,v as c,x as f,z as l}from"./modules/vue-DmHkF15e.js";import{I as g}from"./default-B591Olvf.js";import{u as k,f as x}from"./slidev/context-vWNLUwVf.js";import"./modules/unplugin-icons-BCQnPcVf.js";import"./index-DrIPycyS.js";import"./modules/shiki-B6kT1kgs.js";const I={__name:"copilot-dev-advanced.slidev.md__slidev_34",setup(v){const{$clicksContext:a,$frontmatter:i}=k();return a.setup(),(A,e)=>{const o=r;return p(),d(g,c(f(l(x)(l(i),33))),{default:t(()=>[e[1]||(e[1]=s("h1",null,"Agent Debug Logs",-1)),e[2]||(e[2]=s("h3",null,"Iteration traces for Agent mode",-1)),e[3]||(e[3]=s("p",null,'Access: Command Palette → "GitHub Copilot: Open Agent Debug Log"',-1)),u(o,m({},{title:"",ranges:[]}),{default:t(()=>[...e[0]||(e[0]=[s("pre",{class:"shiki shiki-themes vitesse-dark vitesse-light slidev-code",style:{"--shiki-dark":"#dbd7caee","--shiki-light":"#393a34","--shiki-dark-bg":"#121212","--shiki-light-bg":"#ffffff"}},[s("code",{class:"language-text"},[s("span",{class:"line"},[s("span",null,"[Iteration 1] Plan: Add validation to orders route")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  Tool: file.read → api/routes/orders.ts (2,341 tokens)")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  Tool: file.write → api/middleware/validate-order.ts")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  Tool: terminal.run → npm run lint (exit: 1)")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  Result: FAIL — 'Request' is not defined")]),n(`
+`),s("span",{class:"line"},[s("span")]),n(`
+`),s("span",{class:"line"},[s("span",null,"[Iteration 2] Fix: Add missing import")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  Tool: file.edit → api/middleware/validate-order.ts")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  Tool: terminal.run → npm run lint (exit: 0)")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  Tool: terminal.run → npm test (exit: 0)")]),n(`
+`),s("span",{class:"line"},[s("span",null,"  Result: PASS ✅")])])],-1)])]),_:1},16),e[4]||(e[4]=s("p",null,"Each entry shows: tool calls, arguments, results, and the agent’s next decision.",-1))]),_:1},16)}}};export{I as default};
