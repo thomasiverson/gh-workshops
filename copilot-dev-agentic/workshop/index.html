@@ -13,7 +13,7 @@
 <ul>
 <li>Understand how agentic loops work: the plan → act → observe → reflect cycle</li>
 <li>Trace the Ralph loop — the iterative pattern Copilot&#39;s Coding Agent uses to validate and self-correct</li>
-<li>Use Copilot as a structured reasoning partner (rubber duck debugging with AI)</li>
+<li>Understand how Rubber Duck uses cross-model-family review to catch errors that self-reflection misses</li>
 <li>Distinguish between single-agent and multi-agent architecture patterns</li>
 <li>Identify orchestration topologies: sequential, parallel, and hierarchical</li>
 <li>Recognize and avoid the 8 most common agent antipatterns</li>
@@ -117,7 +117,7 @@
 </tr>
 <tr>
 <td>4.5</td>
-<td><a href="#45-rubber-duck-debugging-with-ai-15-min">Rubber Duck Debugging with AI</a></td>
+<td><a href="#45-rubber-duck-cross-model-review-15-min">Rubber Duck: Cross-Model Review</a></td>
 <td>15 min</td>
 </tr>
 <tr>
@@ -479,81 +479,88 @@
 <li>How would you write issues that give the Coding Agent the best chance of success?</li>
 </ul>
 <hr>
-<h2 id="45-rubber-duck-debugging-with-ai-15-min">4.5. Rubber Duck Debugging with AI (15 min)</h2>
+<h2 id="45-rubber-duck-cross-model-review-15-min">4.5. Rubber Duck: Cross-Model Review (15 min)</h2>
 <h3 id="key-points">Key Points</h3>
 <ul>
-<li><strong>Rubber duck debugging</strong> is the classic technique: explain your problem out loud (to a rubber duck) and the act of articulating it reveals the solution</li>
-<li>Copilot elevates this — it&#39;s a rubber duck that talks back, asks clarifying questions, and challenges your assumptions</li>
-<li>The <strong>rubber-duck agent pattern</strong>: use Copilot to critique your plan before you implement it</li>
+<li><strong>Rubber Duck</strong> is a GitHub Copilot feature that uses a second AI model from a <strong>different model family</strong> to review the primary agent&#39;s work</li>
+<li>When your orchestrator is a Claude model, Rubber Duck uses GPT-5.4 — and vice versa — providing a genuinely independent perspective</li>
+<li>The concept draws from classic rubber duck debugging (articulating a problem reveals the solution), but Rubber Duck goes further: it&#39;s a different model with different training data and different blind spots</li>
+<li><strong>The key insight</strong>: A model reviewing its own work is bounded by its own biases. A cross-family review catches errors the primary model is structurally likely to miss</li>
 </ul>
-<h3 id="the-classic-vs-ai-rubber-duck">The Classic vs. AI Rubber Duck</h3>
+<h3 id="why-cross-family-review-matters">Why Cross-Family Review Matters</h3>
 <table>
 <thead>
 <tr>
-<th>Aspect</th>
-<th>Classic Rubber Duck</th>
-<th>Copilot as Rubber Duck</th>
+<th>Review Approach</th>
+<th>Limitation</th>
+<th>Rubber Duck Advantage</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><strong>Listening</strong></td>
-<td>Silent (you articulate)</td>
-<td>Active (asks questions back)</td>
+<td><strong>Self-reflection</strong> (same model reviews its own work)</td>
+<td>Same training biases, same blind spots</td>
+<td>Different model family = different biases</td>
 </tr>
 <tr>
-<td><strong>Challenge</strong></td>
-<td>None (you self-discover)</td>
-<td>Identifies blind spots, edge cases</td>
+<td><strong>Human review</strong></td>
+<td>Slow, doesn&#39;t scale, reviewers miss things too</td>
+<td>Fast, automated, catches systematic patterns</td>
 </tr>
 <tr>
-<td><strong>Knowledge</strong></td>
-<td>None</td>
-<td>Full codebase context</td>
-</tr>
-<tr>
-<td><strong>Bias check</strong></td>
-<td>Only your own reflection</td>
-<td>Independent perspective</td>
+<td><strong>Same-family second model</strong></td>
+<td>Similar training data → correlated blind spots</td>
+<td>Cross-family = uncorrelated blind spots</td>
 </tr>
 </tbody></table>
-<h3 id="the-rubber-duck-agent-pattern">The Rubber-Duck Agent Pattern</h3>
-<p>Use this pattern when you have a plan but want to stress-test it before implementing:</p>
+<h3 id="when-rubber-duck-activates">When Rubber Duck Activates</h3>
+<p>Rubber Duck engages at three key checkpoints where feedback has the highest return:</p>
 <ol>
-<li><strong>Articulate</strong>: Describe your plan in detail to Copilot (using Plan or Ask mode)</li>
-<li><strong>Challenge</strong>: Ask Copilot to find flaws, edge cases, or alternative approaches</li>
-<li><strong>Refine</strong>: Update your plan based on Copilot&#39;s critique</li>
-<li><strong>Implement</strong>: Switch to Agent mode and execute the refined plan</li>
+<li><strong>After drafting a plan</strong> — Catching a suboptimal decision early avoids compounding errors downstream. This is where developers see the biggest wins</li>
+<li><strong>After a complex implementation</strong> — A second set of eyes on complex code catches edge cases</li>
+<li><strong>After writing tests, before executing them</strong> — Catches gaps in test coverage or flawed assertions before self-reinforcing that &quot;everything passes&quot;</li>
 </ol>
-<h3 id="example-prompt-sequence">Example Prompt Sequence</h3>
-<p><strong>Step 1 — Articulate:</strong></p>
-<pre><code>I&#39;m planning to add rate limiting to our API. My approach:
-1. Add express-rate-limit middleware
-2. Apply globally with 100 requests per 15 min window
-3. Return 429 status with retry-after header
-
-What am I missing? What edge cases should I consider?
-</code></pre>
-<p><strong>Step 2 — Challenge:</strong></p>
-<pre><code>Play devil&#39;s advocate. What could go wrong with this approach in production?
-What about distributed deployments with multiple server instances?
-</code></pre>
-<p><strong>Step 3 — Refine:</strong></p>
-<pre><code>Good points. Let me revise: use Redis-backed rate limiting for distributed support,
-add per-endpoint limits (auth endpoints stricter), and add a bypass for health checks.
-Does this address the concerns?
-</code></pre>
-<h3 id="-demo-rubber-duck-session">🖥️ Demo: Rubber Duck Session</h3>
+<p>The agent can also invoke Rubber Duck <strong>reactively</strong> if it gets stuck in a loop, and <strong>you can request a critique at any point</strong> by asking Copilot to review its work.</p>
+<h3 id="real-world-examples-from-swe-bench-pro">Real-World Examples from SWE-Bench Pro</h3>
+<table>
+<thead>
+<tr>
+<th>Catch</th>
+<th>What Rubber Duck Found</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Architectural catch</strong> (async scheduler)</td>
+<td>Proposed scheduler would start and immediately exit, running zero jobs — and one scheduled task was itself an infinite loop</td>
+</tr>
+<tr>
+<td><strong>One-liner bug</strong> (Solr facets)</td>
+<td>A loop silently overwrote the same dict key on every iteration, dropping 3 of 4 search facet categories with no error</td>
+</tr>
+<tr>
+<td><strong>Cross-file conflict</strong> (email confirmation)</td>
+<td>Three files read from a Redis key that the new code stopped writing — confirmation UI and cleanup would silently break on deploy</td>
+</tr>
+</tbody></table>
+<h3 id="results">Results</h3>
+<p>Claude Sonnet + Rubber Duck (GPT-5.4) closes <strong>74.7% of the performance gap</strong> between Sonnet and Opus on SWE-Bench Pro. The benefit is strongest on difficult problems spanning 3+ files and 70+ steps.</p>
+<h3 id="-demo-rubber-duck-in-action">🖥️ Demo: Rubber Duck in Action</h3>
 <ol>
-<li>Describe a design decision to Copilot: &quot;I want to add caching to the products API&quot;</li>
-<li>Ask Copilot to critique the approach: &quot;What could go wrong? What am I missing?&quot;</li>
-<li>Show how Copilot identifies cache invalidation, stale data, and memory concerns</li>
-<li>Refine the plan based on feedback — then switch to Agent mode to implement</li>
+<li>Open GitHub Copilot CLI with a Claude model selected</li>
+<li>Give a complex task — show the agent planning</li>
+<li>Point out when Rubber Duck activates (after plan, after implementation)</li>
+<li>Show the critique: what did the second model catch?</li>
+<li>Show how the agent incorporates feedback and what changed</li>
 </ol>
+<h3 id="using-rubber-duck-manually">Using Rubber Duck Manually</h3>
+<p>You can also request a critique at any time:</p>
+<pre><code>Review your plan before implementing. What could go wrong?
+</code></pre>
+<p>Copilot will invoke Rubber Duck, reason over the feedback, and show you what changed and why.</p>
 <h3 id="discussion-points">Discussion Points</h3>
 <ul>
-<li>When do you currently &quot;rubber duck&quot; your ideas? How formal is the process?</li>
-<li>What types of decisions benefit most from AI-assisted plan critique?</li>
-<li>How does rubber ducking with Copilot compare to discussing with a colleague?</li>
+<li>How does a cross-family review compare to your team&#39;s code review process?</li>
+<li>What types of tasks would benefit most from automated second opinions?</li>
+<li>How would you incorporate Rubber Duck into your workflow alongside human review?</li>
 </ul>
 <hr>
 <h2 id="46-session-4-summary--discussion-10-min">4.6. Session 4 Summary &amp; Discussion (10 min)</h2>
@@ -561,8 +568,8 @@ Does this address the concerns?
 <ul>
 <li>Agentic loops follow a plan → act → observe → reflect cycle</li>
 <li>The Ralph loop adds validation gates (lint, type check, tests) that force self-correction</li>
-<li>Copilot can serve as a rubber duck that actively challenges your thinking</li>
-<li>Use the rubber-duck agent pattern to stress-test plans before implementing</li>
+<li>Rubber Duck provides cross-model-family review at key checkpoints — plan, implementation, tests</li>
+<li>Cross-family critique catches errors that self-reflection misses because different models have different blind spots</li>
 </ul>
 <h3 id="discussion-points">Discussion Points</h3>
 <ul>

@@ -182,80 +182,66 @@ Important constraints:
 <li>✅ Identified what triggered the self-correction</li>
 </ul>
 <hr>
-<h3 id="exercise-14--rubber-duck-design-session-8-min">Exercise 1.4 — Rubber Duck Design Session (8 min)</h3>
-<p><strong>Objective</strong>: Use Copilot as a structured reasoning partner to critique a design decision.</p>
+<h3 id="exercise-14--rubber-duck-cross-model-review-8-min">Exercise 1.4 — Rubber Duck Cross-Model Review (8 min)</h3>
+<p><strong>Objective</strong>: Understand how Rubber Duck provides cross-model-family critique at key checkpoints.</p>
 <p><strong>Steps</strong></p>
-<p><strong>Step 1: Describe a design plan</strong></p>
-<p>In Ask mode or Plan mode, present a design decision:</p>
-<pre><code>I&#39;m planning to add real-time order notifications to the OctoCAT Supply app. My plan:
-1. Add WebSocket support using Socket.io
-2. When an order status changes, emit an event to all connected clients
-3. Frontend listens and updates the UI without page refresh
-4. Store a notification history table in the database
-
-What am I missing? What could go wrong?
+<p><strong>Step 1: Understand the concept</strong></p>
+<p>Rubber Duck is a GitHub Copilot feature that uses a second AI model from a <strong>different model family</strong> to review the primary agent&#39;s work. When Claude is your orchestrator, Rubber Duck uses GPT-5.4 — providing an independent perspective with different training biases.</p>
+<p><strong>Step 2: Trigger a manual critique</strong></p>
+<p>In GitHub Copilot CLI (or Agent mode in VS Code), give a complex task:</p>
+<pre><code>Add real-time order notifications to the OctoCAT Supply app using WebSockets.
+When an order status changes, emit events to connected clients.
 </code></pre>
-<p><strong>Step 2: Ask for devil&#39;s advocate</strong></p>
-<pre><code>Play devil&#39;s advocate. What are the top 3 risks with this approach?
-What would you do differently?
+<p>After the agent produces a plan, request a critique:</p>
+<pre><code>Review your plan before implementing. What could go wrong?
+What edge cases are you missing?
 </code></pre>
-<p><strong>Step 3: Refine based on feedback</strong></p>
-<p>Take Copilot&#39;s critique and revise your plan:</p>
-<pre><code>Based on your feedback, here&#39;s my revised approach:
-[Your updated plan]
-Does this address the concerns you raised?
-</code></pre>
-<p><strong>Step 4: Document insights</strong></p>
-<p>Note the blind spots Copilot identified that you hadn&#39;t considered.</p>
+<p><strong>Step 3: Evaluate the critique</strong></p>
+<p>Compare the agent&#39;s original plan to the critique. Note:</p>
+<ul>
+<li>What blind spots were identified?</li>
+<li>Were there architectural concerns (e.g., scaling WebSocket connections)?</li>
+<li>Did the critique catch cross-file dependencies?</li>
+</ul>
+<p><strong>Step 4: Document findings</strong></p>
+<p>Note what the critique caught that the original plan missed. Consider: would self-reflection (the same model reviewing its own work) have caught the same issues?</p>
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
-<li>✅ Presented a design plan to Copilot</li>
-<li>✅ Received meaningful critique (at least 2 actionable insights)</li>
-<li>✅ Refined the plan based on feedback</li>
-<li>✅ Documented blind spots discovered</li>
+<li>✅ Understood that Rubber Duck uses a different model family for review</li>
+<li>✅ Requested a critique of an agent&#39;s plan</li>
+<li>✅ Identified at least 2 blind spots the critique surfaced</li>
+<li>✅ Compared cross-family review value vs. self-reflection</li>
 </ul>
 <hr>
-<h3 id="exercise-15--rubber-duck-prompt-template-5-min">Exercise 1.5 — Rubber Duck Prompt Template (5 min)</h3>
-<p><strong>Objective</strong>: Create a reusable prompt template for rubber-duck plan reviews.</p>
+<h3 id="exercise-15--rubber-duck-checkpoint-identification-5-min">Exercise 1.5 — Rubber Duck Checkpoint Identification (5 min)</h3>
+<p><strong>Objective</strong>: Identify the three key checkpoints where Rubber Duck activates and design a workflow around them.</p>
 <p><strong>Steps</strong></p>
-<p><strong>Step 1: Create a prompt file</strong></p>
-<p>Create <code>.github/prompts/rubber-duck-review.prompt.md</code>:</p>
-<pre><code class="language-markdown">---
-description: &quot;Structured review of a design plan — rubber duck pattern&quot;
-mode: ask
----
-# Rubber Duck Design Review
-
-I&#39;m about to implement a design decision and want your critique.
-
-## My Plan
-{{input}}
-
-## Review Checklist
-Please evaluate against these dimensions:
-1. **Correctness**: Will this approach work as described?
-2. **Edge cases**: What scenarios haven&#39;t I considered?
-3. **Performance**: Will this scale? Any bottlenecks?
-4. **Security**: Any vulnerabilities or data exposure risks?
-5. **Maintenance**: Will this be easy to maintain and debug?
-6. **Alternatives**: Is there a simpler approach I should consider?
-
-For each dimension, rate: ✅ Good / ⚠️ Needs attention / ❌ Risky
-
-Conclude with your top 3 recommendations.
-</code></pre>
-<p><strong>Step 2: Test the template</strong></p>
-<p>Use the prompt file to review a design idea:</p>
+<p><strong>Step 1: Review the three checkpoints</strong></p>
+<p>Rubber Duck activates at:</p>
 <ol>
-<li>Open Command Palette → &quot;Chat: Run Prompt File&quot;</li>
-<li>Select <code>rubber-duck-review.prompt.md</code></li>
-<li>Enter a design plan when prompted</li>
+<li><strong>After drafting a plan</strong> — catches suboptimal decisions before they compound</li>
+<li><strong>After complex implementation</strong> — second set of eyes on complex code</li>
+<li><strong>After writing tests, before executing</strong> — catches coverage gaps or flawed assertions</li>
 </ol>
+<p><strong>Step 2: Map to your workflow</strong></p>
+<p>For a feature you&#39;re currently working on (or a hypothetical one), identify:</p>
+<ul>
+<li>Where would a plan review help most?</li>
+<li>What implementation would benefit from a second opinion?</li>
+<li>What test assumptions should be challenged?</li>
+</ul>
+<pre><code>Feature: [your feature]
+Plan review needed: [what decisions to validate]
+Implementation review: [complex parts to check]
+Test review: [what coverage gaps to watch for]
+</code></pre>
+<p><strong>Step 3: Compare to human review</strong></p>
+<p>How does Rubber Duck&#39;s automated checkpoint review compare to your team&#39;s current PR review process? What does each catch that the other misses?</p>
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
-<li>✅ Created a reusable rubber duck prompt template</li>
-<li>✅ Template includes structured evaluation dimensions</li>
-<li>✅ Tested the template with a real design idea</li>
+<li>✅ Can identify the three Rubber Duck activation checkpoints</li>
+<li>✅ Mapped checkpoints to a real or hypothetical feature</li>
+<li>✅ Compared automated cross-model review to human review</li>
 </ul>
 </details>
 
