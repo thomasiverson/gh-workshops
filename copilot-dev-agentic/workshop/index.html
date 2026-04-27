@@ -482,8 +482,9 @@
 <h2 id="45-rubber-duck-cross-model-review-15-min">4.5. Rubber Duck: Cross-Model Review (15 min)</h2>
 <h3 id="key-points">Key Points</h3>
 <ul>
-<li><strong>Rubber Duck</strong> is a GitHub Copilot feature that uses a second AI model from a <strong>different model family</strong> to review the primary agent&#39;s work</li>
+<li><strong>Rubber Duck</strong> is a <strong>GitHub Copilot CLI</strong> feature (experimental mode) that uses a second AI model from a <strong>different model family</strong> to review the primary agent&#39;s work</li>
 <li>When your orchestrator is a Claude model, Rubber Duck uses GPT-5.4 — and vice versa — providing a genuinely independent perspective</li>
+<li><strong>Important</strong>: Rubber Duck is currently available only in GitHub Copilot CLI (via <code>/experimental</code>), not in VS Code Copilot Chat</li>
 <li>The concept draws from classic rubber duck debugging (articulating a problem reveals the solution), but Rubber Duck goes further: it&#39;s a different model with different training data and different blind spots</li>
 <li><strong>The key insight</strong>: A model reviewing its own work is bounded by its own biases. A cross-family review catches errors the primary model is structurally likely to miss</li>
 </ul>
@@ -545,14 +546,15 @@
 <p>Claude Sonnet + Rubber Duck (GPT-5.4) closes <strong>74.7% of the performance gap</strong> between Sonnet and Opus on SWE-Bench Pro. The benefit is strongest on difficult problems spanning 3+ files and 70+ steps.</p>
 <h3 id="-demo-rubber-duck-in-action">🖥️ Demo: Rubber Duck in Action</h3>
 <ol>
-<li>Open GitHub Copilot CLI with a Claude model selected</li>
+<li>Open <strong>GitHub Copilot CLI</strong> and run <code>/experimental</code> to enable Rubber Duck</li>
+<li>Select a Claude model from the model picker</li>
 <li>Give a complex task — show the agent planning</li>
 <li>Point out when Rubber Duck activates (after plan, after implementation)</li>
 <li>Show the critique: what did the second model catch?</li>
 <li>Show how the agent incorporates feedback and what changed</li>
 </ol>
 <h3 id="using-rubber-duck-manually">Using Rubber Duck Manually</h3>
-<p>You can also request a critique at any time:</p>
+<p>In Copilot CLI, you can request a critique at any time:</p>
 <pre><code>Review your plan before implementing. What could go wrong?
 </code></pre>
 <p>Copilot will invoke Rubber Duck, reason over the feedback, and show you what changed and why.</p>
