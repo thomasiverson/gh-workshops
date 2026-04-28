@@ -123,11 +123,12 @@
 <hr>
 <h2 id="the-zero-to-agents-narrative-arc">The &quot;Zero to Agents&quot; Narrative Arc</h2>
 <p>This workshop follows a deliberate progression:</p>
-<pre><code class="language-mermaid">graph LR
-    A[&quot;🟢 ZERO&lt;br/&gt;Chat Modes&lt;br/&gt;(Ask/Agent/Plan)&quot;] --&gt; B[&quot;🔵 CUSTOMIZE&lt;br/&gt;Instructions&lt;br/&gt;Prompts · Agents&lt;br/&gt;Skills&quot;]
-    B --&gt; C[&quot;🟡 EXTEND&lt;br/&gt;MCP Servers&lt;br/&gt;(Playwright, GitHub)&quot;]
-    C --&gt; D[&quot;🟠 CLI&lt;br/&gt;Copilot CLI&lt;br/&gt;Agentic Terminal&quot;]
-    D --&gt; E[&quot;🟣 AGENTS&lt;br/&gt;Coding Agent&lt;br/&gt;PR Review Agent&quot;]
+<pre><code>┌────────────┐    ┌──────────────┐    ┌────────────┐    ┌────────────┐    ┌────────────┐
+│ 🟢 ZERO     │───►│ 🔵 CUSTOMIZE  │───►│ 🟡 EXTEND   │───►│ 🟠 CLI      │───►│ 🟣 AGENTS   │
+│ Chat Modes │    │ Instructions   │    │ MCP Servers│    │ Copilot CLI│    │ Coding     │
+│ Ask/Agent  │    │ Prompts        │    │ Playwright │    │ Agentic    │    │ Agent + PR │
+│ Plan       │    │ Agents · Skills │    │ GitHub     │    │ Terminal   │    │ Review     │
+└────────────┘    └──────────────┘    └────────────┘    └────────────┘    └────────────┘
 </code></pre>
 <p>Each section builds on the previous one, showing how Copilot can be progressively customized from a general assistant to a specialized, autonomous development partner.</p>
 <hr>
@@ -2105,11 +2106,12 @@ Report pass/fail for each scenario.
 </li>
 </ul>
 <h3 id="the-autonomous-development-loop">The Autonomous Development Loop</h3>
-<pre><code class="language-mermaid">graph LR
-    A[&quot;📋 GitHub Issue&quot;] --&gt; B[&quot;🤖 Coding Agent&lt;br/&gt;Creates branch,&lt;br/&gt;implements, tests&quot;]
-    B --&gt; C[&quot;📝 Pull Request&quot;]
-    C --&gt; D[&quot;🔍 Copilot Code Review&lt;br/&gt;+ Human Review&quot;]
-    D --&gt; E[&quot;✅ Merge&quot;]
+<pre><code>┌─────────────┐    ┌───────────────┐    ┌─────────────┐    ┌──────────────┐    ┌─────────────┐
+│ 📋 GitHub  │───►│ 🤖 Coding     │───►│ 📝 Pull    │───►│ 🔍 Copilot   │───►│ ✅ Merge    │
+│    Issue   │    │    Agent      │    │    Request │    │    Code Review│    │             │
+│             │    │ Creates branch │    │             │    │ + Human    │    │             │
+│             │    │ Implements     │    │             │    │    Review   │    │             │
+└─────────────┘    └───────────────┘    └─────────────┘    └──────────────┘    └─────────────┘
 </code></pre>
 <h3 id="part-a-copilot-coding-agent-10-min">Part A: Copilot Coding Agent (10 min)</h3>
 <p><strong>Concept</strong>:</p>
