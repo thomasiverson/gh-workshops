@@ -122,61 +122,6 @@
 <p><strong>Total: ~245 min core (~4h 5min)</strong></p>
 <hr>
 <h2 id="1-welcome-objectives--environment-setup-20-min">1. Welcome, Objectives &amp; Environment Setup (20 min)</h2>
-<h3 id="key-points">Key Points</h3>
-<ul>
-<li>Workshop narrative: &quot;Zero → Customize → Extend → Agents&quot;</li>
-<li>This is NOT a Copilot basics session — we assume you&#39;ve used completions and chat</li>
-<li>By the end, you&#39;ll have built a fully customized Copilot environment with instructions, prompts, agents, skills, and MCP integration</li>
-<li>Everything we build today uses real files in the <code>.github/</code> directory — portable across your own repos</li>
-</ul>
-<h3 id="the-customization-hierarchy">The Customization Hierarchy</h3>
-<table>
-<thead>
-<tr>
-<th>Layer</th>
-<th>File Location</th>
-<th>When Loaded</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>Custom Instructions</strong></td>
-<td><code>.github/copilot-instructions.md</code></td>
-<td>Always (every interaction)</td>
-<td>Simple rules, coding standards</td>
-</tr>
-<tr>
-<td><strong>Scoped Instructions</strong></td>
-<td><code>.github/instructions/*.instructions.md</code></td>
-<td>When matching files are active</td>
-<td>File/language-specific guidance</td>
-</tr>
-<tr>
-<td><strong>Prompt Files</strong></td>
-<td><code>.github/prompts/*.prompt.md</code></td>
-<td>On-demand (user invokes)</td>
-<td>Reusable task templates</td>
-</tr>
-<tr>
-<td><strong>Agents / Chat Modes</strong></td>
-<td><code>.github/agents/*.agent.md</code></td>
-<td>User selects in chat mode picker</td>
-<td>Persistent personas with tool chains</td>
-</tr>
-<tr>
-<td><strong>Agent Skills</strong></td>
-<td><code>.github/skills/*/SKILL.md</code></td>
-<td>Auto-selected by relevance</td>
-<td>Specialized task instructions</td>
-</tr>
-<tr>
-<td><strong>MCP Servers</strong></td>
-<td><code>.vscode/mcp.json</code></td>
-<td>When server is running</td>
-<td>External tool integration</td>
-</tr>
-</tbody></table>
-<hr>
 <h3 id="-demo-the-octocat-supply-app">🖥️ DEMO: The OctoCAT Supply App</h3>
 <ol>
 <li>Show the <a href="https://github.com/microsoft/GitHubCopilot_Customized">GitHub repo</a> in the browser</li>
@@ -498,6 +443,62 @@ npm run build
 <li>Show <code>@terminal</code> after a failed build — Copilot reads the error output</li>
 </ol>
 <p><strong>Talking point</strong>: &quot;Slash commands are shortcuts for the tasks you do every day. And <code>@</code> + <code>#</code> are your precision tools — instead of hoping Copilot finds the right file, you TELL it which file to look at.&quot;</p>
+<hr>
+<h2 id="the-customization-roadmap">The Customization Roadmap</h2>
+<p>Now that you&#39;ve seen the three chat modes, slash commands, and context targeting — let&#39;s look at what we&#39;re building for the rest of the workshop.</p>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Workshop narrative: &quot;Zero → Customize → Extend → Agents&quot;</li>
+<li>By the end, you&#39;ll have built a fully customized Copilot environment with instructions, prompts, agents, skills, and MCP integration</li>
+<li>Everything we build uses real files in the <code>.github/</code> directory — portable across your own repos</li>
+</ul>
+<h3 id="the-customization-hierarchy">The Customization Hierarchy</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>File Location</th>
+<th>When Loaded</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Custom Instructions</strong></td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>Always (every interaction)</td>
+<td>Simple rules, coding standards</td>
+</tr>
+<tr>
+<td><strong>Scoped Instructions</strong></td>
+<td><code>.github/instructions/*.instructions.md</code></td>
+<td>When matching files are active</td>
+<td>File/language-specific guidance</td>
+</tr>
+<tr>
+<td><strong>Prompt Files</strong></td>
+<td><code>.github/prompts/*.prompt.md</code></td>
+<td>On-demand (user invokes)</td>
+<td>Reusable task templates</td>
+</tr>
+<tr>
+<td><strong>Agents / Chat Modes</strong></td>
+<td><code>.github/agents/*.agent.md</code></td>
+<td>User selects in chat mode picker</td>
+<td>Persistent personas with tool chains</td>
+</tr>
+<tr>
+<td><strong>Agent Skills</strong></td>
+<td><code>.github/skills/*/SKILL.md</code></td>
+<td>Auto-selected by relevance</td>
+<td>Specialized task instructions</td>
+</tr>
+<tr>
+<td><strong>MCP Servers</strong></td>
+<td><code>.vscode/mcp.json</code></td>
+<td>When server is running</td>
+<td>External tool integration</td>
+</tr>
+</tbody></table>
 <hr>
 <h2 id="3-custom-instructions-25-min">3. Custom Instructions (25 min)</h2>
 <h3 id="key-points">Key Points</h3>
