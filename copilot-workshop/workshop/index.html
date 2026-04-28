@@ -74,6 +74,11 @@
 <td>25 min</td>
 </tr>
 <tr>
+<td>2b</td>
+<td><a href="#2b-slash-commands--participants---context-variables-10-min">Slash Commands, @ Participants &amp; # Context</a></td>
+<td>10 min</td>
+</tr>
+<tr>
 <td>3</td>
 <td><a href="#3-custom-instructions-25-min">Custom Instructions</a></td>
 <td>25 min</td>
@@ -114,7 +119,7 @@
 <td>10 min</td>
 </tr>
 </tbody></table>
-<p><strong>Total: ~235 min core (~3h 55min)</strong></p>
+<p><strong>Total: ~245 min core (~4h 5min)</strong></p>
 <hr>
 <h2 id="the-zero-to-agents-narrative-arc">The &quot;Zero to Agents&quot; Narrative Arc</h2>
 <p>This workshop follows a deliberate progression:</p>
@@ -389,6 +394,120 @@ npm run build
 <li>✅ Agent mode has created or edited files and run terminal commands</li>
 <li>✅ Your app is running (API on :3000, Frontend on :5137)</li>
 </ul>
+<hr>
+<h2 id="2b-slash-commands--participants---context-variables-10-min">2b. Slash Commands, @ Participants &amp; # Context Variables (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Slash commands</strong> are shortcuts for common tasks — faster than typing a full prompt</li>
+<li><strong><code>@</code> Participants</strong> route your question to a specialized handler with domain knowledge</li>
+<li><strong><code>#</code> Variables</strong> attach specific context to your prompt — files, selections, editors</li>
+<li>Combining <code>@</code> + <code>#</code> gives Copilot precise context instead of guessing</li>
+</ul>
+<h3 id="slash-commands">Slash Commands</h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/explain</code></td>
+<td>Explain selected code</td>
+</tr>
+<tr>
+<td><code>/fix</code></td>
+<td>Fix errors in selected code</td>
+</tr>
+<tr>
+<td><code>/tests</code></td>
+<td>Generate tests for selection</td>
+</tr>
+<tr>
+<td><code>/doc</code></td>
+<td>Generate documentation</td>
+</tr>
+<tr>
+<td><code>/new</code></td>
+<td>Create a new file or project</td>
+</tr>
+<tr>
+<td><code>/clear</code></td>
+<td>Clear conversation history</td>
+</tr>
+</tbody></table>
+<h3 id="-participants">@ Participants</h3>
+<table>
+<thead>
+<tr>
+<th>Participant</th>
+<th>Domain</th>
+<th>What It Knows</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@workspace</code></td>
+<td>Your codebase</td>
+<td>Project structure, file contents, dependencies</td>
+</tr>
+<tr>
+<td><code>@vscode</code></td>
+<td>VS Code editor</td>
+<td>Settings, extensions, keybindings, editor state</td>
+</tr>
+<tr>
+<td><code>@terminal</code></td>
+<td>Terminal output</td>
+<td>Recent command results, error messages</td>
+</tr>
+</tbody></table>
+<h3 id="-context-variables"># Context Variables</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Attaches</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>#file</code></td>
+<td>A specific file&#39;s contents</td>
+<td>&quot;Look at this file specifically&quot;</td>
+</tr>
+<tr>
+<td><code>#selection</code></td>
+<td>Current text selection</td>
+<td>&quot;Focus on this code block&quot;</td>
+</tr>
+<tr>
+<td><code>#editor</code></td>
+<td>Currently active editor</td>
+<td>&quot;Consider what I&#39;m looking at&quot;</td>
+</tr>
+<tr>
+<td><code>#codebase</code></td>
+<td>Full project search</td>
+<td>&quot;Search the whole repo&quot;</td>
+</tr>
+</tbody></table>
+<h3 id="combining--">Combining @ +</h3>
+<p>When you type <code>@workspace #file:api/routes/orders.ts &quot;add error handling&quot;</code>, Copilot assembles:</p>
+<ol>
+<li>System prompt + your repository instructions</li>
+<li>The <code>@workspace</code> handler&#39;s project knowledge</li>
+<li>The specific file content from <code>#file</code></li>
+<li>Your natural language question</li>
+</ol>
+<h3 id="-demo-slash-commands--context-targeting">🖥️ DEMO: Slash Commands &amp; Context Targeting</h3>
+<ol>
+<li>Select a function in the API routes → run <code>/explain</code> — show the explanation</li>
+<li>Introduce a bug → run <code>/fix</code> — show the correction</li>
+<li>Ask vaguely: &quot;How does authentication work?&quot; — note the generic response</li>
+<li>Ask with context: <code>@workspace #file:api/middleware/auth.ts How does authentication work?</code> — note the precise response</li>
+<li>Show <code>@terminal</code> after a failed build — Copilot reads the error output</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Slash commands are shortcuts for the tasks you do every day. And <code>@</code> + <code>#</code> are your precision tools — instead of hoping Copilot finds the right file, you TELL it which file to look at.&quot;</p>
 <hr>
 <h2 id="3-custom-instructions-25-min">3. Custom Instructions (25 min)</h2>
 <h3 id="key-points">Key Points</h3>
