@@ -254,7 +254,12 @@ npm run build
 </code></pre>
 <ol start="4">
 <li>Show the inline diff preview before accepting</li>
-<li>Accept the changes only after checking that the existing <code>404</code> behavior still works</li>
+<li>Accept the changes, then run a quick <code>404</code> smoke test: call the PATCH route with an ID that does not exist and confirm the API still returns <code>404 Not Found</code> instead of creating or updating a record</li>
+</ol>
+<pre><code class="language-powershell">curl.exe -i -X PATCH &quot;http://localhost:3000/api/headquarters/9999&quot; -H &quot;Content-Type: application/json&quot; -d &#39;{&quot;city&quot;:&quot;Seattle&quot;}&#39;
+</code></pre>
+<ol start="6">
+<li>If the response is not <code>404</code>, ask inline chat to preserve the existing not-found branch before accepting more changes</li>
 <li>Keep the PATCH handler selected, switch to <strong>Ask</strong> mode, and ask for an explanation:</li>
 </ol>
 <pre><code class="language-text">Explain what changed and call out any edge cases I should test.
@@ -290,6 +295,7 @@ npm run build
 <ol start="4">
 <li>Review the inline diff and accept it if it preserves the existing route style</li>
 <li>If TypeScript reports <code>No overload matches this call</code>, check for <code>return res.status(...).json(...)</code> and change it to <code>res.status(...).json(...); return;</code></li>
+<li>Test a missing headquarters ID with <code>PATCH /api/headquarters/9999</code> and confirm the response is still <code>404 Not Found</code></li>
 </ol>
 <p><strong>Exercise 3 — Add Documentation</strong></p>
 <ol>
