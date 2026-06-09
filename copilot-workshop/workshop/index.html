@@ -248,7 +248,7 @@ npm run build
 <li>Press <code>Ctrl+I</code> / <code>Cmd+I</code></li>
 <li>Try these focused inline chat prompts one at a time:</li>
 </ol>
-<pre><code class="language-text">Add validation so headquartersId cannot be changed by PATCH and return 400 when the request body is empty.
+<pre><code class="language-text">Add validation so headquartersId cannot be changed by PATCH and send 400 when the request body is empty. Keep the Express handler return type void: call res.status(...).json(...); then return; do not return the Response object.
 </code></pre>
 <pre><code class="language-text">Add Swagger documentation for this PATCH route using the same style as the existing PUT route.
 </code></pre>
@@ -281,10 +281,11 @@ npm run build
 <li>Open inline chat with <code>Ctrl+I</code> / <code>Cmd+I</code></li>
 <li>Ask:</li>
 </ol>
-<pre><code class="language-text">Add validation so headquartersId cannot be changed by PATCH and return 400 when the request body is empty.
+<pre><code class="language-text">Add validation so headquartersId cannot be changed by PATCH and send 400 when the request body is empty. Keep the Express handler return type void: call res.status(...).json(...); then return; do not return the Response object.
 </code></pre>
 <ol start="4">
 <li>Review the inline diff and accept it if it preserves the existing route style</li>
+<li>If TypeScript reports <code>No overload matches this call</code>, check for <code>return res.status(...).json(...)</code> and change it to <code>res.status(...).json(...); return;</code></li>
 </ol>
 <p><strong>Exercise 3 — Add Documentation</strong></p>
 <ol>
