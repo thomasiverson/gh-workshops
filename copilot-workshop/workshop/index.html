@@ -207,22 +207,36 @@ npm run build
 </tr>
 </tbody></table>
 <hr>
-<h3 id="-demo-comment-to-code-in-headquartersts">🖥️ DEMO: Comment-to-Code in <code>headquarters.ts</code></h3>
+<h3 id="-demo-explain-before-you-edit-in-headquartersts">🖥️ DEMO: Explain Before You Edit in <code>headquarters.ts</code></h3>
+<p>Ease attendees into inline chat by using it as a local code-reading tool before asking it to change anything.</p>
 <ol>
 <li>Open <code>api/src/routes/headquarters.ts</code> in the OctoCAT Supply repo</li>
-<li>Locate the existing <code>PUT /:id</code> handler — it replaces the entire headquarters record with <code>req.body</code></li>
+<li>Highlight the existing <code>router.put(&#39;/:id&#39;, ...)</code> handler</li>
+<li>Press <code>Ctrl+I</code> / <code>Cmd+I</code></li>
+<li>Ask:</li>
+</ol>
+<pre><code class="language-text">Explain what this method does and call out what happens to fields that are not included in req.body.
+</code></pre>
+<ol start="5">
+<li>Show that Copilot explains the route, identifies the full replacement behavior, and surfaces the risk: omitted fields can be lost because <code>headquartersList[index] = req.body</code></li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Before asking Copilot to edit code, ask it to explain the behavior in place. This builds trust, verifies that Copilot understands the local pattern, and gives you the words for the next change.&quot;</p>
+<hr>
+<h3 id="-demo-comment-to-code-in-headquartersts">🖥️ DEMO: Comment-to-Code in <code>headquarters.ts</code></h3>
+<ol>
+<li>Keep <code>api/src/routes/headquarters.ts</code> open</li>
 <li>Place the cursor after the <code>PUT /:id</code> handler and type this comment slowly:</li>
 </ol>
 <pre><code class="language-ts">// Add a PATCH route to update selected fields instead of replacing the entire headquarters record
 </code></pre>
-<ol start="4">
+<ol start="3">
 <li>Pause after the comment and let Copilot offer an inline completion</li>
 <li>Accept the useful parts with <code>Tab</code>; use <code>Esc</code> or keep typing if the suggestion is wrong</li>
 <li>Review the generated route and look for the important pattern:</li>
 </ol>
 <pre><code class="language-ts">headquartersList[index] = { ...headquartersList[index], ...req.body };
 </code></pre>
-<ol start="7">
+<ol start="6">
 <li>Run or explain the expected behavior: <code>PATCH /api/headquarters/1</code> updates only fields included in the request body</li>
 </ol>
 <p><strong>Talking point</strong>: &quot;This is the smallest Copilot loop: write intent as a comment, inspect the ghost text, accept only what helps. You&#39;re not asking Copilot to understand the whole app — you&#39;re using the code around your cursor as the context.&quot;</p>
@@ -251,12 +265,13 @@ npm run build
 <p><strong>Exercise 1 — Generate a PATCH Route</strong></p>
 <ol>
 <li>Open <code>api/src/routes/headquarters.ts</code></li>
-<li>Find the <code>PUT /:id</code> handler</li>
-<li>Add this comment after it:</li>
+<li>Highlight the <code>PUT /:id</code> handler and open inline chat with <code>Ctrl+I</code> / <code>Cmd+I</code></li>
+<li>Ask Copilot to explain what the method does and what happens when fields are omitted from <code>req.body</code></li>
+<li>Add this comment after the handler:</li>
 </ol>
 <pre><code class="language-ts">// Add a PATCH route to update selected fields instead of replacing the entire headquarters record
 </code></pre>
-<ol start="4">
+<ol start="5">
 <li>Wait for Copilot&#39;s inline completion and accept the useful suggestion with <code>Tab</code></li>
 <li>Confirm the generated route preserves existing fields and merges only the submitted fields</li>
 </ol>
@@ -281,6 +296,7 @@ npm run build
 
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
+<li>✅ You can use inline chat to explain selected code before editing it</li>
 <li>✅ You can trigger and accept an inline completion from a descriptive comment</li>
 <li>✅ You can use inline chat to refine selected code without leaving the editor</li>
 <li>✅ Your PATCH route preserves existing headquarters fields when only selected fields are provided</li>
