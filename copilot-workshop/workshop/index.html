@@ -5,10 +5,12 @@
 <p><strong>Duration</strong>: ~4 hours<br><strong>Format</strong>: Presentation + Live Demo + Hands-On<br><strong>Audience</strong>: Developers with basic Copilot exposure (completions/chat)<br><strong>Focus</strong>: Copilot customization, agentic workflows, and cloud agents<br><strong>Repo</strong>: <a href="https://github.com/microsoft/GitHubCopilot_Customized">microsoft/GitHubCopilot_Customized</a> (OctoCAT Supply)</p>
 <hr>
 <h2 id="workshop-overview">Workshop Overview</h2>
-<p>This session takes developers from casual Copilot usage to full agentic development. Starting with chat modes and progressing through customization layers—instructions, prompts, agents, skills, and MCP servers—attendees build a complete understanding of how to tailor Copilot to their teams and workflows. The session extends to the standalone GitHub Copilot CLI for a full agentic terminal experience and closes with fully autonomous cloud agents (Coding Agent + PR Review Agent).</p>
+<p>This session takes developers from casual Copilot usage to full agentic development. Starting with inline completions and inline chat, then progressing through chat modes and customization layers—memory, instructions, prompts, agents, skills, and MCP servers—attendees build a complete understanding of how to tailor Copilot to their teams and workflows. The session extends to the standalone GitHub Copilot CLI for a full agentic terminal experience and closes with fully autonomous cloud agents (Coding Agent + PR Review Agent).</p>
 <h3 id="learning-objectives">Learning Objectives</h3>
 <ul>
 <li>Master Copilot&#39;s three chat modes: Ask, Agent, and Plan</li>
+<li>Use inline completions and inline chat for fast, focused code edits</li>
+<li>Use Copilot Memory to shape preferences while understanding scope and security boundaries</li>
 <li>Create custom instructions that encode team standards and internal frameworks</li>
 <li>Build reusable prompt files and custom agents (chat modes) for repeatable workflows</li>
 <li>Author Agent Skills that Copilot auto-selects based on task relevance</li>
@@ -69,6 +71,11 @@
 <td>20 min</td>
 </tr>
 <tr>
+<td>1b</td>
+<td><a href="#1b-inline-completion--inline-chat-15-min">Inline Completion &amp; Inline Chat</a></td>
+<td>15 min</td>
+</tr>
+<tr>
 <td>2</td>
 <td><a href="#2-copilot-chat-modes-ask-agent-plan-25-min">Copilot Chat Modes: Ask, Agent, Plan</a></td>
 <td>25 min</td>
@@ -80,8 +87,8 @@
 </tr>
 <tr>
 <td>3</td>
-<td><a href="#3-custom-instructions-25-min">Custom Instructions</a></td>
-<td>25 min</td>
+<td><a href="#3-copilot-memory--custom-instructions-35-min">Copilot Memory &amp; Custom Instructions</a></td>
+<td>35 min</td>
 </tr>
 <tr>
 <td>4</td>
@@ -119,7 +126,7 @@
 <td>10 min</td>
 </tr>
 </tbody></table>
-<p><strong>Total: ~245 min core (~4h 5min)</strong></p>
+<p><strong>Total: ~270 min core (~4h 30min)</strong></p>
 <hr>
 <h2 id="1-welcome-objectives--environment-setup-20-min">1. Welcome, Objectives &amp; Environment Setup (20 min)</h2>
 <h3 id="-demo-the-octocat-supply-app">🖥️ DEMO: The OctoCAT Supply App</h3>
@@ -159,6 +166,131 @@ npm run build
 <ul>
 <li>Who has used Copilot Chat before? What modes have you tried?</li>
 <li>What&#39;s your biggest frustration with Copilot today? (Common answer: &quot;It doesn&#39;t know our internal stuff&quot; — tease Section 3)</li>
+</ul>
+<hr>
+<h2 id="1b-inline-completion--inline-chat-15-min">1b. Inline Completion &amp; Inline Chat (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Inline completions</strong> are Copilot&#39;s fastest path: suggestions appear as ghost text directly in the editor while you type</li>
+<li>Comments, function names, partially written expressions, and nearby code all shape the suggestion</li>
+<li><strong>Inline chat</strong> (<code>Ctrl+I</code> on Windows/Linux, <code>Cmd+I</code> on macOS) is best for small, focused edits in the current file or selection</li>
+<li>Use inline completion when you know the local change; use chat modes when you need broader codebase reasoning or multi-file work</li>
+<li>Always review generated edits before accepting — Copilot accelerates the edit, but you still own the code</li>
+</ul>
+<h3 id="inline-completion-vs-inline-chat-vs-chat-modes">Inline Completion vs Inline Chat vs Chat Modes</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Best For</th>
+<th>Scope</th>
+<th>Typical Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Inline Completion</strong></td>
+<td>Completing code as you type</td>
+<td>Current file and nearby code</td>
+<td>Accept ghost text with <code>Tab</code></td>
+</tr>
+<tr>
+<td><strong>Inline Chat</strong></td>
+<td>Focused edits to selected code</td>
+<td>Current file or selection</td>
+<td>Ask, preview, accept changes</td>
+</tr>
+<tr>
+<td><strong>Ask / Agent / Plan</strong></td>
+<td>Explanation, planning, multi-file work</td>
+<td>Codebase, tools, terminal</td>
+<td>Chat-driven workflow</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="-demo-comment-to-code-in-headquartersts">🖥️ DEMO: Comment-to-Code in <code>headquarters.ts</code></h3>
+<ol>
+<li>Open <code>api/src/routes/headquarters.ts</code> in the OctoCAT Supply repo</li>
+<li>Locate the existing <code>PUT /:id</code> handler — it replaces the entire headquarters record with <code>req.body</code></li>
+<li>Place the cursor after the <code>PUT /:id</code> handler and type this comment slowly:</li>
+</ol>
+<pre><code class="language-ts">// Add a PATCH route to update selected fields instead of replacing the entire headquarters record
+</code></pre>
+<ol start="4">
+<li>Pause after the comment and let Copilot offer an inline completion</li>
+<li>Accept the useful parts with <code>Tab</code>; use <code>Esc</code> or keep typing if the suggestion is wrong</li>
+<li>Review the generated route and look for the important pattern:</li>
+</ol>
+<pre><code class="language-ts">headquartersList[index] = { ...headquartersList[index], ...req.body };
+</code></pre>
+<ol start="7">
+<li>Run or explain the expected behavior: <code>PATCH /api/headquarters/1</code> updates only fields included in the request body</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;This is the smallest Copilot loop: write intent as a comment, inspect the ghost text, accept only what helps. You&#39;re not asking Copilot to understand the whole app — you&#39;re using the code around your cursor as the context.&quot;</p>
+<hr>
+<h3 id="-demo-refine-with-inline-chat">🖥️ DEMO: Refine with Inline Chat</h3>
+<p>After accepting the first completion, use inline chat to improve it without leaving the editor.</p>
+<ol>
+<li>Select the generated <code>router.patch(&#39;/:id&#39;, ...)</code> handler</li>
+<li>Press <code>Ctrl+I</code> / <code>Cmd+I</code></li>
+<li>Try these focused inline chat prompts one at a time:</li>
+</ol>
+<pre><code class="language-text">Add validation so headquartersId cannot be changed by PATCH and return 400 when the request body is empty.
+</code></pre>
+<pre><code class="language-text">Add Swagger documentation for this PATCH route using the same style as the existing PUT route.
+</code></pre>
+<pre><code class="language-text">Explain what changed and call out any edge cases I should test.
+</code></pre>
+<ol start="4">
+<li>Show the inline diff preview before accepting</li>
+<li>Accept the changes only after checking that the existing <code>404</code> behavior still works</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Inline chat is not a separate workflow — it&#39;s a scalpel inside the editor. Use it when the change is local enough that opening a full chat session would be more ceremony than value.&quot;</p>
+<details>
+<summary><h3 id="-hands-on-inline-completion--inline-chat-7-min">🧪 Hands-On: Inline Completion + Inline Chat (7 min)</h3></summary>
+
+<p><strong>Exercise 1 — Generate a PATCH Route</strong></p>
+<ol>
+<li>Open <code>api/src/routes/headquarters.ts</code></li>
+<li>Find the <code>PUT /:id</code> handler</li>
+<li>Add this comment after it:</li>
+</ol>
+<pre><code class="language-ts">// Add a PATCH route to update selected fields instead of replacing the entire headquarters record
+</code></pre>
+<ol start="4">
+<li>Wait for Copilot&#39;s inline completion and accept the useful suggestion with <code>Tab</code></li>
+<li>Confirm the generated route preserves existing fields and merges only the submitted fields</li>
+</ol>
+<p><strong>Exercise 2 — Improve the Route with Inline Chat</strong></p>
+<ol>
+<li>Select the generated PATCH handler</li>
+<li>Open inline chat with <code>Ctrl+I</code> / <code>Cmd+I</code></li>
+<li>Ask:</li>
+</ol>
+<pre><code class="language-text">Add validation so headquartersId cannot be changed by PATCH and return 400 when the request body is empty.
+</code></pre>
+<ol start="4">
+<li>Review the inline diff and accept it if it preserves the existing route style</li>
+</ol>
+<p><strong>Exercise 3 — Add Documentation</strong></p>
+<ol>
+<li>Place the cursor above the PATCH handler</li>
+<li>Use inline completion or inline chat to add Swagger documentation matching the existing route comments</li>
+<li>Check that the docs describe a partial update, not a full replacement</li>
+</ol>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You can trigger and accept an inline completion from a descriptive comment</li>
+<li>✅ You can use inline chat to refine selected code without leaving the editor</li>
+<li>✅ Your PATCH route preserves existing headquarters fields when only selected fields are provided</li>
+<li>✅ You understand when inline workflows are enough and when to move to Ask, Agent, or Plan</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What made the inline completion better: the comment, the nearby <code>PUT</code> handler, or both?</li>
+<li>Where would inline chat fit into your daily workflow compared with full chat modes?</li>
+<li>What review checks should you apply before accepting generated inline code?</li>
 </ul>
 <hr>
 <h2 id="2-copilot-chat-modes-ask-agent-plan-25-min">2. Copilot Chat Modes: Ask, Agent, Plan (25 min)</h2>
@@ -443,7 +575,7 @@ npm run build
 <td>&quot;Search the whole repo&quot;</td>
 </tr>
 </tbody></table>
-<h3 id="combining--">Combining @ +</h3>
+<h3 id="combining--and-">Combining <code>@</code> and <code>#</code></h3>
 <p>When you type <code>@workspace #file:api/routes/orders.ts &quot;add error handling&quot;</code>, Copilot assembles:</p>
 <ol>
 <li>System prompt + your repository instructions</li>
@@ -466,7 +598,7 @@ npm run build
 <h3 id="key-points">Key Points</h3>
 <ul>
 <li>Workshop narrative: &quot;Zero → Customize → Extend → Agents&quot;</li>
-<li>By the end, you&#39;ll have built a fully customized Copilot environment with instructions, prompts, agents, skills, and MCP integration</li>
+<li>By the end, you&#39;ll have built a fully customized Copilot environment with memory, instructions, prompts, agents, skills, and MCP integration</li>
 <li>Everything we build uses real files in the <code>.github/</code> directory — portable across your own repos</li>
 </ul>
 <h3 id="the-customization-hierarchy">The Customization Hierarchy</h3>
@@ -480,6 +612,12 @@ npm run build
 </tr>
 </thead>
 <tbody><tr>
+<td><strong>Copilot Memory</strong></td>
+<td>Local VS Code memory files or GitHub-hosted repo memory</td>
+<td>Recalled when relevant</td>
+<td>Conversational preferences and context</td>
+</tr>
+<tr>
 <td><strong>Custom Instructions</strong></td>
 <td><code>.github/copilot-instructions.md</code></td>
 <td>Always (every interaction)</td>
@@ -517,7 +655,111 @@ npm run build
 </tr>
 </tbody></table>
 <hr>
-<h2 id="3-custom-instructions-25-min">3. Custom Instructions (25 min)</h2>
+<h2 id="3-copilot-memory--custom-instructions-35-min">3. Copilot Memory &amp; Custom Instructions (35 min)</h2>
+<h3 id="part-a-copilot-memory-10-min">Part A: Copilot Memory (10 min)</h3>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Copilot Memory</strong> stores preferences and contextual facts that Copilot can recall in later interactions</li>
+<li>Memory is useful for lightweight preferences, such as style choices, naming preferences, or review expectations</li>
+<li>VS Code local memory can appear in <strong>user</strong>, <strong>repository</strong>, and <strong>session</strong> scopes</li>
+<li>Memory is different from instruction files: memory is recalled by Copilot, while <code>.github/</code> instruction files are explicit, reviewable, and version-controlled</li>
+<li>Never store secrets, tokens, credentials, customer data, or sensitive information in memory</li>
+<li>If GitHub-hosted Copilot Memory is enabled for your organization, repository memory can also be managed from GitHub repository settings</li>
+</ul>
+<h3 id="memory-vs-instructions">Memory vs Instructions</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Best For</th>
+<th>Scope</th>
+<th>Governance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Memory</strong></td>
+<td>Lightweight preferences and facts</td>
+<td>User, repository, session, or GitHub-hosted repo memory</td>
+<td>Review memory files/settings; do not store secrets</td>
+</tr>
+<tr>
+<td><strong>Project Instructions</strong></td>
+<td>Durable team standards</td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>Version-controlled and code-reviewed</td>
+</tr>
+<tr>
+<td><strong>Scoped Instructions</strong></td>
+<td>File or folder-specific rules</td>
+<td><code>.github/instructions/*.instructions.md</code></td>
+<td>Version-controlled and activated by <code>applyTo</code></td>
+</tr>
+</tbody></table>
+<h3 id="how-local-memory-scope-is-chosen">How Local Memory Scope Is Chosen</h3>
+<p>Copilot infers where to store local memory from your wording and current context. The exact file name may vary, but the scope folder is the important signal:</p>
+<table>
+<thead>
+<tr>
+<th>Phrase Pattern</th>
+<th>Likely Scope</th>
+<th>Example Folder</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&quot;I prefer...&quot; or &quot;For me...&quot;</td>
+<td>User memory across workspaces</td>
+<td><code>/memories/</code></td>
+</tr>
+<tr>
+<td>&quot;In this project...&quot; or repo-specific context</td>
+<td>Repository memory for this workspace</td>
+<td><code>/memories/repo/</code></td>
+</tr>
+<tr>
+<td>&quot;For this session...&quot; or temporary task context</td>
+<td>Session memory for the current chat</td>
+<td><code>/memories/session/</code></td>
+</tr>
+</tbody></table>
+<p>If two memories land in different folders, that usually means Copilot classified one as a broad user preference and the other as repo-specific context. Use <strong>Chat: Show Memory Files</strong> to verify placement, then edit, move, or delete entries that landed in the wrong scope.</p>
+<hr>
+<h3 id="-demo-memory-instruction-layers-and-context-shaping">🖥️ DEMO: Memory, Instruction Layers, and Context Shaping</h3>
+<p>Start by showing the baseline behavior before adding memory or instruction files.</p>
+<ol>
+<li>Open <code>api/src/routes/headquarters.ts</code></li>
+<li>In chat, attach or reference the file and ask:</li>
+</ol>
+<pre><code class="language-text">Generate a validation function in the attached file.
+</code></pre>
+<ol start="3">
+<li>Note the response style: Does Copilot use nested <code>if</code> / <code>else</code> blocks? Does it infer any team preference?</li>
+<li>Now state a preference conversationally:</li>
+</ol>
+<pre><code class="language-text">Remember: I prefer early returns over nested if-else in this project.
+</code></pre>
+<ol start="5">
+<li>Show that Copilot acknowledges the memory</li>
+<li>Start a new prompt and ask again:</li>
+</ol>
+<pre><code class="language-text">Generate a validation function in the attached file.
+</code></pre>
+<ol start="7">
+<li>Compare the output to the baseline and call out whether the function now favors early returns</li>
+<li>Run <strong>Command Palette → Chat: Show Memory Files</strong> and show:<ul>
+<li>User memory: preferences available across workspaces</li>
+<li>Repository memory: local repo-scoped context for this workspace</li>
+<li>Session memory: temporary context for the current conversation</li>
+</ul>
+</li>
+<li>Explain that local memory differs from <code>.github/</code> instruction files because memory is not the team&#39;s version-controlled source of truth</li>
+<li>If your organization has GitHub-hosted Copilot Memory enabled, briefly show <strong>Repository Settings → Copilot → Memory</strong> and explain that it is repository-scoped, GitHub-hosted, and separate from local VS Code memory</li>
+</ol>
+<blockquote>
+<p><strong>Important</strong>: Memory should never contain secrets or sensitive information. Treat memory as preference and context storage, not as a vault.</p>
+</blockquote>
+<p><strong>Talking point</strong>: &quot;Memory is useful for personal or lightweight repo preferences. Instructions are where team standards become durable, reviewable, and portable. Use memory to shape the conversation; use instructions to define the contract.&quot;</p>
+<hr>
+<h3 id="part-b-custom-instructions-25-min">Part B: Custom Instructions (25 min)</h3>
 <h3 id="key-points">Key Points</h3>
 <ul>
 <li>Custom instructions are the simplest way to personalize Copilot for your team</li>
@@ -740,6 +982,8 @@ For React components in this project:
 
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
+<li>✅ You&#39;ve seen Copilot remember a preference and apply it in a follow-up prompt</li>
+<li>✅ You understand the difference between local memory, GitHub-hosted repository memory, and version-controlled instruction files</li>
 <li>✅ <code>.github/copilot-instructions.md</code> exists in your repo</li>
 <li>✅ <code>.github/instructions/API.instructions.md</code> exists with <code>applyTo: &quot;api/**&quot;</code></li>
 <li>✅ You&#39;ve compared Copilot&#39;s responses before and after adding instructions and noticed the difference</li>
@@ -2290,6 +2534,11 @@ Report pass/fail for each scenario.
 └────────────────────────────┬───────────────────────────────┘
                              │
 ┌────────────────────────────▼───────────────────────────────┐
+│                    COPILOT MEMORY                           │
+│  User/repository/session preferences and context shaping    │
+└────────────────────────────┬───────────────────────────────┘
+                             │
+┌────────────────────────────▼───────────────────────────────┐
 │                      CHAT MODES                              │
 │  Ask (explore) → Plan (design) → Agent (build)             │
 └────────────────────────────────────────────────────────────┘
@@ -2299,6 +2548,7 @@ Report pass/fail for each scenario.
 <h3 id="key-takeaways">Key Takeaways</h3>
 <ol>
 <li><strong>Modes are your foundation</strong> — Ask for understanding, Plan for design, Agent for building</li>
+<li><strong>Memory shapes lightweight preferences</strong> — useful for user, repository, and session context, but never secrets</li>
 <li><strong>Custom Instructions encode tribal knowledge</strong> — internal frameworks, standards, architecture patterns</li>
 <li><strong>Prompt Files create consistency</strong> — reusable templates that any team member can run</li>
 <li><strong>Agents are persistent personas</strong> — they change how Copilot behaves for an entire session</li>
@@ -2310,11 +2560,15 @@ Report pass/fail for each scenario.
 <table>
 <thead>
 <tr>
-<th>File</th>
+<th>Artifact</th>
 <th>Section</th>
 </tr>
 </thead>
 <tbody><tr>
+<td>Copilot Memory preference</td>
+<td>§3 — Memory &amp; Custom Instructions</td>
+</tr>
+<tr>
 <td><code>.github/copilot-instructions.md</code></td>
 <td>§3 — Custom Instructions</td>
 </tr>
