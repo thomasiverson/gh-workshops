@@ -246,18 +246,22 @@ npm run build
 <ol>
 <li>Select the generated <code>router.patch(&#39;/:id&#39;, ...)</code> handler</li>
 <li>Press <code>Ctrl+I</code> / <code>Cmd+I</code></li>
-<li>Try these focused inline chat prompts one at a time:</li>
+<li>Try these focused inline chat edit prompts one at a time:</li>
 </ol>
 <pre><code class="language-text">Add validation so headquartersId cannot be changed by PATCH and send 400 when the request body is empty. Keep the Express handler return type void: call res.status(...).json(...); then return; do not return the Response object.
 </code></pre>
 <pre><code class="language-text">Add Swagger documentation for this PATCH route using the same style as the existing PUT route.
 </code></pre>
-<pre><code class="language-text">Explain what changed and call out any edge cases I should test.
-</code></pre>
 <ol start="4">
 <li>Show the inline diff preview before accepting</li>
 <li>Accept the changes only after checking that the existing <code>404</code> behavior still works</li>
+<li>Keep the PATCH handler selected, switch to <strong>Ask</strong> mode, and ask for an explanation:</li>
 </ol>
+<pre><code class="language-text">Explain what changed and call out any edge cases I should test.
+</code></pre>
+<blockquote>
+<p><strong>Note</strong>: Use Ask mode for explanation prompts. Inline chat is optimized for edits and may respond that there are no changes to make.</p>
+</blockquote>
 <p><strong>Talking point</strong>: &quot;Inline chat is not a separate workflow — it&#39;s a scalpel inside the editor. Use it when the change is local enough that opening a full chat session would be more ceremony than value.&quot;</p>
 <details>
 <summary><h3 id="-hands-on-inline-completion--inline-chat-7-min">🧪 Hands-On: Inline Completion + Inline Chat (7 min)</h3></summary>
