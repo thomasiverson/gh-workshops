@@ -1,0 +1,920 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Azure DevOps MCP Server Workshop</title><link rel="stylesheet" href="/gh-workshops/_astro/index.tKAiv-SV.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="azure-devops-mcp-server-workshop">Azure DevOps MCP Server Workshop</h1>
+<p><strong>Duration</strong>: 90 minutes
+<strong>Format</strong>: Presentation + Live Demo + Hands-on Lab
+<strong>Audience</strong>: Developers, platform &amp; DevOps engineers, Azure DevOps administrators
+<strong>Focus</strong>: Installing and using the Azure DevOps MCP Server with AI agents — and how it compares to the REST API
+<strong>Lab Guide</strong>: <a href="ado-mcp-LAB.md">ado-mcp-LAB.md</a> (5 hands-on exercises against a sandbox project)</p>
+<hr>
+<h2 id="workshop-overview">Workshop Overview</h2>
+<p>The <strong>Azure DevOps MCP Server</strong> brings Azure DevOps context — work items, repositories, pull requests, pipelines, wikis, and test plans — directly to AI agents such as GitHub Copilot. Instead of writing REST calls and parsing JSON, your team can ask in natural language: <em>&quot;List the bugs assigned to me in the current iteration&quot;</em> or <em>&quot;Summarise the failing tests in the last build of the Payments pipeline.&quot;</em></p>
+<p>This workshop takes attendees from zero to productive: what the Model Context Protocol (MCP) is, how to install both the <strong>Remote</strong> (preview, hosted) and <strong>Local</strong> (npx/stdio) servers, how authentication and access scoping work, a guided tour of the tool surface, hands-on exercises against a sandbox project, and a thorough, decision-oriented comparison of the <strong>MCP server vs. the Azure DevOps REST API</strong>.</p>
+<blockquote>
+<p><strong>Note</strong>: The Azure DevOps MCP Server is a <strong>thin abstraction layer over the REST APIs</strong>. It does not replace the REST API — it makes Azure DevOps data and actions <em>conversational and agent-accessible</em>. Understanding when to reach for each is the central skill this workshop builds.</p>
+</blockquote>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li>Explain what MCP is and why an Azure DevOps MCP server matters for agentic workflows</li>
+<li>Install and configure the <strong>Remote</strong> MCP Server (public preview) and the <strong>Local</strong> MCP Server</li>
+<li>Understand the authentication models: Microsoft Entra ID (OAuth) vs. Personal Access Tokens</li>
+<li>Navigate the tool surface across all nine domains and run effective natural-language prompts</li>
+<li>Scope the server safely with read-only mode, toolsets, and individual-tool filtering</li>
+<li>Compare the MCP server and the REST API across capability, effort, determinism, security, and cost</li>
+<li>Decide which interface — MCP, REST, or both — fits a given scenario</li>
+</ul>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Azure DevOps Organisation</strong></td>
+<td>Connected to Microsoft Entra ID. A free org works — <a href="https://dev.azure.com">https://dev.azure.com</a></td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Latest stable or Insiders, with the GitHub Copilot + Copilot Chat extensions</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot</strong></td>
+<td>Any paid tier (Pro, Business, or Enterprise) with Agent Mode available</td>
+</tr>
+<tr>
+<td><strong>Node.js 20+</strong></td>
+<td>Required only for the <strong>Local</strong> server (<code>node --version</code>)</td>
+</tr>
+<tr>
+<td><strong>Azure CLI</strong></td>
+<td>Optional — enables <code>az login</code> authentication for the Local server</td>
+</tr>
+<tr>
+<td><strong>Permissions</strong></td>
+<td>Membership in the target project(s) and access to the resources you query</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="session-agenda">Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a href="#1-what-is-mcp--why-azure-devops-mcp-10-min">What Is MCP &amp; Why Azure DevOps MCP</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#2-setup-installation--authentication-15-min">Setup, Installation &amp; Authentication</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#3-capability-tour--tools-by-domain-15-min">Capability Tour — Tools by Domain</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>☕</td>
+<td>Break</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#4-hands-on-driving-a-test-azure-devops-project-15-min">Hands-On: Driving a Test Azure DevOps Project</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="#5-mcp-vs-rest-api--comprehensive-comparison-15-min">MCP vs REST API — Comprehensive Comparison</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="#6-governance-security--best-practices-10-min">Governance, Security &amp; Best Practices</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="#7-when-to-use-which--wrap-up-5-min">When to Use Which &amp; Wrap-Up</a></td>
+<td>5 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total: 90 minutes</strong> (format: concept → demo → discussion)</p>
+<hr>
+<h2 id="1-what-is-mcp--why-azure-devops-mcp-10-min">1. What Is MCP &amp; Why Azure DevOps MCP (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Model Context Protocol (MCP)</strong> is an open standard that lets AI agents discover and call external <strong>tools</strong> through a consistent interface. Think of it as &quot;USB-C for AI tools&quot; — one protocol, many capabilities.</li>
+<li>An <strong>MCP server</strong> exposes a set of tools (each a focused operation with typed inputs/outputs). The <strong>MCP client</strong> (VS Code + Copilot, Visual Studio, Cursor, Claude, etc.) lets the model call those tools during a conversation.</li>
+<li>The <strong>Azure DevOps MCP Server</strong> exposes Azure DevOps operations as tools so an agent can read and act on your projects in natural language — no SDK, no hand-written REST calls, no JSON parsing.</li>
+<li>Microsoft&#39;s design principle: tools are <strong>concise, focused, and single-purpose</strong> — a <em>thin abstraction over the REST APIs</em> — leaving the complex reasoning to the language model.</li>
+</ul>
+<h3 id="why-it-matters">Why It Matters</h3>
+<table>
+<thead>
+<tr>
+<th>Without MCP</th>
+<th>With the ADO MCP Server</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Switch to the portal or write a script to fetch work items</td>
+<td>Ask <em>&quot;What&#39;s assigned to me this sprint?&quot;</em> in chat</td>
+</tr>
+<tr>
+<td>Copy/paste build logs into the agent to debug a failure</td>
+<td>Agent pulls the failing build log and reasons over it directly</td>
+</tr>
+<tr>
+<td>Manually correlate a PR, its commits, and linked work items</td>
+<td>Agent traverses the links and summarises the change set</td>
+</tr>
+<tr>
+<td>Context lives outside the agent — you are the integration</td>
+<td>Context flows to the agent — it becomes a teammate</td>
+</tr>
+</tbody></table>
+<h3 id="the-big-picture">The Big Picture</h3>
+<pre><code class="language-mermaid">graph LR
+    Dev[Developer] --&gt;|natural language| Agent[AI Agent&lt;br/&gt;Copilot in VS Code]
+    Agent --&gt;|MCP tool calls| Server[Azure DevOps&lt;br/&gt;MCP Server]
+    Server --&gt;|REST under the hood| ADO[(Azure DevOps&lt;br/&gt;Services)]
+    ADO --&gt;|JSON| Server
+    Server --&gt;|structured results| Agent
+    Agent --&gt;|answer and actions| Dev
+</code></pre>
+<blockquote>
+<p>💡 <strong>Mental model</strong>: The MCP server is the <em>translator and concierge</em> between your agent and Azure DevOps. You speak intent; it speaks REST.</p>
+</blockquote>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Where does your team currently lose time switching between the IDE and the Azure DevOps portal?</li>
+<li>Which routine Azure DevOps questions get asked over and over that an agent could answer instantly?</li>
+<li>What would it change if your agent could see work items, PRs, and build logs without copy/paste?</li>
+</ul>
+<hr>
+<h2 id="2-setup-installation--authentication-15-min">2. Setup, Installation &amp; Authentication (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<p>There are two ways to run the server. <strong>Lead with the Remote server</strong> — it is the recommended path and requires no local installation. Use the Local server when you need a <code>stdio</code> setup, a non-Entra organisation, PAT auth, or a client that the remote preview does not yet support.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Remote MCP Server</th>
+<th>Local MCP Server</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Status</strong></td>
+<td>Public preview</td>
+<td>Generally available</td>
+</tr>
+<tr>
+<td><strong>Installation</strong></td>
+<td>None — hosted by Azure DevOps</td>
+<td>Node.js 20+ and <code>npx</code></td>
+</tr>
+<tr>
+<td><strong>Transport</strong></td>
+<td>Streamable HTTP</td>
+<td><code>stdio</code></td>
+</tr>
+<tr>
+<td><strong>Authentication</strong></td>
+<td>Microsoft Entra ID (OAuth)</td>
+<td>Entra ID or Personal Access Token</td>
+</tr>
+<tr>
+<td><strong>Endpoint</strong></td>
+<td><code>https://mcp.dev.azure.com/{organization}</code></td>
+<td><code>npx -y @azure-devops/mcp {organization}</code></td>
+</tr>
+<tr>
+<td><strong>Clients today</strong></td>
+<td>VS Code, Visual Studio</td>
+<td>VS Code, VS 2022, Cursor, Claude Code, Codex, others</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Fast start, minimal config, always current</td>
+<td>Air-gapped/PAT scenarios, other clients, tool filtering by domain</td>
+</tr>
+</tbody></table>
+<h3 id="remote-server--quick-start-recommended">Remote Server — Quick Start (Recommended)</h3>
+<p>Create <code>.vscode/mcp.json</code> in your project:</p>
+<pre><code class="language-json">{
+  &quot;servers&quot;: {
+    &quot;ado-remote-mcp&quot;: {
+      &quot;url&quot;: &quot;https://mcp.dev.azure.com/{organization}&quot;,
+      &quot;type&quot;: &quot;http&quot;
+    }
+  },
+  &quot;inputs&quot;: []
+}
+</code></pre>
+<p>Replace <code>{organization}</code> with your org name (e.g. <code>contoso</code>). Save the file, start the server from the MCP view in VS Code, authenticate with your Microsoft Entra account when prompted, and try: <code>List ADO projects</code>.</p>
+<blockquote>
+<p><strong>Note</strong>: You can omit the organisation from the URL (<code>https://mcp.dev.azure.com/</code>), but then you must provide the org name as context in each prompt.</p>
+</blockquote>
+<h3 id="local-server--installation-alternative">Local Server — Installation (Alternative)</h3>
+<p>Add <code>.vscode/mcp.json</code> with an input prompt for the org name:</p>
+<pre><code class="language-json">{
+  &quot;inputs&quot;: [
+    {
+      &quot;id&quot;: &quot;ado_org&quot;,
+      &quot;type&quot;: &quot;promptString&quot;,
+      &quot;description&quot;: &quot;Azure DevOps organization name (e.g. &#39;contoso&#39;)&quot;
+    }
+  ],
+  &quot;servers&quot;: {
+    &quot;ado&quot;: {
+      &quot;type&quot;: &quot;stdio&quot;,
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;-y&quot;, &quot;@azure-devops/mcp&quot;, &quot;${input:ado_org}&quot;]
+    }
+  }
+}
+</code></pre>
+<p>Save, click <strong>Start</strong>, switch Copilot Chat to <strong>Agent Mode</strong>, choose <strong>Select Tools</strong>, and run <code>List ADO projects</code>. The first tool call opens a browser to sign in.</p>
+<blockquote>
+<p><strong>Note</strong>: Use the <code>@azure-devops/mcp@next</code> nightly tag to preview the latest tools and fixes.</p>
+</blockquote>
+<h3 id="authentication--access-model">Authentication &amp; Access Model</h3>
+<ul>
+<li><strong>Remote</strong> uses <strong>Microsoft Entra ID (OAuth)</strong> — your AI assistant authenticates as <em>you</em>, and every tool call respects your existing Azure DevOps permissions. No token to manage.</li>
+<li><strong>Local</strong> supports <strong>Entra ID</strong> (including <code>--authentication azcli</code> to reuse your <code>az login</code> session) <strong>or a Personal Access Token (PAT)</strong> for scenarios where interactive sign-in is not possible.</li>
+<li>The server never grants more access than the signed-in identity already has. <strong>Permissions are enforced by Azure DevOps</strong>, not by the server.</li>
+</ul>
+<blockquote>
+<p><strong>Important</strong>: Today, only <strong>VS Code</strong> and <strong>Visual Studio</strong> support the Remote server, because other clients (Copilot CLI, Claude, Codex, Cursor) require dynamic OAuth client registration in Entra. For those clients, use the <strong>Local</strong> server.</p>
+</blockquote>
+<h3 id="-demo-first-connection-in-under-two-minutes">🖥️ Demo: First Connection in Under Two Minutes</h3>
+<ol>
+<li>Open an empty folder in VS Code and create <code>.vscode/mcp.json</code> for the <strong>Remote</strong> server</li>
+<li>Start the server from the MCP view; complete the Entra sign-in</li>
+<li>Open Copilot Chat in Agent Mode and run <code>List the projects in my Azure DevOps organization</code></li>
+<li>Show the tool-approval prompt and the returned project list</li>
+<li>(Optional) Swap to the <strong>Local</strong> config and show the org-name input prompt</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Is your organisation connected to Entra ID? Which server should your teams start with?</li>
+<li>Where would PAT-based local auth be necessary (build agents, non-VS Code tools)?</li>
+<li>Should the server config (<code>.vscode/mcp.json</code>) be committed to your repos as a team default?</li>
+</ul>
+<hr>
+<h2 id="3-capability-tour--tools-by-domain-15-min">3. Capability Tour — Tools by Domain (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<p>The server organises its tools into <strong>nine domains</strong>. With the Local server you load only the domains you need (<code>-d core work-items repositories</code>); with the Remote server you scope with the <code>X-MCP-Toolsets</code> header. Always keep <strong>core</strong> enabled so the agent can resolve projects and teams.</p>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>What it covers</th>
+<th>Example prompt</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Core</strong></td>
+<td>Orgs, projects, teams, identities</td>
+<td><em>&quot;List teams in the Tailspin project&quot;</em></td>
+</tr>
+<tr>
+<td><strong>Work</strong></td>
+<td>Iterations, team settings, capacity</td>
+<td><em>&quot;Show the current iteration for the Web team&quot;</em></td>
+</tr>
+<tr>
+<td><strong>Work Items</strong></td>
+<td>Create/read/update/link work items, queries, backlogs, WIQL</td>
+<td><em>&quot;Create a bug titled &#39;Login 500&#39; in Tailspin&quot;</em></td>
+</tr>
+<tr>
+<td><strong>Repositories</strong></td>
+<td>Repos, branches, files, commits, pull requests, threads</td>
+<td><em>&quot;Open a PR from feature/login to main&quot;</em></td>
+</tr>
+<tr>
+<td><strong>Pipelines</strong></td>
+<td>Build definitions, runs, logs, changes, artifacts, stages</td>
+<td><em>&quot;Why did the last Payments build fail?&quot;</em></td>
+</tr>
+<tr>
+<td><strong>Wiki</strong></td>
+<td>List/read/create/update wiki pages</td>
+<td><em>&quot;Create a wiki page /Onboarding with setup steps&quot;</em></td>
+</tr>
+<tr>
+<td><strong>Test Plans</strong></td>
+<td>Plans, suites, cases, results</td>
+<td><em>&quot;List failing tests from build 4821&quot;</em></td>
+</tr>
+<tr>
+<td><strong>Search</strong></td>
+<td>Code, wiki, and work-item full-text search</td>
+<td><em>&quot;Search code for &#39;ConnectionString&#39;&quot;</em></td>
+</tr>
+<tr>
+<td><strong>Advanced Security</strong></td>
+<td>GitHub Advanced Security for ADO alerts</td>
+<td><em>&quot;Show secret-scanning alerts on the api repo&quot;</em></td>
+</tr>
+</tbody></table>
+<h3 id="read-vs-write-tools">Read vs. Write Tools</h3>
+<p>Each domain mixes <strong>read</strong> tools (list, get, search) and <strong>write</strong> tools (create, update, link, run). Write tools always surface a <strong>confirmation prompt</strong> in the client before they execute — the agent cannot silently mutate your project.</p>
+<blockquote>
+<p>💡 <strong>Toolset hygiene</strong>: Loading every tool can overwhelm the model and hit client tool limits. Scope to the domains a given repo actually needs. A docs repo might load only <code>core</code>, <code>wiki</code>, and <code>search</code>.</p>
+</blockquote>
+<h3 id="high-value-workflows-the-tools-unlock">High-Value Workflows the Tools Unlock</h3>
+<ul>
+<li><strong>Sprint triage</strong>: <em>&quot;Summarise my work items in the current iteration grouped by state.&quot;</em></li>
+<li><strong>PR review prep</strong>: <em>&quot;Show the diff and linked work items for PR 142, and list unresolved comment threads.&quot;</em></li>
+<li><strong>Build debugging</strong>: <em>&quot;Get the log for the failing stage of the last build and explain the root cause.&quot;</em></li>
+<li><strong>Release notes</strong>: <em>&quot;List the work items completed in iteration Sprint-24 and draft release notes.&quot;</em></li>
+<li><strong>Knowledge capture</strong>: <em>&quot;Create a wiki page documenting how we run the nightly pipeline.&quot;</em></li>
+</ul>
+<h3 id="-demo-one-prompt-per-domain">🖥️ Demo: One Prompt Per Domain</h3>
+<ol>
+<li><strong>Core/Work Items</strong>: <em>&quot;List my active work items in <code>&lt;project&gt;</code> for the current iteration&quot;</em></li>
+<li><strong>Repositories</strong>: <em>&quot;List open pull requests I&#39;m a reviewer on in <code>&lt;project&gt;</code>&quot;</em></li>
+<li><strong>Pipelines</strong>: <em>&quot;Show the status of the last 5 builds for the <code>&lt;pipeline&gt;</code> definition&quot;</em></li>
+<li><strong>Search</strong>: <em>&quot;Search the code for <code>TODO: security</code> across <code>&lt;project&gt;</code>&quot;</em></li>
+<li>Show the <strong>Select Tools</strong> picker and how disabling a domain changes what the agent can do</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which two or three domains would deliver the most value to your team on day one?</li>
+<li>Are there domains you would deliberately <em>not</em> load for safety or noise reduction?</li>
+<li>How could &quot;summarise my sprint&quot; or &quot;explain this build failure&quot; change your daily standups?</li>
+</ul>
+<hr>
+<h2 id="-break-5-min">☕ Break (5 min)</h2>
+<hr>
+<h2 id="4-hands-on-driving-a-test-azure-devops-project-15-min">4. Hands-On: Driving a Test Azure DevOps Project (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<p>This section is hands-on — attendees work through the lab against a <strong>sandbox project</strong> they provision and seed. The lab guide (<a href="ado-mcp-LAB.md">ado-mcp-LAB.md</a>) contains the full step-by-step exercises; this section frames what to practise and what &quot;good&quot; looks like.</p>
+<h3 id="what-youll-do">What You&#39;ll Do</h3>
+<ol>
+<li><strong>Provision a sandbox</strong>: create a free Azure DevOps organisation (Entra-connected) and a project named <code>mcp-sandbox</code></li>
+<li><strong>Seed content</strong>: import a sample repo, create a few work items, and run a simple pipeline so there is real data to query</li>
+<li><strong>Connect the server</strong>: drop in <code>.vscode/mcp.json</code> (Remote first; Local as fallback) and authenticate</li>
+<li><strong>Read workflows</strong>: list projects, list your work items, inspect a PR, fetch a build log</li>
+<li><strong>Write workflows (with confirmation)</strong>: create a bug, add a child task, open a draft PR, create a wiki page</li>
+</ol>
+<h3 id="effective-prompting-patterns">Effective Prompting Patterns</h3>
+<ul>
+<li><strong>Be specific about scope</strong>: name the project and team — <em>&quot;in <code>mcp-sandbox</code>, for the <code>mcp-sandbox Team</code>&quot;</em></li>
+<li><strong>Ask for structure</strong>: <em>&quot;…and return the results as a table with ID, title, state, assignee&quot;</em></li>
+<li><strong>Chain naturally</strong>: <em>&quot;Now create a child task under that bug for the unit test.&quot;</em></li>
+<li><strong>Set a project default</strong> (Local server) via env vars so you stop repeating the project name:</li>
+</ul>
+<pre><code class="language-json">&quot;env&quot;: {
+  &quot;ado_mcp_project&quot;: &quot;mcp-sandbox&quot;,
+  &quot;ado_mcp_team&quot;: &quot;mcp-sandbox Team&quot;
+}
+</code></pre>
+<h3 id="recommended-copilot-instruction">Recommended Copilot Instruction</h3>
+<p>Add this line to <code>.github/copilot-instructions.md</code> so the agent reliably reaches for the server:</p>
+<pre><code class="language-text">This project uses Azure DevOps. Always check to see if the Azure DevOps MCP server has a tool relevant to the user&#39;s request.
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ The agent lists your sandbox project and your work items without copy/paste</li>
+<li>✅ You created a work item <em>and</em> a child item through natural language (with confirmation)</li>
+<li>✅ You retrieved a build log and had the agent explain a failure</li>
+<li>✅ You scoped the server to a subset of domains and observed the change in available tools</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How accurate were the agent&#39;s results? Where did specificity in the prompt help?</li>
+<li>Did the write-confirmation flow feel safe enough for everyday use?</li>
+<li>What instruction or default would you standardise across your repos?</li>
+</ul>
+<hr>
+<h2 id="5-mcp-vs-rest-api--comprehensive-comparison-15-min">5. MCP vs REST API — Comprehensive Comparison (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<p>This is the heart of the workshop. The MCP server and the REST API are <strong>complementary</strong>, not competing. The MCP server is a <em>thin, curated, conversational</em> layer; the REST API is the <em>complete, deterministic, programmable</em> surface beneath it.</p>
+<h3 id="conceptual-difference">Conceptual Difference</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Azure DevOps MCP Server</th>
+<th>Azure DevOps REST API</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Primary consumer</strong></td>
+<td>AI agents (and the humans driving them)</td>
+<td>Code, scripts, and automation</td>
+</tr>
+<tr>
+<td><strong>Interface</strong></td>
+<td>Natural language → tool calls</td>
+<td>HTTP verbs + JSON over versioned endpoints</td>
+</tr>
+<tr>
+<td><strong>Paradigm</strong></td>
+<td>Conversational, intent-based</td>
+<td>Imperative, contract-based</td>
+</tr>
+<tr>
+<td><strong>Who handles reasoning</strong></td>
+<td>The language model</td>
+<td>The developer who wrote the code</td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>Summarised/structured for the agent</td>
+<td>Raw, complete JSON payloads</td>
+</tr>
+</tbody></table>
+<h3 id="detailed-comparison-matrix">Detailed Comparison Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>MCP Server</th>
+<th>REST API</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Setup effort</strong></td>
+<td>🟢 Low — drop in <code>mcp.json</code>, sign in</td>
+<td>🟡 Medium — auth, client/SDK, endpoint wiring</td>
+</tr>
+<tr>
+<td><strong>Discoverability</strong></td>
+<td>🟢 High — agent lists/uses tools dynamically</td>
+<td>🔴 Low — read docs, find routes &amp; params</td>
+</tr>
+<tr>
+<td><strong>Coverage / completeness</strong></td>
+<td>🟡 Curated subset of common operations</td>
+<td>🟢 Complete — every Azure DevOps capability</td>
+</tr>
+<tr>
+<td><strong>Determinism / repeatability</strong></td>
+<td>🔴 Non-deterministic (model decides)</td>
+<td>🟢 Fully deterministic</td>
+</tr>
+<tr>
+<td><strong>Best in interactive use</strong></td>
+<td>🟢 Excellent — chat, exploration, triage</td>
+<td>🟡 Clunky — not built for conversation</td>
+</tr>
+<tr>
+<td><strong>Best in automation / CI</strong></td>
+<td>🔴 Not designed for unattended pipelines</td>
+<td>🟢 Purpose-built for scripts &amp; pipelines</td>
+</tr>
+<tr>
+<td><strong>Latency &amp; cost</strong></td>
+<td>🟡 Model round-trips + token cost</td>
+<td>🟢 Direct call, no token cost</td>
+</tr>
+<tr>
+<td><strong>Error handling</strong></td>
+<td>🟡 Model interprets; can be fuzzy</td>
+<td>🟢 Explicit status codes &amp; error contracts</td>
+</tr>
+<tr>
+<td><strong>Versioning &amp; stability</strong></td>
+<td>🟡 Preview/evolving tool surface</td>
+<td>🟢 Stable, explicitly versioned (<code>api-version</code>)</td>
+</tr>
+<tr>
+<td><strong>Auth model</strong></td>
+<td>🟢 Entra OAuth as the signed-in user</td>
+<td>🟡 PAT / OAuth / service principal wiring</td>
+</tr>
+<tr>
+<td><strong>Bulk / high-volume ops</strong></td>
+<td>🔴 Inefficient for thousands of records</td>
+<td>🟢 Pagination &amp; batch built for scale</td>
+</tr>
+<tr>
+<td><strong>Learning curve</strong></td>
+<td>🟢 Speak intent in plain language</td>
+<td>🔴 Learn routes, bodies, and data model</td>
+</tr>
+<tr>
+<td><strong>Auditability of intent</strong></td>
+<td>🟡 Conversational, less precise</td>
+<td>🟢 Exact request/response logged</td>
+</tr>
+</tbody></table>
+<h3 id="pros-cons--requirements">Pros, Cons &amp; Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>✅ MCP Server — Pros</th>
+<th>✗ MCP Server — Cons</th>
+<th>📋 Requirements</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Natural language, zero boilerplate</td>
+<td>Non-deterministic outputs</td>
+<td>An MCP client (VS Code/VS)</td>
+</tr>
+<tr>
+<td>Dynamic tool discovery</td>
+<td>Curated subset, not full coverage</td>
+<td>Entra-connected org (remote)</td>
+</tr>
+<tr>
+<td>Permissions enforced as the user</td>
+<td>Token cost &amp; added latency</td>
+<td>Agent in the loop</td>
+</tr>
+<tr>
+<td>Great for exploration &amp; triage</td>
+<td>Not meant for unattended automation</td>
+<td>Preview caveats for remote</td>
+</tr>
+<tr>
+<td>Read/write with confirmation prompts</td>
+<td>Harder to audit exact intent</td>
+<td>Trust in model behaviour</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>✅ REST API — Pros</th>
+<th>✗ REST API — Cons</th>
+<th>📋 Requirements</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Complete capability coverage</td>
+<td>Verbose — you write every call</td>
+<td>Auth setup (PAT/OAuth/SP)</td>
+</tr>
+<tr>
+<td>Deterministic &amp; repeatable</td>
+<td>Steeper learning curve</td>
+<td>Knowledge of routes &amp; schema</td>
+</tr>
+<tr>
+<td>Ideal for CI/CD &amp; batch jobs</td>
+<td>No built-in natural-language layer</td>
+<td>HTTP client or SDK</td>
+</tr>
+<tr>
+<td>Stable, explicitly versioned</td>
+<td>More upfront integration effort</td>
+<td>Error-handling code</td>
+</tr>
+<tr>
+<td>Precise, fully auditable</td>
+<td>Not conversational</td>
+<td>Maintenance as APIs evolve</td>
+</tr>
+</tbody></table>
+<h3 id="decision-flow">Decision Flow</h3>
+<pre><code class="language-mermaid">graph TD
+    Start[Need to interact with Azure DevOps] --&gt; Q1{Interactive or&lt;br/&gt;unattended?}
+    Q1 --&gt;|Interactive in IDE| Q2{Operation exists&lt;br/&gt;as a tool?}
+    Q1 --&gt;|Unattended automation| REST[Use the REST API]
+    Q2 --&gt;|Yes| MCP[Use the MCP Server]
+    Q2 --&gt;|No, full control| REST
+    MCP --&gt; Hybrid{Need determinism&lt;br/&gt;or bulk scale?}
+    Hybrid --&gt;|Yes| REST
+    Hybrid --&gt;|No| Done[Stay in the agent]
+</code></pre>
+<h3 id="the-hybrid-reality">The Hybrid Reality</h3>
+<p>Most teams use <strong>both</strong>: the MCP server for day-to-day interactive work inside the IDE (triage, review, debugging, documentation), and the REST API for <strong>scheduled jobs, governance automation, bulk operations, and anything that must be deterministic and auditable</strong>. Remember the server is <em>built on</em> the REST API — choosing MCP never closes the door to REST.</p>
+<blockquote>
+<p>💡 <strong>Rule of thumb</strong>: If a <em>human is in the loop and exploring</em>, prefer MCP. If a <em>machine runs it on a schedule and must not vary</em>, prefer REST.</p>
+</blockquote>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which of your current Azure DevOps integrations are genuinely automation (REST) vs. interactive (MCP)?</li>
+<li>Are there scripts your team maintains today that would be better as on-demand agent prompts?</li>
+<li>Where is determinism non-negotiable for you — and therefore firmly REST territory?</li>
+</ul>
+<hr>
+<h2 id="6-governance-security--best-practices-10-min">6. Governance, Security &amp; Best Practices (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<p>The server is powerful, so scope and guardrails matter. Three controls do most of the work: <strong>read-only mode</strong>, <strong>toolset/tool filtering</strong>, and <strong>least-privilege identity</strong>.</p>
+<h3 id="scoping-controls">Scoping Controls</h3>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Remote (header)</th>
+<th>Local (arg)</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Read-only mode</strong></td>
+<td><code>X-MCP-Readonly: true</code></td>
+<td><em>(use read tools only)</em></td>
+<td>Prevent any writes to Azure DevOps</td>
+</tr>
+<tr>
+<td><strong>Toolsets</strong></td>
+<td><code>X-MCP-Toolsets: repos,wiki,wit</code></td>
+<td><code>-d repositories wiki work-items</code></td>
+<td>Load only the domains you need</td>
+</tr>
+<tr>
+<td><strong>Individual tools</strong></td>
+<td><code>X-MCP-Tools: core_list_projects,...</code></td>
+<td>n/a</td>
+<td>Surgical allow-list of tools</td>
+</tr>
+<tr>
+<td><strong>Early access</strong></td>
+<td><code>X-MCP-Insiders: true</code></td>
+<td><code>@azure-devops/mcp@next</code></td>
+<td>Preview new tools</td>
+</tr>
+</tbody></table>
+<p>Example — a <strong>read-only, repos-and-wiki-only</strong> remote server:</p>
+<pre><code class="language-json">{
+  &quot;servers&quot;: {
+    &quot;ado-remote-mcp&quot;: {
+      &quot;url&quot;: &quot;https://mcp.dev.azure.com/{organization}&quot;,
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;headers&quot;: {
+        &quot;X-MCP-Toolsets&quot;: &quot;repos,wiki&quot;,
+        &quot;X-MCP-Readonly&quot;: &quot;true&quot;
+      }
+    }
+  },
+  &quot;inputs&quot;: []
+}
+</code></pre>
+<h3 id="security-practices">Security Practices</h3>
+<ul>
+<li><strong>Least privilege by identity</strong>: the server acts as the signed-in user — grant people only the Azure DevOps access they should have, and the server inherits those limits.</li>
+<li><strong>Prefer read-only</strong> for analysis, reporting, and exploration scenarios; reserve write-enabled configs for the people and repos that need them.</li>
+<li><strong>Approve writes deliberately</strong>: keep tool-confirmation prompts on; never blanket-approve write tools.</li>
+<li><strong>Beware prompt injection</strong>: build logs, PR comments, wiki text, and work-item descriptions are <em>untrusted content</em>. The server applies <strong>spotlighting</strong> to external content, but treat agent output that originates from such data with care, and never let it auto-trigger sensitive writes.</li>
+<li><strong>Mind token cost</strong>: scoping toolsets reduces both noise and token consumption.</li>
+<li><strong>Commit sensible defaults</strong>: a checked-in <code>.vscode/mcp.json</code> plus a <code>.github/copilot-instructions.md</code> line gives every teammate a consistent, governed starting point.</li>
+</ul>
+<blockquote>
+<p><strong>Important</strong>: MCP does not bypass Azure DevOps permissions, branch policies, or audit logging. A write performed via an MCP tool is the <em>same</em> operation — subject to the same policies — as one performed in the portal or via REST.</p>
+</blockquote>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which teams or repos should run <strong>read-only</strong> by default?</li>
+<li>What is your policy for write-enabled tools and confirmation prompts?</li>
+<li>How will you handle untrusted content (logs, comments) flowing into agents?</li>
+</ul>
+<hr>
+<h2 id="7-when-to-use-which--wrap-up-5-min">7. When to Use Which &amp; Wrap-Up (5 min)</h2>
+<h3 id="key-takeaways">Key Takeaways</h3>
+<ul>
+<li>The Azure DevOps MCP Server makes your projects <strong>conversational</strong> for AI agents — it is a thin, curated layer over the REST API.</li>
+<li><strong>Start with the Remote server</strong> (preview) for the fastest path; use <strong>Local</strong> for PAT auth, other clients, or domain filtering.</li>
+<li>Authentication is <strong>as the signed-in user</strong> — permissions, policies, and audit still apply.</li>
+<li>Reach for <strong>MCP when a human is interactively exploring</strong>; reach for <strong>REST when a machine runs it unattended and must be deterministic</strong>.</li>
+<li>Govern with <strong>read-only mode, toolset scoping, and least-privilege identity</strong>.</li>
+</ul>
+<h3 id="when-to-choose">When to Choose</h3>
+<table>
+<thead>
+<tr>
+<th>Choose the <strong>MCP Server</strong> when…</th>
+<th>Choose the <strong>REST API</strong> when…</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Working interactively in the IDE</td>
+<td>Running scheduled/unattended automation</td>
+</tr>
+<tr>
+<td>Exploring, triaging, or summarising</td>
+<td>You need deterministic, repeatable results</td>
+</tr>
+<tr>
+<td>You want zero boilerplate</td>
+<td>You need complete capability coverage</td>
+</tr>
+<tr>
+<td>The operation exists as a tool</td>
+<td>You&#39;re doing bulk/high-volume operations</td>
+</tr>
+<tr>
+<td>A human reviews each action</td>
+<td>You require precise, auditable requests</td>
+</tr>
+</tbody></table>
+<h3 id="immediate-next-steps">Immediate Next Steps</h3>
+<ol>
+<li>Connect the <strong>Remote</strong> server to a sandbox org and run five read prompts</li>
+<li>Add the recommended line to <code>.github/copilot-instructions.md</code></li>
+<li>Decide your team&#39;s default <strong>toolset scope</strong> and whether to start <strong>read-only</strong></li>
+<li>Identify one interactive workflow to move to MCP and one automation to keep on REST</li>
+<li>Complete the lab (<a href="ado-mcp-LAB.md">ado-mcp-LAB.md</a>) end-to-end</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What&#39;s the first workflow your team will move into the agent?</li>
+<li>Who owns the team&#39;s <code>.vscode/mcp.json</code> defaults and governance settings?</li>
+<li>What would make you comfortable enabling write tools more broadly?</li>
+</ul>
+<hr>
+<h2 id="appendix">Appendix</h2>
+<h3 id="workshop-materials">Workshop Materials</h3>
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th>Path</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Lab Guide</strong></td>
+<td><a href="ado-mcp-LAB.md">ado-mcp-LAB.md</a></td>
+<td>5 hands-on exercises against a sandbox project</td>
+</tr>
+<tr>
+<td><strong>Slide Deck</strong></td>
+<td><a href="ado-mcp.slidev.md">ado-mcp.slidev.md</a></td>
+<td>Presentation deck (GitHub dark theme)</td>
+</tr>
+</tbody></table>
+<h3 id="key-urls">Key URLs</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Azure DevOps</td>
+<td><a href="https://dev.azure.com">https://dev.azure.com</a></td>
+</tr>
+<tr>
+<td>ADO MCP Server (GitHub)</td>
+<td><a href="https://github.com/microsoft/azure-devops-mcp">https://github.com/microsoft/azure-devops-mcp</a></td>
+</tr>
+<tr>
+<td>Remote MCP Server setup</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/mcp-server/remote-mcp-server">https://learn.microsoft.com/en-us/azure/devops/mcp-server/remote-mcp-server</a></td>
+</tr>
+<tr>
+<td>ADO MCP Server overview</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/mcp-server/mcp-server-overview">https://learn.microsoft.com/en-us/azure/devops/mcp-server/mcp-server-overview</a></td>
+</tr>
+<tr>
+<td>Full tool catalog (TOOLSET.md)</td>
+<td><a href="https://github.com/microsoft/azure-devops-mcp/blob/main/docs/TOOLSET.md">https://github.com/microsoft/azure-devops-mcp/blob/main/docs/TOOLSET.md</a></td>
+</tr>
+<tr>
+<td>ADO REST API reference</td>
+<td><a href="https://learn.microsoft.com/en-us/rest/api/azure/devops/">https://learn.microsoft.com/en-us/rest/api/azure/devops/</a></td>
+</tr>
+<tr>
+<td>Model Context Protocol</td>
+<td><a href="https://modelcontextprotocol.io">https://modelcontextprotocol.io</a></td>
+</tr>
+</tbody></table>
+<h3 id="tool-domains-reference">Tool Domains Reference</h3>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Local <code>-d</code> name</th>
+<th>Remote toolset</th>
+<th>Always on?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Core</td>
+<td><code>core</code></td>
+<td><em>(always available)</em></td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Work</td>
+<td><code>work</code></td>
+<td><code>work</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td>Work Items</td>
+<td><code>work-items</code></td>
+<td><code>wit</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td>Repositories</td>
+<td><code>repositories</code></td>
+<td><code>repos</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td>Pipelines</td>
+<td><code>pipelines</code></td>
+<td><code>pipelines</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td>Wiki</td>
+<td><code>wiki</code></td>
+<td><code>wiki</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td>Test Plans</td>
+<td><code>test-plans</code></td>
+<td><code>testplan</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td>Search</td>
+<td><code>search</code></td>
+<td><em>(within domains)</em></td>
+<td>No</td>
+</tr>
+<tr>
+<td>Advanced Security</td>
+<td><code>advanced-security</code></td>
+<td><em>(within domains)</em></td>
+<td>No</td>
+</tr>
+</tbody></table>
+<h3 id="glossary">Glossary</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MCP</strong></td>
+<td>Model Context Protocol — open standard for connecting agents to tools</td>
+</tr>
+<tr>
+<td><strong>MCP Server</strong></td>
+<td>A process exposing tools over MCP (here, Azure DevOps operations)</td>
+</tr>
+<tr>
+<td><strong>MCP Client</strong></td>
+<td>The host that lets a model call tools (VS Code, Visual Studio, etc.)</td>
+</tr>
+<tr>
+<td><strong>Tool</strong></td>
+<td>A single, focused operation with typed inputs/outputs</td>
+</tr>
+<tr>
+<td><strong>Toolset / Domain</strong></td>
+<td>A named group of related tools (core, repos, wit, …)</td>
+</tr>
+<tr>
+<td><strong>Remote Server</strong></td>
+<td>Hosted, no-install server at <code>mcp.dev.azure.com</code> (preview)</td>
+</tr>
+<tr>
+<td><strong>Local Server</strong></td>
+<td><code>npx</code>/<code>stdio</code> server run on your machine (GA)</td>
+</tr>
+<tr>
+<td><strong>Entra ID</strong></td>
+<td>Microsoft Entra ID (formerly Azure Active Directory)</td>
+</tr>
+<tr>
+<td><strong>PAT</strong></td>
+<td>Personal Access Token — token-based Azure DevOps auth</td>
+</tr>
+<tr>
+<td><strong>Spotlighting</strong></td>
+<td>Technique that marks untrusted external content for the model</td>
+</tr>
+<tr>
+<td><strong>WIQL</strong></td>
+<td>Work Item Query Language</td>
+</tr>
+</tbody></table>
+<h3 id="post-workshop-actions">Post-Workshop Actions</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Connect the Remote server to a sandbox org and validate five read prompts</li>
+<li><input disabled="" type="checkbox"> Add the Azure DevOps line to <code>.github/copilot-instructions.md</code></li>
+<li><input disabled="" type="checkbox"> Agree the team&#39;s default toolset scope and read-only policy</li>
+<li><input disabled="" type="checkbox"> Document one interactive workflow moved to MCP and one automation kept on REST</li>
+<li><input disabled="" type="checkbox"> Complete the hands-on lab end-to-end</li>
+<li><input disabled="" type="checkbox"> Decide whether <code>.vscode/mcp.json</code> is committed as a team default</li>
+</ul>
+<hr>
+<p><em>Workshop guide for the Azure DevOps MCP Server Workshop</em></p>
+</article>  </main> </body></html>  <script type="module">document.querySelectorAll("pre").forEach(e=>{const t=document.createElement("button");t.className="copy-btn",t.textContent="Copy",t.addEventListener("click",async()=>{const o=(e.querySelector("code")||e).textContent||"";await navigator.clipboard.writeText(o),t.textContent="Copied!",t.classList.add("copied"),setTimeout(()=>{t.textContent="Copy",t.classList.remove("copied")},2e3)}),e.appendChild(t)});</script>

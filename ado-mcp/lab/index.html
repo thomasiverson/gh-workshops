@@ -1,0 +1,379 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Azure DevOps MCP Server — Hands-On Lab Guide</title><link rel="stylesheet" href="/gh-workshops/_astro/index.tKAiv-SV.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="azure-devops-mcp-server--hands-on-lab-guide">Azure DevOps MCP Server — Hands-On Lab Guide</h1>
+<p><strong>Duration</strong>: ~60 minutes of hands-on exercises
+<strong>Format</strong>: Step-by-step labs aligned to the workshop sections
+<strong>Audience</strong>: Developers, platform &amp; DevOps engineers, Azure DevOps administrators
+<strong>Prerequisites</strong>: VS Code + GitHub Copilot, an Entra-connected Azure DevOps org, Node.js 20+ (for the Local server)</p>
+<hr>
+<h2 id="lab-overview">Lab Overview</h2>
+<p>These labs take you from an empty Azure DevOps organisation to driving a real project with an AI agent through the Azure DevOps MCP Server. You&#39;ll provision and seed a <strong>sandbox project</strong>, connect both the <strong>Remote</strong> and <strong>Local</strong> servers, run read and write workflows in natural language, and finish by scoping the server safely and comparing a single operation against the raw REST API.</p>
+<blockquote>
+<p><strong>Note</strong>: Lead with the <strong>Remote</strong> server (public preview) — it needs no installation. The Local server steps are included for PAT auth, non-VS Code clients, or domain filtering.</p>
+</blockquote>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Azure DevOps org</strong></td>
+<td>Entra-connected. Create a free one at <a href="https://dev.azure.com">https://dev.azure.com</a></td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Latest stable/Insiders with GitHub Copilot + Copilot Chat extensions</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot</strong></td>
+<td>Paid tier with <strong>Agent Mode</strong> available in the chat model picker</td>
+</tr>
+<tr>
+<td><strong>Node.js 20+</strong></td>
+<td>Only for the Local server — verify with <code>node --version</code></td>
+</tr>
+<tr>
+<td><strong>Azure CLI</strong></td>
+<td>Optional — enables <code>az login</code> auth for the Local server</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>For pushing a sample repo if you seed manually</td>
+</tr>
+</tbody></table>
+<h3 id="lab-summary">Lab Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Workshop Section</th>
+<th>Duration</th>
+<th>Deliverable</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Hands-On Setup</td>
+<td>15 min</td>
+<td>A seeded <code>mcp-sandbox</code> project</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Setup &amp; Installation</td>
+<td>10 min</td>
+<td>Connected MCP server + first prompt</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Capability Tour</td>
+<td>15 min</td>
+<td>Completed read workflows</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Capability Tour</td>
+<td>12 min</td>
+<td>Created work items, PR, and wiki page</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Governance &amp; MCP vs REST</td>
+<td>8 min</td>
+<td>Scoped server + a REST comparison</td>
+</tr>
+</tbody></table>
+<hr>
+<details>
+<summary><h2 id="lab-1-provision--seed-a-sandbox-project-15-min">Lab 1: Provision & Seed a Sandbox Project (15 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: Hands-On — Driving a Test Azure DevOps Project</p>
+</blockquote>
+<h3 id="objective">Objective</h3>
+<p>Create an Entra-connected Azure DevOps organisation and a project named <code>mcp-sandbox</code>, then seed it with a repo, work items, and a pipeline so there is real data for the agent to query.</p>
+<h3 id="steps">Steps</h3>
+<p><strong>Step 1: Create an organisation and project</strong></p>
+<ol>
+<li>Go to <a href="https://dev.azure.com">https://dev.azure.com</a> and sign in with your Microsoft Entra account.</li>
+<li>Create a new organisation (or reuse an existing Entra-connected one).</li>
+<li>Create a new project named <code>mcp-sandbox</code> (Visibility: Private; Work item process: Agile).</li>
+</ol>
+<p><strong>Step 2: Seed a repository</strong></p>
+<p>Option A — import a public sample (fastest):</p>
+<ol>
+<li>In <code>mcp-sandbox</code>, open <strong>Repos</strong> → <strong>Import a repository</strong>.</li>
+<li>Clone URL:</li>
+</ol>
+<pre><code class="language-text">https://github.com/MicrosoftDocs/pipelines-javascript.git
+</code></pre>
+<p>Option B — initialise with a README:</p>
+<ol>
+<li>In <strong>Repos</strong>, choose <strong>Initialize</strong> with a <code>README.md</code> and a <code>.gitignore</code>.</li>
+</ol>
+<p><strong>Step 3: Seed work items</strong></p>
+<ol>
+<li>Open <strong>Boards</strong> → <strong>Work items</strong> → <strong>New Work Item</strong>.</li>
+<li>Create a <strong>User Story</strong>: <em>&quot;As a user, I can sign in&quot;</em>.</li>
+<li>Create two <strong>Bugs</strong>: <em>&quot;Login returns 500&quot;</em> and <em>&quot;Reset-password email not sent&quot;</em>.</li>
+<li>Assign at least one item to yourself and set its iteration to the current sprint.</li>
+</ol>
+<p><strong>Step 4: Seed a pipeline</strong></p>
+<ol>
+<li>Open <strong>Pipelines</strong> → <strong>New pipeline</strong> → <strong>Azure Repos Git</strong> → select your repo.</li>
+<li>Choose <strong>Starter pipeline</strong>, then <strong>Save and run</strong> to produce at least one build.</li>
+</ol>
+<blockquote>
+<p><strong>Tip</strong>: To seed a richer environment quickly, the <strong>Azure DevOps Demo Generator</strong> (<a href="https://learn.microsoft.com/en-us/azure/devops/demo-gen">https://learn.microsoft.com/en-us/azure/devops/demo-gen</a>) can populate a project with sample work items, repos, and pipelines.</p>
+</blockquote>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ A private <code>mcp-sandbox</code> project exists in an Entra-connected org</li>
+<li>✅ The project has a repo with files</li>
+<li>✅ At least three work items exist, one assigned to you in the current iteration</li>
+<li>✅ At least one pipeline build has completed (success or failure both fine)</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-2-connect-the-mcp-server-10-min">Lab 2: Connect the MCP Server (10 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: Setup, Installation &amp; Authentication</p>
+</blockquote>
+<h3 id="objective">Objective</h3>
+<p>Connect the Remote MCP Server to your sandbox, authenticate with Entra ID, and confirm the agent can reach Azure DevOps. Then connect the Local server as an alternative.</p>
+<h3 id="steps">Steps</h3>
+<p><strong>Step 1: Open your project folder in VS Code</strong></p>
+<p>Open any local folder in VS Code (it does not need to be the sandbox repo).</p>
+<p><strong>Step 2: Configure the Remote server</strong></p>
+<p>Create <code>.vscode/mcp.json</code> with the following content, replacing <code>{organization}</code> with your org name:</p>
+<pre><code class="language-json">{
+  &quot;servers&quot;: {
+    &quot;ado-remote-mcp&quot;: {
+      &quot;url&quot;: &quot;https://mcp.dev.azure.com/{organization}&quot;,
+      &quot;type&quot;: &quot;http&quot;
+    }
+  },
+  &quot;inputs&quot;: []
+}
+</code></pre>
+<p><strong>Step 3: Start the server and authenticate</strong></p>
+<ol>
+<li>Open the <strong>MCP</strong> view (or run the <em>MCP: List Servers</em> command) and <strong>Start</strong> <code>ado-remote-mcp</code>.</li>
+<li>When prompted, sign in with your Microsoft Entra account.</li>
+</ol>
+<p><strong>Step 4: Run your first prompt</strong></p>
+<p>Open Copilot Chat, switch to <strong>Agent Mode</strong>, and run:</p>
+<pre><code class="language-text">List the projects in my Azure DevOps organization
+</code></pre>
+<p>Approve the tool call when prompted. You should see <code>mcp-sandbox</code> in the results.</p>
+<p><strong>Step 5: Add a Copilot instruction</strong></p>
+<p>Create <code>.github/copilot-instructions.md</code> with:</p>
+<pre><code class="language-text">This project uses Azure DevOps. Always check to see if the Azure DevOps MCP server has a tool relevant to the user&#39;s request.
+</code></pre>
+<p><strong>Step 6 (Optional): Configure the Local server</strong></p>
+<p>Replace <code>.vscode/mcp.json</code> with the Local configuration to compare:</p>
+<pre><code class="language-json">{
+  &quot;inputs&quot;: [
+    {
+      &quot;id&quot;: &quot;ado_org&quot;,
+      &quot;type&quot;: &quot;promptString&quot;,
+      &quot;description&quot;: &quot;Azure DevOps organization name (e.g. &#39;contoso&#39;)&quot;
+    }
+  ],
+  &quot;servers&quot;: {
+    &quot;ado&quot;: {
+      &quot;type&quot;: &quot;stdio&quot;,
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;-y&quot;, &quot;@azure-devops/mcp&quot;, &quot;${input:ado_org}&quot;]
+    }
+  }
+}
+</code></pre>
+<p>Start it, enter your org name when prompted, and re-run the <code>List ADO projects</code> prompt.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ The Remote server is running and authenticated</li>
+<li>✅ The agent returns your project list, including <code>mcp-sandbox</code></li>
+<li>✅ <code>.github/copilot-instructions.md</code> contains the Azure DevOps line</li>
+<li>✅ (Optional) The Local server connects and returns the same results</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-3-read-workflows-15-min">Lab 3: Read Workflows (15 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: Capability Tour — Tools by Domain</p>
+</blockquote>
+<h3 id="objective">Objective</h3>
+<p>Exercise read tools across multiple domains to query your sandbox in natural language. Notice how specificity in the prompt improves the result.</p>
+<h3 id="steps">Steps</h3>
+<p><strong>Step 1: Work items</strong></p>
+<pre><code class="language-text">In mcp-sandbox, list my active work items in the current iteration as a table with ID, type, title, state, and assignee.
+</code></pre>
+<p><strong>Step 2: Repositories &amp; pull requests</strong></p>
+<pre><code class="language-text">List the repositories in mcp-sandbox, then list the branches in the first repository.
+</code></pre>
+<p>If you have any pull requests, also try:</p>
+<pre><code class="language-text">Show the details and linked work items for the most recent pull request in mcp-sandbox.
+</code></pre>
+<p><strong>Step 3: Pipelines</strong></p>
+<pre><code class="language-text">List the pipeline definitions in mcp-sandbox and show the status of the last 5 builds.
+</code></pre>
+<p>Then inspect a build log:</p>
+<pre><code class="language-text">Get the log for the most recent build in mcp-sandbox and summarise what happened.
+</code></pre>
+<p><strong>Step 4: Search</strong></p>
+<pre><code class="language-text">Search the code in mcp-sandbox for &quot;TODO&quot; and list the files and line numbers.
+</code></pre>
+<p><strong>Step 5: Observe scoping</strong></p>
+<p>Open <strong>Select Tools</strong> in chat and note which Azure DevOps tools are available. Disable a domain (e.g. Pipelines) and re-run the Step 3 prompt — the agent should no longer have the tool.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You retrieved work items, repos/branches, pipeline status, and a build log</li>
+<li>✅ At least one prompt returned a structured table you requested</li>
+<li>✅ You ran a code search and got file/line results</li>
+<li>✅ You observed the agent lose a capability when a domain was disabled</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-4-write-workflows-with-confirmation-12-min">Lab 4: Write Workflows with Confirmation (12 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: Capability Tour — Tools by Domain</p>
+</blockquote>
+<h3 id="objective">Objective</h3>
+<p>Use write tools to create and modify Azure DevOps resources through the agent, observing the confirmation prompt before each change.</p>
+<h3 id="steps">Steps</h3>
+<p><strong>Step 1: Create a bug</strong></p>
+<pre><code class="language-text">In mcp-sandbox, create a bug titled &quot;Login button misaligned on mobile&quot; with a short repro description, assigned to me.
+</code></pre>
+<p>Review and approve the tool call. Confirm the new work item ID in the result.</p>
+<p><strong>Step 2: Add a child task</strong></p>
+<pre><code class="language-text">Add a child task under that bug titled &quot;Add responsive CSS unit test&quot;.
+</code></pre>
+<p><strong>Step 3: Open a draft pull request</strong></p>
+<p>First create a branch (or ask the agent to):</p>
+<pre><code class="language-text">In the mcp-sandbox repo, create a branch called feature/mobile-css from the default branch, then open a draft pull request from feature/mobile-css into the default branch titled &quot;Fix mobile login layout&quot;.
+</code></pre>
+<p><strong>Step 4: Create a wiki page</strong></p>
+<pre><code class="language-text">Create a wiki page at /Onboarding/MCP-Sandbox with a short description of this sandbox project and how to connect the MCP server.
+</code></pre>
+<p><strong>Step 5: Verify in the portal</strong></p>
+<p>Open <code>mcp-sandbox</code> in the browser and confirm the bug, child task, branch/PR, and wiki page all exist.</p>
+<blockquote>
+<p><strong>Important</strong>: Every write tool surfaces a confirmation prompt. Read each one before approving — the agent cannot mutate your project without your explicit approval.</p>
+</blockquote>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ A bug and a linked child task were created via natural language</li>
+<li>✅ A branch and a draft pull request were created</li>
+<li>✅ A wiki page was created and is visible in the portal</li>
+<li>✅ You reviewed and approved each write through the confirmation prompt</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-5-scope-secure--compare-to-rest-8-min">Lab 5: Scope, Secure & Compare to REST (8 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: Governance, Security &amp; Best Practices · MCP vs REST API</p>
+</blockquote>
+<h3 id="objective">Objective</h3>
+<p>Apply governance controls (read-only and toolset scoping), then run the same &quot;list projects&quot; operation directly against the REST API to make the MCP-vs-REST difference tangible.</p>
+<h3 id="steps">Steps</h3>
+<p><strong>Step 1: Make the server read-only (Remote)</strong></p>
+<p>Update <code>.vscode/mcp.json</code> to add headers, restart the server, and try a write:</p>
+<pre><code class="language-json">{
+  &quot;servers&quot;: {
+    &quot;ado-remote-mcp&quot;: {
+      &quot;url&quot;: &quot;https://mcp.dev.azure.com/{organization}&quot;,
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;headers&quot;: {
+        &quot;X-MCP-Toolsets&quot;: &quot;repos,wiki,wit&quot;,
+        &quot;X-MCP-Readonly&quot;: &quot;true&quot;
+      }
+    }
+  },
+  &quot;inputs&quot;: []
+}
+</code></pre>
+<p>Now ask the agent to create a work item. It should no longer have a write tool available.</p>
+<p><strong>Step 2: Compare to the REST API</strong></p>
+<p>Create a Personal Access Token (User settings → <strong>Personal access tokens</strong> → <strong>New Token</strong> → scope <em>Project and Team (Read)</em>), then run:</p>
+<pre><code class="language-bash">curl -u :YOUR_PAT &quot;https://dev.azure.com/{organization}/_apis/projects?api-version=7.1&quot;
+</code></pre>
+<p>Compare the experiences:</p>
+<ul>
+<li>The <strong>REST</strong> call required a token, the correct route, an <code>api-version</code>, and returns raw JSON you must parse.</li>
+<li>The <strong>MCP</strong> prompt (<code>List ADO projects</code>) required none of that and returned a readable summary.</li>
+</ul>
+<blockquote>
+<p><strong>Important</strong>: Treat the PAT like a password. Delete it after the lab if it is not needed, and never commit it.</p>
+</blockquote>
+<p><strong>Step 3: Reflect</strong></p>
+<p>Note one workflow from today you would keep in <strong>MCP</strong> (interactive) and one you would implement with <strong>REST</strong> (unattended/deterministic).</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ The read-only server refused to expose a write tool</li>
+<li>✅ You scoped the server to a subset of toolsets</li>
+<li>✅ You retrieved projects via the REST API and compared the experience to MCP</li>
+<li>✅ You identified one MCP use case and one REST use case for your team</li>
+</ul>
+</details>
+
+<hr>
+<h2 id="wrap-up">Wrap-Up</h2>
+<p>You provisioned and seeded a sandbox, connected both server flavors, ran read and write workflows in natural language, and scoped the server while comparing it to the REST API.</p>
+<h3 id="key-urls">Key URLs</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Azure DevOps</td>
+<td><a href="https://dev.azure.com">https://dev.azure.com</a></td>
+</tr>
+<tr>
+<td>ADO MCP Server (GitHub)</td>
+<td><a href="https://github.com/microsoft/azure-devops-mcp">https://github.com/microsoft/azure-devops-mcp</a></td>
+</tr>
+<tr>
+<td>Remote MCP Server setup</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/mcp-server/remote-mcp-server">https://learn.microsoft.com/en-us/azure/devops/mcp-server/remote-mcp-server</a></td>
+</tr>
+<tr>
+<td>Full tool catalog (TOOLSET.md)</td>
+<td><a href="https://github.com/microsoft/azure-devops-mcp/blob/main/docs/TOOLSET.md">https://github.com/microsoft/azure-devops-mcp/blob/main/docs/TOOLSET.md</a></td>
+</tr>
+<tr>
+<td>ADO REST API reference</td>
+<td><a href="https://learn.microsoft.com/en-us/rest/api/azure/devops/">https://learn.microsoft.com/en-us/rest/api/azure/devops/</a></td>
+</tr>
+<tr>
+<td>Azure DevOps Demo Generator</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/demo-gen">https://learn.microsoft.com/en-us/azure/devops/demo-gen</a></td>
+</tr>
+</tbody></table>
+<h3 id="post-lab-cleanup">Post-Lab Cleanup</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Delete any Personal Access Token created in Lab 5 if no longer needed</li>
+<li><input disabled="" type="checkbox"> Decide whether to keep <code>.vscode/mcp.json</code> as a committed team default</li>
+<li><input disabled="" type="checkbox"> Optionally delete the <code>mcp-sandbox</code> project if it was only for this lab</li>
+</ul>
+<hr>
+<p><em>Hands-on lab guide for the Azure DevOps MCP Server Workshop</em></p>
+</article>  </main> </body></html>  <script type="module">document.querySelectorAll("pre").forEach(e=>{const t=document.createElement("button");t.className="copy-btn",t.textContent="Copy",t.addEventListener("click",async()=>{const o=(e.querySelector("code")||e).textContent||"";await navigator.clipboard.writeText(o),t.textContent="Copied!",t.classList.add("copied"),setTimeout(()=>{t.textContent="Copy",t.classList.remove("copied")},2e3)}),e.appendChild(t)});</script>
