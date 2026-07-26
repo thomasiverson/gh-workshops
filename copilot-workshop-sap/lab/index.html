@@ -1,0 +1,378 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot for SAP Developers — Hands-On Lab Guide</title><link rel="stylesheet" href="/gh-workshops/_astro/index.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-for-sap-developers--hands-on-lab-guide">GitHub Copilot for SAP Developers — Hands-On Lab Guide</h1>
+<p><strong>Duration</strong>: ~60 minutes of hands-on exercises (within a ~2.5-hour workshop)<br><strong>Format</strong>: Step-by-step lab exercises aligned to workshop sections<br><strong>Audience</strong>: SAP developers, BTP/extension developers, and integration engineers<br><strong>Sample</strong>: <a href="https://github.com/capire/bookshop">capire/bookshop</a> — the SAP CAP bookshop, which runs locally with an in-memory database (no live SAP backend required)</p>
+<blockquote>
+<p><strong>Companion documents</strong>: <a href="github-copilot-for-sap-developers-workshop.md">Workshop Guide</a> · <a href="github-copilot-for-sap-developers.slidev.md">Slides</a> · <a href="github-copilot-for-sap-original-outline.md">Original Outline</a>. This lab can be completed standalone.</p>
+</blockquote>
+<blockquote>
+<p><strong>Important</strong>: Labs 1–3 use the <strong>SAP Cloud Application Programming Model (CAP)</strong> bookshop sample — a first-party SAP framework that runs entirely on your laptop, so it is <strong>genuinely SAP</strong> yet needs no S/4HANA backend. The optional Lab 4 covers the real ABAP-in-Eclipse experience and requires a live SAP system.</p>
+</blockquote>
+<hr>
+<h2 id="lab-overview">Lab Overview</h2>
+<p>These labs translate the workshop&#39;s live demos into hands-on practice. You will use GitHub Copilot to understand, build, harden, test, and document the SAP CAP bookshop service — representative of the side-by-side extension and service work many SAP teams own today — then prepare the change for review.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>With Copilot Free, Pro, Business, or Enterprise license</td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Latest stable (or Insiders for preview features)</td>
+</tr>
+<tr>
+<td><strong>Copilot Extension</strong></td>
+<td>GitHub Copilot + GitHub Copilot Chat extensions installed</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>Version 18 or higher</td>
+</tr>
+<tr>
+<td><strong>SAP CDS toolkit</strong></td>
+<td><code>npm install -g @sap/cds-dk</code></td>
+</tr>
+<tr>
+<td><strong>Sample project</strong></td>
+<td><a href="https://github.com/capire/bookshop">capire/bookshop</a> (SAP CAP bookshop)</td>
+</tr>
+</tbody></table>
+<h3 id="setup-checkpoint">Setup Checkpoint</h3>
+<p>Before starting, ensure your environment is ready:</p>
+<pre><code class="language-bash">git clone https://github.com/capire/bookshop
+cd bookshop
+npm install
+npm install -g @sap/cds-dk
+cds watch
+</code></pre>
+<ul>
+<li>✅ <code>cds watch</code> serves the OData service (default <a href="http://localhost:4004">http://localhost:4004</a>)</li>
+<li>✅ The in-memory database loads sample books and authors</li>
+<li>✅ Copilot extension active in VS Code</li>
+</ul>
+<h3 id="lab-summary">Lab Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Workshop Section</th>
+<th>Duration</th>
+<th>Exercises</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Section 4: SAP CAP Development</td>
+<td>30 min core + 10 min optional</td>
+<td>4 core exercises + 1 optional stretch</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Section 5: Prompting &amp; Context Engineering</td>
+<td>20 min</td>
+<td>3 exercises</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Section 6: Future-State Architecture</td>
+<td>10 min</td>
+<td>1 exercise</td>
+</tr>
+<tr>
+<td>4 (optional)</td>
+<td>Section 3: ABAP in Eclipse</td>
+<td>15 min</td>
+<td>Requires a live SAP system</td>
+</tr>
+</tbody></table>
+<hr>
+<details>
+<summary><h2 id="lab-1-sap-cap-development-in-vs-code-30-min">Lab 1: SAP CAP Development in VS Code (30 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 4 — Live Demo: SAP-Adjacent Development in VS Code</p>
+</blockquote>
+<h3 id="exercise-11--explain-the-cap-project-7-min">Exercise 1.1 — Explain the CAP Project (7 min)</h3>
+<p><strong>Objective</strong>: Use Copilot to build a mental model of the SAP CAP bookshop.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Open the Chat panel</strong></p>
+<p>Open the Chat panel (<code>Ctrl+Shift+I</code>).</p>
+<p><strong>Step 2: Ask Copilot to explain the project</strong></p>
+<pre><code class="language-text">@workspace Explain this CAP project — the data model in db/, the services in srv/, and how they connect.
+</code></pre>
+<p><strong>Step 3: Drill into the catalog service</strong></p>
+<p>Open <code>srv/cat-service.cds</code> (and its handler if present) and ask:</p>
+<pre><code class="language-text">Explain what the CatalogService exposes and summarize the business logic in plain English.
+</code></pre>
+<p><strong>Step 4: Evaluate</strong></p>
+<ul>
+<li>Did Copilot correctly identify the entities (Books, Authors) and services?</li>
+<li>Did it explain how the CDS model maps to the OData service?</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Got an accurate summary of the project structure (db / srv / app) with <code>@workspace</code></li>
+<li>✅ Received a plain-English explanation of a service method</li>
+<li>✅ Identified at least one dependency or integration point</li>
+</ul>
+<hr>
+<h3 id="exercise-12--build-a-cap-action-8-min">Exercise 1.2 — Build a CAP Action (8 min)</h3>
+<p><strong>Objective</strong>: Generate a new CAP service action through context-driven prompting.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Ask for the action</strong></p>
+<p>In the Chat panel, with the catalog service open:</p>
+<pre><code class="language-text">In srv/, add a custom action &#39;submitOrder(book, quantity)&#39; to the CatalogService that reduces the book&#39;s stock and rejects orders that exceed available stock.
+</code></pre>
+<p><strong>Step 2: Refine with a follow-up</strong></p>
+<pre><code class="language-text">Return the remaining stock in the response and make the handler async.
+</code></pre>
+<p><strong>Step 3: Review the result</strong></p>
+<p>Confirm the action is declared in the <code>.cds</code> file and implemented in the service handler (<code>.js</code>), matching CAP conventions.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ A <code>submitOrder</code> action was declared and implemented</li>
+<li>✅ A follow-up prompt refined the behavior</li>
+<li>✅ The result follows CAP conventions (CDS declaration + handler)</li>
+</ul>
+<hr>
+<h3 id="exercise-13--add-validation--error-handling-8-min">Exercise 1.3 — Add Validation &amp; Error Handling (8 min)</h3>
+<p><strong>Objective</strong>: Make the action production-minded without writing boilerplate by hand.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Select the handler</strong></p>
+<p>Select the <code>submitOrder</code> handler you generated in Exercise 1.2.</p>
+<p><strong>Step 2: Prompt for hardening</strong></p>
+<pre><code class="language-text">Add validation and a clear error message when quantity is not a positive integer or the book does not exist. Use the CAP req.error API.
+</code></pre>
+<p><strong>Step 3: Verify</strong></p>
+<p>Restart <code>cds watch</code> and exercise the action via the served OData endpoint or the test runtime to confirm errors are returned correctly.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Validation was added using the CAP <code>req.error</code> pattern</li>
+<li>✅ Invalid quantity and missing-book cases return clear errors</li>
+<li>✅ The service still starts and serves under <code>cds watch</code></li>
+</ul>
+<hr>
+<h3 id="exercise-14--generate-tests-7-min">Exercise 1.4 — Generate Tests (7 min)</h3>
+<p><strong>Objective</strong>: Generate meaningful test coverage including the out-of-stock edge case.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Generate tests</strong></p>
+<p>Select the <code>submitOrder</code> action and prompt:</p>
+<pre><code class="language-text">Generate tests for the submitOrder action using the CAP test runtime (cds.test), including a successful order and the out-of-stock edge case. If package.json does not already have a test script, add one that runs these tests.
+</code></pre>
+<p><strong>Step 2: Confirm the test script</strong></p>
+<p>Open <code>package.json</code> and confirm Copilot added or reused a <code>test</code> script. The upstream bookshop sample may not include one by default, so do not skip this check.</p>
+<p><strong>Step 3: Run the tests</strong></p>
+<pre><code class="language-bash">npm test
+</code></pre>
+<p><strong>Step 4: Expand coverage</strong></p>
+<pre><code class="language-text">Add a test for an invalid (negative) quantity and for a non-existent book.
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Tests were generated using <code>cds.test</code></li>
+<li>✅ The out-of-stock edge case is covered</li>
+<li>✅ Tests run successfully</li>
+</ul>
+<h3 id="exercise-15--optional-stretch-add-a-fiori-ui-with-the-sap-mcp-servers-10-min">Exercise 1.5 — (Optional Stretch) Add a Fiori UI with the SAP MCP Servers (10 min)</h3>
+<p><strong>Objective</strong>: Use SAP&#39;s official <a href="https://www.npmjs.com/package/@sap-ux/fiori-mcp-server"><code>@sap-ux/fiori-mcp-server</code></a> together with <a href="https://www.npmjs.com/package/@ui5/mcp-server"><code>@ui5/mcp-server</code></a> and <a href="https://www.npmjs.com/package/@cap-js/mcp-server"><code>@cap-js/mcp-server</code></a> to scaffold a real SAP Fiori elements UI on top of the CAP bookshop service.</p>
+<blockquote>
+<p><strong>Note</strong>: This requires registering MCP servers with Copilot. The UI5 MCP server requires Node.js 20.17.0, 22.9.0, or higher. Skip if your environment locks down MCP configuration or only has the baseline Node.js version for the core lab.</p>
+</blockquote>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Register the Fiori, UI5, and CAP MCP servers</strong></p>
+<p>Add the three servers to your VS Code MCP configuration (<code>.vscode/mcp.json</code> in the project, or your user MCP config):</p>
+<pre><code class="language-json">{
+  &quot;servers&quot;: {
+    &quot;fiori-mcp&quot;: {
+      &quot;type&quot;: &quot;stdio&quot;,
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;--yes&quot;, &quot;@sap-ux/fiori-mcp-server@latest&quot;, &quot;fiori-mcp&quot;]
+    },
+    &quot;ui5-mcp-server&quot;: {
+      &quot;type&quot;: &quot;stdio&quot;,
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;-y&quot;, &quot;@ui5/mcp-server&quot;]
+    },
+    &quot;cds-mcp&quot;: {
+      &quot;type&quot;: &quot;stdio&quot;,
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;-y&quot;, &quot;@cap-js/mcp-server&quot;]
+    }
+  }
+}
+</code></pre>
+<p><strong>Step 2: Generate a Fiori elements app</strong></p>
+<p>With the bookshop project open and the MCP servers enabled, prompt Copilot in agent mode. The CAP server should help Copilot search the compiled CDS model before generating the UI:</p>
+<pre><code class="language-text">Add a SAP Fiori elements list report app to my CAP project for the Books entity, with an object page for book details.
+</code></pre>
+<p><strong>Step 3: Check UI5 guidelines and preview</strong></p>
+<p>Ask Copilot to apply UI5 best practices using the UI5 server, then run the app&#39;s most specific <code>npm run watch-*</code> script (from the generated app&#39;s <code>package.json</code>) and confirm the Fiori UI renders against the local CAP service:</p>
+<pre><code class="language-text">Review the generated UI5 app against UI5 development guidelines and run the UI5 linter to flag any issues.
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ The Fiori, UI5, and CAP MCP servers are registered and visible to Copilot</li>
+<li>✅ A Fiori elements app was scaffolded on top of the CAP bookshop service</li>
+<li>✅ The generated app previews against the local OData service</li>
+<li>✅ UI5 guidelines / linting were applied via the UI5 MCP server</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-2-prompting--context-engineering-20-min">Lab 2: Prompting & Context Engineering (20 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 5 — Prompting &amp; Context Engineering</p>
+</blockquote>
+<h3 id="exercise-21--vague-vs-context-rich-7-min">Exercise 2.1 — Vague vs. Context-Rich (7 min)</h3>
+<p><strong>Objective</strong>: Experience how attached context changes output quality.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Run a vague prompt</strong></p>
+<pre><code class="language-text">Fix the catalog service.
+</code></pre>
+<p>Note how generic and assumption-heavy the response is.</p>
+<p><strong>Step 2: Run a context-rich prompt</strong></p>
+<pre><code class="language-text">@workspace #file:srv/cat-service.cds Add a validation to the submitOrder action so quantity must be a positive integer; return a clear CAP error when it isn&#39;t.
+</code></pre>
+<p><strong>Step 3: Compare</strong></p>
+<ul>
+<li>How much more precise was the second response?</li>
+<li>Did the context-rich prompt reference real entities and actions from the file?</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Ran both a vague and a context-rich prompt</li>
+<li>✅ Observed a clear improvement in precision and relevance</li>
+<li>✅ The context-rich response referenced actual code from the attached file</li>
+</ul>
+<hr>
+<h3 id="exercise-22--plan-first-prompting-7-min">Exercise 2.2 — Plan-First Prompting (7 min)</h3>
+<p><strong>Objective</strong>: Reduce rework by asking for a plan before code.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Ask for a plan</strong></p>
+<pre><code class="language-text">@workspace I want to add pagination to the Books listing in the CatalogService. Give me a step-by-step plan before writing any code.
+</code></pre>
+<p><strong>Step 2: Review and adjust</strong></p>
+<p>Read the plan. Reply with any corrections or constraints.</p>
+<p><strong>Step 3: Implement from the approved plan</strong></p>
+<pre><code class="language-text">Implement step 1 from that plan.
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Received a structured plan before any code</li>
+<li>✅ Refined the plan with a follow-up</li>
+<li>✅ Implemented at least one step from the approved plan</li>
+</ul>
+<hr>
+<h3 id="exercise-23--repository-instructions-for-sap-standards-6-min">Exercise 2.3 — Repository Instructions for SAP Standards (6 min)</h3>
+<p><strong>Objective</strong>: Encode team conventions so Copilot applies them automatically.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Create the instructions file</strong></p>
+<p>Create <code>.github/copilot-instructions.md</code> with a few team standards, for example:</p>
+<pre><code class="language-markdown"># Project conventions
+
+- Service definitions live in `srv/` as `.cds`; handlers as matching `.js` files.
+- Expose entities through services — never query the database model directly from clients.
+- Validation errors use the CAP `req.error(code, message)` API.
+- Prefer async/await in custom handlers.
+</code></pre>
+<p><strong>Step 2: Test the effect</strong></p>
+<p>Ask Copilot to create a new service method and confirm it follows the conventions without being told.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created <code>.github/copilot-instructions.md</code> with SAP CAP conventions</li>
+<li>✅ A new generation followed the conventions automatically</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-3-future-state-architecture-10-min">Lab 3: Future-State Architecture (10 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 6 — Future-State Architecture: SAP-Connected Copilots &amp; Agents</p>
+</blockquote>
+<h3 id="exercise-31--map-a-use-case-to-the-architecture-10-min">Exercise 3.1 — Map a Use Case to the Architecture (10 min)</h3>
+<p><strong>Objective</strong>: Translate the reference architecture into a concrete, low-risk pilot idea.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Pick a read-focused use case</strong></p>
+<p>Choose a conversational-retrieval scenario relevant to your team (e.g., &quot;look up order status from SAP&quot;).</p>
+<p><strong>Step 2: Ask Copilot to draft the design</strong></p>
+<pre><code class="language-text">Draft a high-level design for a read-only copilot that retrieves order status. Show the layers: user surface, agent layer, API management, SAP BTP API exposure, and SAP backend. List the security considerations at each layer.
+</code></pre>
+<p><strong>Step 3: Summarize for review</strong></p>
+<pre><code class="language-text">Summarize this design as a one-page proposal with prerequisites, risks, and a suggested first milestone.
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Selected a read-focused, low-risk use case</li>
+<li>✅ Produced a layered design naming the security considerations</li>
+<li>✅ Generated a one-page proposal with prerequisites and a first milestone</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-4-optional-abap-in-eclipse-15-min--requires-a-live-sap-system">Lab 4 (Optional): ABAP in Eclipse (15 min) — requires a live SAP system</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 3 — ABAP Support Overview</p>
+</blockquote>
+<blockquote>
+<p><strong>Important</strong>: This lab requires Eclipse IDE (2024-09 or newer), ABAP Development Tools (ADT), and a connection to a live SAP system or ABAP trial. Skip it if you do not have a real ABAP environment — do not improvise ABAP syntax without one.</p>
+</blockquote>
+<h3 id="exercise-41--install-the-copilot-plugin-5-min">Exercise 4.1 — Install the Copilot Plugin (5 min)</h3>
+<p><strong>Objective</strong>: Add GitHub Copilot to Eclipse and authenticate.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Install from the Marketplace</strong></p>
+<p>In Eclipse: <strong>Help → Eclipse Marketplace</strong>, search <strong>&quot;GitHub Copilot&quot;</strong>, install, and restart Eclipse.</p>
+<p><img src="../assets/ghcp-eclipse-marketplace.jpg" alt="Eclipse Marketplace — GitHub Copilot plugin"></p>
+<p><strong>Step 2: Sign in</strong></p>
+<p>Click the <strong>Copilot icon</strong> in the toolbar and authenticate with your GitHub account.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ The GitHub Copilot plugin is installed (version 0.4.0+)</li>
+<li>✅ You are signed in and the Copilot status shows active</li>
+</ul>
+<hr>
+<h3 id="exercise-42--comment-driven-abap-generation-5-min">Exercise 4.2 — Comment-Driven ABAP Generation (5 min)</h3>
+<p><strong>Objective</strong>: Trigger a context-aware ABAP suggestion from a comment.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Open an ABAP source</strong> in an ADT project.</p>
+<p><strong>Step 2: Type a guiding comment</strong> and let Copilot suggest:</p>
+<pre><code class="language-text">* TODO: select all flights for a given carrier from SFLIGHT into an internal table
+</code></pre>
+<p><strong>Step 3</strong>: Press <strong>Tab</strong> to accept or <strong>Esc</strong> to dismiss. Review the generated <code>SELECT</code> for correctness.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ A relevant ABAP suggestion appeared from the comment</li>
+<li>✅ You accepted and reviewed it against your data dictionary</li>
+</ul>
+<hr>
+<h3 id="exercise-43--chat-assisted-optimization-5-min">Exercise 4.3 — Chat-Assisted Optimization (5 min)</h3>
+<p><strong>Objective</strong>: Use Copilot chat to explain and optimize ABAP.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: Select an existing <code>SELECT</code> statement.</p>
+<p><strong>Step 2</strong>: Ask in Copilot chat:</p>
+<pre><code class="language-text">Optimize this SELECT query and explain why it is more efficient.
+</code></pre>
+<p><strong>Step 3</strong>: Review the suggestion and validate it inside your existing ATC and code-review gates before adopting.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Received an optimization suggestion with an explanation</li>
+<li>✅ Validated the change through normal review (ATC / transport / code review)</li>
+</ul>
+</details>
+
+<hr>
+<p><em>Lab guide for the GitHub Copilot for SAP Developers Workshop</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module">document.querySelectorAll("pre").forEach(t=>{if(t.querySelector("code.language-mermaid"))return;const e=document.createElement("button");e.className="copy-btn",e.textContent="Copy",e.addEventListener("click",async()=>{const o=(t.querySelector("code")||t).textContent||"";await navigator.clipboard.writeText(o),e.textContent="Copied!",e.classList.add("copied"),setTimeout(()=>{e.textContent="Copy",e.classList.remove("copied")},2e3)}),t.appendChild(e)});</script>

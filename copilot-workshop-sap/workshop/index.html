@@ -1,0 +1,965 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot for SAP Developers Workshop</title><link rel="stylesheet" href="/gh-workshops/_astro/index.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-for-sap-developers-workshop">GitHub Copilot for SAP Developers Workshop</h1>
+<p><strong>Duration</strong>: ~2 hours 30 minutes (150 min)<br><strong>Format</strong>: Presentation + Live Demo + Discussion<br><strong>Audience</strong>: SAP developers, technical leads, architects, BTP/extension developers, and integration engineers<br><strong>Focus</strong>: Where GitHub Copilot fits in SAP development today — ABAP in Eclipse, SAP-adjacent workflows in VS Code, and the path toward SAP-connected agents<br><strong>Reference repos</strong>: <a href="https://github.com/capire/bookshop">capire/bookshop</a> (CAP bookshop — runs locally, no live backend) · <a href="https://marketplace.eclipse.org/content/github-copilot">Eclipse Marketplace: GitHub Copilot</a> (ABAP-in-Eclipse track)<br><strong>Companion document</strong>: <a href="github-copilot-for-sap-original-outline.md">Original Outline</a> (source of truth for design intent and facilitator strategy)</p>
+<blockquote>
+<p><strong>Note</strong>: This workshop is intentionally designed to <strong>avoid a fake ABAP hands-on demo</strong> when no live SAP development environment is available. It builds credibility by showing the supported ABAP story (now a real, documented integration), demoing genuinely SAP-native workflows live in VS Code with the SAP CAP framework, and separating present reality from future-state architecture.</p>
+</blockquote>
+<hr>
+<h2 id="workshop-overview">Workshop Overview</h2>
+<p>This workshop helps SAP-focused development teams understand where GitHub Copilot improves productivity today — even across teams at different levels of GitHub maturity. It positions Copilot as a productivity accelerator and code-understanding partner rather than an autonomous SAP expert, and gives presenters a credible, practical experience they can deliver confidently without a live SAP backend.</p>
+<p>The session is built around three honest pillars: the <strong>current ABAP support story</strong> in Eclipse, <strong>realistic SAP-adjacent workflows</strong> demoed live in Visual Studio Code, and a <strong>clear future-state architecture</strong> for SAP-connected copilots and agents.</p>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li>Understand where GitHub Copilot fits in SAP development today</li>
+<li>Understand the ABAP support story in Eclipse at a high level, including its limitations</li>
+<li>See how Copilot accelerates SAP-adjacent workflows — BTP, APIs, services, tests, and documentation</li>
+<li>Understand how prompt quality and context shape output quality</li>
+<li>Use Copilot for planning, code explanation, documentation, and review workflows</li>
+<li>Understand the future-state architecture for SAP-connected Copilot and agent scenarios through SAP BTP and exposed APIs</li>
+</ul>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>With Copilot Free, Pro, Business, or Enterprise license (Free tier: ~2,000 completions + 50 chat messages/month)</td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Latest stable (or Insiders for preview features)</td>
+</tr>
+<tr>
+<td><strong>Copilot Extension</strong></td>
+<td>GitHub Copilot + GitHub Copilot Chat extensions installed</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>Version 18 or higher (for the SAP CAP sample)</td>
+</tr>
+<tr>
+<td><strong>SAP CAP sample</strong></td>
+<td><a href="https://github.com/capire/bookshop">capire/bookshop</a> — runs locally with an in-memory SQLite database (no live S/4HANA backend needed)</td>
+</tr>
+<tr>
+<td><strong>Eclipse (optional)</strong></td>
+<td>Eclipse IDE 2024-09 or newer (2025-03 recommended) + ABAP Development Tools (ADT) + GitHub Copilot plugin — only for the optional ABAP-in-Eclipse track</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: The ABAP-in-Eclipse integration is <strong>real and documented</strong> (announced by GitHub, May 2025). If you have a live SAP system, you can demo it authentically. If you do <strong>not</strong> have access to a live SAP/ABAP system, do not improvise ABAP syntax live — use screenshots and the documented walkthrough in Section 3. The live demo center of gravity remains Visual Studio Code with the SAP CAP framework.</p>
+</blockquote>
+<h3 id="reference-environments">Reference Environments</h3>
+<p>This workshop supports two complementary tracks. Pick based on what you can show authentically:</p>
+<table>
+<thead>
+<tr>
+<th>Track</th>
+<th>Tooling</th>
+<th>Repo / Setup</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>A — SAP-native in VS Code</strong> (primary)</td>
+<td>VS Code + Copilot + SAP CAP</td>
+<td><a href="https://github.com/capire/bookshop">capire/bookshop</a></td>
+<td>Always — runs locally, genuinely SAP, no backend</td>
+</tr>
+<tr>
+<td><strong>B — ABAP in Eclipse</strong> (optional)</td>
+<td>Eclipse + ADT + Copilot plugin</td>
+<td>Live SAP system or ABAP trial</td>
+<td>Only if you have a real ABAP system to connect to</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Why SAP CAP?</strong> The SAP Cloud Application Programming Model (CAP) is a first-party SAP framework for building services and extensions. The bookshop sample runs entirely on your laptop with an in-memory database — so the demo is <strong>genuinely SAP</strong>, not just &quot;SAP-adjacent,&quot; yet needs no live backend. This is the most credible way to show Copilot on real SAP development without an S/4HANA connection.</p>
+</blockquote>
+<hr>
+<h2 id="session-agenda">Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a href="#1-welcome--context-setting-15-min">Welcome &amp; Context Setting</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#2-where-github-copilot-fits-in-sap-20-min">Where GitHub Copilot Fits in SAP</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#3-abap-support-overview-20-min">ABAP Support Overview</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td></td>
+<td>☕ Break</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#4-live-demo-sap-adjacent-development-in-vs-code-30-min">Live Demo: SAP-Adjacent Development in VS Code</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="#5-prompting--context-engineering-20-min">Prompting &amp; Context Engineering</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="#6-future-state-architecture-sap-connected-copilots--agents-20-min">Future-State Architecture: SAP-Connected Copilots &amp; Agents</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="#7-qa-and-next-steps-15-min">Q&amp;A and Next Steps</a></td>
+<td>15 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total: ~150 min (~2h 30min) including break</strong></p>
+<blockquote>
+<p><strong>Note</strong>: A condensed 90-minute version is provided in the <a href="#appendix">Appendix</a>. Use it for leadership, architects, and mixed audiences.</p>
+</blockquote>
+<hr>
+<h2 id="1-welcome--context-setting-15-min">1. Welcome &amp; Context Setting (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>This is <strong>not</strong> a fake ABAP coding lab — it is a practical workshop on where GitHub Copilot fits for SAP teams</li>
+<li>We will show supported ABAP scenarios conceptually and demo adjacent workflows live in VS Code</li>
+<li>Be transparent: Copilot is a productivity accelerator, not an autonomous SAP expert</li>
+<li>Lead with credibility — acknowledge what can be shown well and what cannot</li>
+</ul>
+<h3 id="what-this-session-is--and-is-not">What This Session Is — and Is Not</h3>
+<table>
+<thead>
+<tr>
+<th>✅ This session is</th>
+<th>✗ This session is not</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A practical view of where Copilot fits for SAP teams</td>
+<td>A fake live ABAP coding lab without a real SAP system</td>
+</tr>
+<tr>
+<td>A credible, live VS Code demo of SAP-adjacent work</td>
+<td>An overclaim of ABAP depth or fine-tuned expertise</td>
+</tr>
+<tr>
+<td>A clear path toward agentic, SAP-connected workflows</td>
+<td>A production-ready autonomous SAP agent promise</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-none-discussion-led-opener">🖥️ Demo: None (discussion-led opener)</h3>
+<blockquote>
+<p><strong>Presenter Note</strong>: <em>&quot;I want to be transparent: today I&#39;m not going to fake a live ABAP demo without a real SAP development system. Instead, I&#39;ll show where GitHub Copilot fits for SAP teams, what the ABAP support story looks like, and then I&#39;ll demo the modern workflows around SAP that many teams can adopt immediately.&quot;</em></p>
+</blockquote>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What are your team&#39;s biggest productivity bottlenecks today?</li>
+<li>Where do your teams sit on the GitHub maturity curve — and does that vary by team?</li>
+<li>Why does SAP deserve a dedicated enablement track rather than a generic Copilot intro?</li>
+</ul>
+<hr>
+<h2 id="2-where-github-copilot-fits-in-sap-20-min">2. Where GitHub Copilot Fits in SAP (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>GitHub Copilot complements SAP-native experiences rather than replacing them</li>
+<li>The strongest near-term value is often around the SAP ecosystem, not only the ABAP core</li>
+<li>Copilot supports the full development lifecycle: explanation, build, test, document, review</li>
+<li>In <strong>May 2025, GitHub announced ABAP support in GitHub Copilot for Eclipse</strong> — ABAP is now a documented, supported scenario, not just an experiment</li>
+</ul>
+<h3 id="a-real-milestone-for-sap-developers">A Real Milestone for SAP Developers</h3>
+<blockquote>
+<p><strong>Note</strong>: GitHub&#39;s announcement — <em>&quot;Introducing ABAP Support in GitHub Copilot for Eclipse&quot;</em> (May 2025) — and Microsoft&#39;s follow-up, <em>&quot;Eclipse + GitHub Copilot = Lightspeed SAP ABAP Development,&quot;</em> mark the point where ABAP, the core language of SAP ERP and S/4HANA, gained first-class AI assistance inside its native IDE. See <a href="#external-references--further-reading">References</a>.</p>
+</blockquote>
+<h3 id="where-copilot-adds-value-across-the-sap-landscape">Where Copilot Adds Value Across the SAP Landscape</h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Copilot Contribution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ABAP in Eclipse</strong></td>
+<td>Code completion and chat assistance via ADT (review required)</td>
+</tr>
+<tr>
+<td><strong>SAP BTP / CAP / services</strong></td>
+<td>Side-by-side extension and service development</td>
+</tr>
+<tr>
+<td><strong>APIs &amp; integration logic</strong></td>
+<td>API wrappers, integration handlers, transformation code</td>
+</tr>
+<tr>
+<td><strong>Testing</strong></td>
+<td>Unit test scaffolds, edge-case generation, mocks</td>
+</tr>
+<tr>
+<td><strong>Documentation</strong></td>
+<td>Inline docs, README sections, API contract summaries</td>
+</tr>
+<tr>
+<td><strong>Planning &amp; review</strong></td>
+<td>Plan-first workflows, change summaries, review prep</td>
+</tr>
+</tbody></table>
+<h3 id="present-vs-future">Present vs. Future</h3>
+<table>
+<thead>
+<tr>
+<th>Today</th>
+<th>Tomorrow</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Developer productivity, explanation, test generation, docs, planning</td>
+<td>SAP-connected agents, conversational access to SAP services, workflow automation through secure APIs</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-optional--quick-chat-tour">🖥️ Demo: Optional — quick chat tour</h3>
+<ol>
+<li>Open the chat panel and ask <code>@workspace</code> to explain the sample project</li>
+<li>Show how Copilot understands service structure without manual file-by-file reading</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which of these areas is the most painful for your team right now?</li>
+<li>Where do you spend the most time understanding code others wrote?</li>
+<li>How much of your work is ABAP core vs. SAP-adjacent (APIs, extensions, integrations)?</li>
+</ul>
+<hr>
+<h2 id="3-abap-support-overview-20-min">3. ABAP Support Overview (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>GitHub Copilot supports ABAP in Eclipse through ABAP Development Tools (ADT) — announced by GitHub in May 2025</li>
+<li>The current model is <strong>not specifically fine-tuned for ABAP</strong> — review remains essential</li>
+<li>Position Copilot as a productivity accelerator, not an autonomous SAP expert</li>
+<li>Setup is straightforward: a standard Eclipse Marketplace plugin install, then GitHub sign-in</li>
+</ul>
+<h3 id="setting-up-github-copilot-for-abap-in-eclipse">Setting Up GitHub Copilot for ABAP in Eclipse</h3>
+<p>This is the documented, supported path. Use it live only if you have a real SAP system; otherwise walk through it with screenshots.</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. <strong>Prerequisites</strong></td>
+<td>Eclipse IDE <strong>2024-09 or newer</strong> (2025-03 recommended) with <strong>ABAP Development Tools (ADT)</strong> installed</td>
+</tr>
+<tr>
+<td>2. <strong>Install the plugin</strong></td>
+<td>In Eclipse: <strong>Help → Eclipse Marketplace</strong>, search <strong>&quot;GitHub Copilot&quot;</strong>, install, then restart Eclipse</td>
+</tr>
+<tr>
+<td>3. <strong>Sign in</strong></td>
+<td>Click the <strong>Copilot icon</strong> in the toolbar and authenticate with your GitHub account (configure proxy/network if required)</td>
+</tr>
+<tr>
+<td>4. <strong>Enable ABAP support</strong></td>
+<td>No extra configuration needed on plugin version <strong>0.4.0+</strong> — Copilot works directly in ADT editors</td>
+</tr>
+<tr>
+<td>5. <strong>Start coding</strong></td>
+<td>Open an ABAP source, type code or a comment (e.g. <code>* TODO: create a CDS view</code>) to trigger suggestions; <strong>Tab</strong> accepts, <strong>Esc</strong> dismisses</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: GitHub Copilot <strong>Free</strong> includes roughly 2,000 code completions and 50 chat messages per month — enough for a developer to evaluate the ABAP experience before adopting a paid plan.</p>
+</blockquote>
+<h3 id="supported-abap-capabilities">Supported ABAP Capabilities</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>What It Looks Like</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Real-time code completion</strong></td>
+<td>Context-aware inline suggestions for ABAP syntax — <code>SELECT</code> queries, <code>IF</code> conditions, loops, internal tables</td>
+</tr>
+<tr>
+<td><strong>Comment-driven generation</strong></td>
+<td>A comment like <code>* TODO: create a CDS view</code> prompts Copilot to scaffold the logic</td>
+</tr>
+<tr>
+<td><strong>Interactive chat</strong></td>
+<td>Ask <em>&quot;How do I create a CDS view?&quot;</em> or <em>&quot;Optimize this SELECT query&quot;</em> directly in Eclipse</td>
+</tr>
+<tr>
+<td><strong>Explaining legacy code</strong></td>
+<td>Plain-English summaries of unfamiliar ABAP reports and includes</td>
+</tr>
+<tr>
+<td><strong>Model selection</strong></td>
+<td>Choose between available models (e.g. GPT-4 class) for more complex logic</td>
+</tr>
+<tr>
+<td><strong>Best-practice nudges</strong></td>
+<td>Encourages patterns like checking <code>SY-SUBRC</code> after a <code>SELECT</code></td>
+</tr>
+<tr>
+<td><strong>Unit test scaffolds</strong></td>
+<td>Starting points for ABAP Unit tests</td>
+</tr>
+</tbody></table>
+<h3 id="limitations--review-requirements">Limitations &amp; Review Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>⚠️ Limitation</th>
+<th>📋 Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Not fine-tuned specifically for ABAP</td>
+<td>Always review generated ABAP for correctness</td>
+</tr>
+<tr>
+<td>May lack context for proprietary/custom SAP APIs</td>
+<td>Provide context in comments; verify against the data dictionary</td>
+</tr>
+<tr>
+<td>May suggest non-idiomatic patterns</td>
+<td>Apply team standards and code review</td>
+</tr>
+<tr>
+<td>Requires Eclipse + ADT for the ABAP experience</td>
+<td>Use VS Code with SAP CAP for SAP-native work when ABAP tooling is unavailable</td>
+</tr>
+<tr>
+<td>Public-code matches a governance concern</td>
+<td>Use Copilot <strong>Business/Enterprise</strong> to block public-code suggestions and apply policy</td>
+</tr>
+</tbody></table>
+<h3 id="governance-for-enterprise-abap-teams">Governance for Enterprise ABAP Teams</h3>
+<ul>
+<li><strong>Copilot Business/Enterprise</strong> adds policy controls: disable public-code matching, manage org-wide access, and review usage</li>
+<li>Treat AI-generated ABAP as a <strong>draft</strong> — keep it inside existing transport, ATC (ABAP Test Cockpit), and code-review gates</li>
+<li>Establish a team standard for <em>when</em> Copilot output is acceptable (boilerplate, explanation) vs. <em>where</em> extra scrutiny is required (financial logic, authorizations)</li>
+</ul>
+<h3 id="looking-ahead-an-mcp-server-for-abap">Looking Ahead: An MCP Server for ABAP</h3>
+<blockquote>
+<p><strong>Note</strong>: The community has begun building a <strong>Model Context Protocol (MCP) server for ABAP</strong> (Marian Zeis, <em>&quot;Finally: An MCP Server for ABAP&quot;</em>), letting Copilot in Eclipse pull in authoritative ABAP knowledge — including SAP documentation — on demand. Projects like <a href="https://github.com/aravindhkce/abap-copilot">aravindhkce/abap-copilot</a> go further, wiring Copilot into an integrated workflow spanning code, SAP GUI execution, debugging, ATC findings, runtime dumps, performance traces, and transports. These point to where SAP-connected agents are heading (Section 6).</p>
+</blockquote>
+<blockquote>
+<p><strong>Important</strong>: If you do not have SAP or Eclipse available, do <strong>not</strong> improvise live ABAP syntax. Use the setup table above, screenshots, and official references. Authenticity protects credibility.</p>
+</blockquote>
+<h3 id="-demo-abap-in-eclipse-walkthrough-live-if-you-have-a-system-otherwise-screenshots">🖥️ Demo: ABAP-in-Eclipse walkthrough (live if you have a system, otherwise screenshots)</h3>
+<p><img src="./assets/ghcp-eclipse-marketplace.jpg" alt="Eclipse Marketplace — GitHub Copilot plugin"></p>
+<ol>
+<li>Show <strong>Help → Eclipse Marketplace</strong> with the GitHub Copilot plugin and the toolbar sign-in</li>
+<li>In an ABAP editor, type <code>* TODO: select all flights for a given carrier from SFLIGHT</code> and show the completion</li>
+<li>Open Copilot chat and ask <code>Optimize this SELECT query and explain why</code></li>
+<li>Reiterate the review-required and governance message</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How much legacy ABAP does your team maintain, and how well is it documented?</li>
+<li>Where would code explanation save the most onboarding time?</li>
+<li>What review standards would you require before trusting generated ABAP?</li>
+<li>Would an ABAP MCP server (pulling SAP docs into Copilot) change how you&#39;d adopt it?</li>
+</ul>
+<hr>
+<h2 id="-break--10-minutes">☕ Break — 10 Minutes</h2>
+<hr>
+<h2 id="4-live-demo-sap-adjacent-development-in-vs-code-30-min">4. Live Demo: SAP-Adjacent Development in VS Code (30 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>This is the operational center of the session — real, smooth, and relevant</li>
+<li>Use the <strong>SAP CAP bookshop</strong> sample so the demo is genuinely SAP, not generic</li>
+<li>Demonstrate the full loop: understand → build → validate → test → document → review</li>
+</ul>
+<blockquote>
+<p><strong>Presenter Note</strong>: <em>&quot;This is the SAP Cloud Application Programming Model — a first-party SAP framework. It runs on my laptop with an in-memory database, so everything you see is real SAP development, no backend required.&quot;</em></p>
+</blockquote>
+<h3 id="demo-setup-run-once-before-the-session">Demo Setup (run once before the session)</h3>
+<pre><code class="language-bash">git clone https://github.com/capire/bookshop
+cd bookshop
+npm install
+npm install -g @sap/cds-dk
+cds watch
+</code></pre>
+<blockquote>
+<p><strong>Note</strong>: <code>cds watch</code> serves the bookshop OData service locally (default <a href="http://localhost:4004">http://localhost:4004</a>) backed by an in-memory SQLite database. No SAP system or cloud account is required.</p>
+</blockquote>
+<h3 id="demo-flow">Demo Flow</h3>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Action</th>
+<th>What It Demonstrates</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Ask Copilot to explain the CAP project</td>
+<td>Code understanding</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Add a new entity or service handler</td>
+<td>Context-driven CAP development</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Add input validation and error handling</td>
+<td>Defensive, production-minded code</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Generate unit/integration tests</td>
+<td>Test generation and coverage</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Generate documentation</td>
+<td>Inline docs, README, API contract</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Summarize changes for review</td>
+<td>Review acceleration</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-sap-cap-service-development">🖥️ Demo: SAP CAP Service Development</h3>
+<ol>
+<li><strong>Explain</strong>: <code>@workspace Explain this CAP project — the data model in db/, the services in srv/, and how they connect.</code></li>
+<li><strong>Build</strong>: <code>In srv/, add a custom action &#39;submitOrder(book, quantity)&#39; to the CatalogService that reduces stock and rejects orders that exceed available stock.</code></li>
+<li><strong>Harden</strong>: <code>Add validation and a clear error message when quantity is not a positive integer or the book does not exist.</code></li>
+<li><strong>Test</strong>: <code>Generate tests for the submitOrder action using the CAP test runtime (cds.test), including a package.json test script and the out-of-stock edge case.</code></li>
+<li><strong>Document</strong>: <code>Generate a README section documenting the submitOrder action, its parameters, and example HTTP requests.</code></li>
+<li><strong>Review</strong>: <code>Summarize the changes I made and suggest review comments or follow-up tasks for a CAP code reviewer.</code></li>
+</ol>
+<blockquote>
+<p><strong>Presenter Note</strong>: If you prefer not to use CAP, any service-based project framed as an SAP side-by-side extension works — but CAP gives you a credible, genuinely-SAP story for the same effort.</p>
+</blockquote>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Copilot accurately summarized the CAP project structure (db / srv / app)</li>
+<li>✅ A new <code>submitOrder</code> action was generated and refined through follow-up prompts</li>
+<li>✅ Validation and error handling were added without manual boilerplate</li>
+<li>✅ Tests with the out-of-stock edge case were generated and run</li>
+<li>✅ Documentation and a change summary were produced for review</li>
+</ul>
+<h3 id="going-further-the-sap-mcp-ecosystem-optional-extension">Going Further: The SAP MCP Ecosystem (optional extension)</h3>
+<blockquote>
+<p><strong>Note</strong>: SAP and the UI5 community now publish official <strong>Model Context Protocol (MCP) servers</strong> that plug SAP-specific tooling directly into Copilot. Three work together for SAP application development, and they complement the <strong>ABAP</strong> MCP server from Section 3 (which brings backend ABAP knowledge into Eclipse):</p>
+<ul>
+<li><strong><a href="https://www.npmjs.com/package/@sap-ux/fiori-mcp-server"><code>@sap-ux/fiori-mcp-server</code></a></strong> — generates and modifies <strong>SAP Fiori elements</strong> apps from prompts, including a Fiori UI on top of the CAP bookshop service from this demo, or on an existing OData / <a href="https://pages.community.sap.com/topics/abap/rap">ABAP RESTful (RAP)</a> service. Part of <a href="https://github.com/SAP/open-ux-tools">SAP/open-ux-tools</a>.</li>
+<li><strong><a href="https://www.npmjs.com/package/@ui5/mcp-server"><code>@ui5/mcp-server</code></a></strong> — the <strong>SAPUI5 / OpenUI5</strong> development server: scaffolds UI5 apps, fetches UI5 API references, provides UI5 coding guidelines, validates <code>manifest.json</code>, and runs the UI5 linter. From the <a href="https://github.com/UI5/mcp-server">UI5/mcp-server</a> project.</li>
+<li><strong><a href="https://www.npmjs.com/package/@cap-js/mcp-server"><code>@cap-js/mcp-server</code></a></strong> — the companion <strong>CAP</strong> server for the backend service layer: it searches the compiled CDS model (entities, services, HTTP endpoints) and the CAP documentation, so Copilot grounds its answers in <em>this</em> project&#39;s CAP model — directly useful for the bookshop demo.</li>
+</ul>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Server</th>
+<th>Layer</th>
+<th>Representative Tools</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@sap-ux/fiori-mcp-server</code></td>
+<td>Fiori elements apps</td>
+<td><code>search_docs</code>, <code>list_fiori_apps</code>, <code>list_functionalities</code> / <code>get_functionality_details</code> / <code>execute_functionality</code></td>
+</tr>
+<tr>
+<td><code>@ui5/mcp-server</code></td>
+<td>SAPUI5 / OpenUI5</td>
+<td><code>create_ui5_app</code>, <code>get_api_reference</code>, <code>get_guidelines</code>, <code>run_manifest_validation</code>, <code>run_ui5_linter</code></td>
+</tr>
+<tr>
+<td><code>@cap-js/mcp-server</code></td>
+<td>CAP backend</td>
+<td><code>search_model</code> (fuzzy search the compiled CDS model), <code>search_docs</code> (local semantic search of CAP docs)</td>
+</tr>
+</tbody></table>
+<p>All three use <code>stdio</code> transport and run via <code>npx</code> — no global install required. To register them with Copilot in VS Code, add them to your MCP configuration:</p>
+<pre><code class="language-json">{
+  &quot;servers&quot;: {
+    &quot;fiori-mcp&quot;: {
+      &quot;type&quot;: &quot;stdio&quot;,
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;--yes&quot;, &quot;@sap-ux/fiori-mcp-server@latest&quot;, &quot;fiori-mcp&quot;]
+    },
+    &quot;ui5-mcp-server&quot;: {
+      &quot;type&quot;: &quot;stdio&quot;,
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;-y&quot;, &quot;@ui5/mcp-server&quot;]
+    },
+    &quot;cds-mcp&quot;: {
+      &quot;type&quot;: &quot;stdio&quot;,
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;-y&quot;, &quot;@cap-js/mcp-server&quot;]
+    }
+  }
+}
+</code></pre>
+<blockquote>
+<p><strong>Presenter Note</strong>: <em>&quot;On top of the CAP service we just built, I can ask Copilot to &#39;add a Fiori elements list report app to my CAP project&#39; and the Fiori MCP server scaffolds a real, governed SAP UI — not a generic web page. The UI5 server adds SAPUI5/OpenUI5 expertise: API references, guidelines, and linting. SAP recommends pairing the Fiori server with <code>@cap-js/mcp-server</code> and <code>@ui5/mcp-server</code> for the full stack.&quot;</em></p>
+</blockquote>
+<blockquote>
+<p><strong>Note</strong>: Beyond application development, community and platform-focused MCP patterns and servers are emerging for <strong>SAP BTP</strong> (subaccount and service management), <strong>ABAP via ADT</strong> (connecting to a live SAP system&#39;s ADT APIs), <strong>SAP HANA Cloud</strong> (database queries), and <strong>SAP Datasphere / analytics</strong>. These are powerful but require a live SAP or BTP connection, so they fall outside this laptop-only demo — worth knowing they exist as your SAP-connected agent strategy matures (Section 6).</p>
+</blockquote>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which of these steps would save your team the most time today?</li>
+<li>How does framing the demo as an SAP extension change how you see Copilot&#39;s value?</li>
+<li>What would it take to run this workflow on your own SAP-adjacent repositories?</li>
+<li>Where would an official MCP server (ABAP backend, CAP, Fiori, or UI5) fit into your toolchain?</li>
+</ul>
+<hr>
+<h2 id="5-prompting--context-engineering-20-min">5. Prompting &amp; Context Engineering (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Context quality is the single biggest driver of output quality</li>
+<li>Repository structure and clear instructions help Copilot produce better results</li>
+<li>Knowing when to ask for a plan vs. an implementation changes outcomes</li>
+</ul>
+<h3 id="why-some-users-get-better-results">Why Some Users Get Better Results</h3>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Context</strong></td>
+<td>Attaching the right files and selections grounds the response</td>
+</tr>
+<tr>
+<td><strong>Repository structure</strong></td>
+<td>Clear, well-named code helps Copilot infer intent</td>
+</tr>
+<tr>
+<td><strong>Prompt specificity</strong></td>
+<td>Precise asks produce precise output</td>
+</tr>
+<tr>
+<td><strong>Plan-first prompting</strong></td>
+<td>Asking for a plan before code reduces rework</td>
+</tr>
+<tr>
+<td><strong>Explanation-first</strong></td>
+<td>Asking Copilot to explain before changing builds shared understanding</td>
+</tr>
+</tbody></table>
+<h3 id="vague-vs-context-rich-prompts">Vague vs. Context-Rich Prompts</h3>
+<table>
+<thead>
+<tr>
+<th>✗ Vague Prompt</th>
+<th>✅ Context-Rich Prompt</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&quot;Fix the order service.&quot;</td>
+<td><code>@workspace #file:orderService.ts Add validation so an order total must match the sum of its line items, and return a 400 with a clear message when it doesn&#39;t.</code></td>
+</tr>
+<tr>
+<td>&quot;Write some tests.&quot;</td>
+<td><code>Generate unit tests for getOrdersByCustomerId, including an empty-result case and a dependency failure mocked out.</code></td>
+</tr>
+<tr>
+<td>&quot;Document this.&quot;</td>
+<td><code>Generate a README section covering setup, environment variables, and how to call the orders endpoint.</code></td>
+</tr>
+</tbody></table>
+<h3 id="-demo-context-quality-comparison">🖥️ Demo: Context Quality Comparison</h3>
+<ol>
+<li>Run a vague prompt — note the generic, assumption-heavy response</li>
+<li>Re-run with <code>@workspace</code>, <code>#file</code>, and a specific instruction — note the precision</li>
+<li>Show asking for a plan first, then implementing from the approved plan</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What context do you most often forget to give Copilot?</li>
+<li>When would you want a plan before any code is written?</li>
+<li>How could repository instructions encode your team&#39;s SAP coding standards?</li>
+</ul>
+<hr>
+<h2 id="6-future-state-architecture-sap-connected-copilots--agents-20-min">6. Future-State Architecture: SAP-Connected Copilots &amp; Agents (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Show the roadmap without pretending to run it live</li>
+<li>SAP-connected scenarios depend on secure API exposure and integration patterns</li>
+<li>Start with read-focused copilots before automating workflows</li>
+</ul>
+<h3 id="reference-architecture">Reference Architecture</h3>
+<pre><code>┌──────────────────────────┐
+│  Teams / Microsoft 365   │  ◄── User surface
+└────────────┬─────────────┘
+             │
+┌────────────▼─────────────┐
+│   Copilot / Agent Layer  │  ◄── Reasoning, orchestration, tools
+└────────────┬─────────────┘
+             │
+┌────────────▼─────────────┐
+│  API Management /        │  ◄── Security, throttling, governance
+│  Cloud Connector         │
+└────────────┬─────────────┘
+             │
+┌────────────▼─────────────┐
+│  SAP BTP / API Exposure  │  ◄── Stable, governed API surface
+└────────────┬─────────────┘
+             │
+┌────────────▼─────────────┐
+│   SAP Backend Systems    │  ◄── Systems of record
+└──────────────────────────┘
+</code></pre>
+<h3 id="candidate-use-cases">Candidate Use Cases</h3>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Maturity</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Conversational retrieval of SAP information</td>
+<td>🟢 Start here</td>
+<td>Read-focused, lower risk</td>
+</tr>
+<tr>
+<td>Read-focused copilots for support or operations</td>
+<td>🟢 Start here</td>
+<td>High value, controlled scope</td>
+</tr>
+<tr>
+<td>Guided workflows</td>
+<td>🟡 Next</td>
+<td>Requires governed write paths</td>
+</tr>
+<tr>
+<td>Developer-assistant scenarios with SAP-connected tools</td>
+<td>🔴 Later</td>
+<td>Depends on exposed APIs and tooling</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-architecture-walkthrough-diagram-led-no-live-sap-calls">🖥️ Demo: Architecture walkthrough (diagram-led, no live SAP calls)</h3>
+<ol>
+<li>Walk the diagram top to bottom, naming the responsibility of each layer</li>
+<li>Emphasize the API exposure and security layers as prerequisites</li>
+<li>Map one candidate use case onto the architecture</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which SAP information would be most valuable to retrieve conversationally?</li>
+<li>What APIs do you already expose through BTP or API Management today?</li>
+<li>What security and governance requirements would gate a read-focused pilot?</li>
+</ul>
+<hr>
+<h2 id="7-qa-and-next-steps-15-min">7. Q&amp;A and Next Steps (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Convert interest into a concrete, low-risk next step</li>
+<li>Match the follow-up to the audience&#39;s maturity and pain points</li>
+<li>Keep ABAP as a supported-capability overview unless a real SAP environment is available</li>
+</ul>
+<h3 id="recommended-next-step-options">Recommended Next-Step Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SAP Developer Pilot</strong></td>
+<td>A small group of SAP/SAP-adjacent engineers with a clear productivity problem</td>
+</tr>
+<tr>
+<td><strong>GitHub Fundamentals for SAP Teams</strong></td>
+<td>Teams earlier in GitHub maturity</td>
+</tr>
+<tr>
+<td><strong>Architecture Session for SAP-Connected Copilots</strong></td>
+<td>BTP, API exposure, security, integration patterns</td>
+</tr>
+<tr>
+<td><strong>Hands-On Modernization Session</strong></td>
+<td>Practical exercises using customer-safe, SAP-adjacent code</td>
+</tr>
+</tbody></table>
+<h3 id="facilitator-qa-prep">Facilitator Q&amp;A Prep</h3>
+<table>
+<thead>
+<tr>
+<th>If someone asks…</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&quot;Can you show ABAP live?&quot;</td>
+<td><em>&quot;I can show the supported ABAP story and where Copilot fits today, but for a true hands-on ABAP session I&#39;d want a real SAP development environment so the demo stays authentic and useful.&quot;</em></td>
+</tr>
+<tr>
+<td>&quot;Where&#39;s the real value if not only ABAP?&quot;</td>
+<td><em>&quot;The strongest near-term value is often around the SAP ecosystem: integrations, APIs, side-by-side extensions, testing, documentation, planning, and code understanding.&quot;</em></td>
+</tr>
+<tr>
+<td>&quot;What is the right pilot?&quot;</td>
+<td><em>&quot;Start with a focused pilot of SAP developers who already have some development maturity and a clear productivity problem, then expand based on evidence and internal champions.&quot;</em></td>
+</tr>
+</tbody></table>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What is the one workflow you&#39;d most want to pilot first?</li>
+<li>Who are the internal champions who could lead adoption?</li>
+<li>What evidence would your leadership need to expand from a pilot?</li>
+</ul>
+<hr>
+<h2 id="appendix">Appendix</h2>
+<h3 id="key-urls">Key URLs</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GitHub Copilot documentation</td>
+<td><a href="https://docs.github.com/copilot">https://docs.github.com/copilot</a></td>
+</tr>
+<tr>
+<td>GitHub Copilot in VS Code</td>
+<td><a href="https://code.visualstudio.com/docs/copilot/overview">https://code.visualstudio.com/docs/copilot/overview</a></td>
+</tr>
+<tr>
+<td>GitHub Copilot — AI models</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/use-ai-models">https://docs.github.com/en/copilot/how-tos/use-ai-models</a></td>
+</tr>
+<tr>
+<td>GitHub Copilot plugin (Eclipse Marketplace)</td>
+<td><a href="https://marketplace.eclipse.org/content/github-copilot">https://marketplace.eclipse.org/content/github-copilot</a></td>
+</tr>
+<tr>
+<td>SAP ABAP Development Tools (ADT)</td>
+<td><a href="https://tools.hana.ondemand.com/">https://tools.hana.ondemand.com/</a></td>
+</tr>
+<tr>
+<td>SAP CAP sample (capire/bookshop)</td>
+<td><a href="https://github.com/capire/bookshop">https://github.com/capire/bookshop</a></td>
+</tr>
+<tr>
+<td>SAP Cloud Application Programming Model docs</td>
+<td><a href="https://cap.cloud.sap/docs/">https://cap.cloud.sap/docs/</a></td>
+</tr>
+<tr>
+<td>SAP Fiori MCP server (<code>@sap-ux/fiori-mcp-server</code>)</td>
+<td><a href="https://www.npmjs.com/package/@sap-ux/fiori-mcp-server">https://www.npmjs.com/package/@sap-ux/fiori-mcp-server</a></td>
+</tr>
+<tr>
+<td>SAP open-ux-tools (Fiori MCP source)</td>
+<td><a href="https://github.com/SAP/open-ux-tools">https://github.com/SAP/open-ux-tools</a></td>
+</tr>
+<tr>
+<td>UI5 MCP server (<code>@ui5/mcp-server</code>)</td>
+<td><a href="https://www.npmjs.com/package/@ui5/mcp-server">https://www.npmjs.com/package/@ui5/mcp-server</a></td>
+</tr>
+<tr>
+<td>UI5 MCP server source (<code>UI5/mcp-server</code>)</td>
+<td><a href="https://github.com/UI5/mcp-server">https://github.com/UI5/mcp-server</a></td>
+</tr>
+<tr>
+<td>CAP MCP server (<code>@cap-js/mcp-server</code>)</td>
+<td><a href="https://www.npmjs.com/package/@cap-js/mcp-server">https://www.npmjs.com/package/@cap-js/mcp-server</a></td>
+</tr>
+<tr>
+<td>SAP BTP</td>
+<td><a href="https://www.sap.com/products/technology-platform.html">https://www.sap.com/products/technology-platform.html</a></td>
+</tr>
+<tr>
+<td>GitHub Copilot Trust Center</td>
+<td><a href="https://copilot.github.trust.page/">https://copilot.github.trust.page/</a></td>
+</tr>
+</tbody></table>
+<h3 id="external-references--further-reading">External References &amp; Further Reading</h3>
+<blockquote>
+<p><strong>Note</strong>: These are the authoritative and community sources behind the ABAP-in-Eclipse content in this workshop. Share them with attendees who want to go deeper.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Topic</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Microsoft DevBlogs (May 13, 2025)</td>
+<td><em>&quot;Eclipse + GitHub Copilot = Lightspeed SAP ABAP Development&quot;</em></td>
+<td><a href="https://devblogs.microsoft.com/all-things-azure/eclipse-github-copilot-lightspeed-sap-abap-development/">https://devblogs.microsoft.com/all-things-azure/eclipse-github-copilot-lightspeed-sap-abap-development/</a></td>
+</tr>
+<tr>
+<td>GitHub Blog / Changelog</td>
+<td>Search for <em>&quot;Introducing ABAP Support in GitHub Copilot for Eclipse&quot;</em></td>
+<td><a href="https://github.blog/?s=Introducing+ABAP+Support+in+GitHub+Copilot+for+Eclipse">https://github.blog/?s=Introducing+ABAP+Support+in+GitHub+Copilot+for+Eclipse</a></td>
+</tr>
+<tr>
+<td>SAP Community</td>
+<td>Search for Eclipse ADT + GitHub Copilot setup walkthroughs</td>
+<td><a href="https://community.sap.com/search/?ct=all&q=GitHub%20Copilot%20Eclipse%20ADT">https://community.sap.com/search/?ct=all&amp;q=GitHub%20Copilot%20Eclipse%20ADT</a></td>
+</tr>
+<tr>
+<td>Eclipse Marketplace</td>
+<td>GitHub Copilot plugin listing</td>
+<td><a href="https://marketplace.eclipse.org/content/github-copilot">https://marketplace.eclipse.org/content/github-copilot</a></td>
+</tr>
+<tr>
+<td>Marian Zeis Blog</td>
+<td><em>&quot;Finally: An MCP Server for ABAP&quot;</em></td>
+<td><a href="https://blog.zeis.de/posts/2026-02-04-abap-mcp-server/">https://blog.zeis.de/posts/2026-02-04-abap-mcp-server/</a></td>
+</tr>
+<tr>
+<td>GitHub</td>
+<td><code>aravindhkce/abap-copilot</code> — integrated ABAP Copilot workflow</td>
+<td><a href="https://github.com/aravindhkce/abap-copilot">https://github.com/aravindhkce/abap-copilot</a></td>
+</tr>
+<tr>
+<td>npm (SAP)</td>
+<td><code>@sap-ux/fiori-mcp-server</code> — official SAP Fiori MCP server</td>
+<td><a href="https://www.npmjs.com/package/@sap-ux/fiori-mcp-server">https://www.npmjs.com/package/@sap-ux/fiori-mcp-server</a></td>
+</tr>
+<tr>
+<td>GitHub (SAP)</td>
+<td><code>SAP/open-ux-tools</code> — Fiori MCP server source and SAP Fiori tools</td>
+<td><a href="https://github.com/SAP/open-ux-tools">https://github.com/SAP/open-ux-tools</a></td>
+</tr>
+<tr>
+<td>npm (UI5)</td>
+<td><code>@ui5/mcp-server</code> — SAPUI5 / OpenUI5 MCP server</td>
+<td><a href="https://www.npmjs.com/package/@ui5/mcp-server">https://www.npmjs.com/package/@ui5/mcp-server</a></td>
+</tr>
+<tr>
+<td>GitHub (UI5)</td>
+<td><code>UI5/mcp-server</code> — UI5 MCP server source</td>
+<td><a href="https://github.com/UI5/mcp-server">https://github.com/UI5/mcp-server</a></td>
+</tr>
+<tr>
+<td>npm (CAP)</td>
+<td><code>@cap-js/mcp-server</code> — CAP MCP server</td>
+<td><a href="https://www.npmjs.com/package/@cap-js/mcp-server">https://www.npmjs.com/package/@cap-js/mcp-server</a></td>
+</tr>
+<tr>
+<td>GitHub (CAP)</td>
+<td><code>cap-js/mcp-server</code> — CAP MCP server source</td>
+<td><a href="https://github.com/cap-js/mcp-server">https://github.com/cap-js/mcp-server</a></td>
+</tr>
+<tr>
+<td>SAP on Azure podcast</td>
+<td>Episode 236 — GitHub Copilot in Eclipse</td>
+<td><a href="https://www.youtube.com/@SAPonAzure">https://www.youtube.com/@SAPonAzure</a></td>
+</tr>
+</tbody></table>
+<h3 id="pre-delivery-checklist">Pre-Delivery Checklist</h3>
+<ul>
+<li>✅ Confirm whether a live SAP/Eclipse environment is available — if not, use screenshots for ABAP</li>
+<li>✅ Clone and run the SAP CAP bookshop sample (<code>cds watch</code>) and verify it serves on localhost</li>
+<li>✅ Verify the GitHub Copilot + Copilot Chat extensions are working in VS Code</li>
+<li>✅ Pre-run each demo prompt once to confirm smooth output</li>
+<li>✅ Prepare ABAP-in-Eclipse screenshots and the official reference links from this appendix</li>
+<li>✅ Confirm audience maturity to pick the right follow-up offer</li>
+</ul>
+<h3 id="demo-prompt-library">Demo Prompt Library</h3>
+<blockquote>
+<p><strong>Note</strong>: Keep each prompt in its own copyable block during delivery so attendees can reuse them.</p>
+</blockquote>
+<pre><code class="language-text">Explain this CAP project — the data model in db/, the services in srv/, and how they connect.
+</code></pre>
+<pre><code class="language-text">Explain what this service handler does and summarize the business logic in plain English.
+</code></pre>
+<pre><code class="language-text">In srv/, add a custom action &#39;submitOrder(book, quantity)&#39; to the CatalogService that reduces stock and rejects orders that exceed available stock.
+</code></pre>
+<pre><code class="language-text">Add validation and a clear error message when quantity is not a positive integer or the book does not exist.
+</code></pre>
+<pre><code class="language-text">Generate tests for the submitOrder action using the CAP test runtime (cds.test), including the out-of-stock edge case. If package.json does not already have a test script, add one that runs these tests.
+</code></pre>
+<pre><code class="language-text">Generate a README section documenting the submitOrder action, its parameters, and example HTTP requests.
+</code></pre>
+<pre><code class="language-text">Summarize the changes I made, list the key risks, and suggest review comments.
+</code></pre>
+<p>ABAP-in-Eclipse prompts (use with a live SAP system):</p>
+<pre><code class="language-text">* TODO: select all flights for a given carrier from SFLIGHT into an internal table
+</code></pre>
+<pre><code class="language-text">Optimize this SELECT query and explain why it is more efficient.
+</code></pre>
+<pre><code class="language-text">Explain what this legacy ABAP report does and outline its main processing steps.
+</code></pre>
+<h3 id="backup-plan">Backup Plan</h3>
+<ul>
+<li><strong>If a demo prompt produces a weak result</strong>: Acknowledge it openly, refine the prompt with more context, and use it as a teaching moment about context engineering.</li>
+<li><strong>If Copilot is unavailable or rate-limited</strong>: Fall back to pre-captured screenshots of each demo step.</li>
+<li><strong>If the audience pushes for live ABAP</strong>: Redirect to the supported-capability overview and offer an architecture or pilot session as the authentic next step.</li>
+</ul>
+<h3 id="condensed-90-minute-version">Condensed 90-Minute Version</h3>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Context &amp; goals</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Where Copilot fits in SAP</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ABAP support overview</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Live VS Code workflow demo</td>
+<td>35 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Future-state architecture</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Q&amp;A and next steps</td>
+<td>10 min</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Workshop guide for the GitHub Copilot for SAP Developers Workshop</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module">document.querySelectorAll("pre").forEach(t=>{if(t.querySelector("code.language-mermaid"))return;const e=document.createElement("button");e.className="copy-btn",e.textContent="Copy",e.addEventListener("click",async()=>{const o=(t.querySelector("code")||t).textContent||"";await navigator.clipboard.writeText(o),e.textContent="Copied!",e.classList.add("copied"),setTimeout(()=>{e.textContent="Copy",e.classList.remove("copied")},2e3)}),t.appendChild(e)});</script>
