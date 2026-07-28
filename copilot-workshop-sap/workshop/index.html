@@ -1,0 +1,741 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot: Zero to Agents — SAP Edition Workshop</title><link rel="stylesheet" href="/gh-workshops/_astro/index.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-zero-to-agents--sap-edition-workshop">GitHub Copilot: Zero to Agents — SAP Edition Workshop</h1>
+<p><strong>Duration</strong>: ~5 hours (deliverable as a 2-part series)<br><strong>Format</strong>: Presentation + Live Demo + Hands-On<br><strong>Audience</strong>: SAP developers with basic Copilot exposure (completions/chat) — ABAP, CAP/BTP, and integration engineers<br><strong>Focus</strong>: Copilot customization and agentic workflows on genuinely SAP material — CAP in VS Code and ABAP in Eclipse<br><strong>Repos</strong>: <a href="https://github.com/capire/bookshop">capire/bookshop</a> (SAP CAP — runs locally, no backend) · ABAP samples (<a href="https://github.com/SAP-samples/abap-cheat-sheets">abap-cheat-sheets</a>, <a href="https://github.com/SAP-samples/abap-platform-refscen-flight">abap-platform-refscen-flight</a>, <a href="https://github.com/SAP-samples/cloud-abap-rap">cloud-abap-rap</a>)<br><strong>Companion document</strong>: <a href="../copilot-sap-developers/github-copilot-for-sap-developers-workshop.md">GitHub Copilot for SAP Developers</a> — the lighter enablement workshop</p>
+<blockquote>
+<p><strong>Note</strong>: This is the <strong>deep hands-on</strong> SAP edition of <em>Zero to Agents</em>. It teaches the full customization stack — modes, instructions, prompts, skills, custom agents, MCP, CLI, and cloud agents — on real SAP development. The primary substrate is the <strong>SAP Cloud Application Programming Model (CAP)</strong> in VS Code (genuinely SAP, runs locally with no backend), and a dedicated section covers the <strong>same agentic stack in Eclipse over ABAP</strong>, which the GitHub Copilot for Eclipse plugin now supports (v0.20.0+).</p>
+</blockquote>
+<hr>
+<h2 id="workshop-overview">Workshop Overview</h2>
+<p>This session takes SAP developers from casual Copilot usage to full agentic development. Starting with inline completions and chat modes, then progressing through the customization layers — instructions, prompts, agents, skills, and MCP servers — attendees build a complete understanding of how to tailor Copilot to SAP workflows. The session extends to the standalone GitHub Copilot CLI and closes with autonomous cloud agents (Coding Agent + PR Review), then shows the same stack running in Eclipse over ABAP.</p>
+<p>The <strong>CAP bookshop</strong> is the perfect subject: a first-party SAP framework that runs entirely on your laptop with an in-memory database, so every exercise is real SAP development with no S/4HANA backend. The ABAP track uses SAP&#39;s own sample repositories, so Copilot reasons over authentic ABAP source.</p>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li>Master Copilot&#39;s three chat modes: Ask, Agent, and Plan — on a real SAP CAP service</li>
+<li>Create custom instructions that encode CAP and ABAP coding standards</li>
+<li>Build reusable prompt files and custom agents for SAP workflows</li>
+<li>Author Agent Skills that Copilot auto-selects for CAP-service, CDS, and ABAP tasks</li>
+<li>Extend Copilot with the official SAP MCP servers (Fiori, UI5, CAP) and GitHub MCP</li>
+<li>Use the standalone GitHub Copilot CLI as an agentic terminal on a CAP project</li>
+<li>Leverage cloud agents: Coding Agent for autonomous PRs and Copilot Code Review</li>
+<li>Run the full agentic stack in <strong>Eclipse over ABAP</strong> — with honest caveats</li>
+</ul>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>With Copilot Pro, Business, or Enterprise license</td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Latest stable (or Insiders for preview features)</td>
+</tr>
+<tr>
+<td><strong>Copilot Extension</strong></td>
+<td>GitHub Copilot + GitHub Copilot Chat extensions installed</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>Version 18 or higher</td>
+</tr>
+<tr>
+<td><strong>SAP CDS toolkit</strong></td>
+<td><code>npm install -g @sap/cds-dk</code></td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>For cloning the demo repositories</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot CLI</strong></td>
+<td>Install from <a href="https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli">https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli</a> — required for Section 8</td>
+</tr>
+<tr>
+<td><strong>Eclipse (optional)</strong></td>
+<td>Eclipse 2024-09+ (2025-03+ recommended) + ABAP Development Tools (ADT) + GitHub Copilot plugin <strong>0.20.0+</strong> — for Section 10</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: Sections 1–9 run entirely in VS Code on the CAP bookshop — no live SAP backend needed. Section 10 uses ABAP <strong>sample source</strong> in Eclipse (also backend-free); a live SAP system only adds execution, ATC, and live-data steps.</p>
+</blockquote>
+<hr>
+<h2 id="session-agenda">Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a href="#1-welcome-objectives--two-ide-setup-20-min">Welcome, Objectives &amp; Two-IDE Setup</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>1b</td>
+<td><a href="#1b-inline-completion--inline-chat-15-min">Inline Completion &amp; Inline Chat</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#2-chat-modes-ask-agent-plan-25-min">Chat Modes: Ask, Agent, Plan</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>2b</td>
+<td><a href="#2b-slash-commands--participants---context-10-min">Slash Commands, @ Participants &amp; # Context</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#3-custom-instructions-sap-standards-30-min">Custom Instructions (SAP Standards)</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#4-custom-prompt-files-25-min">Custom Prompt Files</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="#5-agent-skills-25-min">Agent Skills</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="#6-custom-agents-chat-modes-25-min">Custom Agents (Chat Modes)</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td></td>
+<td>🍽️ Break / Part 2 boundary</td>
+<td>—</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="#7-mcp-servers-the-sap-mcp-ecosystem-35-min">MCP Servers: The SAP MCP Ecosystem</a></td>
+<td>35 min</td>
+</tr>
+<tr>
+<td>8</td>
+<td><a href="#8-github-copilot-cli-the-agentic-terminal-30-min">GitHub Copilot CLI: The Agentic Terminal</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>9</td>
+<td><a href="#9-cloud-agents-coding-agent--pr-review-20-min">Cloud Agents: Coding Agent + PR Review</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>10</td>
+<td><a href="#10-abap-in-eclipse-the-full-agentic-stack-30-min">ABAP in Eclipse: The Full Agentic Stack</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>11</td>
+<td><a href="#11-wrap-up-customization-hierarchy-recap--qa-10-min">Wrap-Up, Customization Hierarchy Recap &amp; Q&amp;A</a></td>
+<td>10 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total: ~300 min core (~5h)</strong> — deliver as <strong>Part 1 (§1–6)</strong> and <strong>Part 2 (§7–11)</strong>, or a full day.</p>
+<hr>
+<h2 id="the-zero-to-agents-narrative-arc">The &quot;Zero to Agents&quot; Narrative Arc</h2>
+<pre><code>Chat Modes → Custom Instructions → Prompt Files → Agent Skills → Custom Agents → MCP → CLI → Cloud Agents → ABAP in Eclipse
+ (explore)    (encode standards)   (reusable)     (auto-select)  (personas)     (tools) (terminal) (autonomous)  (SAP core)
+</code></pre>
+<p>Each section builds on the previous one, progressively customizing Copilot from a general assistant into a specialized SAP development partner — across <strong>both</strong> VS Code (CAP) and Eclipse (ABAP).</p>
+<hr>
+<h2 id="1-welcome-objectives--two-ide-setup-20-min">1. Welcome, Objectives &amp; Two-IDE Setup (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>SAP development spans two IDEs: <strong>VS Code</strong> (CAP, BTP, side-by-side extensions) and <strong>Eclipse + ADT</strong> (ABAP)</li>
+<li>Copilot now supports the full agentic stack in <strong>both</strong> — we anchor hands-on on CAP, then prove it in Eclipse (Section 10)</li>
+<li>The CAP bookshop is a first-party SAP framework that runs locally — real SAP development, no backend</li>
+</ul>
+<h3 id="-demo-the-cap-bookshop">🖥️ DEMO: The CAP Bookshop</h3>
+<ol>
+<li>Show <a href="https://github.com/capire/bookshop">capire/bookshop</a> — the data model in <code>db/</code>, services in <code>srv/</code>, app in <code>app/</code></li>
+<li>Explain the OData service and in-memory database — genuinely SAP, no S/4HANA needed</li>
+<li>Point out there is no <code>.github/</code> customization yet — we build it across the workshop</li>
+</ol>
+<details>
+<summary><h3 id="-hands-on-environment-setup-10-min">🧪 Hands-On: Environment Setup (10 min)</h3></summary>
+
+<p><strong>Step 1: Clone &amp; install</strong></p>
+<pre><code class="language-bash">git clone https://github.com/capire/bookshop
+cd bookshop
+npm install
+npm install -g @sap/cds-dk
+</code></pre>
+<p><strong>Step 2: Run the service</strong></p>
+<pre><code class="language-bash">cds watch
+</code></pre>
+<p><strong>Step 3: Verify</strong></p>
+<ul>
+<li><code>cds watch</code> serves the OData service (default <a href="http://localhost:4004">http://localhost:4004</a>)</li>
+<li>The in-memory database loads sample books and authors</li>
+<li>VS Code: Command Palette → &quot;Copilot&quot; → verify the extension is active</li>
+</ul>
+</details>
+
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which SAP work do you do in VS Code vs. Eclipse today?</li>
+<li>What&#39;s your biggest Copilot frustration? (Common: &quot;it doesn&#39;t know our SAP standards&quot; — tease Section 3)</li>
+</ul>
+<hr>
+<h2 id="1b-inline-completion--inline-chat-15-min">1b. Inline Completion &amp; Inline Chat (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Inline completions</strong> appear as ghost text while you type; comments and nearby code shape them</li>
+<li><strong>Inline chat</strong> (<code>Ctrl+I</code> / <code>Cmd+I</code>) is best for small, focused edits in the current file</li>
+<li>Use inline for local changes; use chat modes for broader, multi-file work</li>
+</ul>
+<h3 id="-demo-comment-to-code-in-the-cap-service">🖥️ DEMO: Comment-to-Code in the CAP Service</h3>
+<ol>
+<li>Open <code>srv/cat-service.cds</code> (and its handler if present)</li>
+<li>In the handler, type a guiding comment and let Copilot complete:</li>
+</ol>
+<pre><code class="language-js">// Add a handler that lowercases the book title before returning results
+</code></pre>
+<ol start="3">
+<li>Accept useful parts with <code>Tab</code>; refine with inline chat (<code>Ctrl+I</code>):</li>
+</ol>
+<pre><code class="language-text">Make this handler async and add a guard for an empty result set.
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Triggered and accepted an inline completion from a comment</li>
+<li>✅ Refined selected code with inline chat without leaving the editor</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What gave the better suggestion — the comment, the nearby code, or both?</li>
+<li>Where does inline chat fit vs. full chat modes in your day?</li>
+</ul>
+<hr>
+<h2 id="2-chat-modes-ask-agent-plan-25-min">2. Chat Modes: Ask, Agent, Plan (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Copilot has three chat modes, each optimized for a different task</li>
+<li>Modes are selected from the Copilot Chat mode picker</li>
+</ul>
+<h3 id="mode-comparison">Mode Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Best For</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Ask</strong></td>
+<td>Exploring, learning, understanding code</td>
+<td>Text explanations, snippets</td>
+</tr>
+<tr>
+<td><strong>Agent</strong></td>
+<td>Building, editing, running commands</td>
+<td>File edits (single/multi), commands</td>
+</tr>
+<tr>
+<td><strong>Plan</strong></td>
+<td>Analyzing and proposing before coding</td>
+<td>Implementation plans (no edits)</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-ask--plan--agent-on-the-cap-service">🖥️ DEMO: Ask → Plan → Agent on the CAP Service</h3>
+<ol>
+<li><strong>Ask</strong>: <code>@workspace Explain this CAP project — the data model in db/, the services in srv/, and how they connect.</code></li>
+<li><strong>Plan</strong>: <code>I want to add a submitOrder action to the CatalogService. Give me a step-by-step plan before any code.</code></li>
+<li><strong>Agent</strong>: <code>Implement step 1 from that plan.</code> — watch Copilot edit files and run <code>cds watch</code></li>
+</ol>
+<details>
+<summary><h3 id="-hands-on-try-all-three-modes-8-min">🧪 Hands-On: Try All Three Modes (8 min)</h3></summary>
+
+<p><strong>Exercise 1 — Ask</strong>: <code>What entities and services does this CAP project expose?</code></p>
+<p><strong>Exercise 2 — Plan</strong>: <code>How should I add stock tracking and an out-of-stock rule to Books?</code></p>
+<p><strong>Exercise 3 — Agent</strong>: <code>Build and run the project, then open the served OData endpoint.</code></p>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Switched between Ask, Agent, and Plan</li>
+<li>✅ Received a codebase-aware answer and a plan that changed no files</li>
+<li>✅ Agent mode edited files and ran a command</li>
+</ul>
+<hr>
+<h2 id="2b-slash-commands--participants---context-10-min">2b. Slash Commands, @ Participants &amp; # Context (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Slash commands</strong> (<code>/explain</code>, <code>/fix</code>, <code>/tests</code>, <code>/doc</code>) are shortcuts for common tasks</li>
+<li><strong><code>@</code> participants</strong> (<code>@workspace</code>, <code>@vscode</code>, <code>@terminal</code>) route to specialized handlers</li>
+<li><strong><code>#</code> variables</strong> (<code>#file</code>, <code>#selection</code>, <code>#codebase</code>) attach precise context</li>
+</ul>
+<h3 id="-demo-context-targeting-on-cap">🖥️ DEMO: Context Targeting on CAP</h3>
+<ol>
+<li>Select a handler → <code>/explain</code></li>
+<li>Vague: <code>How does the catalog service work?</code> — note the generic answer</li>
+<li>Precise: <code>@workspace #file:srv/cat-service.cds How does the catalog service work?</code> — note the precision</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What context do you most often forget to attach?</li>
+</ul>
+<hr>
+<h2 id="3-custom-instructions-sap-standards-30-min">3. Custom Instructions (SAP Standards) (30 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Custom instructions load into <strong>every</strong> interaction — always-on, invisible context</li>
+<li>Two types: project-wide (<code>.github/copilot-instructions.md</code>) and scoped (<code>.github/instructions/*.instructions.md</code> via <code>applyTo</code> globs)</li>
+<li>This is where your team&#39;s SAP standards become durable, reviewable, and portable</li>
+</ul>
+<h3 id="-demo-generate--scope-instructions-for-cap">🖥️ DEMO: Generate + Scope Instructions for CAP</h3>
+<ol>
+<li>Chat → <strong>Gear icon</strong> → <strong>Generate Agent Instructions</strong> → save to <code>.github/copilot-instructions.md</code></li>
+<li>Create scoped instructions for the service layer:</li>
+</ol>
+<pre><code class="language-markdown">---
+applyTo: &quot;srv/**&quot;
+---
+# CAP Service Instructions
+- Expose entities through services — never query the db model directly from clients.
+- Validation errors use the CAP req.error(code, message) API.
+- Prefer async/await in custom handlers.
+- Add OData-friendly naming and keep actions/functions explicit.
+</code></pre>
+<ol start="3">
+<li>Ask Copilot to add a service method and confirm it follows the conventions unprompted</li>
+</ol>
+<details>
+<summary><h3 id="-hands-on-encode-your-sap-standards-12-min">🧪 Hands-On: Encode Your SAP Standards (12 min)</h3></summary>
+
+<p><strong>Step 1</strong>: Establish a baseline — ask <code>How should I add a new action to the CatalogService?</code> before instructions.</p>
+<p><strong>Step 2</strong>: Generate project-wide instructions (Gear → Generate Agent Instructions).</p>
+<p><strong>Step 3</strong>: Create <code>.github/instructions/CAP.instructions.md</code> with <code>applyTo: &quot;srv/**&quot;</code> and the rules above.</p>
+<p><strong>Step 4</strong>: Ask the same question and compare — note the CAP-specific guidance.</p>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ <code>.github/copilot-instructions.md</code> exists</li>
+<li>✅ <code>.github/instructions/CAP.instructions.md</code> exists with <code>applyTo: &quot;srv/**&quot;</code></li>
+<li>✅ A new generation followed the conventions automatically</li>
+</ul>
+<hr>
+<h2 id="4-custom-prompt-files-25-min">4. Custom Prompt Files (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Prompt files are reusable task templates in <code>.github/prompts/*.prompt.md</code></li>
+<li>YAML frontmatter sets <code>mode</code>, <code>description</code>, and <code>tools</code></li>
+<li>On-demand (Run button, Command Palette, or <code>/name</code> in chat) — unlike always-on instructions</li>
+</ul>
+<h3 id="-demo-a-cap-test-coverage-prompt">🖥️ DEMO: A CAP Test-Coverage Prompt</h3>
+<p>Create <code>.github/prompts/cap-tests.prompt.md</code>:</p>
+<pre><code class="language-yaml">---
+mode: &#39;agent&#39;
+description: &#39;Generate cds.test coverage for a CAP service action&#39;
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;editFiles&#39;, &#39;runCommands&#39;]
+---
+
+# CAP Test Coverage
+
+## Objective
+Generate tests for the target action using the CAP test runtime (cds.test).
+
+## Requirements
+- Cover the happy path and the out-of-stock edge case
+- Add a package.json test script if one does not exist
+- Follow existing patterns in the repo
+
+## Success Criteria
+- Tests run with `npm test` and pass
+</code></pre>
+<p>Run it against the <code>submitOrder</code> action and watch Agent mode generate and run tests.</p>
+<details>
+<summary><h3 id="-hands-on-build-a-prompt-file-12-min">🧪 Hands-On: Build a Prompt File (12 min)</h3></summary>
+
+<p><strong>Exercise 1</strong>: Run the <code>cap-tests.prompt.md</code> above.</p>
+<p><strong>Exercise 2</strong>: Create <code>security-review.prompt.md</code> that scans the CAP service for missing validation, unhandled errors, and direct db access from handlers.</p>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Ran a prompt file and watched a multi-step task execute</li>
+<li>✅ Created and ran your own prompt file</li>
+</ul>
+<hr>
+<h2 id="5-agent-skills-25-min">5. Agent Skills (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Skills are specialized <code>SKILL.md</code> files Copilot <strong>auto-selects</strong> by relevance (no manual invocation)</li>
+<li>Project-scoped (<code>.github/skills/&lt;name&gt;/</code>) or global (<code>~/.copilot/skills/&lt;name&gt;/</code>)</li>
+<li>Great for &quot;when doing X, follow these steps&quot; SAP procedures</li>
+</ul>
+<h3 id="-demo-a-cap-service-creation-skill">🖥️ DEMO: A CAP Service-Creation Skill</h3>
+<p>Create <code>.github/skills/cap-service/SKILL.md</code>:</p>
+<pre><code class="language-yaml">---
+name: cap-service
+description: Guide for adding CAP entities, services, and actions.
+  Use this when asked to add new entities, services, actions, or endpoints.
+---
+
+When adding to this CAP project:
+1. Define/extend the entity in `db/` (CDS).
+2. Expose it via a service in `srv/` — never the db model directly.
+3. Implement custom logic in the matching `.js` handler with async/await.
+4. Use req.error for validation failures.
+5. Add cds.test coverage including edge cases.
+</code></pre>
+<p>Prompt: <code>Add a Warehouses entity and expose it with stock management</code> — watch Copilot follow the skill.</p>
+<details>
+<summary><h3 id="-hands-on-author-a-skill-12-min">🧪 Hands-On: Author a Skill (12 min)</h3></summary>
+
+<p><strong>Exercise 1</strong>: Create the <code>cap-service</code> skill above and trigger it with a new-entity prompt.</p>
+<p><strong>Exercise 2 (bonus)</strong>: Create a <code>cds-modeling</code> skill for CDS naming, associations, and compositions.</p>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created a <code>SKILL.md</code> and saw Copilot auto-select it from your prompt</li>
+</ul>
+<hr>
+<h2 id="6-custom-agents-chat-modes-25-min">6. Custom Agents (Chat Modes) (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Agents are persistent personas in <code>.github/agents/*.agent.md</code>, selectable in the mode picker</li>
+<li>Each can set its own <code>tools</code>, <code>description</code>, and <code>model</code></li>
+</ul>
+<h3 id="-demo-a-cap-engineer--a-cds-reviewer">🖥️ DEMO: A CAP Engineer + a CDS Reviewer</h3>
+<ol>
+<li>Create <code>.github/agents/CAPEngineer.agent.md</code> (read/write tools) — a full-stack CAP engineer persona that follows the project conventions</li>
+<li>Create <code>.github/agents/CDSReviewer.agent.md</code> (read-only tools: <code>codebase</code>, <code>search</code>, <code>usages</code>, <code>problems</code>) — reviews services for validation, error handling, and model exposure</li>
+<li>Show both in the mode picker; give each a task and note how the tool list controls behavior</li>
+</ol>
+<details>
+<summary><h3 id="-hands-on-build-a-reviewer-agent-10-min">🧪 Hands-On: Build a Reviewer Agent (10 min)</h3></summary>
+
+<p>Create <code>.github/agents/CDSReviewer.agent.md</code> with read-only tools and a review persona, then ask it to review <code>srv/cat-service.cds</code> and the <code>submitOrder</code> handler.</p>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Created a custom agent that appears in the mode picker</li>
+<li>✅ The agent stayed in persona across the conversation</li>
+</ul>
+<hr>
+<h2 id="7-mcp-servers-the-sap-mcp-ecosystem-35-min">7. MCP Servers: The SAP MCP Ecosystem (35 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>MCP extends Copilot with external tools; configured in <code>.vscode/mcp.json</code></li>
+<li>SAP and the UI5 community publish <strong>official MCP servers</strong> that plug SAP tooling into Copilot</li>
+<li>These work in VS Code <strong>and</strong> Eclipse (Eclipse added MCP support in the plugin)</li>
+</ul>
+<h3 id="the-sap-mcp-servers">The SAP MCP Servers</h3>
+<table>
+<thead>
+<tr>
+<th>Server</th>
+<th>Layer</th>
+<th>What It Does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://www.npmjs.com/package/@sap-ux/fiori-mcp-server"><code>@sap-ux/fiori-mcp-server</code></a></td>
+<td>Fiori elements apps</td>
+<td>Generate/modify SAP Fiori elements UIs from prompts</td>
+</tr>
+<tr>
+<td><a href="https://www.npmjs.com/package/@ui5/mcp-server"><code>@ui5/mcp-server</code></a></td>
+<td>SAPUI5 / OpenUI5</td>
+<td>Scaffold UI5 apps, API references, guidelines, linting</td>
+</tr>
+<tr>
+<td><a href="https://www.npmjs.com/package/@cap-js/mcp-server"><code>@cap-js/mcp-server</code></a></td>
+<td>CAP backend</td>
+<td>Search the compiled CDS model and CAP docs</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-register-the-sap-mcp-servers--github-mcp">🖥️ DEMO: Register the SAP MCP Servers + GitHub MCP</h3>
+<p>Add to <code>.vscode/mcp.json</code>:</p>
+<pre><code class="language-json">{
+  &quot;servers&quot;: {
+    &quot;fiori-mcp&quot;: { &quot;type&quot;: &quot;stdio&quot;, &quot;command&quot;: &quot;npx&quot;, &quot;args&quot;: [&quot;--yes&quot;, &quot;@sap-ux/fiori-mcp-server@latest&quot;, &quot;fiori-mcp&quot;] },
+    &quot;ui5-mcp-server&quot;: { &quot;type&quot;: &quot;stdio&quot;, &quot;command&quot;: &quot;npx&quot;, &quot;args&quot;: [&quot;-y&quot;, &quot;@ui5/mcp-server&quot;] },
+    &quot;cds-mcp&quot;: { &quot;type&quot;: &quot;stdio&quot;, &quot;command&quot;: &quot;npx&quot;, &quot;args&quot;: [&quot;-y&quot;, &quot;@cap-js/mcp-server&quot;] },
+    &quot;github&quot;: { &quot;type&quot;: &quot;http&quot;, &quot;url&quot;: &quot;https://api.githubcopilot.com/mcp/&quot; }
+  }
+}
+</code></pre>
+<p>Then, in Agent mode: <code>Add a SAP Fiori elements list report app for the Books entity, with an object page for details.</code> — the CAP server grounds Copilot in the compiled model; the Fiori/UI5 servers scaffold a real, governed SAP UI.</p>
+<details>
+<summary><h3 id="-hands-on-sap-mcp--github-mcp-15-min">🧪 Hands-On: SAP MCP + GitHub MCP (15 min)</h3></summary>
+
+<p><strong>Exercise 1</strong>: Register the four servers and confirm via Command Palette → <code>MCP: List servers</code>.</p>
+<p><strong>Exercise 2</strong>: Generate a Fiori elements app on the Books entity; apply UI5 guidelines/linting via the UI5 server.</p>
+<p><strong>Exercise 3</strong>: With GitHub MCP, create an Issue for a follow-up enhancement from chat.</p>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ SAP + GitHub MCP servers registered and visible</li>
+<li>✅ Scaffolded a Fiori elements UI on the CAP service via MCP</li>
+<li>✅ Created a GitHub Issue from chat</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Where would an official SAP MCP server fit into your toolchain?</li>
+</ul>
+<hr>
+<h2 id="8-github-copilot-cli-the-agentic-terminal-30-min">8. GitHub Copilot CLI: The Agentic Terminal (30 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>The standalone <code>copilot</code> CLI is a full agent in your terminal — plan mode, file context, tool approval, <code>/review</code>, <code>/delegate</code></li>
+<li>It uses the <strong>same</strong> customization files from Sections 3–6 — instructions, agents, skills, MCP all transfer</li>
+<li>IDE-agnostic: works the same whether your team uses VS Code or Eclipse</li>
+</ul>
+<h3 id="-demo-the-agentic-terminal-on-the-cap-project">🖥️ DEMO: The Agentic Terminal on the CAP Project</h3>
+<ol>
+<li>From a standalone terminal in the bookshop repo: <code>copilot</code></li>
+<li>Ask: <code>Explain this CAP project and list all entities and services</code></li>
+<li>Plan mode (Shift+Tab): <code>Plan how to add pagination to the Books listing</code></li>
+<li>Build: <code>Implement the plan, following @srv/cat-service.cds</code></li>
+<li><code>/delegate Add tests for the new pagination and open a PR</code> — hands off to the cloud Coding Agent</li>
+</ol>
+<details>
+<summary><h3 id="-hands-on-try-the-cli-15-min">🧪 Hands-On: Try the CLI (15 min)</h3></summary>
+
+<p><strong>Exercise 1</strong>: Launch <code>copilot</code>, approve the trusted directory, ask a codebase-aware question.</p>
+<p><strong>Exercise 2</strong>: Use <code>@srv/cat-service.cds</code> file context; toggle plan mode with Shift+Tab.</p>
+<p><strong>Exercise 3 (bonus)</strong>: <code>/review</code> your changes, or <code>/delegate</code> a task to the Coding Agent.</p>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Launched <code>copilot</code>, asked a codebase-aware question, used <code>@file</code> context and plan mode</li>
+<li>✅ Used at least one slash command (<code>/review</code>, <code>/context</code>, <code>/agent</code>, or <code>/usage</code>)</li>
+</ul>
+<hr>
+<h2 id="9-cloud-agents-coding-agent--pr-review-20-min">9. Cloud Agents: Coding Agent + PR Review (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Coding Agent</strong>: assign a GitHub Issue to Copilot → it branches, implements, and opens a PR</li>
+<li><strong>PR Review Agent</strong>: add Copilot as a reviewer → AI-powered review comments</li>
+<li>Both are <strong>github.com</strong> features — available regardless of IDE, and delegable from <strong>VS Code and Eclipse</strong></li>
+<li>Your customization files (instructions, skills) apply even when Copilot codes autonomously</li>
+</ul>
+<h3 id="-demo-issue--coding-agent--pr--review">🖥️ DEMO: Issue → Coding Agent → PR → Review</h3>
+<ol>
+<li>Create/assign an Issue: <code>Add input validation to submitOrder (positive integer quantity, existing book)</code></li>
+<li>Assign <strong>Copilot</strong> → watch the Coding Agent branch, implement, and open a PR</li>
+<li>Add <strong>Copilot</strong> as a reviewer on the PR → walk through the AI review comments</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What branch-protection and review gates would you require before merging autonomous PRs?</li>
+</ul>
+<hr>
+<h2 id="10-abap-in-eclipse-the-full-agentic-stack-30-min">10. ABAP in Eclipse: The Full Agentic Stack (30 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>The <strong>GitHub Copilot for Eclipse</strong> plugin (v0.20.0+) now carries the full agentic stack: Ask/Agent/Plan modes, custom instructions, MCP, prompt files, skills, custom agents/subagents, and delegate-to-Coding-Agent — not just completions + chat</li>
+<li>Everything from Sections 2–9 has an Eclipse equivalent — we prove it over <strong>real ABAP sample source</strong> (backend-free)</li>
+<li>Honest caveats: the model is <strong>not ABAP-fine-tuned</strong>, and agent mode on ADT&#39;s generated/virtual files can have rough edges — use the latest plugin and review every edit</li>
+</ul>
+<h3 id="setup">Setup</h3>
+<p>Install Eclipse + ADT + the latest Copilot plugin (0.20.0+), then clone the ABAP samples (any folder) and import them (<code>File → Import → General → Projects from Folder or Archive</code>). See the <a href="../copilot-sap-developers/github-copilot-for-sap-developers-workshop.md#facilitator-setup-abap-in-eclipse">enablement workshop&#39;s Facilitator Setup</a> for the full walkthrough.</p>
+<pre><code class="language-bash">git clone https://github.com/SAP-samples/abap-cheat-sheets
+git clone https://github.com/SAP-samples/abap-platform-refscen-flight
+git clone https://github.com/SAP-samples/cloud-abap-rap
+</code></pre>
+<h3 id="-demo-the-stack-in-eclipse-over-abap">🖥️ DEMO: The Stack, in Eclipse, over ABAP</h3>
+<ol>
+<li><strong>Ask</strong> — open a class from <code>abap-platform-refscen-flight</code>: <code>What is this program doing? Draw the execution flow.</code></li>
+<li><strong>Custom instructions</strong> — add <code>.github/copilot-instructions.md</code> with ABAP conventions (modern 7.5+ syntax, check <code>sy-subrc</code>)</li>
+<li><strong>Agent mode</strong> — <code>Refactor this to modern ABAP 7.5+ syntax and add a helper method, following our conventions</code> — review each edit</li>
+<li><strong>Skills/prompts</strong> — reuse a <code>SKILL.md</code> for ABAP unit tests; note MCP also works here</li>
+</ol>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Ran Ask + Agent modes in Eclipse over ABAP sample source</li>
+<li>✅ A custom instruction shaped the ABAP output</li>
+<li>✅ Reviewed every edit (ABAP-fine-tuning + ADT virtual-file caveats respected)</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which of your ABAP workflows would benefit most from agent mode?</li>
+<li>What review gates (ATC, transport, code review) would you keep in place?</li>
+</ul>
+<hr>
+<h2 id="11-wrap-up-customization-hierarchy-recap--qa-10-min">11. Wrap-Up, Customization Hierarchy Recap &amp; Q&amp;A (10 min)</h2>
+<h3 id="the-full-stack--across-both-ides">The Full Stack — Across Both IDEs</h3>
+<pre><code>CLOUD AGENTS      Coding Agent (async PRs) + PR Review — github.com, any IDE
+MCP SERVERS       SAP Fiori / UI5 / CAP + GitHub — VS Code and Eclipse
+AGENT SKILLS      .github/skills/*/SKILL.md — auto-selected
+CUSTOM AGENTS     .github/agents/*.agent.md — personas
+PROMPT FILES      .github/prompts/*.prompt.md — reusable tasks
+CUSTOM INSTRUCTIONS  .github/copilot-instructions.md + scoped — always-on SAP standards
+CHAT MODES        Ask → Plan → Agent
+  CLI (§8): agentic terminal · Eclipse (§10): the same stack over ABAP
+</code></pre>
+<h3 id="key-takeaways">Key Takeaways</h3>
+<ol>
+<li>Modes are the foundation — Ask to understand, Plan to design, Agent to build</li>
+<li>Instructions encode SAP tribal knowledge — CAP and ABAP standards, always on</li>
+<li>Prompts, skills, and agents make SAP workflows repeatable and shareable</li>
+<li>MCP connects Copilot to the SAP ecosystem (Fiori, UI5, CAP) — in both IDEs</li>
+<li>Cloud agents close the loop from Issue to PR to review</li>
+<li>Eclipse now runs the full agentic stack over ABAP — with review kept essential</li>
+</ol>
+<h3 id="what-you-built-today">What You Built Today</h3>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.github/copilot-instructions.md</code> + <code>CAP.instructions.md</code></td>
+<td>§3</td>
+</tr>
+<tr>
+<td><code>.github/prompts/cap-tests.prompt.md</code></td>
+<td>§4</td>
+</tr>
+<tr>
+<td><code>.github/skills/cap-service/SKILL.md</code></td>
+<td>§5</td>
+</tr>
+<tr>
+<td><code>.github/agents/CDSReviewer.agent.md</code></td>
+<td>§6</td>
+</tr>
+<tr>
+<td><code>.vscode/mcp.json</code> with SAP + GitHub MCP</td>
+<td>§7</td>
+</tr>
+<tr>
+<td>CLI agentic session + a delegated PR</td>
+<td>§8–9</td>
+</tr>
+</tbody></table>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What&#39;s the one SAP workflow you&#39;d pilot first?</li>
+<li>Who are your internal champions to lead adoption?</li>
+</ul>
+<hr>
+<h2 id="appendix">Appendix</h2>
+<h3 id="key-urls">Key URLs</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GitHub Copilot documentation</td>
+<td><a href="https://docs.github.com/en/copilot">https://docs.github.com/en/copilot</a></td>
+</tr>
+<tr>
+<td>Copilot in the CLI</td>
+<td><a href="https://docs.github.com/en/copilot/github-copilot-in-the-cli">https://docs.github.com/en/copilot/github-copilot-in-the-cli</a></td>
+</tr>
+<tr>
+<td>Custom instructions</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/configure-custom-instructions">https://docs.github.com/en/copilot/how-tos/configure-custom-instructions</a></td>
+</tr>
+<tr>
+<td>Prompt files</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/copilot-prompts">https://docs.github.com/en/copilot/how-tos/copilot-prompts</a></td>
+</tr>
+<tr>
+<td>Agent Skills</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/agents/about-agent-skills">https://docs.github.com/en/copilot/concepts/agents/about-agent-skills</a></td>
+</tr>
+<tr>
+<td>MCP in Copilot</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/using-extensions/using-mcp-in-copilot">https://docs.github.com/en/copilot/how-tos/using-extensions/using-mcp-in-copilot</a></td>
+</tr>
+<tr>
+<td>Copilot Coding Agent</td>
+<td><a href="https://docs.github.com/en/copilot/using-github-copilot/using-copilot-coding-agent">https://docs.github.com/en/copilot/using-github-copilot/using-copilot-coding-agent</a></td>
+</tr>
+<tr>
+<td>GitHub Copilot for Eclipse (plugin repo)</td>
+<td><a href="https://github.com/microsoft/copilot-for-eclipse">https://github.com/microsoft/copilot-for-eclipse</a></td>
+</tr>
+<tr>
+<td>Copilot feature matrix (Eclipse)</td>
+<td><a href="https://docs.github.com/en/copilot/reference/copilot-feature-matrix?tool=eclipse">https://docs.github.com/en/copilot/reference/copilot-feature-matrix?tool=eclipse</a></td>
+</tr>
+<tr>
+<td>SAP CAP sample (capire/bookshop)</td>
+<td><a href="https://github.com/capire/bookshop">https://github.com/capire/bookshop</a></td>
+</tr>
+<tr>
+<td>SAP Cloud Application Programming Model docs</td>
+<td><a href="https://cap.cloud.sap/docs/">https://cap.cloud.sap/docs/</a></td>
+</tr>
+<tr>
+<td>SAP Fiori MCP server</td>
+<td><a href="https://www.npmjs.com/package/@sap-ux/fiori-mcp-server">https://www.npmjs.com/package/@sap-ux/fiori-mcp-server</a></td>
+</tr>
+<tr>
+<td>UI5 MCP server</td>
+<td><a href="https://www.npmjs.com/package/@ui5/mcp-server">https://www.npmjs.com/package/@ui5/mcp-server</a></td>
+</tr>
+<tr>
+<td>CAP MCP server</td>
+<td><a href="https://www.npmjs.com/package/@cap-js/mcp-server">https://www.npmjs.com/package/@cap-js/mcp-server</a></td>
+</tr>
+</tbody></table>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Copilot not active</td>
+<td>Check the extension is installed and signed in</td>
+</tr>
+<tr>
+<td>MCP server won&#39;t start</td>
+<td><code>MCP: List servers</code>, verify <code>chat.mcp.discovery.enabled</code> is <code>true</code>, verify Node.js</td>
+</tr>
+<tr>
+<td><code>cds watch</code> fails</td>
+<td>Run <code>npm install</code> and <code>npm install -g @sap/cds-dk</code>; check Node 18+</td>
+</tr>
+<tr>
+<td>Eclipse Copilot language server fails</td>
+<td>Sign in to GitHub first, then restart Eclipse</td>
+</tr>
+<tr>
+<td>ABAP agent mode error on ADT virtual files</td>
+<td>Use the latest plugin (0.20.0+); spot-check on ADT editors</td>
+</tr>
+</tbody></table>
+<h3 id="condensed-delivery-2-part-series">Condensed Delivery (2-Part Series)</h3>
+<ul>
+<li><strong>Part 1 (~2.5h)</strong> — §1–6: modes, context, instructions, prompts, skills, custom agents (all on CAP)</li>
+<li><strong>Part 2 (~2.5h)</strong> — §7–11: SAP MCP, CLI, cloud agents, ABAP in Eclipse, recap</li>
+</ul>
+<hr>
+<p><em>Workshop guide for the GitHub Copilot: Zero to Agents — SAP Edition</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module">document.querySelectorAll("pre").forEach(t=>{if(t.querySelector("code.language-mermaid"))return;const e=document.createElement("button");e.className="copy-btn",e.textContent="Copy",e.addEventListener("click",async()=>{const o=(t.querySelector("code")||t).textContent||"";await navigator.clipboard.writeText(o),e.textContent="Copied!",e.classList.add("copied"),setTimeout(()=>{e.textContent="Copy",e.classList.remove("copied")},2e3)}),t.appendChild(e)});</script>

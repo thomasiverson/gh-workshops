@@ -1,0 +1,351 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot: Zero to Agents — SAP Edition — Hands-On Lab Guide</title><link rel="stylesheet" href="/gh-workshops/_astro/index.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-zero-to-agents--sap-edition--hands-on-lab-guide">GitHub Copilot: Zero to Agents — SAP Edition — Hands-On Lab Guide</h1>
+<p><strong>Duration</strong>: ~2.5 hours of hands-on exercises (within the ~5h workshop / 2-part series)<br><strong>Format</strong>: Step-by-step lab exercises aligned to workshop sections<br><strong>Audience</strong>: SAP developers — ABAP, CAP/BTP, and integration engineers<br><strong>Samples</strong>: <a href="https://github.com/capire/bookshop">capire/bookshop</a> (CAP) · ABAP sample repos (optional Lab 4)</p>
+<blockquote>
+<p><strong>Companion documents</strong>: <a href="copilot-zero-to-agents-sap-workshop.md">Workshop Guide</a> · <a href="copilot-zero-to-agents-sap.slidev.md">Slides</a> · <a href="../copilot-sap-developers/github-copilot-for-sap-developers-workshop.md">SAP Developers enablement workshop</a>.</p>
+</blockquote>
+<blockquote>
+<p><strong>Important</strong>: Labs 1–3 run entirely in VS Code on the <strong>CAP bookshop</strong> — no live SAP backend. Lab 4 uses <strong>ABAP sample source</strong> in Eclipse (also backend-free); a live SAP system only adds execution/ATC steps.</p>
+</blockquote>
+<hr>
+<h2 id="lab-overview">Lab Overview</h2>
+<p>You will build the full Copilot customization stack on a real SAP CAP service, then (optionally) prove the same stack in Eclipse over ABAP. By the end you will have a <code>.github/</code> folder of instructions, prompts, skills, and agents, plus a <code>.vscode/mcp.json</code> wired to the SAP MCP servers.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>With Copilot Pro, Business, or Enterprise license</td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Latest stable (or Insiders)</td>
+</tr>
+<tr>
+<td><strong>Copilot Extensions</strong></td>
+<td>GitHub Copilot + Copilot Chat</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>Version 18 or higher</td>
+</tr>
+<tr>
+<td><strong>SAP CDS toolkit</strong></td>
+<td><code>npm install -g @sap/cds-dk</code></td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot CLI</strong></td>
+<td>For Lab 3 — see <a href="https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli">https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli</a></td>
+</tr>
+<tr>
+<td><strong>Eclipse (optional)</strong></td>
+<td>Eclipse 2024-09+ + ADT + Copilot plugin <strong>0.20.0+</strong> — for Lab 4</td>
+</tr>
+</tbody></table>
+<h3 id="setup-checkpoint">Setup Checkpoint</h3>
+<pre><code class="language-bash">git clone https://github.com/capire/bookshop
+cd bookshop
+npm install
+npm install -g @sap/cds-dk
+cds watch
+</code></pre>
+<ul>
+<li>✅ <code>cds watch</code> serves the OData service (default <a href="http://localhost:4004">http://localhost:4004</a>)</li>
+<li>✅ The in-memory database loads sample books and authors</li>
+<li>✅ Copilot extension active in VS Code</li>
+</ul>
+<h3 id="lab-summary">Lab Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Workshop Sections</th>
+<th>Duration</th>
+<th>Focus</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>§1b–2b</td>
+<td>30 min</td>
+<td>Modes, inline, context on CAP</td>
+</tr>
+<tr>
+<td>2</td>
+<td>§3–6</td>
+<td>50 min</td>
+<td>Instructions, prompts, skills, agents</td>
+</tr>
+<tr>
+<td>3</td>
+<td>§7–9</td>
+<td>40 min</td>
+<td>SAP MCP, CLI, cloud agents</td>
+</tr>
+<tr>
+<td>4 (optional)</td>
+<td>§10</td>
+<td>30 min</td>
+<td>ABAP in Eclipse — full stack</td>
+</tr>
+</tbody></table>
+<hr>
+<details>
+<summary><h2 id="lab-1-cap-foundations--modes-inline--context-30-min">Lab 1: CAP Foundations — Modes, Inline & Context (30 min)</h2></summary>
+
+<h3 id="exercise-11--inline-completion--chat-8-min">Exercise 1.1 — Inline Completion &amp; Chat (8 min)</h3>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: Open <code>srv/cat-service.cds</code> and its handler. Type a guiding comment:</p>
+<pre><code class="language-js">// Add a handler that lowercases the book title before returning results
+</code></pre>
+<p><strong>Step 2</strong>: Accept useful ghost text with <code>Tab</code>. Then select it and open inline chat (<code>Ctrl+I</code>):</p>
+<pre><code class="language-text">Make this handler async and guard against an empty result set.
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Accepted an inline completion from a comment</li>
+<li>✅ Refined the code with inline chat</li>
+</ul>
+<hr>
+<h3 id="exercise-12--ask-plan-agent-12-min">Exercise 1.2 — Ask, Plan, Agent (12 min)</h3>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1 — Ask</strong>:</p>
+<pre><code class="language-text">@workspace Explain this CAP project — the data model in db/, the services in srv/, and how they connect.
+</code></pre>
+<p><strong>Step 2 — Plan</strong>:</p>
+<pre><code class="language-text">I want to add a submitOrder(book, quantity) action to the CatalogService. Give me a step-by-step plan before any code.
+</code></pre>
+<p><strong>Step 3 — Agent</strong>:</p>
+<pre><code class="language-text">Implement step 1 from that plan.
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Got a codebase-aware answer from Ask</li>
+<li>✅ Plan mode proposed changes without editing files</li>
+<li>✅ Agent mode edited files and ran a command</li>
+</ul>
+<hr>
+<h3 id="exercise-13--context-targeting-10-min">Exercise 1.3 — Context Targeting (10 min)</h3>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: Ask vaguely: <code>How does the catalog service work?</code> — note the generic answer.</p>
+<p><strong>Step 2</strong>: Ask precisely:</p>
+<pre><code class="language-text">@workspace #file:srv/cat-service.cds How does the catalog service work, and where would I add validation?
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Observed the precision gain from <code>@workspace</code> + <code>#file</code></li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-2-the-customization-stack-50-min">Lab 2: The Customization Stack (50 min)</h2></summary>
+
+<h3 id="exercise-21--custom-instructions-12-min">Exercise 2.1 — Custom Instructions (12 min)</h3>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: Chat → <strong>Gear</strong> → <strong>Generate Agent Instructions</strong> → save to <code>.github/copilot-instructions.md</code>.</p>
+<p><strong>Step 2</strong>: Create <code>.github/instructions/CAP.instructions.md</code>:</p>
+<pre><code class="language-markdown">---
+applyTo: &quot;srv/**&quot;
+---
+# CAP Service Instructions
+- Expose entities through services — never query the db model directly.
+- Validation errors use the CAP req.error(code, message) API.
+- Prefer async/await in custom handlers.
+</code></pre>
+<p><strong>Step 3</strong>: Ask <code>Add a new action to the CatalogService</code> and confirm it follows the conventions.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Project + scoped instruction files exist</li>
+<li>✅ A new generation followed the conventions automatically</li>
+</ul>
+<hr>
+<h3 id="exercise-22--prompt-file-12-min">Exercise 2.2 — Prompt File (12 min)</h3>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: Create <code>.github/prompts/cap-tests.prompt.md</code>:</p>
+<pre><code class="language-yaml">---
+mode: &#39;agent&#39;
+description: &#39;Generate cds.test coverage for a CAP service action&#39;
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;editFiles&#39;, &#39;runCommands&#39;]
+---
+
+# CAP Test Coverage
+## Objective
+Generate tests for the target action using the CAP test runtime (cds.test).
+## Requirements
+- Cover the happy path and the out-of-stock edge case
+- Add a package.json test script if missing
+## Success Criteria
+- Tests run with `npm test` and pass
+</code></pre>
+<p><strong>Step 2</strong>: Run it against <code>submitOrder</code>, then <code>npm test</code>.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Prompt file ran a multi-step task</li>
+<li>✅ Tests were generated and run</li>
+</ul>
+<hr>
+<h3 id="exercise-23--agent-skill-13-min">Exercise 2.3 — Agent Skill (13 min)</h3>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: Create <code>.github/skills/cap-service/SKILL.md</code>:</p>
+<pre><code class="language-yaml">---
+name: cap-service
+description: Guide for adding CAP entities, services, and actions.
+  Use this when asked to add new entities, services, actions, or endpoints.
+---
+
+When adding to this CAP project:
+1. Define/extend the entity in db/ (CDS).
+2. Expose it via a service in srv/ — never the db model directly.
+3. Implement custom logic in the matching .js handler with async/await.
+4. Use req.error for validation failures.
+5. Add cds.test coverage including edge cases.
+</code></pre>
+<p><strong>Step 2</strong>: Prompt <code>Add a Warehouses entity with stock management</code> and watch Copilot auto-select the skill.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Copilot auto-selected the skill from your prompt (no manual invocation)</li>
+</ul>
+<hr>
+<h3 id="exercise-24--custom-agent-13-min">Exercise 2.4 — Custom Agent (13 min)</h3>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: Create <code>.github/agents/CDSReviewer.agent.md</code>:</p>
+<pre><code class="language-yaml">---
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;usages&#39;, &#39;problems&#39;]
+description: Review CAP services for validation, error handling, and model exposure
+model: Claude Sonnet 4
+---
+
+You are a CAP/CDS code reviewer. For each finding provide severity, file/line,
+and a concrete fix. Check: entities exposed only through services, req.error usage,
+async handlers, and cds.test coverage. Be direct — say &quot;change this to...&quot;
+</code></pre>
+<p><strong>Step 2</strong>: Select <strong>CDSReviewer</strong> in the mode picker and ask it to review <code>srv/cat-service.cds</code> and the <code>submitOrder</code> handler.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ The agent appears in the mode picker and stays in persona</li>
+<li>✅ It reports findings without editing files (read-only tools)</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-3-sap-mcp-cli--cloud-agents-40-min">Lab 3: SAP MCP, CLI & Cloud Agents (40 min)</h2></summary>
+
+<h3 id="exercise-31--the-sap-mcp-servers-15-min">Exercise 3.1 — The SAP MCP Servers (15 min)</h3>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: Create <code>.vscode/mcp.json</code>:</p>
+<pre><code class="language-json">{
+  &quot;servers&quot;: {
+    &quot;fiori-mcp&quot;: { &quot;type&quot;: &quot;stdio&quot;, &quot;command&quot;: &quot;npx&quot;, &quot;args&quot;: [&quot;--yes&quot;, &quot;@sap-ux/fiori-mcp-server@latest&quot;, &quot;fiori-mcp&quot;] },
+    &quot;ui5-mcp-server&quot;: { &quot;type&quot;: &quot;stdio&quot;, &quot;command&quot;: &quot;npx&quot;, &quot;args&quot;: [&quot;-y&quot;, &quot;@ui5/mcp-server&quot;] },
+    &quot;cds-mcp&quot;: { &quot;type&quot;: &quot;stdio&quot;, &quot;command&quot;: &quot;npx&quot;, &quot;args&quot;: [&quot;-y&quot;, &quot;@cap-js/mcp-server&quot;] },
+    &quot;github&quot;: { &quot;type&quot;: &quot;http&quot;, &quot;url&quot;: &quot;https://api.githubcopilot.com/mcp/&quot; }
+  }
+}
+</code></pre>
+<p><strong>Step 2</strong>: Command Palette → <code>MCP: List servers</code> to confirm.</p>
+<p><strong>Step 3</strong>: In Agent mode:</p>
+<pre><code class="language-text">Add a SAP Fiori elements list report app for the Books entity, with an object page for details.
+</code></pre>
+<p><strong>Step 4</strong>: Ask the UI5 server to review the app against UI5 guidelines and run the linter.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ SAP + GitHub MCP servers registered and visible</li>
+<li>✅ A Fiori elements app scaffolded on the CAP service</li>
+<li>✅ UI5 guidelines/linting applied via the UI5 server</li>
+</ul>
+<hr>
+<h3 id="exercise-32--the-agentic-cli-12-min">Exercise 3.2 — The Agentic CLI (12 min)</h3>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: From a standalone terminal in the bookshop repo, run <code>copilot</code> and approve the directory.</p>
+<p><strong>Step 2</strong>: Ask <code>Explain this CAP project and list all entities and services</code>.</p>
+<p><strong>Step 3</strong>: Plan mode (Shift+Tab): <code>Plan how to add pagination to the Books listing</code>. Then implement with <code>@srv/cat-service.cds</code> context.</p>
+<p><strong>Step 4 (bonus)</strong>: <code>/review</code> your changes, or <code>/delegate Add pagination tests and open a PR</code>.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Ran a codebase-aware CLI session with <code>@file</code> context and plan mode</li>
+<li>✅ Used at least one slash command</li>
+</ul>
+<hr>
+<h3 id="exercise-33--cloud-agents-13-min">Exercise 3.3 — Cloud Agents (13 min)</h3>
+<blockquote>
+<p><strong>Note</strong>: Requires Coding Agent enabled and branch protection on <code>main</code>.</p>
+</blockquote>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: Create an Issue: <code>Add input validation to submitOrder (positive integer quantity, existing book)</code>.</p>
+<p><strong>Step 2</strong>: Assign <strong>Copilot</strong> → watch it branch, implement, and open a PR.</p>
+<p><strong>Step 3</strong>: Add <strong>Copilot</strong> as a reviewer on the PR → review the AI comments. Confirm your <code>.github/</code> customization shaped the output.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Coding Agent produced a PR from an Issue</li>
+<li>✅ Copilot Code Review provided comments</li>
+<li>✅ Your instructions/skills influenced the autonomous output</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-4-optional-abap-in-eclipse--the-full-stack-30-min">Lab 4 (Optional): ABAP in Eclipse — The Full Stack (30 min)</h2></summary>
+
+<blockquote>
+<p><strong>Important</strong>: Uses ABAP <strong>sample source</strong> in Eclipse — backend-free. Requires Eclipse 2024-09+, ADT, and the Copilot plugin <strong>0.20.0+</strong>. The model is not ABAP-fine-tuned and agent mode on ADT&#39;s generated/virtual files can vary — review every edit.</p>
+</blockquote>
+<h3 id="setup">Setup</h3>
+<p>Install Eclipse + ADT + the latest Copilot plugin, then clone and import the ABAP samples (<code>File → Import → General → Projects from Folder or Archive</code>):</p>
+<pre><code class="language-bash">git clone https://github.com/SAP-samples/abap-cheat-sheets
+git clone https://github.com/SAP-samples/abap-platform-refscen-flight
+git clone https://github.com/SAP-samples/cloud-abap-rap
+</code></pre>
+<h3 id="exercise-41--ask--custom-instructions-10-min">Exercise 4.1 — Ask + Custom Instructions (10 min)</h3>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: From <code>abap-platform-refscen-flight</code>, open a class and ask:</p>
+<pre><code class="language-text">What is this program doing? Draw the execution flow.
+</code></pre>
+<p><strong>Step 2</strong>: Add <code>.github/copilot-instructions.md</code>:</p>
+<pre><code class="language-markdown"># ABAP conventions
+- Prefer modern ABAP 7.5+ syntax (inline declarations, constructor expressions).
+- Always check sy-subrc after a SELECT.
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Got an accurate explanation in Eclipse over ABAP source</li>
+<li>✅ A custom instruction is in place</li>
+</ul>
+<hr>
+<h3 id="exercise-42--agent-mode-12-min">Exercise 4.2 — Agent Mode (12 min)</h3>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: Select <strong>Agent</strong> mode and prompt:</p>
+<pre><code class="language-text">Refactor this class to modern ABAP 7.5+ syntax and add a helper method that validates its key input, following our conventions.
+</code></pre>
+<p><strong>Step 2</strong>: Review each proposed edit before accepting. Spot-check behavior on ADT&#39;s virtual files.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Agent mode proposed edits over ABAP source</li>
+<li>✅ Output reflected the custom instruction</li>
+<li>✅ You reviewed every change before accepting</li>
+</ul>
+<hr>
+<h3 id="exercise-43--optional-live-sap-system-execution--atc-8-min">Exercise 4.3 — (Optional, live SAP system) Execution &amp; ATC (8 min)</h3>
+<blockquote>
+<p><strong>Important</strong>: Requires a connected SAP system or ABAP trial.</p>
+</blockquote>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1</strong>: Comment-driven completion — <code>* TODO: select all flights for a carrier from SFLIGHT into an internal table</code>.</p>
+<p><strong>Step 2</strong>: <code>Optimize this SELECT and explain why</code>, then validate through ATC and code review.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Validated generated ABAP through normal review (ATC / transport / code review)</li>
+</ul>
+</details>
+
+<hr>
+<p><em>Lab guide for the GitHub Copilot: Zero to Agents — SAP Edition</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module">document.querySelectorAll("pre").forEach(t=>{if(t.querySelector("code.language-mermaid"))return;const e=document.createElement("button");e.className="copy-btn",e.textContent="Copy",e.addEventListener("click",async()=>{const o=(t.querySelector("code")||t).textContent||"";await navigator.clipboard.writeText(o),e.textContent="Copied!",e.classList.add("copied"),setTimeout(()=>{e.textContent="Copy",e.classList.remove("copied")},2e3)}),t.appendChild(e)});</script>
