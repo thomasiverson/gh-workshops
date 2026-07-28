@@ -89,8 +89,8 @@ cds watch
 <tr>
 <td>4 (optional)</td>
 <td>Section 3: ABAP in Eclipse</td>
-<td>25 min</td>
-<td>Setup + 3 core exercises over sample source + 1 optional (live system)</td>
+<td>30 min</td>
+<td>Setup + 4 core exercises over sample source + 1 optional (live system)</td>
 </tr>
 </tbody></table>
 <hr>
@@ -322,13 +322,13 @@ cds watch
 
 <hr>
 <details>
-<summary><h2 id="lab-4-optional-abap-in-eclipse-25-min">Lab 4 (Optional): ABAP in Eclipse (25 min)</h2></summary>
+<summary><h2 id="lab-4-optional-abap-in-eclipse-30-min">Lab 4 (Optional): ABAP in Eclipse (30 min)</h2></summary>
 
 <blockquote>
 <p><strong>Workshop Section</strong>: 3 — ABAP Support Overview</p>
 </blockquote>
 <blockquote>
-<p><strong>Important</strong>: Exercises 4.1–4.3 use <strong>ABAP source files</strong> from the SAP sample repositories, so Copilot can explain, modernize, and scaffold tests <strong>without a live SAP backend</strong>. Exercise 4.4 needs a connected SAP system (or ABAP trial). Do not improvise ABAP syntax — always work from the real sample source.</p>
+<p><strong>Important</strong>: Exercises 4.1–4.4 use <strong>ABAP source files</strong> from the SAP sample repositories, so Copilot can explain, modernize, test, and run Agent mode <strong>without a live SAP backend</strong>. Exercise 4.5 needs a connected SAP system (or ABAP trial). Do not improvise ABAP syntax — always work from the real sample source.</p>
 </blockquote>
 <h3 id="lab-4-setup--eclipse-adt-copilot--the-abap-samples">Lab 4 Setup — Eclipse, ADT, Copilot &amp; the ABAP Samples</h3>
 <blockquote>
@@ -342,7 +342,7 @@ cds watch
 </code></pre>
 <p>Select <strong>ABAP Development Tools</strong>, accept the license, and continue. When Eclipse warns about the unsigned <code>javax.wsdl</code> bundle, choose <strong>Trust Selected</strong> (do not enable &quot;always trust all&quot;). Restart Eclipse when prompted.</p>
 <p><strong>Step 3: Install the GitHub Copilot plugin</strong></p>
-<p>In Eclipse: <strong>Help → Eclipse Marketplace…</strong>, search <strong>&quot;GitHub Copilot&quot;</strong>, and install <strong>GitHub Copilot</strong> (and <strong>GitHub Copilot Chat</strong> if listed separately). Restart Eclipse.</p>
+<p>In Eclipse: <strong>Help → Eclipse Marketplace…</strong>, search <strong>&quot;GitHub Copilot&quot;</strong>, and install <strong>GitHub Copilot</strong> (a single plugin — chat is built in). Restart Eclipse. Use the <strong>latest version (0.20.0+)</strong> so Agent/Plan modes, MCP, prompt files, skills, and custom agents are available.</p>
 <p><img src="../assets/ghcp-eclipse-marketplace.jpg" alt="Eclipse Marketplace — GitHub Copilot plugin"></p>
 <p><strong>Step 4: Sign in and verify</strong></p>
 <p>Click the <strong>Copilot icon</strong> in the toolbar and authenticate with your GitHub account. Open Copilot Chat and send <code>Hello</code> — a reply confirms the Copilot language server is running.</p>
@@ -419,7 +419,31 @@ git clone https://github.com/SAP-samples/cloud-abap-rap
 <li>✅ You confirmed the tests match the class&#39;s public interface</li>
 </ul>
 <hr>
-<h3 id="exercise-44--optional-live-sap-system-comment-driven-generation--query-optimization-7-min">Exercise 4.4 — (Optional, live SAP system) Comment-Driven Generation &amp; Query Optimization (7 min)</h3>
+<h3 id="exercise-44--agent-mode--custom-instructions-6-min">Exercise 4.4 — Agent Mode &amp; Custom Instructions (6 min)</h3>
+<blockquote>
+<p><strong>Note</strong>: The Eclipse plugin (0.20.0+) supports Ask, Agent, and Plan modes, MCP, custom instructions, prompt files, skills, and custom agents. This exercise stays backend-free on the sample source. Agent behavior on ADT&#39;s generated/virtual files can vary — use the latest plugin and review every edit.</p>
+</blockquote>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Add a custom instruction</strong></p>
+<p>Create <code>.github/copilot-instructions.md</code> in the sample repo with a team rule, for example:</p>
+<pre><code class="language-markdown"># ABAP conventions
+- Prefer modern ABAP 7.5+ syntax (inline declarations, constructor expressions).
+- Always check sy-subrc after a SELECT.
+</code></pre>
+<p><strong>Step 2: Run Agent mode</strong></p>
+<p>Open the Copilot chat, select <strong>Agent</strong> mode, and prompt:</p>
+<pre><code class="language-text">Add a small helper method to this class that validates its key input, following our conventions.
+</code></pre>
+<p><strong>Step 3: Review and apply</strong></p>
+<p>Inspect each proposed edit before accepting. Confirm the result reflects your custom instruction.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Agent mode proposed edits (single or multi-file)</li>
+<li>✅ The output followed your <code>.github/copilot-instructions.md</code> rule</li>
+<li>✅ You reviewed every change before accepting</li>
+</ul>
+<hr>
+<h3 id="exercise-45--optional-live-sap-system-comment-driven-generation--query-optimization-7-min">Exercise 4.5 — (Optional, live SAP system) Comment-Driven Generation &amp; Query Optimization (7 min)</h3>
 <blockquote>
 <p><strong>Important</strong>: This exercise assumes a connected SAP system or ABAP trial and the ADT perspective. Skip it if you only have the sample source files.</p>
 </blockquote>

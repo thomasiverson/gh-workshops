@@ -200,7 +200,7 @@
 </thead>
 <tbody><tr>
 <td><strong>ABAP in Eclipse</strong></td>
-<td>Code completion and chat assistance via ADT (review required)</td>
+<td>Completions, Next Edit Suggestions, Ask/Agent/Plan modes, MCP, custom agents &amp; skills via ADT (review required)</td>
 </tr>
 <tr>
 <td><strong>SAP BTP / CAP / services</strong></td>
@@ -251,7 +251,8 @@
 <h2 id="3-abap-support-overview-20-min">3. ABAP Support Overview (20 min)</h2>
 <h3 id="key-points">Key Points</h3>
 <ul>
-<li>GitHub Copilot supports ABAP in Eclipse through ABAP Development Tools (ADT) — announced by GitHub in May 2025</li>
+<li>GitHub Copilot supports ABAP in Eclipse through ABAP Development Tools (ADT) — first shipped May 2025 and expanded substantially since</li>
+<li>The Eclipse plugin now includes the <strong>full agentic stack</strong>: Ask/Agent/Plan modes, custom instructions, MCP, prompt files, skills, custom agents, and delegate-to-Coding-Agent — not just completions + chat</li>
 <li>The current model is <strong>not specifically fine-tuned for ABAP</strong> — review remains essential</li>
 <li>Copilot is a productivity accelerator, not an autonomous SAP expert</li>
 <li>Setup is straightforward: a standard Eclipse Marketplace plugin install, then GitHub sign-in</li>
@@ -279,7 +280,7 @@
 </tr>
 <tr>
 <td>4. <strong>Enable ABAP support</strong></td>
-<td>No extra configuration needed on plugin version <strong>0.4.0+</strong> — Copilot works directly in ADT editors</td>
+<td>ABAP works in ADT editors from plugin <strong>0.4.0+</strong>; the agentic features (Agent/Plan modes, MCP, skills, custom agents) need a recent build — <strong>use the latest (0.20.0+, July 2026)</strong></td>
 </tr>
 <tr>
 <td>5. <strong>Start coding</strong></td>
@@ -326,6 +327,46 @@
 <td>Starting points for ABAP Unit tests</td>
 </tr>
 </tbody></table>
+<h3 id="agentic-capabilities-in-eclipse-plugin-0200-july-2026">Agentic Capabilities in Eclipse (plugin 0.20.0+, July 2026)</h3>
+<blockquote>
+<p><strong>Note</strong>: The Eclipse plugin has reached near-parity with VS Code on customization and agents. These work at the plugin level; on ABAP specifically, verify behavior on ADT&#39;s generated/virtual files and keep the review requirements below.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>What It Looks Like</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Agent &amp; Plan modes</strong></td>
+<td>Agent mode edits across files and runs commands; Plan mode proposes a step-by-step plan first</td>
+</tr>
+<tr>
+<td><strong>Next Edit Suggestions (NES)</strong></td>
+<td>Predicts your next edit location from recent changes</td>
+</tr>
+<tr>
+<td><strong>Custom instructions</strong></td>
+<td><code>.github/copilot-instructions.md</code> applies your team&#39;s ABAP/SAP standards automatically</td>
+</tr>
+<tr>
+<td><strong>Prompt files &amp; skills</strong></td>
+<td>Reusable <code>*.prompt.md</code> tasks and auto-selected <code>SKILL.md</code> procedures</td>
+</tr>
+<tr>
+<td><strong>Custom agents &amp; subagents</strong></td>
+<td><code>.agent.md</code> personas in the mode picker; isolated subagents for focused work</td>
+</tr>
+<tr>
+<td><strong>MCP servers</strong></td>
+<td>Connect external tools/services (stdio + remote, MCP registry) directly in Eclipse</td>
+</tr>
+<tr>
+<td><strong>Delegate to Coding Agent</strong></td>
+<td>Hand a task off to the cloud Coding Agent and track jobs from Eclipse</td>
+</tr>
+</tbody></table>
 <h3 id="limitations--review-requirements">Limitations &amp; Review Requirements</h3>
 <table>
 <thead>
@@ -347,6 +388,10 @@
 <td>Apply team standards and code review</td>
 </tr>
 <tr>
+<td>Agent mode on ADT&#39;s generated/virtual files can have rough edges</td>
+<td>Recent builds address custom-scheme handling; use the latest plugin and spot-check on ADT editors</td>
+</tr>
+<tr>
 <td>Requires Eclipse + ADT for the ABAP experience</td>
 <td>Use VS Code with SAP CAP for SAP-native work when ABAP tooling is unavailable</td>
 </tr>
@@ -361,21 +406,22 @@
 <li>Treat AI-generated ABAP as a <strong>draft</strong> — keep it inside existing transport, ATC (ABAP Test Cockpit), and code-review gates</li>
 <li>Establish a team standard for <em>when</em> Copilot output is acceptable (boilerplate, explanation) vs. <em>where</em> extra scrutiny is required (financial logic, authorizations)</li>
 </ul>
-<h3 id="looking-ahead-an-mcp-server-for-abap">Looking Ahead: An MCP Server for ABAP</h3>
+<h3 id="mcp-for-abap-built-in-support--community-servers">MCP for ABAP: Built-In Support + Community Servers</h3>
 <blockquote>
-<p><strong>Note</strong>: The community has begun building a <strong>Model Context Protocol (MCP) server for ABAP</strong> (Marian Zeis, <em>&quot;Finally: An MCP Server for ABAP&quot;</em>), letting Copilot in Eclipse pull in authoritative ABAP knowledge — including SAP documentation — on demand. Projects like <a href="https://github.com/aravindhkce/abap-copilot">aravindhkce/abap-copilot</a> go further, wiring Copilot into an integrated workflow spanning code, SAP GUI execution, debugging, ATC findings, runtime dumps, performance traces, and transports. These point to where SAP-connected agents are heading (Section 6).</p>
+<p><strong>Note</strong>: <strong>MCP is now built into the Eclipse plugin</strong> (Agent mode, stdio + remote servers, MCP registry), so you can wire external tools into Copilot directly in Eclipse. On top of that, the community has built a dedicated <strong>MCP server for ABAP</strong> (Marian Zeis, <em>&quot;Finally: An MCP Server for ABAP&quot;</em>) that pulls authoritative ABAP knowledge — including SAP documentation — into Copilot on demand. Projects like <a href="https://github.com/aravindhkce/abap-copilot">aravindhkce/abap-copilot</a> go further, wiring Copilot into an integrated workflow spanning code, SAP GUI execution, debugging, ATC findings, runtime dumps, performance traces, and transports. These point to where SAP-connected agents are heading (Section 6).</p>
 </blockquote>
 <blockquote>
 <p><strong>Important</strong>: If you do not have SAP or Eclipse available, do <strong>not</strong> improvise live ABAP syntax. Use the setup table above, screenshots, and official references. Authenticity protects credibility.</p>
 </blockquote>
 <h3 id="-demo-abap-in-eclipse--now-a-real-runnable-demo">🖥️ Demo: ABAP in Eclipse — now a real, runnable demo</h3>
 <p><img src="./assets/ghcp-eclipse-marketplace.jpg" alt="Eclipse Marketplace — GitHub Copilot plugin"></p>
-<p>With Eclipse + ADT + the Copilot plugin and the SAP ABAP sample repos imported (see <a href="#facilitator-setup-abap-in-eclipse">Facilitator Setup: ABAP in Eclipse</a> in the Appendix), most of this demo runs <strong>live over real ABAP source — no live SAP backend required</strong>.</p>
+<p>With Eclipse + ADT + the Copilot plugin and the SAP ABAP sample repos imported (see <a href="#facilitator-setup-abap-in-eclipse">Facilitator Setup: ABAP in Eclipse</a> in the Appendix), most of this demo runs <strong>live over real ABAP source — no live SAP backend required</strong>. The plugin now supports <strong>Ask, Agent, and Plan modes</strong>, so you can go beyond chat.</p>
 <p><strong>Credible live without a backend</strong> (reasoning over sample source):</p>
 <ol>
-<li><strong>Explain</strong> — open a class from <code>abap-platform-refscen-flight</code> and ask <code>What is this program doing? Draw the execution flow.</code></li>
+<li><strong>Explain (Ask)</strong> — open a class from <code>abap-platform-refscen-flight</code> and ask <code>What is this program doing? Draw the execution flow.</code></li>
 <li><strong>Modernize</strong> — open a file from <code>abap-cheat-sheets</code> and ask <code>Refactor this using modern ABAP 7.5+ syntax, then explain each change.</code></li>
 <li><strong>Test</strong> — on a class with business logic ask <code>Generate ABAP Unit tests and identify edge cases.</code></li>
+<li><strong>Agent mode</strong> — ask Copilot to apply a small refactor across the class and review the edits before accepting (spot-check behavior on ADT&#39;s virtual files).</li>
 </ol>
 <p><strong>Needs a live SAP system</strong> (show as screenshots if unavailable):</p>
 <ol>
@@ -771,6 +817,14 @@ cds watch
 <td><a href="https://marketplace.eclipse.org/content/github-copilot">https://marketplace.eclipse.org/content/github-copilot</a></td>
 </tr>
 <tr>
+<td>GitHub Copilot for Eclipse (plugin repo, README + CHANGELOG)</td>
+<td><a href="https://github.com/microsoft/copilot-for-eclipse">https://github.com/microsoft/copilot-for-eclipse</a></td>
+</tr>
+<tr>
+<td>Copilot feature matrix (Eclipse)</td>
+<td><a href="https://docs.github.com/en/copilot/reference/copilot-feature-matrix?tool=eclipse">https://docs.github.com/en/copilot/reference/copilot-feature-matrix?tool=eclipse</a></td>
+</tr>
+<tr>
 <td>SAP ABAP Development Tools (ADT)</td>
 <td><a href="https://tools.hana.ondemand.com/">https://tools.hana.ondemand.com/</a></td>
 </tr>
@@ -908,7 +962,7 @@ cds watch
 </tr>
 <tr>
 <td>3. Copilot</td>
-<td><strong>Help → Eclipse Marketplace…</strong> → search <strong>&quot;GitHub Copilot&quot;</strong> → install Copilot (+ Copilot Chat) → restart</td>
+<td><strong>Help → Eclipse Marketplace…</strong> → search <strong>&quot;GitHub Copilot&quot;</strong> → install (use the latest, <strong>0.20.0+</strong>, for Agent mode &amp; MCP) → restart</td>
 </tr>
 <tr>
 <td>4. Sign in</td>
