@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
 <style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
 </style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-for-sap-developers-workshop">GitHub Copilot for SAP Developers Workshop</h1>
-<p><strong>Duration</strong>: ~2 hours 30 minutes (150 min)<br><strong>Format</strong>: Presentation + Live Demo + Discussion<br><strong>Audience</strong>: SAP developers, technical leads, architects, BTP/extension developers, and integration engineers<br><strong>Focus</strong>: Where GitHub Copilot fits in SAP development today — ABAP in Eclipse, SAP-adjacent workflows in VS Code, and the path toward SAP-connected agents<br><strong>Reference repos</strong>: <a href="https://github.com/capire/bookshop">capire/bookshop</a> (CAP bookshop — runs locally, no live backend) · <a href="https://marketplace.eclipse.org/content/github-copilot">Eclipse Marketplace: GitHub Copilot</a> (ABAP-in-Eclipse track)<br><strong>Companion document</strong>: <a href="github-copilot-for-sap-original-outline.md">Original Outline</a> (source of truth for design intent and facilitator strategy)</p>
+<p><strong>Duration</strong>: ~2 hours 30 minutes (150 min)<br><strong>Format</strong>: Presentation + Live Demo + Discussion<br><strong>Audience</strong>: SAP developers, technical leads, architects, BTP/extension developers, and integration engineers<br><strong>Focus</strong>: Where GitHub Copilot fits in SAP development today — ABAP in Eclipse, SAP-adjacent workflows in VS Code, and the path toward SAP-connected agents<br><strong>Reference repos</strong>: <a href="https://github.com/capire/bookshop">capire/bookshop</a> (CAP bookshop — runs locally, no live backend) · <a href="https://marketplace.eclipse.org/content/github-copilot">Eclipse Marketplace: GitHub Copilot</a> (ABAP-in-Eclipse track)<br><strong>Companion documents</strong>: <a href="github-copilot-for-sap-developers.slidev.md">Slides</a> · <a href="github-copilot-for-sap-developers-LAB.md">Lab Guide</a></p>
 <blockquote>
 <p><strong>Note</strong>: This workshop is intentionally designed to <strong>avoid a fake ABAP hands-on demo</strong> when no live SAP development environment is available. It builds credibility by showing the supported ABAP story (now a real, documented integration), demoing genuinely SAP-native workflows live in VS Code with the SAP CAP framework, and separating present reality from future-state architecture.</p>
 </blockquote>
@@ -49,11 +49,11 @@
 </tr>
 <tr>
 <td><strong>Eclipse (optional)</strong></td>
-<td>Eclipse IDE 2024-09 or newer (2025-03 recommended) + ABAP Development Tools (ADT) + GitHub Copilot plugin — only for the optional ABAP-in-Eclipse track</td>
+<td>Eclipse IDE 2024-09 or newer (2025-03 recommended) + ABAP Development Tools (ADT) + GitHub Copilot plugin + the three ABAP sample repos — for the optional ABAP-in-Eclipse track (see Facilitator Setup in the Appendix)</td>
 </tr>
 </tbody></table>
 <blockquote>
-<p><strong>Important</strong>: The ABAP-in-Eclipse integration is <strong>real and documented</strong> (announced by GitHub, May 2025). If you have a live SAP system, you can demo it authentically. If you do <strong>not</strong> have access to a live SAP/ABAP system, do not improvise ABAP syntax live — use screenshots and the documented walkthrough in Section 3. The live demo center of gravity remains Visual Studio Code with the SAP CAP framework.</p>
+<p><strong>Important</strong>: The ABAP-in-Eclipse integration is <strong>real and documented</strong> (announced by GitHub, May 2025). With the ABAP sample repos imported, you can demo Copilot <strong>explaining, modernizing, and testing real ABAP source without a live SAP backend</strong>; a live SAP system additionally unlocks execution, ATC, and live-data steps. Do not improvise ABAP syntax — always work from the sample source. The live demo center of gravity remains Visual Studio Code with the SAP CAP framework.</p>
 </blockquote>
 <h3 id="reference-environments">Reference Environments</h3>
 <p>This workshop supports two complementary tracks. Pick based on what you can show authentically:</p>
@@ -75,8 +75,8 @@
 <tr>
 <td><strong>B — ABAP in Eclipse</strong> (optional)</td>
 <td>Eclipse + ADT + Copilot plugin</td>
-<td>Live SAP system or ABAP trial</td>
-<td>Only if you have a real ABAP system to connect to</td>
+<td>ABAP sample repos (live SAP system optional)</td>
+<td>Show ABAP explain/modernize/test over real source; a live system adds execution, ATC &amp; live data</td>
 </tr>
 </tbody></table>
 <blockquote>
@@ -368,14 +368,23 @@
 <blockquote>
 <p><strong>Important</strong>: If you do not have SAP or Eclipse available, do <strong>not</strong> improvise live ABAP syntax. Use the setup table above, screenshots, and official references. Authenticity protects credibility.</p>
 </blockquote>
-<h3 id="-demo-abap-in-eclipse-walkthrough-live-if-you-have-a-system-otherwise-screenshots">🖥️ Demo: ABAP-in-Eclipse walkthrough (live if you have a system, otherwise screenshots)</h3>
+<h3 id="-demo-abap-in-eclipse--now-a-real-runnable-demo">🖥️ Demo: ABAP in Eclipse — now a real, runnable demo</h3>
 <p><img src="./assets/ghcp-eclipse-marketplace.jpg" alt="Eclipse Marketplace — GitHub Copilot plugin"></p>
+<p>With Eclipse + ADT + the Copilot plugin and the SAP ABAP sample repos imported (see <a href="#facilitator-setup-abap-in-eclipse">Facilitator Setup: ABAP in Eclipse</a> in the Appendix), most of this demo runs <strong>live over real ABAP source — no live SAP backend required</strong>.</p>
+<p><strong>Credible live without a backend</strong> (reasoning over sample source):</p>
 <ol>
-<li>Show <strong>Help → Eclipse Marketplace</strong> with the GitHub Copilot plugin and the toolbar sign-in</li>
-<li>In an ABAP editor, type <code>* TODO: select all flights for a given carrier from SFLIGHT</code> and show the completion</li>
-<li>Open Copilot chat and ask <code>Optimize this SELECT query and explain why</code></li>
-<li>Reiterate the review-required and governance message</li>
+<li><strong>Explain</strong> — open a class from <code>abap-platform-refscen-flight</code> and ask <code>What is this program doing? Draw the execution flow.</code></li>
+<li><strong>Modernize</strong> — open a file from <code>abap-cheat-sheets</code> and ask <code>Refactor this using modern ABAP 7.5+ syntax, then explain each change.</code></li>
+<li><strong>Test</strong> — on a class with business logic ask <code>Generate ABAP Unit tests and identify edge cases.</code></li>
 </ol>
+<p><strong>Needs a live SAP system</strong> (show as screenshots if unavailable):</p>
+<ol>
+<li>Comment-driven completion — <code>* TODO: select all flights for a given carrier from SFLIGHT into an internal table</code></li>
+<li><code>Optimize this SELECT query and explain why</code> — then validate through ATC and code review</li>
+</ol>
+<blockquote>
+<p><strong>Important</strong>: Reiterate the review-required and governance message — treat generated ABAP as a draft inside transport, ATC, and code-review gates.</p>
+</blockquote>
 <h3 id="discussion-points">Discussion Points</h3>
 <ul>
 <li>How much legacy ABAP does your team maintain, and how well is it documented?</li>
@@ -880,6 +889,52 @@ cds watch
 <td><a href="https://www.youtube.com/@SAPonAzure">https://www.youtube.com/@SAPonAzure</a></td>
 </tr>
 </tbody></table>
+<h3 id="facilitator-setup-abap-in-eclipse">Facilitator Setup: ABAP in Eclipse</h3>
+<p>Complete this once before delivering the optional Track B (ABAP-in-Eclipse) demo. It assumes no prior Eclipse experience.</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. Eclipse</td>
+<td>Install <strong>Eclipse IDE for Java Developers</strong> from <a href="https://www.eclipse.org/downloads/packages/">https://www.eclipse.org/downloads/packages/</a></td>
+</tr>
+<tr>
+<td>2. ADT</td>
+<td><strong>Help → Install New Software…</strong> → add <code>https://tools.hana.ondemand.com/latest</code> → install <strong>ABAP Development Tools</strong> → <strong>Trust Selected</strong> for the unsigned <code>javax.wsdl</code> bundle → restart</td>
+</tr>
+<tr>
+<td>3. Copilot</td>
+<td><strong>Help → Eclipse Marketplace…</strong> → search <strong>&quot;GitHub Copilot&quot;</strong> → install Copilot (+ Copilot Chat) → restart</td>
+</tr>
+<tr>
+<td>4. Sign in</td>
+<td>Click the <strong>Copilot icon</strong>, authenticate with GitHub, then verify with a <code>Hello</code> chat prompt</td>
+</tr>
+<tr>
+<td>5. Clone</td>
+<td>Clone the three ABAP samples into any folder (see below)</td>
+</tr>
+<tr>
+<td>6. Import</td>
+<td><strong>File → Import… → General → Projects from Folder or Archive</strong> (fallback: <strong>File System</strong>) for each repo</td>
+</tr>
+</tbody></table>
+<p>Clone the ABAP sample repos (attendees may choose any folder):</p>
+<pre><code class="language-bash">mkdir sap-samples &amp;&amp; cd sap-samples
+git clone https://github.com/SAP-samples/abap-cheat-sheets
+git clone https://github.com/SAP-samples/abap-platform-refscen-flight
+git clone https://github.com/SAP-samples/cloud-abap-rap
+</code></pre>
+<blockquote>
+<p><strong>Note</strong>: If Copilot Chat reports a language-server error on first launch, sign in to GitHub and restart Eclipse — it typically clears once authentication completes.</p>
+</blockquote>
+<blockquote>
+<p><strong>Note</strong>: The explain / modernize / test-generation demos run over the imported <strong>source files</strong>, so no live SAP backend is required. A connected SAP system is only needed for execution, ATC findings, and live-data operations.</p>
+</blockquote>
 <h3 id="pre-delivery-checklist">Pre-Delivery Checklist</h3>
 <ul>
 <li>✅ Confirm whether a live SAP/Eclipse environment is available — if not, use screenshots for ABAP</li>
@@ -907,18 +962,26 @@ cds watch
 </code></pre>
 <pre><code class="language-text">Summarize the changes I made, list the key risks, and suggest review comments.
 </code></pre>
-<p>ABAP-in-Eclipse prompts (use with a live SAP system):</p>
+<p>ABAP-in-Eclipse prompts (run over the imported sample source — no live SAP backend needed):</p>
+<pre><code class="language-text">What is this program doing? Draw the execution flow.
+</code></pre>
+<pre><code class="language-text">Refactor this using modern ABAP 7.5+ syntax, then explain every change you made.
+</code></pre>
+<pre><code class="language-text">Generate ABAP Unit tests for this class and identify edge cases that should be tested.
+</code></pre>
+<pre><code class="language-text">Explain what this legacy ABAP report does and outline its main processing steps.
+</code></pre>
+<p>ABAP-in-Eclipse prompts (require a live SAP system):</p>
 <pre><code class="language-text">* TODO: select all flights for a given carrier from SFLIGHT into an internal table
 </code></pre>
 <pre><code class="language-text">Optimize this SELECT query and explain why it is more efficient.
-</code></pre>
-<pre><code class="language-text">Explain what this legacy ABAP report does and outline its main processing steps.
 </code></pre>
 <h3 id="backup-plan">Backup Plan</h3>
 <ul>
 <li><strong>If a demo prompt produces a weak result</strong>: Acknowledge it openly, refine the prompt with more context, and use it as a teaching moment about context engineering.</li>
 <li><strong>If Copilot is unavailable or rate-limited</strong>: Fall back to pre-captured screenshots of each demo step.</li>
-<li><strong>If the audience pushes for live ABAP</strong>: Redirect to the supported-capability overview and offer an architecture or pilot session as the authentic next step.</li>
+<li><strong>If the Eclipse Copilot language server fails to start</strong>: Sign in to GitHub first, then restart Eclipse — the error usually clears once authentication completes.</li>
+<li><strong>If the audience pushes for live ABAP execution</strong>: Show the explain / modernize / test demos over the sample source (no backend needed), then redirect execution-dependent asks (ATC, transports, live data) to an architecture or pilot session as the authentic next step.</li>
 </ul>
 <h3 id="condensed-90-minute-version">Condensed 90-Minute Version</h3>
 <table>

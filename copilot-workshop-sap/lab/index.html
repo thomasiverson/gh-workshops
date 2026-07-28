@@ -4,10 +4,10 @@
 </style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-for-sap-developers--hands-on-lab-guide">GitHub Copilot for SAP Developers — Hands-On Lab Guide</h1>
 <p><strong>Duration</strong>: ~60 minutes of hands-on exercises (within a ~2.5-hour workshop)<br><strong>Format</strong>: Step-by-step lab exercises aligned to workshop sections<br><strong>Audience</strong>: SAP developers, BTP/extension developers, and integration engineers<br><strong>Sample</strong>: <a href="https://github.com/capire/bookshop">capire/bookshop</a> — the SAP CAP bookshop, which runs locally with an in-memory database (no live SAP backend required)</p>
 <blockquote>
-<p><strong>Companion documents</strong>: <a href="github-copilot-for-sap-developers-workshop.md">Workshop Guide</a> · <a href="github-copilot-for-sap-developers.slidev.md">Slides</a> · <a href="github-copilot-for-sap-original-outline.md">Original Outline</a>. This lab can be completed standalone.</p>
+<p><strong>Companion documents</strong>: <a href="github-copilot-for-sap-developers-workshop.md">Workshop Guide</a> · <a href="github-copilot-for-sap-developers.slidev.md">Slides</a>. This lab can be completed standalone.</p>
 </blockquote>
 <blockquote>
-<p><strong>Important</strong>: Labs 1–3 use the <strong>SAP Cloud Application Programming Model (CAP)</strong> bookshop sample — a first-party SAP framework that runs entirely on your laptop, so it is <strong>genuinely SAP</strong> yet needs no S/4HANA backend. The optional Lab 4 covers the real ABAP-in-Eclipse experience and requires a live SAP system.</p>
+<p><strong>Important</strong>: Labs 1–3 use the <strong>SAP Cloud Application Programming Model (CAP)</strong> bookshop sample — a first-party SAP framework that runs entirely on your laptop, so it is <strong>genuinely SAP</strong> yet needs no S/4HANA backend. The optional Lab 4 covers the real ABAP-in-Eclipse experience over SAP sample source — no live SAP backend required, though a connected SAP system unlocks the advanced steps.</p>
 </blockquote>
 <hr>
 <h2 id="lab-overview">Lab Overview</h2>
@@ -89,8 +89,8 @@ cds watch
 <tr>
 <td>4 (optional)</td>
 <td>Section 3: ABAP in Eclipse</td>
-<td>15 min</td>
-<td>Requires a live SAP system</td>
+<td>25 min</td>
+<td>Setup + 3 core exercises over sample source + 1 optional (live system)</td>
 </tr>
 </tbody></table>
 <hr>
@@ -322,52 +322,122 @@ cds watch
 
 <hr>
 <details>
-<summary><h2 id="lab-4-optional-abap-in-eclipse-15-min--requires-a-live-sap-system">Lab 4 (Optional): ABAP in Eclipse (15 min) — requires a live SAP system</h2></summary>
+<summary><h2 id="lab-4-optional-abap-in-eclipse-25-min">Lab 4 (Optional): ABAP in Eclipse (25 min)</h2></summary>
 
 <blockquote>
 <p><strong>Workshop Section</strong>: 3 — ABAP Support Overview</p>
 </blockquote>
 <blockquote>
-<p><strong>Important</strong>: This lab requires Eclipse IDE (2024-09 or newer), ABAP Development Tools (ADT), and a connection to a live SAP system or ABAP trial. Skip it if you do not have a real ABAP environment — do not improvise ABAP syntax without one.</p>
+<p><strong>Important</strong>: Exercises 4.1–4.3 use <strong>ABAP source files</strong> from the SAP sample repositories, so Copilot can explain, modernize, and scaffold tests <strong>without a live SAP backend</strong>. Exercise 4.4 needs a connected SAP system (or ABAP trial). Do not improvise ABAP syntax — always work from the real sample source.</p>
 </blockquote>
-<h3 id="exercise-41--install-the-copilot-plugin-5-min">Exercise 4.1 — Install the Copilot Plugin (5 min)</h3>
-<p><strong>Objective</strong>: Add GitHub Copilot to Eclipse and authenticate.</p>
-<p><strong>Steps</strong></p>
-<p><strong>Step 1: Install from the Marketplace</strong></p>
-<p>In Eclipse: <strong>Help → Eclipse Marketplace</strong>, search <strong>&quot;GitHub Copilot&quot;</strong>, install, and restart Eclipse.</p>
+<h3 id="lab-4-setup--eclipse-adt-copilot--the-abap-samples">Lab 4 Setup — Eclipse, ADT, Copilot &amp; the ABAP Samples</h3>
+<blockquote>
+<p><strong>Note</strong>: This setup assumes <strong>no prior Eclipse experience</strong>. If your facilitator pre-installed the environment, confirm each checkpoint and skip ahead.</p>
+</blockquote>
+<p><strong>Step 1: Install Eclipse</strong></p>
+<p>Download and install <strong>Eclipse IDE for Java Developers</strong> from <a href="https://www.eclipse.org/downloads/packages/">https://www.eclipse.org/downloads/packages/</a>. Launch it and choose any workspace folder when prompted.</p>
+<p><strong>Step 2: Install ABAP Development Tools (ADT)</strong></p>
+<p>In Eclipse: <strong>Help → Install New Software…</strong>, then in <strong>Work with</strong> enter the ADT update site:</p>
+<pre><code class="language-text">https://tools.hana.ondemand.com/latest
+</code></pre>
+<p>Select <strong>ABAP Development Tools</strong>, accept the license, and continue. When Eclipse warns about the unsigned <code>javax.wsdl</code> bundle, choose <strong>Trust Selected</strong> (do not enable &quot;always trust all&quot;). Restart Eclipse when prompted.</p>
+<p><strong>Step 3: Install the GitHub Copilot plugin</strong></p>
+<p>In Eclipse: <strong>Help → Eclipse Marketplace…</strong>, search <strong>&quot;GitHub Copilot&quot;</strong>, and install <strong>GitHub Copilot</strong> (and <strong>GitHub Copilot Chat</strong> if listed separately). Restart Eclipse.</p>
 <p><img src="../assets/ghcp-eclipse-marketplace.jpg" alt="Eclipse Marketplace — GitHub Copilot plugin"></p>
-<p><strong>Step 2: Sign in</strong></p>
-<p>Click the <strong>Copilot icon</strong> in the toolbar and authenticate with your GitHub account.</p>
+<p><strong>Step 4: Sign in and verify</strong></p>
+<p>Click the <strong>Copilot icon</strong> in the toolbar and authenticate with your GitHub account. Open Copilot Chat and send <code>Hello</code> — a reply confirms the Copilot language server is running.</p>
+<blockquote>
+<p><strong>Note</strong>: If chat reports a language-server error, sign in first and restart Eclipse — the error usually clears once authentication completes.</p>
+</blockquote>
+<p><strong>Step 5: Clone the three ABAP sample repos</strong></p>
+<p>Pick any folder you like (for example a <code>sap-samples</code> directory) and clone all three:</p>
+<pre><code class="language-bash">mkdir sap-samples &amp;&amp; cd sap-samples
+git clone https://github.com/SAP-samples/abap-cheat-sheets
+git clone https://github.com/SAP-samples/abap-platform-refscen-flight
+git clone https://github.com/SAP-samples/cloud-abap-rap
+</code></pre>
+<p><strong>Step 6: Add the repos to your Eclipse workspace</strong></p>
+<p>In Eclipse: <strong>File → Import… → General → Projects from Folder or Archive</strong>, click <strong>Directory…</strong>, and select a cloned repo folder. If Eclipse detects a project, select it and click <strong>Finish</strong>. If a repo has no Eclipse project metadata, use <strong>File → Import… → General → File System</strong> and import the folder instead — Copilot can still read and reason over the ABAP source either way. Repeat for all three repos.</p>
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
-<li>✅ The GitHub Copilot plugin is installed (version 0.4.0+)</li>
-<li>✅ You are signed in and the Copilot status shows active</li>
+<li>✅ Eclipse, ADT, and the GitHub Copilot plugin are installed and you are signed in</li>
+<li>✅ Copilot Chat responds to a <code>Hello</code> prompt</li>
+<li>✅ All three sample repos are visible in the Eclipse workspace</li>
 </ul>
 <hr>
-<h3 id="exercise-42--comment-driven-abap-generation-5-min">Exercise 4.2 — Comment-Driven ABAP Generation (5 min)</h3>
-<p><strong>Objective</strong>: Trigger a context-aware ABAP suggestion from a comment.</p>
+<h3 id="exercise-41--explain-unfamiliar-abap-6-min">Exercise 4.1 — Explain Unfamiliar ABAP (6 min)</h3>
+<p><strong>Objective</strong>: Use Copilot to understand an unfamiliar SAP application quickly.</p>
 <p><strong>Steps</strong></p>
-<p><strong>Step 1: Open an ABAP source</strong> in an ADT project.</p>
-<p><strong>Step 2: Type a guiding comment</strong> and let Copilot suggest:</p>
+<p><strong>Step 1: Open a source file</strong></p>
+<p>From <code>abap-platform-refscen-flight</code>, open an ABAP class, report, or behavior definition.</p>
+<p><strong>Step 2: Ask Copilot to explain it</strong></p>
+<pre><code class="language-text">What is this program doing?
+</code></pre>
+<p><strong>Step 3: Trace the flow and connect it to SAP</strong></p>
+<pre><code class="language-text">Draw the execution flow, then explain it to a developer who knows C# but not ABAP.
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Copilot produced an accurate plain-English summary</li>
+<li>✅ You received an execution-flow description</li>
+<li>✅ The explanation bridged ABAP concepts to familiar ones</li>
+</ul>
+<hr>
+<h3 id="exercise-42--modernize-legacy-abap-6-min">Exercise 4.2 — Modernize Legacy ABAP (6 min)</h3>
+<p><strong>Objective</strong>: Use Copilot to modernize older ABAP syntax and learn the changes.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Open a source file</strong></p>
+<p>From <code>abap-cheat-sheets</code>, open a class that demonstrates classic ABAP statements.</p>
+<p><strong>Step 2: Ask for a modernized version</strong></p>
+<pre><code class="language-text">Refactor this using modern ABAP 7.5+ syntax.
+</code></pre>
+<p><strong>Step 3: Ask Copilot to justify the changes</strong></p>
+<pre><code class="language-text">Explain every modernization change you made and why it is an improvement.
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Copilot produced a modern ABAP 7.5+ rewrite (inline declarations, constructor expressions, etc.)</li>
+<li>✅ Each change was explained</li>
+<li>✅ You reviewed the result for correctness before trusting it</li>
+</ul>
+<hr>
+<h3 id="exercise-43--generate-abap-unit-tests-6-min">Exercise 4.3 — Generate ABAP Unit Tests (6 min)</h3>
+<p><strong>Objective</strong>: Use Copilot to scaffold test coverage and surface edge cases.</p>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Open a class with business logic</strong></p>
+<p>Use a class from <code>abap-platform-refscen-flight</code> or <code>cloud-abap-rap</code>.</p>
+<p><strong>Step 2: Generate tests</strong></p>
+<pre><code class="language-text">Generate ABAP Unit tests for this class.
+</code></pre>
+<p><strong>Step 3: Expand coverage</strong></p>
+<pre><code class="language-text">Identify edge cases that should be tested and explain why each one matters.
+</code></pre>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ An ABAP Unit test scaffold was generated</li>
+<li>✅ Copilot listed meaningful edge cases</li>
+<li>✅ You confirmed the tests match the class&#39;s public interface</li>
+</ul>
+<hr>
+<h3 id="exercise-44--optional-live-sap-system-comment-driven-generation--query-optimization-7-min">Exercise 4.4 — (Optional, live SAP system) Comment-Driven Generation &amp; Query Optimization (7 min)</h3>
+<blockquote>
+<p><strong>Important</strong>: This exercise assumes a connected SAP system or ABAP trial and the ADT perspective. Skip it if you only have the sample source files.</p>
+</blockquote>
+<p><strong>Steps</strong></p>
+<p><strong>Step 1: Comment-driven generation</strong></p>
+<p>In an ABAP source, type a guiding comment and let Copilot suggest:</p>
 <pre><code class="language-text">* TODO: select all flights for a given carrier from SFLIGHT into an internal table
 </code></pre>
-<p><strong>Step 3</strong>: Press <strong>Tab</strong> to accept or <strong>Esc</strong> to dismiss. Review the generated <code>SELECT</code> for correctness.</p>
-<h3 id="success-criteria">Success Criteria</h3>
-<ul>
-<li>✅ A relevant ABAP suggestion appeared from the comment</li>
-<li>✅ You accepted and reviewed it against your data dictionary</li>
-</ul>
-<hr>
-<h3 id="exercise-43--chat-assisted-optimization-5-min">Exercise 4.3 — Chat-Assisted Optimization (5 min)</h3>
-<p><strong>Objective</strong>: Use Copilot chat to explain and optimize ABAP.</p>
-<p><strong>Steps</strong></p>
-<p><strong>Step 1</strong>: Select an existing <code>SELECT</code> statement.</p>
-<p><strong>Step 2</strong>: Ask in Copilot chat:</p>
+<p>Press <strong>Tab</strong> to accept or <strong>Esc</strong> to dismiss, then review the generated <code>SELECT</code>.</p>
+<p><strong>Step 2: Chat-assisted optimization</strong></p>
+<p>Select an existing <code>SELECT</code> statement and ask:</p>
 <pre><code class="language-text">Optimize this SELECT query and explain why it is more efficient.
 </code></pre>
-<p><strong>Step 3</strong>: Review the suggestion and validate it inside your existing ATC and code-review gates before adopting.</p>
+<p><strong>Step 3: Validate</strong></p>
+<p>Run the result through your existing ATC and code-review gates before adopting it.</p>
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
+<li>✅ A relevant <code>SELECT</code> was suggested from the comment and reviewed against the data dictionary</li>
 <li>✅ Received an optimization suggestion with an explanation</li>
 <li>✅ Validated the change through normal review (ATC / transport / code review)</li>
 </ul>
