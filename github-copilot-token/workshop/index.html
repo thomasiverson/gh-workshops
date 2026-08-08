@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot AI Credits Optimization Curriculum</title><link rel="stylesheet" href="/gh-workshops/_astro/index.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization-curriculum">GitHub Copilot AI Credits Optimization Curriculum</h1>
+<p><strong>Format</strong>: Three standalone role-based modules<br><strong>Total Duration</strong>: ~6 hours 25 minutes across all modules<br><strong>Audience</strong>: GitHub administrators, billing managers, FinOps and platform teams, engineering leaders, developers, and Copilot champions<br><strong>Focus</strong>: Budget guardrails, developer efficiency, and measurement-driven optimization of GitHub Copilot AI Credits</p>
+<hr>
+<h2 id="curriculum-overview">Curriculum Overview</h2>
+<p>GitHub Copilot usage-based billing creates different responsibilities for administrators, developers, and FinOps or platform teams. This curriculum separates those responsibilities into three standalone modules so attendees can take only the training they need.</p>
+<p>Each module includes:</p>
+<ul>
+<li>A workshop guide</li>
+<li>A synchronized Slidev presentation</li>
+<li>A facilitator-ready hands-on lab</li>
+<li>A standalone primer covering the prerequisite concepts needed for that audience</li>
+<li>Official GitHub documentation references and dated billing facts</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: Billing facts and pricing examples in this curriculum were verified on <strong>2026-08-08</strong>. GitHub can change included allowances, model availability, pricing, and product behavior. Instructors must complete each module&#39;s preflight checklist before delivery.</p>
+</blockquote>
+<h3 id="learning-paths">Learning Paths</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Recommended Path</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub enterprise or organization administrator</strong></td>
+<td>Module 1 → Module 3</td>
+</tr>
+<tr>
+<td><strong>Billing manager or FinOps practitioner</strong></td>
+<td>Module 1 → Module 3</td>
+</tr>
+<tr>
+<td><strong>Developer</strong></td>
+<td>Module 2</td>
+</tr>
+<tr>
+<td><strong>Copilot champion or technical lead</strong></td>
+<td>Module 2 → Module 3</td>
+</tr>
+<tr>
+<td><strong>Engineering manager</strong></td>
+<td>Module 2 → Module 3</td>
+</tr>
+<tr>
+<td><strong>Platform or DevEx engineer</strong></td>
+<td>Module 1 → Module 2 → Module 3</td>
+</tr>
+<tr>
+<td><strong>Executive sponsor</strong></td>
+<td>Module 1 billing overview + Module 3 operating-model summary</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="module-1-administration--budget-guardrails">Module 1: Administration &amp; Budget Guardrails</h2>
+<p><strong>Duration</strong>: ~115 minutes<br><strong>Primary Audience</strong>: Enterprise and organization owners, billing managers, FinOps leaders, platform administrators, engineering leaders</p>
+<p>Configure safe financial and access controls before broad Copilot adoption.</p>
+<h3 id="topics">Topics</h3>
+<ul>
+<li>AI Credits billing fundamentals and pooled allowances</li>
+<li>Standard and promotional included-credit amounts</li>
+<li>Paid usage policy and metered overage</li>
+<li>Universal, cost-center, and individual user-level budgets</li>
+<li>Cost-center, organization, and enterprise spending budgets</li>
+<li>Budget precedence and hard-stop behavior</li>
+<li>Cost-center included-usage controls</li>
+<li>Budget alerts, exception handling, and monthly administration</li>
+<li>Hands-on budget design with live-admin and simulation paths</li>
+</ul>
+<h3 id="resources">Resources</h3>
+<ul>
+<li><a href="../github-copilot-token-admin/github-copilot-token-admin-workshop.md">Module 1 workshop guide</a></li>
+<li><a href="../github-copilot-token-admin/github-copilot-token-admin-LAB.md">Module 1 hands-on lab</a></li>
+<li><a href="../github-copilot-token-admin/github-copilot-token-admin.slidev.md">Module 1 Slidev deck</a></li>
+</ul>
+<hr>
+<h2 id="module-2-developer-efficiency">Module 2: Developer Efficiency</h2>
+<p><strong>Duration</strong>: ~135 minutes<br><strong>Primary Audience</strong>: Developers, technical leads, Copilot champions</p>
+<p>Complete high-quality engineering work while avoiding unnecessary AI-credit consumption.</p>
+<h3 id="topics">Topics</h3>
+<ul>
+<li>Developer-focused AI Credits and token primer</li>
+<li>Choosing between completions, Next Edit Suggestions, Chat, Agent mode, CLI, and cloud agent</li>
+<li>Clear tasks, authoritative context, and explicit stop conditions</li>
+<li>Concise repository and path-scoped instructions</li>
+<li>Relevant MCP tools and deterministic verification</li>
+<li>Session boundaries, <code>/context</code>, <code>/compact</code>, and cache preservation</li>
+<li>Copilot CLI and SDK soft AI-credit session limits</li>
+<li>Auto model selection and task-appropriate manual choices</li>
+<li>Quality per completed, verified task instead of cost per prompt</li>
+<li>Hands-on prompt, instruction, session, and model-selection exercises</li>
+</ul>
+<h3 id="resources">Resources</h3>
+<ul>
+<li><a href="../github-copilot-token-developer/github-copilot-token-developer-workshop.md">Module 2 workshop guide</a></li>
+<li><a href="../github-copilot-token-developer/github-copilot-token-developer-LAB.md">Module 2 hands-on lab</a></li>
+<li><a href="../github-copilot-token-developer/github-copilot-token-developer.slidev.md">Module 2 Slidev deck</a></li>
+</ul>
+<hr>
+<h2 id="module-3-measurement--optimization-at-scale">Module 3: Measurement &amp; Optimization at Scale</h2>
+<p><strong>Duration</strong>: ~135 minutes<br><strong>Primary Audience</strong>: FinOps practitioners, platform and DevEx teams, engineering managers, Copilot program owners, advanced administrators</p>
+<p>Turn AI-credit telemetry into defensible budget, enablement, and operating-model decisions.</p>
+<h3 id="topics">Topics</h3>
+<ul>
+<li>AI usage dashboard, filters, and exports</li>
+<li>Token-category pricing and AI-credit cost calculations</li>
+<li>Burn rate, projected exhaustion, credits per user or task, blocked users, and overage</li>
+<li>Feature and model mix, adoption, and quality metrics</li>
+<li>Baselines, anomaly analysis, and correlation-versus-causation</li>
+<li>Legitimate heavy use versus waste</li>
+<li>User-level budget and spending-budget tuning</li>
+<li>Power-user exceptions and lowest-remaining-headroom behavior</li>
+<li>Showback, chargeback, RACI, and monthly review cadence</li>
+<li>Hands-on scorecard, sample dataset, budget tuning, and 30-day backlog</li>
+</ul>
+<h3 id="resources">Resources</h3>
+<ul>
+<li><a href="../github-copilot-token-finops/github-copilot-token-finops-workshop.md">Module 3 workshop guide</a></li>
+<li><a href="../github-copilot-token-finops/github-copilot-token-finops-LAB.md">Module 3 hands-on lab</a></li>
+<li><a href="../github-copilot-token-finops/github-copilot-token-finops.slidev.md">Module 3 Slidev deck</a></li>
+</ul>
+<hr>
+<h2 id="delivery-options">Delivery Options</h2>
+<table>
+<thead>
+<tr>
+<th>Delivery Model</th>
+<th>Recommended Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Role-based standalone modules</strong></td>
+<td>Default approach; attendees take only the module aligned to their responsibilities</td>
+</tr>
+<tr>
+<td><strong>Admin and FinOps track</strong></td>
+<td>Deliver Module 1 followed by Module 3 for the team governing budget and usage</td>
+</tr>
+<tr>
+<td><strong>Developer enablement track</strong></td>
+<td>Deliver Module 2 during Copilot onboarding or an engineering productivity program</td>
+</tr>
+<tr>
+<td><strong>Full curriculum</strong></td>
+<td>Deliver all three modules across separate sessions for platform, administrator, champion, and leadership cohorts</td>
+</tr>
+<tr>
+<td><strong>Mixed-audience kickoff</strong></td>
+<td>Use this overview, then schedule role-based modules instead of presenting all detailed material to one room</td>
+</tr>
+</tbody></table>
+<h3 id="recommended-sequencing">Recommended Sequencing</h3>
+<ol>
+<li>Deliver <strong>Module 1</strong> before enabling unrestricted paid usage or broadening a Copilot rollout.</li>
+<li>Deliver <strong>Module 2</strong> as part of developer onboarding and repeat it when agentic usage expands.</li>
+<li>Deliver <strong>Module 3</strong> after enough usage data exists to establish a meaningful baseline.</li>
+<li>Revisit the Module 3 operating model at least monthly during the first three billing cycles.</li>
+</ol>
+<hr>
+<h2 id="curriculum-maintenance">Curriculum Maintenance</h2>
+<p>The modules intentionally share a small set of billing facts while separating role-specific decisions and exercises. When GitHub changes billing behavior:</p>
+<ol>
+<li>Re-verify the official sources linked in each module.</li>
+<li>Update repeated billing facts consistently across all affected workshop, LAB, and Slidev files.</li>
+<li>Recalculate every worked example and answer key.</li>
+<li>Rebuild all three Slidev decks.</li>
+<li>Confirm the site still presents the modules under one curriculum card.</li>
+</ol>
+<hr>
+<p><em>Curriculum overview for GitHub Copilot AI Credits Optimization</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module">document.querySelectorAll("pre").forEach(t=>{if(t.querySelector("code.language-mermaid"))return;const e=document.createElement("button");e.className="copy-btn",e.textContent="Copy",e.addEventListener("click",async()=>{const o=(t.querySelector("code")||t).textContent||"";await navigator.clipboard.writeText(o),e.textContent="Copied!",e.classList.add("copied"),setTimeout(()=>{e.textContent="Copy",e.classList.remove("copied")},2e3)}),t.appendChild(e)});</script>

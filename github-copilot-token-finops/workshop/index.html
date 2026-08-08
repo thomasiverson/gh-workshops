@@ -1,0 +1,886 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot AI Credits Optimization — Module 3: Measurement &amp; Optimization at Scale — Workshop Guide</title><link rel="stylesheet" href="/gh-workshops/_astro/index.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization--module-3-measurement--optimization-at-scale--workshop-guide">GitHub Copilot AI Credits Optimization — Module 3: Measurement &amp; Optimization at Scale — Workshop Guide</h1>
+<p><strong>Duration</strong>: ~135 minutes (including one 10-minute break)<br><strong>Format</strong>: Presentation + Live Demo + Hands-On Exercises<br><strong>Audience</strong>: FinOps practitioners, platform/DevEx engineers, engineering managers, Copilot program owners, advanced admins<br><strong>Focus</strong>: Reporting and data sources, token cost calculations, KPI baselines and anomaly analysis, budget tuning, and a sustainable operating model at scale</p>
+<hr>
+<h2 id="module-overview">Module Overview</h2>
+<p>This is <strong>Module 3 of 3</strong> in the <strong>GitHub Copilot AI Credits Optimization</strong> workshop series. Where Module 1 focuses on admin guardrail setup and Module 2 focuses on developer-level optimization habits, Module 3 is built for the people who own the numbers: FinOps, platform/DevEx, engineering managers, Copilot program owners, and advanced admins who need to measure consumption at scale, distinguish legitimate heavy use from waste, tune budgets across every layer, and run a repeatable monthly operating cadence.</p>
+<blockquote>
+<p><strong>Note</strong>: This module is <strong>standalone</strong>. You do not need to have attended Module 1 or Module 2 to complete it — the Welcome &amp; Budget Refresher section below re-establishes the budget vocabulary and mechanics this module builds on. If your team has already run Module 1 (admin guardrails) and Module 2 (developer optimization), this module is the natural third session.</p>
+</blockquote>
+<blockquote>
+<p><strong>Important</strong>: All facts, pricing, and dated figures referenced in this module reflect GitHub documentation as of <strong>2026-08-08</strong>. Pricing, included-credit amounts, and the promotional window change over time — always verify against the live docs linked in the Appendix before delivering this module.</p>
+</blockquote>
+<h3 id="related-modules">Related Modules</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Title</th>
+<th>Audience Focus</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Module 1</td>
+<td>Admin Guardrails &amp; Budget Setup</td>
+<td><a href="../github-copilot-token-admin/github-copilot-token-admin-workshop.md">github-copilot-token-admin-workshop.md</a></td>
+</tr>
+<tr>
+<td>Module 2</td>
+<td>Developer Optimization Patterns</td>
+<td><a href="../github-copilot-token-developer/github-copilot-token-developer-workshop.md">github-copilot-token-developer-workshop.md</a></td>
+</tr>
+<tr>
+<td>Curriculum overview</td>
+<td>Role-based learning paths across all three modules</td>
+<td><a href="../github-copilot-token/github-copilot-token-workshop.md">github-copilot-token-workshop.md</a></td>
+</tr>
+</tbody></table>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li>Locate and filter AI usage reporting by user, model, organization, and cost center, and know where individual users see their own consumption</li>
+<li>Apply the detailed token cost formula to calculate USD and AI-credit cost for a Copilot interaction, using live, current pricing rather than memorized numbers</li>
+<li>Establish KPI baselines — burn rate, projected exhaustion date, credits per active user/task, blocked users, overage, feature/model mix, and adoption/quality — from a live export or a supplied sample dataset</li>
+<li>Distinguish legitimate heavy use from waste using session-level signals, not just total credits consumed</li>
+<li>Analyze a sample dataset correctly, including recognizing when a correlation between two metrics does <strong>not</strong> establish that one caused the other</li>
+<li>Tune budgets across every layer — universal, cost-center, and individual user-level budgets, plus cost-center/organization/enterprise spending budgets — and apply included usage controls and power-user exceptions</li>
+<li>Explain the &quot;lowest remaining headroom wins&quot; behavior when multiple budgets apply to the same user</li>
+<li>Draft a 30-day optimization backlog and an operating model (RACI, review cadence, anomaly response, showback/chargeback) that a FinOps or platform team can run every cycle</li>
+</ul>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>Member of the organization/enterprise used for this workshop</td>
+</tr>
+<tr>
+<td><strong>Copilot License</strong></td>
+<td>Business or Enterprise (this module does not cover legacy Pro/Pro+ premium-request billing)</td>
+</tr>
+<tr>
+<td><strong>Admin or reporting access (recommended, not required)</strong></td>
+<td>Organization owner, enterprise owner, or billing manager role unlocks the live dashboard demo in Section 1; without it, use the supplied sample dataset</td>
+</tr>
+<tr>
+<td><strong>Spreadsheet or calculator</strong></td>
+<td>For token-cost and KPI calculations</td>
+</tr>
+<tr>
+<td><strong>Web browser</strong></td>
+<td>For the AI usage dashboard and Billing &amp; Licensing settings</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: No section of this module requires making a live paid AI request. Every calculation can be completed with the worked formulas and the supplied sample dataset. If you export live data during Section 1, treat it as read-only reporting — no budget changes are required to complete this module.</p>
+</blockquote>
+<hr>
+<h2 id="session-agenda">Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>—</td>
+<td><a href="#welcome--budget-refresher-15-min">Welcome &amp; Budget Refresher</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>1</td>
+<td><a href="#1-reporting--data-sources-20-min">Reporting &amp; Data Sources</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#2-token-cost-calculations-hands-on-25-min">Token Cost Calculations (Hands-On)</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>☕</td>
+<td>Break</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#3-kpi-baselines--anomaly-analysis-hands-on-30-min">KPI Baselines &amp; Anomaly Analysis (Hands-On)</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#4-budget-tuning--operating-model-capstone-hands-on-35-min">Budget Tuning &amp; Operating Model Capstone (Hands-On)</a></td>
+<td>35 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total: ~135 min (~2h 15min)</strong></p>
+<hr>
+<h2 id="welcome--budget-refresher-15-min">Welcome &amp; Budget Refresher (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Position this session: Module 3 of the <strong>GitHub Copilot AI Credits Optimization</strong> series, standalone-capable, aimed at the people who own budgets, reporting, and the operating model</li>
+<li><strong>GitHub AI Credits</strong> are the billing unit for Copilot Business and Enterprise: <strong>1 AI credit = $0.01 USD</strong></li>
+<li>Every Copilot Business license includes <strong>1,900 AI credits/user/month</strong>; every Enterprise license includes <strong>3,900 AI credits/user/month</strong> — pooled at the billing entity, reset at <strong>00:00:00 UTC on the first of each month</strong>, with <strong>no rollover</strong></li>
+<li>Budget controls exist at four levels and work <strong>together, not as alternatives</strong>:</li>
+</ul>
+<h3 id="budget-control-comparison">Budget Control Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What It Caps</th>
+<th>When Active</th>
+<th>Hard Stop?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Universal user-level budget (ULB)</strong></td>
+<td>Each user&#39;s total consumption (pool + metered)</td>
+<td>Always</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>Cost-center user-level budget (ULB)</strong></td>
+<td>Each cost-center member&#39;s total consumption (overrides universal)</td>
+<td>Always</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>Individual user-level budget (ULB)</strong></td>
+<td>One user&#39;s total consumption (overrides both above)</td>
+<td>Always</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>Cost-center / organization / enterprise budget</strong></td>
+<td>Metered charges only, after the shared pool is exhausted</td>
+<td>Metered phase only</td>
+<td>Only if &quot;Stop usage when budget limit is reached&quot; is enabled</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important — Promotional period ends 2026-09-01</strong>: Existing Business/Enterprise customers receive a higher promotional allotment from <strong>June 1 – September 1, 2026</strong>: <strong>3,000 credits/user/month (Business)</strong> and <strong>7,000 credits/user/month (Enterprise)</strong>. Starting <strong>September 1, 2026</strong>, allotments return to the <strong>standard 1,900 / 3,900</strong> amounts. Baseline your KPIs now, during the promotional window, so tuning decisions aren&#39;t based on numbers that shrink on September 1.</p>
+</blockquote>
+<ul>
+<li>A <strong>$0 or exhausted ULB always blocks</strong> a user immediately — there is no fallback to a cheaper model</li>
+<li>An unconfigured cost-center/organization/enterprise budget is an <strong>alert, not a guardrail</strong> — &quot;Stop usage when budget limit is reached&quot; is off by default</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>If your organization already ran Module 1 or 2, what changed in your budget configuration since then?</li>
+<li>Who in this room owns the monthly review of these numbers today — is that ownership clear?</li>
+<li>What&#39;s the one measurement question you most want answered by the end of this session?</li>
+<li>How is your organization planning for the September 1, 2026 promotional pool reduction?</li>
+</ul>
+<hr>
+<h2 id="1-reporting--data-sources-20-min">1. Reporting &amp; Data Sources (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>The <strong>AI usage</strong> page (<strong>Billing &amp; Licensing → AI usage</strong>, at the organization or enterprise level) is the primary reporting surface for AI credit consumption</li>
+<li><strong>Filter and group</strong> usage by <strong>user, model, organization, or cost center</strong>; use the <strong>&quot;Group by&quot;</strong> control to switch between per-model and per-SKU views, and the <strong>Timeframe</strong> control to change the reporting window</li>
+<li><strong>Export the filtered view (CSV)</strong> for offline KPI calculation, trend analysis, or sharing with stakeholders who don&#39;t have dashboard access</li>
+<li><strong>Metered usage search</strong> (under <strong>Usage → Metered usage</strong>) accepts query syntax such as <code>product:copilot</code> and <code>cost_center:&lt;name&gt;</code> to isolate Copilot spend for one team</li>
+<li><strong>Individual visibility</strong>: every Business/Enterprise user sees their own consumption under <strong>Copilot settings → Usage</strong> — the card shows credits consumed against their budget if one applies (for example, &quot;450 / 1,000 AI credits used&quot;), or total credits consumed if no ULB applies to them; VS Code and other IDEs also surface personal usage and reset date</li>
+<li><strong>Cost center home pages</strong> show <strong>&quot;AI credit pool enabled&quot;</strong> and current consumption against the included-usage cap when a cost center has an included usage control turned on</li>
+</ul>
+<h3 id="live-prices-not-memorized-numbers">Live Prices, Not Memorized Numbers</h3>
+<blockquote>
+<p><strong>Important</strong>: Pricing, included-credit amounts, and reporting UI details change over time. Treat every number in this module — including the pricing snapshot in Section 2 — as a dated example, not a permanent reference. Always confirm against the live <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing</a> page and the live AI usage dashboard before quoting numbers to stakeholders or making a budget decision.</p>
+</blockquote>
+<h3 id="-demo-ai-usage-dashboard-walkthrough">🖥️ Demo: AI Usage Dashboard Walkthrough</h3>
+<ol>
+<li>Navigate to <strong>Billing &amp; Licensing → AI usage</strong> (organization or enterprise settings)</li>
+<li>Filter by <strong>cost center</strong> to isolate one team&#39;s consumption</li>
+<li>Switch <strong>&quot;Group by&quot;</strong> between <strong>model</strong> and <strong>SKU</strong> to see which models or plan types drive the largest share of spend</li>
+<li>Change the <strong>Timeframe</strong> to compare the current cycle against the prior one</li>
+<li><strong>Export the filtered view (CSV)</strong> for offline analysis</li>
+<li>Open <strong>Copilot settings → Usage</strong> as an individual user to show the personal visibility view attendees&#39; own developers will see</li>
+</ol>
+<details>
+<summary><h3 id="-hands-on-dashboard-filter-practice-6-min">🧪 Hands-On: Dashboard Filter Practice (6 min)</h3></summary>
+
+<p><strong>Roles</strong>: Work individually or in pairs. If you have live dashboard access, use it; otherwise, use the supplied sample dataset from Section 3 as a stand-in and reason about which filters you&#39;d apply.</p>
+<p><strong>Exercise</strong>: For each request below, write down the exact filter/group-by combination you&#39;d use on the AI usage page:</p>
+<ol>
+<li>&quot;Which model is driving the most spend enterprise-wide this cycle?&quot;</li>
+<li>&quot;How much has the Data Science cost center consumed so far this month?&quot;</li>
+<li>&quot;Is one specific user responsible for an unusual share of a cost center&#39;s credits?&quot;</li>
+<li>&quot;I need to hand a FinOps analyst a CSV they can pivot in a spreadsheet — how do I get it to them?&quot;</li>
+</ol>
+<h4 id="success-criteria">Success Criteria</h4>
+<ul>
+<li>✅ You identified &quot;Group by: model&quot; for Question 1</li>
+<li>✅ You identified filtering by cost center (or a <code>cost_center:</code> query) for Question 2</li>
+<li>✅ You identified filtering by user within a cost center for Question 3</li>
+<li>✅ You identified the CSV export action for Question 4</li>
+</ul>
+</details>
+
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Who in your organization currently has access to the AI usage dashboard — is that the right set of people?</li>
+<li>Should individual contributors be told where to find their own usage view proactively, or only on request?</li>
+<li>What would you do if a cost center&#39;s actual usage didn&#39;t match what its assigned licenses should fund?</li>
+<li>How often should a CSV export be pulled for offline analysis versus relying on the live dashboard?</li>
+</ul>
+<hr>
+<h2 id="2-token-cost-calculations-hands-on-25-min">2. Token Cost Calculations (Hands-On) (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Every Copilot interaction consumes <strong>tokens</strong>, and each token category is priced independently per model:<ul>
+<li><strong>Input tokens</strong> — what you send to the model (your prompt + context)</li>
+<li><strong>Cached input tokens</strong> — context the model reuses from a previous turn, usually priced far lower than fresh input</li>
+<li><strong>Cache write tokens</strong> — the cost of writing context into the cache so it can be reused later (not all models charge this)</li>
+<li><strong>Output tokens</strong> — what the model generates back to you, typically the most expensive category per token</li>
+</ul>
+</li>
+<li><strong>Cost formula</strong>:</li>
+</ul>
+<pre><code>USD = Σ (tokens_in_category / 1,000,000 × price_per_million_for_that_category)
+AI credits = USD × 100
+Auto model selection applies an additional 10% discount to the model-cost total.
+</code></pre>
+<ul>
+<li>Pricing is <strong>per million tokens</strong> and changes over time — always check the live pricing page before quoting numbers to stakeholders (see Appendix)</li>
+</ul>
+<h3 id="pricing-snapshot-2026-08-08--verify-before-use">Pricing Snapshot (2026-08-08 — verify before use)</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">Input</th>
+<th align="right">Cached Input</th>
+<th align="right">Cache Write</th>
+<th align="right">Output</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GPT-5 mini</strong></td>
+<td align="right">$0.25</td>
+<td align="right">$0.025</td>
+<td align="right">N/A</td>
+<td align="right">$2.00</td>
+</tr>
+<tr>
+<td><strong>GPT-5.4 nano</strong></td>
+<td align="right">$0.20</td>
+<td align="right">$0.02</td>
+<td align="right">N/A</td>
+<td align="right">$1.25</td>
+</tr>
+<tr>
+<td><strong>Claude Sonnet 5</strong></td>
+<td align="right">$2.00</td>
+<td align="right">$0.20</td>
+<td align="right">$2.50</td>
+<td align="right">$10.00</td>
+</tr>
+<tr>
+<td><strong>Claude Opus 5</strong></td>
+<td align="right">$5.00</td>
+<td align="right">$0.50</td>
+<td align="right">$6.25</td>
+<td align="right">$25.00</td>
+</tr>
+</tbody></table>
+<p><em>All prices are USD per 1 million tokens. Source: <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing for GitHub Copilot</a>.</em></p>
+<h3 id="worked-example--longer-coding-agent-session-claude-sonnet-5-no-auto">Worked Example — Longer Coding Agent Session (Claude Sonnet 5, no Auto)</h3>
+<ul>
+<li>150,000 input tokens, 40,000 cached input tokens, 20,000 cache-write tokens, 6,000 output tokens</li>
+</ul>
+<pre><code>Input:      150,000 / 1,000,000 × $2.00  = $0.300000
+Cached:      40,000 / 1,000,000 × $0.20  = $0.008000
+Cache write: 20,000 / 1,000,000 × $2.50  = $0.050000
+Output:       6,000 / 1,000,000 × $10.00 = $0.060000
+------------------------------------------------------
+Total USD                                = $0.418000
+AI credits (USD × 100)                   = 41.8 credits
+</code></pre>
+<p>With <strong>Auto model selection</strong> (×0.90 discount): $0.418 × 0.90 = <strong>$0.3762 → 37.62 credits</strong> (a savings of ~4.18 credits).</p>
+<h3 id="why-this-matters-at-scale">Why This Matters at Scale</h3>
+<ul>
+<li>A single session&#39;s cost looks trivial. At a 500-user scale, a 10-credit-per-session difference across 20 sessions/user/month is <strong>100,000 credits/month</strong> — larger than an entire 50-user cost center&#39;s included-usage cap</li>
+<li>Cost-per-session math is the building block for every KPI in Section 3 — you cannot calculate &quot;credits per active user/task&quot; without first understanding what drives an individual session&#39;s cost</li>
+</ul>
+<details>
+<summary><h3 id="-hands-on-calculate-a-model-mix-comparison-12-min">🧪 Hands-On: Calculate a Model-Mix Comparison (12 min)</h3></summary>
+
+<p><strong>Roles</strong>: Work individually, then compare with a neighbor.</p>
+<p><strong>Exercise</strong>: Using the pricing snapshot table above, calculate the USD and AI-credit cost of the <strong>same interaction</strong> run on two different models (no Auto model selection), then answer the follow-up question.</p>
+<blockquote>
+<p><strong>Scenario A — GPT-5 mini</strong>: 25,000 input tokens, 8,000 cached input tokens, 4,000 output tokens.</p>
+<p><strong>Scenario B — Claude Sonnet 5</strong>: Same token counts as Scenario A (25,000 input / 8,000 cached input / 4,000 output — assume no cache-write tokens for this comparison).</p>
+</blockquote>
+<ol>
+<li>Calculate the USD and AI-credit total for Scenario A.</li>
+<li>Calculate the USD and AI-credit total for Scenario B.</li>
+<li>Express Scenario B&#39;s cost as a multiple of Scenario A&#39;s cost.</li>
+<li>If a team ran 1,000 of these interactions per month, what is the monthly credit difference between defaulting to GPT-5 mini versus Claude Sonnet 5 for this task?</li>
+</ol>
+<p>Check your work against the <strong>Answer Key</strong> in the LAB guide before moving on.</p>
+<h4 id="success-criteria">Success Criteria</h4>
+<ul>
+<li>✅ You applied each token category at the correct per-model rate for both scenarios</li>
+<li>✅ You divided each token count by 1,000,000 before multiplying by the rate</li>
+<li>✅ You converted both USD totals to AI credits (×100)</li>
+<li>✅ You correctly expressed the cost ratio between the two models and the 1,000-interaction monthly impact</li>
+<li>✅ Your answers match the LAB Answer Key (±$0.001 rounding)</li>
+</ul>
+</details>
+
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Why does model choice, not just prompt length, dominate cost at scale?</li>
+<li>If cached input is 10x cheaper than fresh input, what does that imply about session continuity policies your team might set?</li>
+<li>How would you use the &quot;monthly credit difference&quot; calculation from the exercise to justify a model-selection policy to engineering leadership?</li>
+<li>Would you expect a quick Ask-mode question or a long cloud-agent session to consume more credits, and by roughly what order of magnitude?</li>
+</ul>
+<hr>
+<h2 id="3-kpi-baselines--anomaly-analysis-hands-on-30-min">3. KPI Baselines &amp; Anomaly Analysis (Hands-On) (30 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Before tuning any budget, establish a <strong>baseline</strong> of current consumption patterns using live data (Section 1) or the supplied sample dataset below</li>
+<li>Core KPIs to track every cycle:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>KPI</th>
+<th>What It Tells You</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Burn rate</strong></td>
+<td>Credits consumed per day (or per active user per day) — is consumption accelerating?</td>
+</tr>
+<tr>
+<td><strong>Projected exhaustion date</strong></td>
+<td>At the current burn rate, when will the pool or a cost center&#39;s included-usage cap run out?</td>
+</tr>
+<tr>
+<td><strong>Credits per active user/task</strong></td>
+<td>Efficiency metric — rising cost-per-task with flat output may signal a false-economy or waste pattern</td>
+</tr>
+<tr>
+<td><strong>Blocked users</strong></td>
+<td>Count of users hitting a $0 or exhausted ULB — a leading indicator that budgets are mis-sized</td>
+</tr>
+<tr>
+<td><strong>Overage ($)</strong></td>
+<td>Metered spend once the pool or a cost center&#39;s included-usage cap is exhausted</td>
+</tr>
+<tr>
+<td><strong>Feature/model mix</strong></td>
+<td>Share of credits by feature (Chat, Agent mode, Copilot CLI, cloud agent) and by model — reveals where spend concentrates and whether Auto selection is being used</td>
+</tr>
+<tr>
+<td><strong>Adoption &amp; quality</strong></td>
+<td>Active-user rate against licensed seats, paired with a quality proxy (suggestion acceptance rate, PR review pass rate) so cost is never read in isolation from output quality</td>
+</tr>
+</tbody></table>
+<h3 id="legitimate-heavy-use-vs-waste">Legitimate Heavy Use vs. Waste</h3>
+<p>Total credits consumed alone does not tell you whether spend is healthy. Pair consumption with <strong>session-level signals</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Legitimate Heavy Use</th>
+<th>Waste</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Suggestion acceptance / PR merge rate</strong></td>
+<td>High and stable</td>
+<td>Low or declining</td>
+</tr>
+<tr>
+<td><strong>Restarts per task</strong></td>
+<td>Low — one bounded session per task</td>
+<td>High — repeated restarts losing cached context</td>
+</tr>
+<tr>
+<td><strong>Credits per completed unit of work</strong></td>
+<td>Proportional to task complexity</td>
+<td>High relative to output delivered</td>
+</tr>
+<tr>
+<td><strong>Typical task profile</strong></td>
+<td>Large agentic refactors, multi-file migrations, complex architecture reviews</td>
+<td>Repeated near-identical prompts, verbose low-value chat, manual escalation to powerful models for routine tasks</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: A single high-consumption user is not automatically a problem, and a single low-consumption user is not automatically efficient. Always read credit volume alongside the quality and session-behavior signals above before labeling anyone&#39;s usage as waste.</p>
+</blockquote>
+<h3 id="correlation-is-not-causation">Correlation Is Not Causation</h3>
+<ul>
+<li>Two metrics moving together in the same reporting window does <strong>not</strong> prove one caused the other — always look for a <strong>confounding factor</strong> before concluding a causal link</li>
+<li><strong>Common trap</strong>: overage rises in the same week a quality metric declines. The reflexive conclusion — &quot;overage is degrading quality&quot; — is often wrong. Check for a shared root cause first, such as a release deadline, a large onboarding cohort, or an incident response effort that would independently drive both more usage <strong>and</strong> more rushed output</li>
+<li><strong>Test for causation, don&#39;t assume it</strong>: if quality recovers while overage or credit volume stays elevated, overage was very unlikely to be the cause — the true driver already resolved (for example, the deadline passed) while spend was still working through the backlog it created</li>
+</ul>
+<h3 id="sample-dataset--growth-platform-cost-center">Sample Dataset — &quot;Growth Platform&quot; Cost Center</h3>
+<p>60 licensed Copilot Business users. <strong>Included-usage cap = 60 × 1,900 = 114,000 AI credits</strong> for the 30-day cycle.</p>
+<table>
+<thead>
+<tr>
+<th align="right">Day</th>
+<th align="right">Active Users</th>
+<th align="right">Credits Consumed (day)</th>
+<th align="right">Cumulative Credits</th>
+<th align="right">Blocked Users</th>
+<th align="right">Overage (USD)</th>
+<th align="right">PR Review Pass Rate</th>
+<th align="center">Release Deadline?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td align="right">51</td>
+<td align="right">9,600</td>
+<td align="right">9,600</td>
+<td align="right">0</td>
+<td align="right">$0.00</td>
+<td align="right">90%</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="right">52</td>
+<td align="right">9,900</td>
+<td align="right">19,500</td>
+<td align="right">0</td>
+<td align="right">$0.00</td>
+<td align="right">90%</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="right">50</td>
+<td align="right">9,400</td>
+<td align="right">28,900</td>
+<td align="right">0</td>
+<td align="right">$0.00</td>
+<td align="right">89%</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td align="right">53</td>
+<td align="right">10,200</td>
+<td align="right">39,100</td>
+<td align="right">0</td>
+<td align="right">$0.00</td>
+<td align="right">88%</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td align="right">54</td>
+<td align="right">10,800</td>
+<td align="right">49,900</td>
+<td align="right">0</td>
+<td align="right">$0.00</td>
+<td align="right">88%</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td align="right">55</td>
+<td align="right">12,600</td>
+<td align="right">62,500</td>
+<td align="right">1</td>
+<td align="right">$0.00</td>
+<td align="right">82%</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td align="right">57</td>
+<td align="right">15,900</td>
+<td align="right">78,400</td>
+<td align="right">2</td>
+<td align="right">$0.00</td>
+<td align="right">74%</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td align="right">8</td>
+<td align="right">58</td>
+<td align="right">17,800</td>
+<td align="right">96,200</td>
+<td align="right">3</td>
+<td align="right">$0.00</td>
+<td align="right">71%</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td align="right">9</td>
+<td align="right">56</td>
+<td align="right">21,300</td>
+<td align="right">117,500</td>
+<td align="right">5</td>
+<td align="right">$35.00</td>
+<td align="right">79%</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="right">10</td>
+<td align="right">54</td>
+<td align="right">18,400</td>
+<td align="right">135,900</td>
+<td align="right">4</td>
+<td align="right">$219.00</td>
+<td align="right">85%</td>
+<td align="center">No</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: The included-usage cap (114,000 credits) is crossed <strong>during Day 9</strong> — 17,800 credits remained after Day 8, but Day 9 consumed 21,300, pushing 3,500 credits into metered overage ($35.00 at $0.01/credit). Recheck this math yourself in the hands-on exercise; the table&#39;s displayed overage reflects the cumulative running total, not each day in isolation.</p>
+</blockquote>
+<p><strong>Read the Release Deadline column before drawing conclusions</strong>: the PR review pass rate drops sharply on Days 6–8, exactly when the &quot;Release Deadline?&quot; flag is Yes — and credits consumed also rises those same days as teams push more work through Copilot under time pressure. On Day 9, overage begins <strong>after</strong> the deadline has passed, yet the pass rate <strong>recovers</strong> to 79% and continues recovering to 85% on Day 10 even though overage is still accumulating and growing. If overage itself were degrading quality, the pass rate would not recover while overage was still rising — the deadline, not the overage, was the shared root cause of both effects.</p>
+<details>
+<summary><h3 id="-hands-on-baseline--anomaly-analysis-15-min">🧪 Hands-On: Baseline & Anomaly Analysis (15 min)</h3></summary>
+
+<p><strong>Roles</strong>: Work in small groups of 2–3.</p>
+<p>Using either your own exported data or the sample dataset above, calculate and answer:</p>
+<ol>
+<li><strong>Burn rate</strong>: Average daily credits consumed over Days 8–10</li>
+<li><strong>Projected exhaustion date</strong>: On which day was the 114,000-credit included-usage cap exhausted?</li>
+<li><strong>Credits per active user</strong>: For Day 9 specifically, credits consumed ÷ active users</li>
+<li><strong>Blocked users trend</strong>: Is the blocked-user count accelerating, flat, or slowing across the 10 days, and does it track the Release Deadline flag or the overage column more closely?</li>
+<li><strong>Causation check</strong>: A colleague claims &quot;the overage on Days 9–10 caused the quality drop.&quot; Using the data, explain in 2–3 sentences why this claim is not supported, and name the more likely shared root cause.</li>
+<li><strong>Heavy use vs. waste</strong>: Given only this cost-center-level data (no per-user detail), what additional per-user signals from the &quot;Legitimate Heavy Use vs. Waste&quot; table would you request before recommending any individual ULB changes?</li>
+</ol>
+<p>Check your calculations against the <strong>Answer Key</strong> in the LAB guide.</p>
+<h4 id="success-criteria">Success Criteria</h4>
+<ul>
+<li>✅ You calculated a burn rate using Days 8–10 of the sample data</li>
+<li>✅ You correctly identified Day 9 as the day the included-usage cap was exhausted</li>
+<li>✅ You computed credits-per-active-user for Day 9</li>
+<li>✅ You correctly rejected the &quot;overage caused the quality drop&quot; claim and named the release deadline as the more likely shared cause, citing the Day 9–10 recovery as evidence</li>
+<li>✅ You named at least two per-user signals (for example, restarts per task, acceptance rate) you&#39;d need before judging any individual as wasteful</li>
+</ul>
+</details>
+
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What would you do differently in month one if you saw this dataset for your own cost center?</li>
+<li>Besides a release deadline, what other confounding factors could produce a false correlation between cost and quality in your organization?</li>
+<li>How often should these KPIs be reviewed — weekly, biweekly, monthly — and does the answer change for a cost center currently trending toward exhaustion?</li>
+<li>Who should receive an anomaly alert when blocked users or burn rate spike mid-cycle, and how quickly should they be expected to respond?</li>
+</ul>
+<hr>
+<h2 id="4-budget-tuning--operating-model-capstone-hands-on-35-min">4. Budget Tuning &amp; Operating Model Capstone (Hands-On) (35 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Budget tuning spans two independent dimensions that must both be sized correctly:<ul>
+<li><strong>User-level budgets (ULBs)</strong> — universal, cost-center, and individual — cap what <strong>each person</strong> can consume (pool + metered), and always hard-stop</li>
+<li><strong>Spending budgets</strong> — cost-center, organization, and enterprise — cap <strong>metered charges only, after the pool is exhausted</strong>, and only hard-stop if &quot;Stop usage when budget limit is reached&quot; is explicitly enabled</li>
+</ul>
+</li>
+<li><strong>Included usage controls</strong> cap a cost center&#39;s draw from the shared pool to the AI credits its own licenses fund (for example, 80 Business licenses → an automatically calculated 152,000-credit cap); when the cap is reached, you choose whether the team is blocked or continues into paid overage</li>
+<li><strong>Power-user exceptions</strong>: use an <strong>individual ULB override</strong> for known heavy but legitimate users rather than raising the universal ULB for everyone — keep the exception path lightweight (a single request form or ticket type) so legitimate power users aren&#39;t blocked for days waiting on approval</li>
+</ul>
+<h3 id="lowest-remaining-headroom-wins">&quot;Lowest Remaining Headroom Wins&quot;</h3>
+<ul>
+<li>ULBs and spending budgets are <strong>independent controls</strong> — a user can be blocked by whichever one has the <strong>least capacity remaining</strong>, even if their own individual budget still has room</li>
+<li><strong>Worked example</strong>: a user has $5 remaining on their individual ULB, but the enterprise spending budget only has $1 remaining. The <strong>enterprise budget blocks them first</strong>, even though their personal ULB is not exhausted</li>
+<li>The reverse also holds: raising a cost-center or enterprise budget does <strong>not</strong> unblock a user who has already hit their own ULB — only raising that user&#39;s individual (or universal) ULB does</li>
+<li><strong>Practical rule</strong>: whenever you raise ULBs, recheck that your spending budgets can still cover the resulting gap between what your ULBs collectively allow and what the shared pool provides</li>
+</ul>
+<h3 id="sizing-check-the-calculation-every-tuning-exercise-should-run">Sizing Check (the calculation every tuning exercise should run)</h3>
+<pre><code>1. Max ULB consumption = Σ (users at each ULB tier × that tier&#39;s ULB amount)
+2. Pool value          = (Business seats × $19) + (Enterprise seats × $39)
+3. Gap to cover         = Max ULB consumption − Pool value
+   → Your cost-center + organization + enterprise budgets must cover this gap,
+     or users will be blocked by a spending budget before reaching their own ULB.
+</code></pre>
+<details>
+<summary><h3 id="-hands-on-budget-tuning-exercise-18-min">🧪 Hands-On: Budget Tuning Exercise (18 min)</h3></summary>
+
+<p><strong>Roles</strong>: Form groups of 3–4 with a mix of roles if possible (FinOps, platform/DevEx, engineering manager).</p>
+<p><strong>Scenario — &quot;Contoso Platform Org&quot;</strong>:</p>
+<ul>
+<li>300 Copilot Business users, 50 Copilot Enterprise users (350 licensed users total)</li>
+<li>80 of the Business users are in the <strong>Data Science</strong> cost center, with a <strong>cost-center ULB of $45</strong></li>
+<li><strong>5 named power users</strong> (outside Data Science) have an <strong>individual ULB override of $150</strong> each</li>
+<li>Every other user is on the <strong>universal ULB of $25</strong></li>
+<li>The current <strong>enterprise spending budget is $2,000</strong>, with &quot;Stop usage when budget limit is reached&quot; <strong>enabled</strong></li>
+</ul>
+<p><strong>Steps</strong>:</p>
+<ol>
+<li>Calculate the <strong>universal-tier population</strong>: 350 total − 80 (Data Science) − 5 (power users) = ______ users</li>
+<li>Calculate <strong>max ULB consumption</strong> using the Sizing Check formula above (three tiers: universal, Data Science cost-center, power-user individual)</li>
+<li>Calculate the <strong>pool value</strong>: (300 × $19) + (50 × $39)</li>
+<li>Calculate the <strong>gap to cover</strong>: max ULB consumption − pool value</li>
+<li>Compare the gap to the current $2,000 enterprise budget. Is it sufficient? If not, what&#39;s the minimum enterprise budget you&#39;d recommend, and why include a buffer above the bare minimum?</li>
+<li>Separately, the Data Science cost center&#39;s <strong>included usage control</strong> cap is 80 × 1,900 = 152,000 AI credits. If Data Science is a genuinely heavy, high-value team, would you configure their included usage control to <strong>block</strong> or to <strong>allow continued paid overage</strong> once that cap is reached — and why?</li>
+</ol>
+<p>Check your work against the <strong>Answer Key</strong> in the LAB guide.</p>
+<h4 id="success-criteria">Success Criteria</h4>
+<ul>
+<li>✅ You correctly calculated the universal-tier population (265 users)</li>
+<li>✅ You correctly calculated max ULB consumption ($10,975) and pool value ($7,650)</li>
+<li>✅ You correctly calculated the gap ($3,325) and identified that the current $2,000 enterprise budget is <strong>undersized</strong></li>
+<li>✅ You recommended raising the enterprise budget to at least the gap amount, with a stated buffer rationale</li>
+<li>✅ You made and justified a block-vs-allow-overage decision for the Data Science included usage control</li>
+</ul>
+</details>
+
+<h3 id="operating-model-building-blocks">Operating Model Building Blocks</h3>
+<table>
+<thead>
+<tr>
+<th>Building Block</th>
+<th>What It Covers</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Policy</strong></td>
+<td>Which budget tiers, models, and interfaces are the default; who can approve exceptions</td>
+</tr>
+<tr>
+<td><strong>Review cadence</strong></td>
+<td>Fixed schedule (recommended: monthly, with a lightweight weekly check during the September 1, 2026 promo-to-standard transition) to review the KPIs from Section 3</td>
+</tr>
+<tr>
+<td><strong>Anomaly response</strong></td>
+<td>A defined process for burn-rate spikes or blocked-user surges: verify the export, check for confounders (release deadlines, onboarding cohorts, incidents) before assuming a causal link, then decide on a temporary ULB change, communication, or a quality investigation</td>
+</tr>
+<tr>
+<td><strong>Exception path</strong></td>
+<td>A lightweight request form or ticket type for a power-user individual ULB override, so legitimate heavy users aren&#39;t blocked for days</td>
+</tr>
+<tr>
+<td><strong>Quality safeguards</strong></td>
+<td>Track a quality proxy (acceptance rate, PR review pass rate) alongside every cost metric; never treat a cost reduction as a win if it correlates with declining quality without ruling out other causes first</td>
+</tr>
+<tr>
+<td><strong>Showback/chargeback</strong></td>
+<td>Report cost to a business unit (showback) or charge it back to their budget (chargeback) via cost centers — many organizations start with showback and move to chargeback once baselines are trusted</td>
+</tr>
+</tbody></table>
+<h3 id="raci--who-owns-what">RACI — Who Owns What</h3>
+<table>
+<thead>
+<tr>
+<th>Activity</th>
+<th align="center">FinOps</th>
+<th align="center">Platform/DevEx</th>
+<th align="center">Eng. Manager</th>
+<th align="center">Program Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Monthly KPI review</td>
+<td align="center">A</td>
+<td align="center">R</td>
+<td align="center">C</td>
+<td align="center">I</td>
+</tr>
+<tr>
+<td>Budget tuning (ULBs, spending budgets)</td>
+<td align="center">C</td>
+<td align="center">R</td>
+<td align="center">I</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td>Anomaly triage &amp; confounder check</td>
+<td align="center">C</td>
+<td align="center">R</td>
+<td align="center">C</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td>Individual ULB exception approval</td>
+<td align="center">I</td>
+<td align="center">C</td>
+<td align="center">R</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td>Showback/chargeback reporting</td>
+<td align="center">R</td>
+<td align="center">I</td>
+<td align="center">I</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td>30-day optimization backlog ownership</td>
+<td align="center">C</td>
+<td align="center">R</td>
+<td align="center">C</td>
+<td align="center">A</td>
+</tr>
+</tbody></table>
+<p><em>R = Responsible, A = Accountable, C = Consulted, I = Informed.</em></p>
+<details>
+<summary><h3 id="-hands-on-capstone-30-day-optimization-backlog-12-min">🧪 Hands-On Capstone: 30-Day Optimization Backlog (12 min)</h3></summary>
+
+<p><strong>Roles</strong>: Same groups of 3–4 from the budget tuning exercise.</p>
+<p>Using everything from Sections 1–4, draft a prioritized <strong>30-Day Optimization Backlog</strong> for your organization (or for the Contoso scenario above):</p>
+<table>
+<thead>
+<tr>
+<th align="center">Priority</th>
+<th>Backlog Item</th>
+<th>Owner (from RACI)</th>
+<th align="center">Target Week</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">P0</td>
+<td>______</td>
+<td>______</td>
+<td align="center">______</td>
+</tr>
+<tr>
+<td align="center">P0</td>
+<td>______</td>
+<td>______</td>
+<td align="center">______</td>
+</tr>
+<tr>
+<td align="center">P1</td>
+<td>______</td>
+<td>______</td>
+<td align="center">______</td>
+</tr>
+<tr>
+<td align="center">P1</td>
+<td>______</td>
+<td>______</td>
+<td align="center">______</td>
+</tr>
+<tr>
+<td align="center">P2</td>
+<td>______</td>
+<td>______</td>
+<td align="center">______</td>
+</tr>
+</tbody></table>
+<p>At minimum, your backlog must include: one item that closes the ULB/spending-budget gap identified in the tuning exercise, one item that establishes or refines an anomaly-response threshold, one item that names your showback-vs-chargeback decision, and one item that schedules your first monthly KPI review before September 1, 2026.</p>
+<h4 id="success-criteria">Success Criteria</h4>
+<ul>
+<li>✅ Your backlog includes a P0 item that directly resolves the budget-tuning gap from the hands-on exercise</li>
+<li>✅ Your backlog names at least three KPIs from Section 3 with a defined review cadence</li>
+<li>✅ Your backlog states an explicit anomaly-response trigger and an owner from the RACI table</li>
+<li>✅ Your backlog states a showback-vs-chargeback decision and a target week for your next KPI review ahead of the September 1, 2026 promotional pool change</li>
+</ul>
+</details>
+
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What&#39;s the single biggest blocker to executing your 30-day optimization backlog as written?</li>
+<li>Who owns anomaly response after today — is it the same person who owns monthly KPI review, or should it be different given how quickly anomalies need triage?</li>
+<li>How will you know, one cycle from now, whether your budget tuning changes worked?</li>
+<li>What would make you revisit your enterprise spending budget sooner than one cycle — before or after September 1, 2026?</li>
+</ul>
+<hr>
+<h2 id="recap">Recap</h2>
+<ul>
+<li>Reporting lives in the AI usage dashboard — filter by user, model, organization, or cost center, and export for offline analysis; individual users have their own visibility too</li>
+<li>Cost is tokens × per-model, per-category pricing — always re-verify against live pricing, never memorize it</li>
+<li>Baseline before you tune: burn rate, exhaustion date, credits/user, blocked users, overage, feature/model mix, and quality together — not cost in isolation</li>
+<li>Total credits alone don&#39;t identify waste — pair volume with quality and session-behavior signals, and never assume correlation is causation without checking for a confounding factor</li>
+<li>Budgets are tuned across two independent dimensions — ULBs and spending budgets — and the <strong>lowest remaining headroom wins</strong> when they disagree</li>
+<li>A written 30-day optimization backlog, owned through a clear RACI, turns this session into a lasting operating cadence</li>
+</ul>
+<h3 id="qa-topics-to-prepare-for">Q&amp;A Topics to Prepare For</h3>
+<ul>
+<li>&quot;Can we see cost by repository or team, not just by user or cost center?&quot;</li>
+<li>&quot;How do we handle third-party coding agents in our KPI and budget math?&quot;</li>
+<li>&quot;What specifically changes for us on September 1, 2026?&quot;</li>
+<li>&quot;If overage and a quality dip happen together again, how fast can we tell whether they&#39;re actually related?&quot;</li>
+</ul>
+<hr>
+<h2 id="appendix-official-sources--facilitator-reference">Appendix: Official Sources &amp; Facilitator Reference</h2>
+<h3 id="key-urls">Key URLs</h3>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Usage-based billing (orgs/enterprises)</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises</a></td>
+</tr>
+<tr>
+<td>Budgets for usage-based billing</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/billing/budgets-for-usage-based-billing">https://docs.github.com/en/copilot/concepts/billing/budgets-for-usage-based-billing</a></td>
+</tr>
+<tr>
+<td>Getting started with budget controls</td>
+<td><a href="https://docs.github.com/en/copilot/tutorials/budgets/getting-started-with-budget-controls">https://docs.github.com/en/copilot/tutorials/budgets/getting-started-with-budget-controls</a></td>
+</tr>
+<tr>
+<td>Optimizing your budget configuration</td>
+<td><a href="https://docs.github.com/en/copilot/tutorials/budgets/optimizing-your-budget-configuration">https://docs.github.com/en/copilot/tutorials/budgets/optimizing-your-budget-configuration</a></td>
+</tr>
+<tr>
+<td>Models and pricing for GitHub Copilot</td>
+<td><a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing</a></td>
+</tr>
+<tr>
+<td>Optimizing AI usage and reducing cost</td>
+<td><a href="https://docs.github.com/en/copilot/tutorials/optimize-ai-usage">https://docs.github.com/en/copilot/tutorials/optimize-ai-usage</a></td>
+</tr>
+<tr>
+<td>Monitoring your AI credits usage</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/monitor-ai-usage">https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/monitor-ai-usage</a></td>
+</tr>
+<tr>
+<td>Managing your company&#39;s spending</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/manage-company-spending">https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/manage-company-spending</a></td>
+</tr>
+<tr>
+<td>Budgets and alerts (billing concepts)</td>
+<td><a href="https://docs.github.com/en/billing/concepts/budgets-and-alerts">https://docs.github.com/en/billing/concepts/budgets-and-alerts</a></td>
+</tr>
+<tr>
+<td>Setting up budgets to control spending</td>
+<td><a href="https://docs.github.com/en/billing/how-tos/set-up-budgets">https://docs.github.com/en/billing/how-tos/set-up-budgets</a></td>
+</tr>
+<tr>
+<td>Controlling and tracking costs at scale (cost centers)</td>
+<td><a href="https://docs.github.com/en/billing/tutorials/control-costs-at-scale">https://docs.github.com/en/billing/tutorials/control-costs-at-scale</a></td>
+</tr>
+<tr>
+<td>Cost center allocation reference</td>
+<td><a href="https://docs.github.com/en/billing/reference/cost-center-allocation">https://docs.github.com/en/billing/reference/cost-center-allocation</a></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: All dated facts (pricing snapshot, promotional-window dates, included-credit amounts) reflect the docs as verified on <strong>2026-08-08</strong>. Re-verify against these live URLs before every delivery of this module.</p>
+</blockquote>
+<h3 id="instructor-preflight-checklist">Instructor Preflight Checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Re-verify the pricing snapshot table (Section 2) against the live <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing</a> page</li>
+<li><input disabled="" type="checkbox"> Re-verify the promotional-window dates and standard credit amounts (Welcome section) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">Usage-based billing</a> page</li>
+<li><input disabled="" type="checkbox"> Confirm which attendees have AI usage dashboard access ahead of time so you can plan the Section 1 live demo versus a screenshot walkthrough</li>
+<li><input disabled="" type="checkbox"> Print or share the Sample Dataset and Answer Key (LAB guide) in case attendees lack access to a real AI usage export</li>
+<li><input disabled="" type="checkbox"> Bookmark all Key URLs above in a dedicated browser folder for quick reference during Q&amp;A</li>
+<li><input disabled="" type="checkbox"> If your organization has already run Module 1 and/or Module 2, review those decisions (budget amounts, developer optimization habits already adopted) so this module&#39;s tuning exercise reflects real numbers where possible</li>
+</ul>
+<h3 id="backup-plan">Backup Plan</h3>
+<p>If the live AI usage dashboard is unavailable (no access, connectivity issue, or UI change):</p>
+<ol>
+<li>Use the <strong>Sample Dataset</strong> (Section 3) for the entire KPI and anomaly-analysis exercise instead of a live export</li>
+<li>Walk through the <strong>Reporting &amp; Data Sources</strong> demo steps as a slide-only, screenshot-based discussion</li>
+<li>Reference the official docs URLs above and screen-share the documentation pages as a substitute for the live product UI</li>
+<li>Keep the hands-on worksheets (LAB guide) as the primary artifact attendees leave with, regardless of demo availability</li>
+</ol>
+<hr>
+<p><em>Workshop guide for Module 3: Measurement &amp; Optimization at Scale, part of the GitHub Copilot AI Credits Optimization workshop series (standalone-capable)</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module">document.querySelectorAll("pre").forEach(t=>{if(t.querySelector("code.language-mermaid"))return;const e=document.createElement("button");e.className="copy-btn",e.textContent="Copy",e.addEventListener("click",async()=>{const o=(t.querySelector("code")||t).textContent||"";await navigator.clipboard.writeText(o),e.textContent="Copied!",e.classList.add("copied"),setTimeout(()=>{e.textContent="Copy",e.classList.remove("copied")},2e3)}),t.appendChild(e)});</script>

@@ -1,0 +1,700 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot AI Credits Optimization — Module 1: Administration &amp; Budget Guardrails Workshop</title><link rel="stylesheet" href="/gh-workshops/_astro/index.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization--module-1-administration--budget-guardrails-workshop">GitHub Copilot AI Credits Optimization — Module 1: Administration &amp; Budget Guardrails Workshop</h1>
+<p><strong>Duration</strong>: ~115 minutes (including one 10-minute break)<br><strong>Format</strong>: Presentation + Live Demo + Hands-On Exercises<br><strong>Audience</strong>: Enterprise/org owners, billing managers, FinOps leaders, platform admins, engineering leaders<br><strong>Focus</strong>: AI Credits billing fundamentals, budget guardrails (ULBs, cost-center/org/enterprise budgets), the billing flow, and the administrative operating procedures that keep guardrails healthy month over month</p>
+<hr>
+<h2 id="curriculum-context">Curriculum Context</h2>
+<p>This is <strong>Module 1 — Administration &amp; Budget Guardrails</strong> of the <strong>GitHub Copilot AI Credits Optimization</strong> curriculum. It is designed to be delivered <strong>standalone</strong> — no other module is required as a prerequisite — but it is also the natural entry point for a multi-module program.</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Focus</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Module 1 (this guide)</strong></td>
+<td>Administration &amp; Budget Guardrails</td>
+<td>You are here</td>
+</tr>
+<tr>
+<td>Module 2</td>
+<td>Developer Token Optimization Patterns</td>
+<td><a href="../github-copilot-token-developer/github-copilot-token-developer-workshop.md">github-copilot-token-developer-workshop.md</a></td>
+</tr>
+<tr>
+<td>Module 3</td>
+<td>FinOps Reporting &amp; Chargeback/Showback</td>
+<td><a href="../github-copilot-token-finops/github-copilot-token-finops-workshop.md">github-copilot-token-finops-workshop.md</a></td>
+</tr>
+<tr>
+<td>Curriculum Overview</td>
+<td>Role-based curriculum overview covering recommended learning paths across all three modules</td>
+<td><a href="../github-copilot-token/github-copilot-token-workshop.md">github-copilot-token-workshop.md</a></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: Modules 2 and 3 may not yet exist as separate files at the time you are reading this guide — the links above are provided for when the full curriculum is built out. This module&#39;s content is self-contained regardless.</p>
+</blockquote>
+<hr>
+<h2 id="workshop-overview">Workshop Overview</h2>
+<p>GitHub Copilot billing for Business and Enterprise plans is <strong>usage-based, measured in GitHub AI Credits</strong>. Before any developer optimization conversation makes sense, the people who own budgets — enterprise/org owners, billing managers, FinOps leads, and platform admins — need a precise, accurate mental model of how credits are consumed, pooled, and capped, and how to configure guardrails <strong>before</strong> a rollout scales. This module gives that audience a hands-on budget-configuration exercise, the exact billing-flow mechanics, and a repeatable administrative operating procedure to run every month.</p>
+<blockquote>
+<p><strong>Note</strong>: All facts, pricing, and screenshots referenced in this workshop reflect GitHub documentation as of <strong>2026-08-08</strong>. Pricing and included-credit amounts change over time — always verify against the live docs linked in the Appendix before delivering this workshop.</p>
+</blockquote>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li>Explain the AI Credits billing model: the credit-to-dollar conversion, included monthly allotments, pooling, and monthly reset behavior</li>
+<li>Distinguish which Copilot features consume AI credits and which do not</li>
+<li>Configure and interpret budgets at the universal, cost-center, individual-user, organization, and enterprise levels — including precedence and hard-stop behavior</li>
+<li>Trace a Copilot request through the full billing flow: user budget check → shared pool → additional usage policy → applicable spending budget/hard stop</li>
+<li>Distinguish a cost center&#39;s <strong>included-usage allocation</strong> from a cost center&#39;s <strong>spending budget</strong></li>
+<li>Draft a monthly administrative runbook covering alerts, reviews, and an exception/escalation path</li>
+<li>Identify what changes for existing customers when the June–September 2026 promotional credit window ends</li>
+</ul>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>Member of the organization/enterprise used for this workshop</td>
+</tr>
+<tr>
+<td><strong>Copilot License</strong></td>
+<td>Business or Enterprise (this workshop does not cover legacy Pro/Pro+ premium-request billing)</td>
+</tr>
+<tr>
+<td><strong>Admin access (recommended, not required)</strong></td>
+<td>Organization owner, enterprise owner, or billing manager role unlocks the live budget exercise in Section 3</td>
+</tr>
+<tr>
+<td><strong>Web browser</strong></td>
+<td>For the Billing &amp; Licensing settings and AI usage dashboard</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: No section of this workshop requires making a live paid AI request or saving a production configuration change. Every exercise can be completed on paper with the supplied worksheets. If you do configure a real budget during Section 3, enable <strong>Stop usage when budget limit is reached</strong> only in a sandbox/test scope — a live hard-stop budget can immediately block production users.</p>
+</blockquote>
+<h3 id="role-based-paths-no-admin-rights-start-here">Role-Based Paths (No Admin Rights? Start Here)</h3>
+<p>Not every attendee will have organization owner, enterprise owner, or billing manager access. Use this table to route yourself through the hands-on exercise in Section 3:</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>With Admin Access</th>
+<th>Without Admin Access</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Enterprise/Org Admin</strong></td>
+<td>Drives the live budget setup (Section 3) as the <strong>Admin</strong> role</td>
+<td>N/A — pair with another admin attendee if two enterprises are represented</td>
+</tr>
+<tr>
+<td><strong>Billing Manager</strong></td>
+<td>Co-drives the live demo as <strong>Admin</strong>; captures screenshots for the team</td>
+<td>Completes the <strong>Budget Design Worksheet</strong> as the <strong>Observer</strong> role — a read-only paper simulation</td>
+</tr>
+<tr>
+<td><strong>FinOps Lead</strong></td>
+<td>Reviews cost-center included-usage allocations alongside the Admin</td>
+<td>Completes the worksheet as <strong>Observer</strong>; focuses discussion on chargeback/showback framing</td>
+</tr>
+<tr>
+<td><strong>Platform Admin / Eng. Leader</strong></td>
+<td>Observes the live demo for operational awareness</td>
+<td>Completes the worksheet as <strong>Observer</strong>; focuses on the runbook and escalation path in Section 4</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="session-agenda">Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>—</td>
+<td><a href="#welcome--curriculum-path-10-min">Welcome &amp; Curriculum Path</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>1</td>
+<td><a href="#1-ai-credits-billing-fundamentals-20-min">AI Credits Billing Fundamentals</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#2-budget-controls--billing-flow-25-min">Budget Controls &amp; Billing Flow</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>☕</td>
+<td>Break</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#3-hands-on-budget-configuration-30-min">Hands-On Budget Configuration</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#4-administrative-operating-procedures--close-20-min">Administrative Operating Procedures &amp; Close</a></td>
+<td>20 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total: ~115 min (~1h 55min)</strong></p>
+<hr>
+<h2 id="welcome--curriculum-path-10-min">Welcome &amp; Curriculum Path (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Introduce the shift to usage-based billing and why administration/budget guardrails come first in this curriculum — everything downstream (developer habits, FinOps reporting) operates inside the boundaries set here</li>
+<li>Confirm the role mix in the room and point attendees to their Role-Based Path above</li>
+<li>This module stands alone, but frame where it sits in the broader curriculum: Module 2 covers developer-side token optimization, Module 3 covers FinOps reporting and chargeback/showback</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Has your organization already transitioned to usage-based billing, or are you still on a legacy plan?</li>
+<li>Who in the room can access Billing &amp; Licensing settings today?</li>
+<li>What&#39;s the one billing or budget question you most want answered by the end of this session?</li>
+</ul>
+<hr>
+<h2 id="1-ai-credits-billing-fundamentals-20-min">1. AI Credits Billing Fundamentals (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>GitHub AI Credits</strong> are the billing unit for Copilot Business and Enterprise: <strong>1 AI credit = $0.01 USD</strong></li>
+<li>Every Copilot <strong>Business</strong> license includes <strong>1,900 AI credits/user/month</strong>; every Copilot <strong>Enterprise</strong> license includes <strong>3,900 AI credits/user/month</strong></li>
+<li>Credits are <strong>pooled at the billing entity level</strong> — a heavy user in one team can draw on a lighter user&#39;s unused share</li>
+<li>The pool <strong>resets at 00:00:00 UTC on the first day of each month</strong>; unused credits do <strong>not</strong> roll over</li>
+<li><strong>Code completions and next-edit suggestions (NES) remain unlimited</strong> on paid plans and are <strong>not</strong> billed in AI credits</li>
+<li>AI-credit-billed features include: <strong>Copilot Chat, Copilot CLI, Copilot cloud agent, Copilot Spaces, Spark, and third-party coding agents</strong></li>
+<li><strong>Additional usage (paid overage/metered billing) is enabled by default</strong> for organizations and enterprises — an admin must explicitly disable the <strong>AI credits paid usage</strong> policy to prevent any spend beyond included credits</li>
+</ul>
+<blockquote>
+<p><strong>Important — Promotional period ends 2026-09-01</strong>: Existing Business/Enterprise customers receive a higher promotional allotment from <strong>June 1 – September 1, 2026</strong>: <strong>3,000 credits/user/month (Business)</strong> and <strong>7,000 credits/user/month (Enterprise)</strong>. Starting <strong>September 1, 2026</strong>, allotments return to the <strong>standard 1,900 / 3,900</strong> amounts. Use the promotional window to baseline usage and size budgets <em>before</em> the pool shrinks — do not treat the promotional numbers as your permanent capacity.</p>
+</blockquote>
+<h3 id="included-credits-at-a-glance">Included Credits at a Glance</h3>
+<table>
+<thead>
+<tr>
+<th>Plan</th>
+<th align="right">Standard (from Sep 1, 2026)</th>
+<th align="right">Promo (Jun 1 – Sep 1, 2026)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Business</strong></td>
+<td align="right">1,900/user/month</td>
+<td align="right">3,000/user/month</td>
+</tr>
+<tr>
+<td><strong>Enterprise</strong></td>
+<td align="right">3,900/user/month</td>
+<td align="right">7,000/user/month</td>
+</tr>
+</tbody></table>
+<h3 id="what-consumes-credits-vs-what-doesnt">What Consumes Credits vs. What Doesn&#39;t</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Billed in AI Credits?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Code completions / Next Edit Suggestions (NES)</td>
+<td>No — unlimited on paid plans</td>
+</tr>
+<tr>
+<td>Copilot Chat</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Copilot CLI</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Copilot cloud agent</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Copilot Spaces</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Spark</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Third-party coding agents</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<details>
+<summary><h3 id="-hands-on-included-credit-math-check-5-min">🧪 Hands-On: Included-Credit Math Check (5 min)</h3></summary>
+
+<p><strong>Roles</strong>: Admin and Observer work together; either role can drive.</p>
+<p>Using the table above, calculate the <strong>total monthly pooled credits</strong> for a fictional <strong>500-user Copilot Business organization</strong>, once during the standard period and once during the promotional period:</p>
+<ol>
+<li>Standard period total pool (500 × 1,900)</li>
+<li>Promotional period total pool (500 × 3,000)</li>
+<li>Difference between the two totals</li>
+</ol>
+<h4 id="success-criteria">Success Criteria</h4>
+<ul>
+<li>✅ You calculated the standard-period pool as 950,000 credits</li>
+<li>✅ You calculated the promotional-period pool as 1,500,000 credits</li>
+<li>✅ You can state the dollar-value difference (550,000 credits × $0.01 = $5,500) and why it matters for September 1 planning</li>
+</ul>
+</details>
+
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which of your currently used Copilot features fall outside the credit-billed list (completions/NES), and does that change how you&#39;ll message developers about &quot;cost&quot;?</li>
+<li>What&#39;s the business risk of leaving &quot;AI credits paid usage&quot; enabled with no budget guardrails configured at all?</li>
+<li>How should your organization use the June–September 2026 promotional window before the standard pool takes effect?</li>
+</ul>
+<hr>
+<h2 id="2-budget-controls--billing-flow-25-min">2. Budget Controls &amp; Billing Flow (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Budgets are the tool that governs both scenarios from Section 1 — capping an individual&#39;s draw from the pool, and capping paid overage once the pool is exhausted</li>
+<li>There are <strong>three types of user-level budgets (ULBs)</strong>, evaluated most-specific-wins:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>ULB Type</th>
+<th>Scope</th>
+<th>Precedence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Universal ULB</strong></td>
+<td>Every licensed user in the enterprise (default)</td>
+<td>Lowest — overridden by the other two</td>
+</tr>
+<tr>
+<td><strong>Cost-center ULB</strong></td>
+<td>Every member of one cost center</td>
+<td>Overrides universal for that cost center&#39;s members</td>
+</tr>
+<tr>
+<td><strong>Individual ULB</strong></td>
+<td>One specific user</td>
+<td>Highest — overrides both of the above</td>
+</tr>
+</tbody></table>
+<ul>
+<li>ULBs cap a user&#39;s <strong>total</strong> consumption (pool + metered) and <strong>always hard-stop</strong> — a <strong>$0 ULB blocks that user immediately</strong>, regardless of pool or policy state</li>
+<li><strong>Cost-center, organization, and enterprise budgets</strong> only cap <strong>metered</strong> (paid overage) charges, and only take effect <strong>after</strong> the shared pool is exhausted</li>
+<li>Those higher-level budgets hard-stop <strong>only if &quot;Stop usage when budget limit is reached&quot; is enabled</strong> — this is <strong>off by default</strong>, meaning an unconfigured spending budget is an alert, not a guardrail</li>
+<li>There is <strong>no automatic fallback to a cheaper model</strong> when a budget is exhausted — the user is simply blocked</li>
+<li><strong>Cost centers have two distinct controls, not one</strong>: a cost center&#39;s <strong>included-usage allocation</strong> is simply the sum of its members&#39; included pooled credits (part of the shared-pool phase); a <strong>cost-center budget</strong> is a separate spending-limit construct that only governs the metered phase after that allocation is exhausted. Sizing one does not automatically size the other</li>
+</ul>
+<h3 id="budget-control-comparison">Budget Control Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What It Caps</th>
+<th>When Active</th>
+<th>Scope</th>
+<th>Hard Stop?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Universal user-level budget</strong></td>
+<td>Each user&#39;s total AI credit consumption</td>
+<td>Always (pool + metered)</td>
+<td>Per user</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>Cost-center user-level budget</strong></td>
+<td>Each member&#39;s total consumption (overrides universal)</td>
+<td>Always (pool + metered)</td>
+<td>Per user, by cost center</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>Individual user-level budget</strong></td>
+<td>A specific user&#39;s total consumption (overrides both above)</td>
+<td>Always (pool + metered)</td>
+<td>Per user</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>Cost-center budget</strong></td>
+<td>A team&#39;s metered charges after its included-usage allocation is exhausted</td>
+<td>Metered phase only</td>
+<td>Per cost center</td>
+<td>Only if hard stop enabled</td>
+</tr>
+<tr>
+<td><strong>Organization budget</strong></td>
+<td>An org&#39;s metered charges after pool exhaustion</td>
+<td>Metered phase only</td>
+<td>Per organization</td>
+<td>Only if hard stop enabled</td>
+</tr>
+<tr>
+<td><strong>Enterprise budget</strong></td>
+<td>Total enterprise metered charges after pool exhaustion</td>
+<td>Metered phase only</td>
+<td>Enterprise-wide</td>
+<td>Only if hard stop enabled</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: The enterprise budget is <strong>not</strong> your total monthly bill. Your <strong>maximum possible spend</strong> is <strong>license fees + the enterprise budget</strong>. Example: 400 Copilot Business licenses at $19/month = $7,600 in license fees. A $5,000 enterprise budget means your maximum bill is $12,600 — not $5,000.</p>
+</blockquote>
+<h3 id="alerts">Alerts</h3>
+<table>
+<thead>
+<tr>
+<th>Alert Type</th>
+<th>Thresholds</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Included-usage alerts</strong></td>
+<td>Fire at 90% and 100% of included/pooled credits</td>
+</tr>
+<tr>
+<td><strong>Budget alerts</strong></td>
+<td>Fire at 75%, 90%, and 100% of the configured budget amount</td>
+</tr>
+</tbody></table>
+<h3 id="billing-flow-diagram">Billing Flow Diagram</h3>
+<p>The diagram below traces a single Copilot request through every decision point, from the user&#39;s own budget through the shared pool to any applicable spending budget. This diagram must remain identical across this workshop, the LAB guide, and the companion slide deck.</p>
+<pre><code>┌────────────────┐ ┌────────────────┐ ┌────────────────┐ ┌────────────────┐ ┌────────────────┐
+│      User      │ │  User budget   │ │     Shared     │ │   Paid usage   │ │Spending budget │
+│    request     │►│     check      │►│      pool      │►│     policy     │►│  / hard stop   │
+└────────────────┘ └────────────────┘ └────────────────┘ └────────────────┘ └────────────────┘
+</code></pre>
+<p><strong>Decision points to walk through out loud, stage by stage</strong>:</p>
+<ol>
+<li><strong>User budget check</strong> — the most specific active ULB (individual &gt; cost-center &gt; universal) is evaluated first. A <strong>$0 or exhausted ULB always blocks</strong>, regardless of pool or policy state — there is no fallback to a cheaper model.</li>
+<li><strong>Shared pool</strong> — if the user&#39;s ULB has room, the request draws from the pooled AI credits (org/enterprise, resets monthly at 00:00 UTC, no rollover). While the pool has credits, the request is served with <strong>no additional metered charge</strong> beyond the license fee.</li>
+<li><strong>Paid usage policy</strong> — once the pool is exhausted, the <strong>&quot;AI credits paid usage&quot;</strong> policy (enabled by default) decides whether metered usage even begins. If disabled, the user is <strong>blocked until the next billing cycle</strong>.</li>
+<li><strong>Spending budget / hard stop</strong> — if metered usage is allowed, the <strong>applicable spending budget</strong> (cost-center, organization, or enterprise) determines whether the charge goes through. It only hard-stops if <strong>&quot;Stop usage when budget limit is reached&quot;</strong> was explicitly enabled (off by default) — otherwise the charge is billed as overage and only an alert fires.</li>
+</ol>
+<details>
+<summary><h3 id="-hands-on-scenario-trace-8-min">🧪 Hands-On: Scenario Trace (8 min)</h3></summary>
+
+<p><strong>Roles</strong>: Admin and Observer work together; either role can lead the trace out loud.</p>
+<p>Using the diagram above, trace what happens in each scenario and write down where the request is blocked (if at all) and why:</p>
+<ol>
+<li>A user with a $0 individual ULB sends a Chat prompt. The org pool still has 40% of its credits remaining.</li>
+<li>A user with no individual override sends a prompt. The shared pool is fully exhausted, and the enterprise has disabled the &quot;AI credits paid usage&quot; policy.</li>
+<li>A user with no individual override sends a prompt. The shared pool is exhausted, paid usage is enabled, and the enterprise budget has hit 100% with hard stop <strong>not</strong> enabled.</li>
+<li>Same as #3, but hard stop <strong>is</strong> enabled on the enterprise budget.</li>
+</ol>
+<h4 id="success-criteria">Success Criteria</h4>
+<ul>
+<li>✅ You correctly identify Scenario 1 as blocked at the user-level budget step, regardless of pool state</li>
+<li>✅ You correctly identify Scenario 2 as blocked at the paid usage policy step</li>
+<li>✅ You correctly identify Scenario 3 as <strong>allowed</strong> (alert only, no hard stop configured)</li>
+<li>✅ You correctly identify Scenario 4 as blocked at the spending budget step</li>
+</ul>
+</details>
+
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Why does a user-level budget always hard-stop, while cost-center/org/enterprise budgets only hard-stop when explicitly enabled?</li>
+<li>Where does the distinction between a cost center&#39;s included-usage allocation and its spending budget most often get missed in practice?</li>
+<li>Where would you expect most support tickets to come from once budgets are live — which step in the diagram?</li>
+<li>How would alerts at 75/90/100% change how quickly your team reacts, compared to waiting for a hard stop?</li>
+</ul>
+<hr>
+<h2 id="3-hands-on-budget-configuration-30-min">3. Hands-On Budget Configuration (30 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Getting-started recommendation</strong> for a first budget rollout:<ol>
+<li><strong>Set a universal ULB above the per-license value</strong> — $19 for Business, $39 for Enterprise. Setting it above the license value lets pooling work as intended: heavier users draw from lighter users&#39; unused share instead of being capped at exactly their own license cost.</li>
+<li><strong>Identify power users and set individual ULB overrides</strong> — after your first billing cycle, review the AI usage dashboard for users who are consistently blocked, and raise their individual budget.</li>
+<li><strong>Set an enterprise spending limit</strong> to cap total metered charges once the shared pool is exhausted.</li>
+<li><strong>Enable &quot;Stop usage when budget limit is reached&quot;</strong> on every spending limit you create — without it, the limit only sends alerts and never actually stops spend.</li>
+<li><strong>Monitor monthly</strong> — check the AI usage dashboard for users blocked early in the cycle (budget too tight), unexpected metered charges (pool exhausting early), or a clean month with no blocked users (well-sized budgets).</li>
+</ol>
+</li>
+<li>This exercise <strong>never requires saving a production change</strong> — the Admin path always uses a sandbox/test scope, and the Simulation path is a paper worksheet</li>
+</ul>
+<h3 id="-demo-setting-up-a-bundled-ai-credits-budget">🖥️ Demo: Setting Up a Bundled AI Credits Budget</h3>
+<ol>
+<li>Navigate to <strong>Organization/Enterprise Settings → Billing &amp; Licensing → Budgets and alerts</strong></li>
+<li>Click <strong>New budget</strong></li>
+<li>Under <strong>Budget Type</strong>, select <strong>Bundled AI credits budget</strong></li>
+<li>Choose the <strong>scope</strong>: Universal, cost-center, individual user, organization, or enterprise</li>
+<li>Set the <strong>amount</strong> — for a universal ULB, set it above the per-license value ($19 Business / $39 Enterprise)</li>
+<li>Configure <strong>alerts</strong>: included-usage alerts fire at 90% and 100%; budget alerts fire at 75%, 90%, and 100%</li>
+<li>Where available, enable <strong>Stop usage when budget limit is reached</strong> to convert the budget into a hard stop</li>
+</ol>
+<details>
+<summary><h3 id="-hands-on-budget-design-worksheet-20-min">🧪 Hands-On: Budget Design Worksheet (20 min)</h3></summary>
+
+<p><strong>Roles</strong>: <strong>Admin</strong> drives the live UI (if available, sandbox/test scope only); <strong>Observer</strong> completes the worksheet in parallel and compares notes at the end.</p>
+<p><strong>Step 1 — Choose your path</strong>:</p>
+<ul>
+<li><strong>Admin path</strong>: If you have organization/enterprise billing access, open <strong>Billing &amp; Licensing → Budgets and alerts</strong> and follow the demo steps above in a <strong>test/sandbox scope</strong>. Do <strong>not</strong> enable hard stop on a production scope, and do <strong>not</strong> save the configuration against a production scope during this exercise.</li>
+<li><strong>Simulation path</strong>: If you do not have admin access, or as the Observer role regardless of access, complete the <strong>Budget Design Worksheet</strong> in the LAB guide instead — you will design the same budget on paper using the same fields the UI asks for.</li>
+</ul>
+<p><strong>Step 2 — Design your budget</strong> (both roles, both paths):</p>
+<p>Fill in the <strong>Budget Design Worksheet</strong> (see LAB) for a fictional <strong>500-user Copilot Business organization</strong>:</p>
+<ul>
+<li>Universal ULB amount (must be above $19)</li>
+<li>At least one individual ULB override, with a reason</li>
+<li>A cost-center included-usage allocation vs. a separate cost-center spending budget (explain the difference in your own words)</li>
+<li>Enterprise spending limit amount</li>
+<li>Whether &quot;Stop usage when budget limit is reached&quot; is enabled, and why</li>
+</ul>
+<p><strong>Step 3 — Compare</strong>: Admin and Observer compare worksheet answers. Discuss any differences in the ULB amount chosen and why.</p>
+<h4 id="success-criteria">Success Criteria</h4>
+<ul>
+<li>✅ You can state the precedence order of the three ULB types from memory</li>
+<li>✅ You can explain why a $0 ULB blocks a user immediately, while an unconfigured enterprise budget does not</li>
+<li>✅ Your worksheet&#39;s universal ULB is set above the per-license value</li>
+<li>✅ You can explain the difference between a cost center&#39;s included-usage allocation and its spending budget</li>
+<li>✅ (Admin path only) You have located the Budgets and alerts screen and can name all five fields in the &quot;New budget&quot; flow, without saving a production change</li>
+</ul>
+</details>
+
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Who in your organization currently has the ability to set or change a budget — is that the right set of people?</li>
+<li>If your universal ULB is set too low, what&#39;s the practical impact on end users versus if it&#39;s set too high?</li>
+<li>Should your organization enable &quot;Stop usage when budget limit is reached&quot; on the enterprise budget on day one, or only after a baseline month of data?</li>
+<li>How would you communicate a budget change to end users before it takes effect?</li>
+</ul>
+<hr>
+<h2 id="4-administrative-operating-procedures--close-20-min">4. Administrative Operating Procedures &amp; Close (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>A budget configuration is not &quot;set and forget&quot; — it needs a recurring <strong>administrative runbook</strong> so guardrails stay correctly sized as usage patterns change</li>
+<li><strong>Monthly cadence</strong> should cover: reviewing alert history (included-usage and budget alerts), checking blocked-user counts, reviewing metered overage, and re-validating cost-center included-usage allocations against current headcount</li>
+<li>An <strong>exception/escalation path</strong> should be lightweight — a single request form or ticket type — so a legitimate power user or team isn&#39;t blocked for days waiting on a manual budget increase</li>
+</ul>
+<h3 id="administrative-runbook-monthly-cycle">Administrative Runbook (Monthly Cycle)</h3>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Action</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Review included-usage alerts (90%/100%) and budget alerts (75%/90%/100%) fired during the prior cycle</td>
+<td>Billing Manager</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Pull the AI usage dashboard/export; identify blocked users and which ULB blocked them</td>
+<td>Platform Admin</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Re-validate each cost center&#39;s included-usage allocation against current headcount (new hires/departures change the math)</td>
+<td>FinOps Lead</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Review metered overage against the enterprise/org spending budget; confirm hard-stop status is still the intended setting</td>
+<td>Enterprise/Org Owner</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Approve or deny any pending exception requests (see below); document the reason either way</td>
+<td>Billing Manager</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Communicate any budget changes to affected users/teams before they take effect</td>
+<td>Platform Admin</td>
+</tr>
+</tbody></table>
+<details>
+<summary><h3 id="-hands-on-exception--escalation-exercise-10-min">🧪 Hands-On: Exception & Escalation Exercise (10 min)</h3></summary>
+
+<p><strong>Roles</strong>: Admin and Observer work together; rotate who writes the decision.</p>
+<p>For each request below, decide: <strong>(a)</strong> who should approve it, <strong>(b)</strong> whether it changes a ULB, a cost-center budget, or an enterprise budget, and <strong>(c)</strong> what you would document as the reason:</p>
+<ol>
+<li>A single power user is blocked by their individual ULB three times in one week, but their manager confirms the work is legitimate and time-sensitive.</li>
+<li>A cost center&#39;s included-usage allocation is exhausted on day 10 of a 30-day cycle because it onboarded 15 new engineers mid-month.</li>
+<li>An enterprise-wide spending budget is projected to hit 100% five days before the monthly reset, with hard stop <strong>not</strong> enabled.</li>
+<li>A team requests that their cost center&#39;s spending budget hard stop be <strong>disabled</strong> because a legitimate multi-day agent task keeps getting blocked.</li>
+</ol>
+<h4 id="success-criteria">Success Criteria</h4>
+<ul>
+<li>✅ You correctly route Scenario 1 to an individual ULB increase, approved by a Billing Manager or the user&#39;s manager per your escalation policy</li>
+<li>✅ You correctly identify Scenario 2 as a cost-center included-usage allocation problem, not a spending-budget problem</li>
+<li>✅ You correctly identify Scenario 3 as a case where alert-only behavior means the team must act manually before the reset, since hard stop is not enabled</li>
+<li>✅ You can articulate at least one risk of approving Scenario 4 outright versus raising the budget amount instead</li>
+</ul>
+</details>
+
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Who should own the monthly runbook end-to-end — is it one role or a shared responsibility across Billing Manager, Platform Admin, and FinOps Lead?</li>
+<li>How would you keep the exception path lightweight without turning it into an unmonitored back door around every guardrail?</li>
+<li>What would trigger you to revisit your universal ULB or enterprise budget sooner than the next monthly cycle?</li>
+</ul>
+<h3 id="recap">Recap</h3>
+<ul>
+<li>AI Credits are simple in principle (1 credit = $0.01, pooled, reset monthly) but the guardrails around them have real nuance — precedence, hard-stop rules, and the included-usage-vs-spending-budget distinction all matter</li>
+<li>ULBs always hard-stop; cost-center/org/enterprise budgets only hard-stop when explicitly enabled — most incidents trace back to that distinction being misunderstood</li>
+<li>A monthly administrative runbook, not a one-time setup, is what keeps budgets correctly sized as usage evolves</li>
+<li>This module stands alone, but Module 2 (developer optimization patterns) and Module 3 (FinOps reporting) build directly on the guardrails established here</li>
+</ul>
+<h3 id="qa-topics-to-prepare-for">Q&amp;A Topics to Prepare For</h3>
+<ul>
+<li>&quot;What happens to a user mid-task when a budget hard-stops them?&quot;</li>
+<li>&quot;Can we see cost by cost center versus by individual user in the same report?&quot;</li>
+<li>&quot;What changes for us specifically on September 1, 2026?&quot;</li>
+<li>&quot;Does disabling &#39;AI credits paid usage&#39; affect the shared pool, or only metered overage?&quot;</li>
+</ul>
+<hr>
+<h2 id="appendix-official-sources--facilitator-reference">Appendix: Official Sources &amp; Facilitator Reference</h2>
+<h3 id="budget-design-worksheet-reference-copy">Budget Design Worksheet (Reference Copy)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Your Answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Universal ULB amount (must be above $19)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Reason for that amount</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Individual ULB override — user/role</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Individual ULB override — amount</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Reason for the override</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Cost-center included-usage allocation (headcount × per-license credits)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Cost-center spending budget amount (metered phase only)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Enterprise spending limit amount</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>&quot;Stop usage when budget limit is reached&quot; enabled? (Y/N)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Reason for that choice</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Included-usage alert thresholds you&#39;ll keep active</td>
+<td>90% / 100% (fixed)</td>
+</tr>
+<tr>
+<td>Budget alert thresholds you&#39;ll keep active</td>
+<td>75% / 90% / 100% (fixed)</td>
+</tr>
+</tbody></table>
+<h3 id="key-urls">Key URLs</h3>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Usage-based billing (orgs/enterprises)</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises</a></td>
+</tr>
+<tr>
+<td>Usage-based billing (individuals)</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-individuals">https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-individuals</a></td>
+</tr>
+<tr>
+<td>Budgets for usage-based billing</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/billing/budgets-for-usage-based-billing">https://docs.github.com/en/copilot/concepts/billing/budgets-for-usage-based-billing</a></td>
+</tr>
+<tr>
+<td>Getting started with budget controls</td>
+<td><a href="https://docs.github.com/en/copilot/tutorials/budgets/getting-started-with-budget-controls">https://docs.github.com/en/copilot/tutorials/budgets/getting-started-with-budget-controls</a></td>
+</tr>
+<tr>
+<td>Optimizing your budget configuration</td>
+<td><a href="https://docs.github.com/en/copilot/tutorials/budgets/optimizing-your-budget-configuration">https://docs.github.com/en/copilot/tutorials/budgets/optimizing-your-budget-configuration</a></td>
+</tr>
+<tr>
+<td>Monitoring your AI credits usage</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/monitor-ai-usage">https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/monitor-ai-usage</a></td>
+</tr>
+<tr>
+<td>Managing your company&#39;s spending</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/manage-company-spending">https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/manage-company-spending</a></td>
+</tr>
+<tr>
+<td>Budgets and alerts (billing concepts)</td>
+<td><a href="https://docs.github.com/en/billing/concepts/budgets-and-alerts">https://docs.github.com/en/billing/concepts/budgets-and-alerts</a></td>
+</tr>
+<tr>
+<td>Setting up budgets to control spending</td>
+<td><a href="https://docs.github.com/en/billing/how-tos/set-up-budgets">https://docs.github.com/en/billing/how-tos/set-up-budgets</a></td>
+</tr>
+<tr>
+<td>Controlling and tracking costs at scale (cost centers)</td>
+<td><a href="https://docs.github.com/en/billing/tutorials/control-costs-at-scale">https://docs.github.com/en/billing/tutorials/control-costs-at-scale</a></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: All dated facts (pricing, promotional-window dates, included-credit amounts) reflect the docs as verified on <strong>2026-08-08</strong>. Re-verify against these live URLs before every delivery of this workshop.</p>
+</blockquote>
+<h3 id="instructor-preflight-checklist">Instructor Preflight Checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Re-verify the included-credit amounts and promotional-window dates (Section 1) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">Usage-based billing</a> page</li>
+<li><input disabled="" type="checkbox"> Re-verify ULB precedence, hard-stop behavior, and alert thresholds (Section 2) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/budgets-for-usage-based-billing">Budgets for usage-based billing</a> page</li>
+<li><input disabled="" type="checkbox"> Confirm which attendees have organization/enterprise billing access ahead of time so you can pre-assign Admin-path vs. Simulation-path (Observer) roles for Section 3</li>
+<li><input disabled="" type="checkbox"> If demonstrating the live Budgets and alerts UI, use a sandbox/test organization — never enable hard stop, and never save a production change, during the live demo</li>
+<li><input disabled="" type="checkbox"> Print or share the Budget Design Worksheet (LAB guide) in case attendees prefer a paper artifact</li>
+<li><input disabled="" type="checkbox"> Bookmark all Key URLs above in a dedicated browser folder for quick reference during Q&amp;A</li>
+<li><input disabled="" type="checkbox"> Test screen sharing shows the Billing &amp; Licensing UI clearly before the session starts</li>
+</ul>
+<h3 id="backup-plan">Backup Plan</h3>
+<p>If the live budget demo is unavailable (no admin access, connectivity issue, or UI change):</p>
+<ol>
+<li>Walk through the <strong>Budget Control Comparison</strong> table and <strong>Getting-Started Recommendation</strong> steps as a slide-only discussion</li>
+<li>Run the entire Section 3 exercise on the <strong>Simulation path</strong> using the Budget Design Worksheet, with all attendees in the Observer role</li>
+<li>Reference the official docs URLs above and screen-share the documentation pages as a substitute for the live product UI</li>
+<li>Keep the hands-on worksheets (LAB guide) as the primary artifact attendees leave with, regardless of demo availability</li>
+</ol>
+<hr>
+<p><em>Workshop guide for Module 1: Administration &amp; Budget Guardrails — part of the GitHub Copilot AI Credits Optimization curriculum. Deliverable standalone.</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module">document.querySelectorAll("pre").forEach(t=>{if(t.querySelector("code.language-mermaid"))return;const e=document.createElement("button");e.className="copy-btn",e.textContent="Copy",e.addEventListener("click",async()=>{const o=(t.querySelector("code")||t).textContent||"";await navigator.clipboard.writeText(o),e.textContent="Copied!",e.classList.add("copied"),setTimeout(()=>{e.textContent="Copy",e.classList.remove("copied")},2e3)}),t.appendChild(e)});</script>

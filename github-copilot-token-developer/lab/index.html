@@ -1,0 +1,500 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot AI Credits Optimization — Module 2: Developer Efficiency Hands-On Lab Guide</title><link rel="stylesheet" href="/gh-workshops/_astro/index.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization--module-2-developer-efficiency-hands-on-lab-guide">GitHub Copilot AI Credits Optimization — Module 2: Developer Efficiency Hands-On Lab Guide</h1>
+<p><strong>Duration</strong>: ~50 minutes of hands-on exercises (across the ~135-minute Module 2 workshop)<br><strong>Format</strong>: Step-by-step lab exercises with worksheets<br><strong>Audience</strong>: Developers, technical leads, Copilot champions<br><strong>Roles used throughout</strong>: Work individually first, then compare with a neighbor or as a table, unless a step says otherwise</p>
+<blockquote>
+<p><strong>Note</strong>: This lab guide is facilitator-ready and standalone — it supports <strong>Module 2 — Developer Efficiency</strong> of the <strong>GitHub Copilot AI Credits Optimization</strong> curriculum on its own. It pairs with:</p>
+<ul>
+<li><strong>Module 1 — Admin Guardrails</strong>: <a href="../github-copilot-token-admin/github-copilot-token-admin-workshop.md"><code>../github-copilot-token-admin/github-copilot-token-admin-workshop.md</code></a></li>
+<li><strong>Module 3 — FinOps &amp; Team Operating Model</strong>: <a href="../github-copilot-token-finops/github-copilot-token-finops-workshop.md"><code>../github-copilot-token-finops/github-copilot-token-finops-workshop.md</code></a></li>
+<li><strong>Full curriculum overview</strong>: <a href="../github-copilot-token/github-copilot-token-workshop.md"><code>../github-copilot-token/github-copilot-token-workshop.md</code></a></li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="lab-overview">Lab Overview</h2>
+<p>This lab guide contains all the hands-on exercises from the <strong>Module 2 — Developer Efficiency</strong> workshop. Each lab maps to a workshop section and builds on the previous one. Complete them in order.</p>
+<blockquote>
+<p><strong>Important</strong>: No lab in this guide requires a live paid AI request beyond your normal day-to-day usage. Every exercise can be completed using the supplied sample prompts, transcripts, and worksheets.</p>
+</blockquote>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>Access to GitHub Copilot (any interface)</td>
+</tr>
+<tr>
+<td><strong>Copilot License</strong></td>
+<td>Business or Enterprise recommended; individual paid plans also apply</td>
+</tr>
+<tr>
+<td><strong>No admin access required</strong></td>
+<td>This lab does not touch budgets, policies, or billing settings</td>
+</tr>
+<tr>
+<td><strong>A notepad or worksheet app</strong></td>
+<td>For the worksheets in Labs 2–4</td>
+</tr>
+</tbody></table>
+<hr>
+<details>
+<summary><h2 id="lab-1-interface-scenario-matching-8-min">Lab 1: Interface Scenario Matching (8 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 1 — Right Interface for the Task</p>
+</blockquote>
+<h3 id="roles">Roles</h3>
+<ul>
+<li>Work individually, then compare with a neighbor</li>
+</ul>
+<h3 id="reference--interface-selection">Reference — Interface Selection</h3>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Best For</th>
+<th>Billed in AI Credits?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Code completions / Next Edit Suggestions</strong></td>
+<td>Small, local, in-the-flow edits</td>
+<td>No — unlimited on paid plans</td>
+</tr>
+<tr>
+<td><strong>Ask mode</strong></td>
+<td>Explaining code, answering a scoped question</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Edit mode</strong></td>
+<td>Focused, scoped multi-line changes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Agent mode</strong></td>
+<td>Multi-file work, running commands, verifying changes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Copilot CLI</strong></td>
+<td>Terminal-native agentic tasks, scripts, repo-wide operations</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Cloud agent</strong></td>
+<td>Long-running autonomous work (for example, opening a PR)</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<h3 id="steps">Steps</h3>
+<p>For each scenario, decide the single best-fit interface and write a one-sentence reason:</p>
+<ol>
+<li>Renaming a local variable and its five usages within one file</li>
+<li>Investigating why a production incident started after last night&#39;s deploy, across three services</li>
+<li>Writing unit tests for a function you just finished, using the existing test file as a pattern</li>
+<li>Asking what a regular expression in a legacy file does, with no intention of changing it</li>
+<li>Running a long, multi-step refactor of a legacy module from your terminal</li>
+</ol>
+<h3 id="answer-key">Answer Key</h3>
+<ol>
+<li><strong>Code completions / Next Edit Suggestions</strong> — a same-file, mechanical rename doesn&#39;t need a billed conversational interface</li>
+<li><strong>Agent mode or Copilot CLI with cross-service scope</strong> — this needs multi-file/multi-service investigation and likely command execution</li>
+<li><strong>Ask or Edit mode, referencing the existing test file directly</strong> — a bounded, pattern-following task</li>
+<li><strong>Ask mode</strong> — this is a question, not a change; no need for Edit or Agent mode</li>
+<li><strong>Copilot CLI</strong> — a terminal-native, long-running agentic task benefits from CLI&#39;s session and tooling model over Chat</li>
+</ol>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You chose code completions/NES (not Chat) for Scenario 1</li>
+<li>✅ You chose Agent mode or Copilot CLI with cross-service scope for Scenario 2</li>
+<li>✅ You chose Ask mode for Scenario 4</li>
+<li>✅ You chose Copilot CLI for Scenario 5 and can explain why</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-2-beforeafter-prompt--instruction-trimming-exercise-12-min">Lab 2: Before/After Prompt & Instruction-Trimming Exercise (12 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 2 — Context &amp; Instruction Efficiency</p>
+</blockquote>
+<h3 id="roles">Roles</h3>
+<ul>
+<li>Work individually, then discuss as a table</li>
+</ul>
+<h3 id="part-a--beforeafter-prompt-worksheet">Part A — Before/After Prompt Worksheet</h3>
+<p><strong>Before</strong>: <em>&quot;Fix the bug in the payment code.&quot;</em></p>
+<p>Rewrite this into an <strong>After</strong> prompt with a clear task, named context, and an explicit stop condition. Use the worksheet below:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Your Answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Task — what&#39;s actually wrong and what should happen instead</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Context — which file(s), error message, or reproduction steps</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Stop condition — what &quot;done&quot; looks like</td>
+<td>_______</td>
+</tr>
+</tbody></table>
+<p><strong>Model After Prompt</strong> (compare once you&#39;ve drafted your own):</p>
+<blockquote>
+<p><em>&quot;In <code>src/payments/charge.ts</code>, the <code>applyDiscount()</code> function returns a negative total when a discount percentage greater than 100 is passed in. Fix it so percentages above 100 are rejected with a validation error before the calculation runs, matching the validation pattern already used in <code>validateAmount()</code> in the same file. Stop once the existing test suite in <code>charge.test.ts</code> passes and you&#39;ve added one new test for the over-100 case — do not refactor unrelated functions in this file.&quot;</em></p>
+</blockquote>
+<h3 id="part-b--instruction-trimming-exercise">Part B — Instruction-Trimming Exercise</h3>
+<p>Below is a sample excerpt from a repository&#39;s <code>copilot-instructions.md</code>. Mark each line <strong>Keep</strong>, <strong>Cut</strong>, or <strong>Move to scoped instructions</strong>.</p>
+<pre><code>1. Always write clean, maintainable code.
+2. This repository uses Node.js 20 and TypeScript 5.4 with strict mode enabled.
+3. Be a helpful and thorough assistant.
+4. All API handlers must validate input using the `zod` schemas in `src/schemas/`.
+5. Follow SOLID principles and general software engineering best practices.
+6. Files under `services/billing/` must never log raw credit card numbers — mask
+   all but the last 4 digits before writing to any log.
+7. Prefer functional programming style where reasonable.
+8. Run `npm test` and `npm run lint` before considering any change complete.
+</code></pre>
+<h3 id="answer-key">Answer Key</h3>
+<p><strong>Part A</strong>: The model After prompt is a strong example — it names the exact file/function (context), states the wrong behavior and the fix (task), and gives a concrete stop condition (tests pass, one new test, no unrelated refactors). If your draft is missing one of these three elements, revise it now.</p>
+<p><strong>Part B</strong>:</p>
+<table>
+<thead>
+<tr>
+<th align="right">Line</th>
+<th>Verdict</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>Cut</td>
+<td>Generic filler — true of every codebase, adds no signal</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>Keep</td>
+<td>Specific, grounded fact the agent needs (language/version/mode)</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>Cut</td>
+<td>Generic filler, not an instruction at all</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>Keep</td>
+<td>Specific, actionable, references a real path</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>Cut</td>
+<td>Generic best-practice advice, not grounded in this repo</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>Keep</td>
+<td>Highly specific, safety-critical, references a real path</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>Move to scoped instructions</td>
+<td>Reasonable style preference, but better scoped to specific folders than sent with every request repo-wide</td>
+</tr>
+<tr>
+<td align="right">8</td>
+<td>Keep</td>
+<td>Specific, actionable build/test commands</td>
+</tr>
+</tbody></table>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Your &quot;After&quot; prompt names a specific file/area, describes expected behavior, and states a stop condition</li>
+<li>✅ You marked lines 1, 3, and 5 as generic filler to cut</li>
+<li>✅ You marked lines 2, 4, 6, and 8 as specific and grounded — keep</li>
+<li>✅ You did not cut line 6 (a safety-critical, specific instruction)</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-3-session-design-exercise--session-limit-worksheet-12-min">Lab 3: Session Design Exercise & Session Limit Worksheet (12 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 3 — Session Lifecycle, Cache &amp; Session Limits</p>
+</blockquote>
+<h3 id="roles">Roles</h3>
+<ul>
+<li>Work individually, then discuss as a table</li>
+</ul>
+<h3 id="part-a--session-design">Part A — Session Design</h3>
+<p>For each scenario, decide: continue the current session, start a new one, or run <code>/compact</code> first.</p>
+<ol>
+<li>You just finished debugging an auth issue and now want to ask an unrelated question about a CSS layout bug</li>
+<li>Your Copilot CLI thread has been open for two hours on the same refactor and is starting to feel sluggish</li>
+<li>You finished research and a plan for a feature and are about to start implementation</li>
+<li>You return to yesterday&#39;s Chat session to ask one more follow-up question on the same topic</li>
+</ol>
+<h3 id="part-b--session-limit-worksheet">Part B — Session Limit Worksheet</h3>
+<p>Define a soft AI-credit session limit for a Copilot CLI task you run regularly (or a hypothetical one):</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Your Answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Task the session limit applies to</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Session limit amount (AI credits)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Why this amount (based on task size/history)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>What you&#39;ll do if the agent stops at the limit</td>
+<td>_______</td>
+</tr>
+</tbody></table>
+<h3 id="answer-key">Answer Key</h3>
+<p><strong>Part A</strong>:</p>
+<ol>
+<li><strong>New session</strong> — unrelated problem; carrying the auth debugging history into a CSS question wastes context</li>
+<li><strong><code>/compact</code>, then continue</strong> — the thread is still relevant; use <code>/compact</code> to shrink history rather than losing all context by restarting, and use <code>/context</code> first to see how much is actually being carried</li>
+<li><strong>New session</strong> — a phase change (plan → implement); implementation needs only the plan&#39;s outcome, not the full research trail</li>
+<li><strong>Depends on elapsed time</strong> — if the session is still within its cache-active window and on-topic, continuing may still benefit from cached context; if it&#39;s been long enough that the cache has likely expired (commonly cited as around 24 hours for some model families, around 1 hour for most others — verify current behavior), treat it like a new session or <code>/compact</code> first</li>
+</ol>
+<p><strong>Part B</strong>: There&#39;s no single correct number — a good answer names a specific credit amount tied to the task&#39;s typical cost (for example, based on past <code>/context</code> usage or Chronicle cost-tips), and a concrete next step (for example, &quot;review what&#39;s been done so far, then raise the limit only if the remaining work is clearly scoped&quot;).</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You correctly chose &quot;new session&quot; for Scenario 1</li>
+<li>✅ You correctly chose &quot;<code>/compact</code>, then continue&quot; for Scenario 2</li>
+<li>✅ You correctly chose &quot;new session&quot; for Scenario 3</li>
+<li>✅ You reasoned about Scenario 4 using cache-expiration timing, not just topic relevance</li>
+<li>✅ Your session limit worksheet names a specific credit amount and a concrete next step</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-4-model--interface-scenario-practice-12-min">Lab 4: Model & Interface Scenario Practice (12 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 4 — Model Strategy &amp; Quality-First Verification</p>
+</blockquote>
+<h3 id="roles">Roles</h3>
+<ul>
+<li>Work individually, then discuss as a table</li>
+</ul>
+<h3 id="steps">Steps</h3>
+<p>For each scenario, decide <strong>(a)</strong> Auto or a manual model choice (and if manual, lightweight or powerful), and <strong>(b)</strong> one quality-first verification step to pair with it:</p>
+<table>
+<thead>
+<tr>
+<th align="right">Scenario</th>
+<th>Auto or Manual Model?</th>
+<th>Verification Step</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1. Formatting and updating documentation comments across a handful of files</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">2. Designing the approach for a cross-service architecture change before any code is written</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">3. A subagent tasked with only summarizing test failures from a CI run</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">4. A developer who insists on manually forcing the most powerful model for every single Chat question, &quot;to be safe&quot;</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="answer-key">Answer Key</h3>
+<table>
+<thead>
+<tr>
+<th align="right">Scenario</th>
+<th>Auto or Manual Model?</th>
+<th>Verification Step</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>Lightweight model (or Auto) — routine, well-scoped task</td>
+<td>Linter/formatter check</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>Manual, powerful/reasoning model — architecture decisions justify the cost</td>
+<td>Peer/design review before implementation starts</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>Cheaper, scoped model — subagent context is narrow and doesn&#39;t inherit full history</td>
+<td>Confirm the summary matches the actual CI failure list</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>This is the &quot;cheaper models are always safe&quot; myth in reverse — Auto would be more efficient, since it already reserves powerful models for tasks that need them</td>
+<td>N/A — the fix here is adopting Auto as the default, not adding a check</td>
+</tr>
+</tbody></table>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You chose a lightweight model (or Auto) for Scenario 1 and named a linting/formatting check</li>
+<li>✅ You chose a powerful/reasoning model for Scenario 2 and can justify why</li>
+<li>✅ You chose a cheaper, scoped model for the Scenario 3 subagent</li>
+<li>✅ You correctly diagnosed Scenario 4 as over-provisioning power without justification, and named Auto as the more efficient default</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-5-30-day-personalteam-habit-plan-capstone-10-min">Lab 5: 30-Day Personal/Team Habit Plan Capstone (10 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 5 — Hands-On Optimization Capstone &amp; Close</p>
+</blockquote>
+<h3 id="roles">Roles</h3>
+<ul>
+<li>Work individually or in pairs</li>
+</ul>
+<h3 id="steps">Steps</h3>
+<p>Draft a one-page <strong>30-Day Habit Plan</strong> worksheet. The Description column is verbatim from the workshop guide&#39;s capstone list:</p>
+<table>
+<thead>
+<tr>
+<th align="right">Week</th>
+<th>Focus</th>
+<th>Description</th>
+<th>Your Plan</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>Interface habit</td>
+<td>One task type you&#39;ll redirect from a billed interface to completions/NES, or vice versa if you&#39;re currently under-using Agent/CLI where it&#39;s warranted</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>Context &amp; instructions habit</td>
+<td>One trim you&#39;ll make to your own prompting habits or to a shared <code>copilot-instructions.md</code>/scoped instructions file</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>Session habit</td>
+<td>One session-boundary rule you&#39;ll adopt (for example, &quot;new session when I switch tickets&quot; or &quot;<code>/compact</code> after 45 minutes on the same CLI thread&quot;)</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>Model &amp; verification habit</td>
+<td>One task type where you&#39;ll let Auto decide, one where you&#39;ll deliberately choose a lightweight model, and one deterministic check you&#39;ll add or enforce</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Your plan names one specific interface change for Week 1</li>
+<li>✅ Your plan names one specific instructions/context trim for Week 2</li>
+<li>✅ Your plan names one specific, testable session-boundary rule for Week 3</li>
+<li>✅ Your plan names a model choice and a deterministic verification step for Week 4</li>
+</ul>
+</details>
+
+<hr>
+<h2 id="key-reference-tables-quick-lookup">Key Reference Tables (Quick Lookup)</h2>
+<h3 id="billed-vs-unbilled-at-a-glance">Billed vs. Unbilled at a Glance</h3>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Billed in AI Credits?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Code completions / Next Edit Suggestions</strong></td>
+<td>No — unlimited on paid plans</td>
+</tr>
+<tr>
+<td><strong>Copilot Chat (Ask mode)</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Edit mode</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Agent mode</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Copilot CLI</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Copilot cloud agent</strong></td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<h3 id="false-economy-myths">False-Economy Myths</h3>
+<table>
+<thead>
+<tr>
+<th>Myth</th>
+<th>Reality</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&quot;Shorter prompts are always cheaper&quot;</td>
+<td>A too-short prompt often triggers costly follow-ups; scope and clarity matter more than raw length</td>
+</tr>
+<tr>
+<td>&quot;Never start a new session&quot;</td>
+<td>Start fresh for an unrelated problem or a new work phase; avoid repeatedly restarting the same active task</td>
+</tr>
+<tr>
+<td>&quot;Cheaper models are always the safe default&quot;</td>
+<td>A wrong or incomplete answer from an under-powered model often costs more in total than one correct answer from the right model</td>
+</tr>
+<tr>
+<td>&quot;Completions and Chat cost the same&quot;</td>
+<td>Completions and next-edit suggestions are unlimited on paid plans and do not consume AI credits; Chat/Edit/Agent/CLI/cloud-agent usage does</td>
+</tr>
+<tr>
+<td>&quot;Cached tokens are always exactly 10x cheaper&quot;</td>
+<td>Cached tokens are typically priced well below fresh input, but the exact discount can vary by model — verify current pricing rather than quoting one fixed ratio</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Hands-on lab guide for GitHub Copilot AI Credits Optimization — Module 2: Developer Efficiency (standalone; part of the GitHub Copilot AI Credits Optimization curriculum alongside Module 1 — Admin Guardrails and Module 3 — FinOps &amp; Team Operating Model)</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module">document.querySelectorAll("pre").forEach(t=>{if(t.querySelector("code.language-mermaid"))return;const e=document.createElement("button");e.className="copy-btn",e.textContent="Copy",e.addEventListener("click",async()=>{const o=(t.querySelector("code")||t).textContent||"";await navigator.clipboard.writeText(o),e.textContent="Copied!",e.classList.add("copied"),setTimeout(()=>{e.textContent="Copy",e.classList.remove("copied")},2e3)}),t.appendChild(e)});</script>

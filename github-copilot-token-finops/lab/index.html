@@ -1,0 +1,723 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot AI Credits Optimization — Module 3: Measurement &amp; Optimization at Scale — Hands-On Lab Guide</title><link rel="stylesheet" href="/gh-workshops/_astro/index.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization--module-3-measurement--optimization-at-scale--hands-on-lab-guide">GitHub Copilot AI Credits Optimization — Module 3: Measurement &amp; Optimization at Scale — Hands-On Lab Guide</h1>
+<p><strong>Duration</strong>: ~63 minutes of hands-on exercises (across the ~135-minute module)<br><strong>Format</strong>: Step-by-step lab exercises with worksheets and answer keys<br><strong>Audience</strong>: FinOps practitioners, platform/DevEx engineers, engineering managers, Copilot program owners, advanced admins<br><strong>Roles used throughout</strong>: <strong>FinOps</strong> (cost/budget ownership), <strong>Platform/DevEx</strong> (drives reporting and tooling), <strong>Eng. Manager</strong> (team-level context), <strong>Program Owner</strong> (accountable for the operating model)</p>
+<hr>
+<h2 id="lab-overview">Lab Overview</h2>
+<p>This lab guide contains all the hands-on exercises from <strong>Module 3: Measurement &amp; Optimization at Scale</strong>, part of the standalone-capable <strong>GitHub Copilot AI Credits Optimization</strong> workshop series. Each lab maps to a workshop section and builds on the previous one. Complete them in order.</p>
+<blockquote>
+<p><strong>Important</strong>: No lab in this guide requires making a live paid AI request or changing a production budget. All calculations can be completed with the worked formulas and the supplied sample dataset. If you use a live AI usage export in Lab 1, treat it as read-only reporting for this session.</p>
+</blockquote>
+<h3 id="choosing-your-path">Choosing Your Path</h3>
+<ul>
+<li><strong>Live data path</strong>: If you have AI usage dashboard access, use your own exported data wherever a lab offers it as an option.</li>
+<li><strong>Sample dataset path</strong>: If you do not have access, use the supplied dataset in each lab — every lab has a complete answer key either way.</li>
+</ul>
+<hr>
+<details>
+<summary><h2 id="lab-1-dashboard-filter-practice-6-min">Lab 1: Dashboard Filter Practice (6 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 1 — Reporting &amp; Data Sources</p>
+</blockquote>
+<h3 id="roles">Roles</h3>
+<ul>
+<li>Work individually or in pairs (any role)</li>
+</ul>
+<h3 id="reference--where-to-find-the-data">Reference — Where to Find the Data</h3>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Filter/group by user, model, organization, cost center</td>
+<td><strong>Billing &amp; Licensing → AI usage</strong></td>
+</tr>
+<tr>
+<td>Query syntax for metered usage</td>
+<td><strong>Usage → Metered usage</strong>, search <code>product:copilot</code>, add <code>cost_center:&lt;name&gt;</code></td>
+</tr>
+<tr>
+<td>Export for offline analysis</td>
+<td><strong>AI usage</strong> page → export filtered view (CSV)</td>
+</tr>
+<tr>
+<td>Individual&#39;s own consumption</td>
+<td><strong>Copilot settings → Usage</strong> (or IDE usage view)</td>
+</tr>
+<tr>
+<td>Cost center&#39;s included-usage cap and consumption</td>
+<td>Cost center home page (shows &quot;AI credit pool enabled&quot; when configured)</td>
+</tr>
+</tbody></table>
+<h3 id="steps">Steps</h3>
+<p>For each request, write down the exact filter/group-by combination you&#39;d use:</p>
+<ol>
+<li>&quot;Which model is driving the most spend enterprise-wide this cycle?&quot;</li>
+<li>&quot;How much has the Data Science cost center consumed so far this month?&quot;</li>
+<li>&quot;Is one specific user responsible for an unusual share of a cost center&#39;s credits?&quot;</li>
+<li>&quot;I need to hand a FinOps analyst a CSV they can pivot in a spreadsheet — how do I get it to them?&quot;</li>
+</ol>
+<h3 id="answer-key">Answer Key</h3>
+<ol>
+<li><strong>AI usage</strong> page, <strong>&quot;Group by: model&quot;</strong>, current-cycle timeframe.</li>
+<li><strong>AI usage</strong> page (or <strong>Metered usage</strong> search) filtered by <strong>cost center: Data Science</strong>, current-cycle timeframe. Cross-check against the cost center&#39;s home page if an included usage control is enabled.</li>
+<li><strong>AI usage</strong> page filtered by <strong>cost center</strong>, then further filtered/grouped by <strong>user</strong> to compare individual shares within that cost center.</li>
+<li>Apply the desired filters on the <strong>AI usage</strong> page, then use the <strong>export</strong> action to download the filtered view as <strong>CSV</strong>.</li>
+</ol>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You identified &quot;Group by: model&quot; for Question 1</li>
+<li>✅ You identified filtering by cost center for Question 2</li>
+<li>✅ You identified filtering by user within a cost center for Question 3</li>
+<li>✅ You identified the CSV export action for Question 4</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-2-model-mix-cost-comparison-12-min">Lab 2: Model-Mix Cost Comparison (12 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 2 — Token Cost Calculations</p>
+</blockquote>
+<h3 id="roles">Roles</h3>
+<ul>
+<li>Work individually, then compare with a neighbor</li>
+</ul>
+<h3 id="reference--cost-formula">Reference — Cost Formula</h3>
+<pre><code>USD = Σ (tokens_in_category / 1,000,000 × price_per_million_for_that_category)
+AI credits = USD × 100
+Auto model selection applies an additional 10% discount to the model-cost total.
+</code></pre>
+<h3 id="reference--pricing-snapshot-2026-08-08--verify-before-use">Reference — Pricing Snapshot (2026-08-08 — verify before use)</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">Input</th>
+<th align="right">Cached Input</th>
+<th align="right">Cache Write</th>
+<th align="right">Output</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GPT-5 mini</strong></td>
+<td align="right">$0.25</td>
+<td align="right">$0.025</td>
+<td align="right">N/A</td>
+<td align="right">$2.00</td>
+</tr>
+<tr>
+<td><strong>GPT-5.4 nano</strong></td>
+<td align="right">$0.20</td>
+<td align="right">$0.02</td>
+<td align="right">N/A</td>
+<td align="right">$1.25</td>
+</tr>
+<tr>
+<td><strong>Claude Sonnet 5</strong></td>
+<td align="right">$2.00</td>
+<td align="right">$0.20</td>
+<td align="right">$2.50</td>
+<td align="right">$10.00</td>
+</tr>
+<tr>
+<td><strong>Claude Opus 5</strong></td>
+<td align="right">$5.00</td>
+<td align="right">$0.50</td>
+<td align="right">$6.25</td>
+<td align="right">$25.00</td>
+</tr>
+</tbody></table>
+<p><em>All prices are USD per 1 million tokens. Source: <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing for GitHub Copilot</a>.</em></p>
+<h3 id="steps">Steps</h3>
+<p><strong>Warm-up (already solved in the workshop — use this to check your method)</strong>:</p>
+<ul>
+<li>Claude Sonnet 5, 150,000 input / 40,000 cached input / 20,000 cache-write / 6,000 output, no Auto → <strong>$0.418 USD ≈ 41.8 AI credits</strong>; with Auto (×0.90) → <strong>$0.3762 USD ≈ 37.62 AI credits</strong></li>
+</ul>
+<p><strong>Your exercise — calculate both scenarios yourself before checking the Answer Key</strong>:</p>
+<blockquote>
+<p><strong>Scenario A — GPT-5 mini</strong>: 25,000 input tokens, 8,000 cached input tokens, 4,000 output tokens.</p>
+<p><strong>Scenario B — Claude Sonnet 5</strong>: Same token counts (25,000 input / 8,000 cached input / 4,000 output, no cache-write). No Auto model selection in either scenario.</p>
+</blockquote>
+<p>Show your work:</p>
+<pre><code>Scenario A (GPT-5 mini)
+Input:  25,000 / 1,000,000 × $______ = $________
+Cached:  8,000 / 1,000,000 × $______ = $________
+Output:  4,000 / 1,000,000 × $______ = $________
+------------------------------------------------
+Total USD                            = $________
+AI credits (USD × 100)               = ________ credits
+
+Scenario B (Claude Sonnet 5)
+Input:  25,000 / 1,000,000 × $______ = $________
+Cached:  8,000 / 1,000,000 × $______ = $________
+Output:  4,000 / 1,000,000 × $______ = $________
+------------------------------------------------
+Total USD                            = $________
+AI credits (USD × 100)               = ________ credits
+</code></pre>
+<p>Then answer:</p>
+<ol>
+<li>Express Scenario B&#39;s cost as a multiple of Scenario A&#39;s cost.</li>
+<li>If a team ran 1,000 of these interactions per month, what is the monthly credit difference between defaulting to GPT-5 mini versus Claude Sonnet 5?</li>
+</ol>
+<h3 id="answer-key">Answer Key</h3>
+<pre><code>Scenario A (GPT-5 mini)
+Input:  25,000 / 1,000,000 × $0.25  = $0.006250
+Cached:  8,000 / 1,000,000 × $0.025 = $0.000200
+Output:  4,000 / 1,000,000 × $2.00  = $0.008000
+------------------------------------------------
+Total USD                           = $0.014450
+AI credits (USD × 100)              = 1.445 credits
+
+Scenario B (Claude Sonnet 5)
+Input:  25,000 / 1,000,000 × $2.00  = $0.050000
+Cached:  8,000 / 1,000,000 × $0.20  = $0.001600
+Output:  4,000 / 1,000,000 × $10.00 = $0.040000
+------------------------------------------------
+Total USD                           = $0.091600
+AI credits (USD × 100)              = 9.16 credits
+</code></pre>
+<ol>
+<li><strong>Ratio</strong>: $0.0916 ÷ $0.01445 ≈ <strong>6.34x</strong> — Claude Sonnet 5 costs roughly 6.3 times more than GPT-5 mini for the identical token counts on this task.</li>
+<li><strong>Monthly difference at 1,000 interactions</strong>: (9.16 − 1.445) credits × 1,000 = <strong>7,715 credits/month</strong> — more than 3.5x the standard 1,900-credit monthly allotment of one full Business license, just from the model-choice difference on this one recurring task.</li>
+</ol>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You applied each token category at the correct per-model rate for both scenarios</li>
+<li>✅ You divided each token count by 1,000,000 before multiplying by the rate</li>
+<li>✅ You converted both USD totals to AI credits (×100)</li>
+<li>✅ Your ratio (~6.34x) and monthly difference (~7,715 credits) match the Answer Key (±rounding)</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-3-baseline--anomaly-analysis-15-min">Lab 3: Baseline & Anomaly Analysis (15 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 3 — KPI Baselines &amp; Anomaly Analysis</p>
+</blockquote>
+<h3 id="roles">Roles</h3>
+<ul>
+<li>Work in small groups of 2–3</li>
+</ul>
+<h3 id="reference--legitimate-heavy-use-vs-waste">Reference — Legitimate Heavy Use vs. Waste</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Legitimate Heavy Use</th>
+<th>Waste</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Suggestion acceptance / PR merge rate</strong></td>
+<td>High and stable</td>
+<td>Low or declining</td>
+</tr>
+<tr>
+<td><strong>Restarts per task</strong></td>
+<td>Low — one bounded session per task</td>
+<td>High — repeated restarts losing cached context</td>
+</tr>
+<tr>
+<td><strong>Credits per completed unit of work</strong></td>
+<td>Proportional to task complexity</td>
+<td>High relative to output delivered</td>
+</tr>
+<tr>
+<td><strong>Typical task profile</strong></td>
+<td>Large agentic refactors, multi-file migrations, complex architecture reviews</td>
+<td>Repeated near-identical prompts, verbose low-value chat, manual escalation to powerful models for routine tasks</td>
+</tr>
+</tbody></table>
+<h3 id="sample-dataset--growth-platform-cost-center">Sample Dataset — &quot;Growth Platform&quot; Cost Center</h3>
+<p>60 licensed Copilot Business users. <strong>Included-usage cap = 60 × 1,900 = 114,000 AI credits</strong> for the 30-day cycle.</p>
+<table>
+<thead>
+<tr>
+<th align="right">Day</th>
+<th align="right">Active Users</th>
+<th align="right">Credits Consumed (day)</th>
+<th align="right">Cumulative Credits</th>
+<th align="right">Blocked Users</th>
+<th align="right">Overage (USD)</th>
+<th align="right">PR Review Pass Rate</th>
+<th align="center">Release Deadline?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td align="right">51</td>
+<td align="right">9,600</td>
+<td align="right">9,600</td>
+<td align="right">0</td>
+<td align="right">$0.00</td>
+<td align="right">90%</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="right">52</td>
+<td align="right">9,900</td>
+<td align="right">19,500</td>
+<td align="right">0</td>
+<td align="right">$0.00</td>
+<td align="right">90%</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="right">50</td>
+<td align="right">9,400</td>
+<td align="right">28,900</td>
+<td align="right">0</td>
+<td align="right">$0.00</td>
+<td align="right">89%</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td align="right">53</td>
+<td align="right">10,200</td>
+<td align="right">39,100</td>
+<td align="right">0</td>
+<td align="right">$0.00</td>
+<td align="right">88%</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td align="right">54</td>
+<td align="right">10,800</td>
+<td align="right">49,900</td>
+<td align="right">0</td>
+<td align="right">$0.00</td>
+<td align="right">88%</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td align="right">55</td>
+<td align="right">12,600</td>
+<td align="right">62,500</td>
+<td align="right">1</td>
+<td align="right">$0.00</td>
+<td align="right">82%</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td align="right">57</td>
+<td align="right">15,900</td>
+<td align="right">78,400</td>
+<td align="right">2</td>
+<td align="right">$0.00</td>
+<td align="right">74%</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td align="right">8</td>
+<td align="right">58</td>
+<td align="right">17,800</td>
+<td align="right">96,200</td>
+<td align="right">3</td>
+<td align="right">$0.00</td>
+<td align="right">71%</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td align="right">9</td>
+<td align="right">56</td>
+<td align="right">21,300</td>
+<td align="right">117,500</td>
+<td align="right">5</td>
+<td align="right">$35.00</td>
+<td align="right">79%</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="right">10</td>
+<td align="right">54</td>
+<td align="right">18,400</td>
+<td align="right">135,900</td>
+<td align="right">4</td>
+<td align="right">$219.00</td>
+<td align="right">85%</td>
+<td align="center">No</td>
+</tr>
+</tbody></table>
+<h3 id="steps--calculate-these-kpis-and-answer-the-causation-question">Steps — Calculate These KPIs and Answer the Causation Question</h3>
+<ol>
+<li><strong>Burn rate</strong>: Average daily credits consumed over Days 8–10</li>
+<li><strong>Projected exhaustion date</strong>: On which day was the 114,000-credit included-usage cap exhausted?</li>
+<li><strong>Credits per active user</strong>: For Day 9, credits consumed ÷ active users</li>
+<li><strong>Blocked users trend</strong>: Is the blocked-user count accelerating, flat, or slowing across the 10 days, and does it track the Release Deadline flag or the overage column more closely?</li>
+<li><strong>Causation check</strong>: A colleague claims &quot;the overage on Days 9–10 caused the quality drop.&quot; Using the data, explain in 2–3 sentences why this claim is not supported, and name the more likely shared root cause.</li>
+<li><strong>Heavy use vs. waste</strong>: Given only this cost-center-level data, what additional per-user signals would you request before recommending any individual ULB changes?</li>
+</ol>
+<h3 id="answer-key">Answer Key</h3>
+<ol>
+<li><strong>Burn rate (Days 8–10 average)</strong>: (17,800 + 21,300 + 18,400) ÷ 3 = <strong>19,167 credits/day</strong></li>
+<li><strong>Projected exhaustion date</strong>: Cumulative credits through Day 8 = 96,200 (17,800 credits remaining against the 114,000 cap). Day 9 consumed 21,300 credits, exceeding the remaining 17,800 by 3,500 — so the cap was exhausted <strong>during Day 9</strong>. That 3,500-credit overage equals 3,500 × $0.01 = $35.00, matching the table. All of Day 10&#39;s 18,400 credits are metered: 18,400 × $0.01 = $184.00, bringing cumulative overage to $35.00 + $184.00 = <strong>$219.00</strong>, matching the table.</li>
+<li><strong>Credits per active user (Day 9)</strong>: 21,300 ÷ 56 = <strong>≈380 credits/user</strong></li>
+<li><strong>Blocked users trend</strong>: 0, 0, 0, 0, 0, 1, 2, 3, 5, 4 — <strong>accelerating through Day 9, then easing on Day 10</strong>. The rise from Day 6 tracks the <strong>Release Deadline flag</strong> (Yes on Days 6–8) more closely than it tracks overage, since blocked users were already climbing on Days 6–8 while overage was still $0.00.</li>
+<li><strong>Causation check</strong>: The claim is <strong>not supported</strong>. The PR review pass rate began falling on Day 6 — three days <em>before</em> any overage occurred — and it fell in lockstep with the <strong>Release Deadline</strong> flag switching to Yes (Days 6–8). Overage first appears on Day 9, <em>after</em> the deadline passed, yet the pass rate <strong>recovered</strong> to 79% on Day 9 and 85% on Day 10 even though overage kept growing both days. If overage were the true cause of the quality drop, the pass rate should have stayed low or worsened as overage increased — instead it recovered. The release deadline is the far more likely shared root cause of both the credit spike and the quality dip; overage on Days 9–10 is a lagging consequence of deadline-driven usage, not a cause of the earlier quality drop.</li>
+<li><strong>Heavy use vs. waste</strong>: Before flagging anyone as wasteful, request per-user <strong>suggestion acceptance / PR merge rate</strong>, <strong>restarts per task</strong>, and <strong>credits per completed unit of work</strong> (for example, per merged PR). A high-credit user with a high, stable acceptance rate and low restart count is a legitimate heavy user; a high-credit user with a low or declining acceptance rate and frequent restarts is a waste signal.</li>
+</ol>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Your calculated burn rate is ≈19,167 credits/day (±rounding)</li>
+<li>✅ You correctly identified Day 9 as the exhaustion day</li>
+<li>✅ You calculated ≈380 credits/user for Day 9</li>
+<li>✅ You correctly rejected the &quot;overage caused the quality drop&quot; claim and named the release deadline as the more likely shared cause, citing the Day 9–10 recovery as evidence</li>
+<li>✅ You named at least two per-user signals you&#39;d need before judging any individual as wasteful</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-4-budget-tuning-exercise-18-min">Lab 4: Budget Tuning Exercise (18 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 4 — Budget Tuning &amp; Operating Model Capstone</p>
+</blockquote>
+<h3 id="roles">Roles</h3>
+<ul>
+<li>Form groups of 3–4 with a mix of roles (FinOps, platform/DevEx, engineering manager)</li>
+</ul>
+<h3 id="reference--sizing-check-formula">Reference — Sizing Check Formula</h3>
+<pre><code>1. Max ULB consumption = Σ (users at each ULB tier × that tier&#39;s ULB amount)
+2. Pool value          = (Business seats × $19) + (Enterprise seats × $39)
+3. Gap to cover         = Max ULB consumption − Pool value
+   → Your cost-center + organization + enterprise budgets must cover this gap,
+     or users will be blocked by a spending budget before reaching their own ULB.
+</code></pre>
+<h3 id="scenario--contoso-platform-org">Scenario — &quot;Contoso Platform Org&quot;</h3>
+<ul>
+<li>300 Copilot Business users, 50 Copilot Enterprise users (350 licensed users total)</li>
+<li>80 of the Business users are in the <strong>Data Science</strong> cost center, with a <strong>cost-center ULB of $45</strong></li>
+<li><strong>5 named power users</strong> (outside Data Science) have an <strong>individual ULB override of $150</strong> each</li>
+<li>Every other user is on the <strong>universal ULB of $25</strong></li>
+<li>The current <strong>enterprise spending budget is $2,000</strong>, with &quot;Stop usage when budget limit is reached&quot; <strong>enabled</strong></li>
+</ul>
+<h3 id="steps">Steps</h3>
+<ol>
+<li>Calculate the <strong>universal-tier population</strong>: 350 total − 80 (Data Science) − 5 (power users) = ______</li>
+<li>Calculate <strong>max ULB consumption</strong> (three tiers)</li>
+<li>Calculate the <strong>pool value</strong></li>
+<li>Calculate the <strong>gap to cover</strong></li>
+<li>Is the current $2,000 enterprise budget sufficient? If not, what&#39;s the minimum you&#39;d recommend, with a buffer?</li>
+<li>The Data Science included usage control cap is 80 × 1,900 = 152,000 credits. Block or allow overage at that cap — and why?</li>
+</ol>
+<p>Show your work:</p>
+<pre><code>Universal-tier population: 350 − 80 − 5 = ______ users
+
+Max ULB consumption:
+  Universal: ______ users × $25  = $________
+  Data Science cost-center ULB: 80 × $45 = $________
+  Power-user individual ULB: 5 × $150    = $________
+  --------------------------------------------------
+  Total max ULB consumption               = $________
+
+Pool value:
+  Business: 300 × $19  = $________
+  Enterprise: 50 × $39 = $________
+  --------------------------------
+  Total pool value                = $________
+
+Gap to cover = Max ULB consumption − Pool value = $________
+</code></pre>
+<h3 id="answer-key">Answer Key</h3>
+<pre><code>Universal-tier population: 350 − 80 − 5 = 265 users
+
+Max ULB consumption:
+  Universal: 265 × $25   = $6,625
+  Data Science: 80 × $45 = $3,600
+  Power users: 5 × $150  = $750
+  ------------------------------
+  Total max ULB consumption = $10,975
+
+Pool value:
+  Business: 300 × $19  = $5,700
+  Enterprise: 50 × $39 = $1,950
+  --------------------------------
+  Total pool value = $7,650
+
+Gap to cover = $10,975 − $7,650 = $3,325
+</code></pre>
+<ol start="5">
+<li><strong>Enterprise budget assessment</strong>: The current <strong>$2,000</strong> enterprise budget is <strong>undersized</strong> — it covers only about 60% of the $3,325 gap. Recommend raising it to <strong>at least $3,325</strong>, and add a buffer (for example, 15–20%, landing around <strong>$3,800–$4,000</strong>) to absorb month-to-month variance without immediately re-triggering the shortfall. Without this fix, the &quot;lowest remaining headroom wins&quot; rule means users could be blocked by the exhausted enterprise budget before any of them reach their own (higher) individual or cost-center ULB.</li>
+<li><strong>Block vs. allow overage</strong>: If Data Science is a genuinely heavy, high-value team (for example, doing large-scale model training pipeline work that justifies the spend), <strong>allow continued paid overage</strong> at the included-usage cap rather than blocking — their cost-center ULB ($45/user) and the enterprise spending budget (once correctly sized per Step 5) already provide the guardrails, so an additional hard block at the included-usage cap risks interrupting legitimate high-value work. If the team&#39;s heavy use has not yet been validated as legitimate, <strong>block</strong> at the cap until a baseline review (Lab 3&#39;s heavy-use-vs-waste signals) confirms the spend is justified.</li>
+</ol>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You correctly calculated the universal-tier population (265 users)</li>
+<li>✅ You correctly calculated max ULB consumption ($10,975) and pool value ($7,650)</li>
+<li>✅ You correctly calculated the gap ($3,325) and identified that the current $2,000 enterprise budget is undersized</li>
+<li>✅ You recommended raising the enterprise budget to at least the gap amount, with a stated buffer rationale</li>
+<li>✅ You made and justified a block-vs-allow-overage decision for the Data Science included usage control</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-5-30-day-optimization-backlog-capstone-12-min">Lab 5: 30-Day Optimization Backlog Capstone (12 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 4 — Budget Tuning &amp; Operating Model Capstone</p>
+</blockquote>
+<h3 id="roles">Roles</h3>
+<ul>
+<li>Same groups of 3–4 from Lab 4</li>
+</ul>
+<h3 id="reference--raci">Reference — RACI</h3>
+<table>
+<thead>
+<tr>
+<th>Activity</th>
+<th align="center">FinOps</th>
+<th align="center">Platform/DevEx</th>
+<th align="center">Eng. Manager</th>
+<th align="center">Program Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Monthly KPI review</td>
+<td align="center">A</td>
+<td align="center">R</td>
+<td align="center">C</td>
+<td align="center">I</td>
+</tr>
+<tr>
+<td>Budget tuning (ULBs, spending budgets)</td>
+<td align="center">C</td>
+<td align="center">R</td>
+<td align="center">I</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td>Anomaly triage &amp; confounder check</td>
+<td align="center">C</td>
+<td align="center">R</td>
+<td align="center">C</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td>Individual ULB exception approval</td>
+<td align="center">I</td>
+<td align="center">C</td>
+<td align="center">R</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td>Showback/chargeback reporting</td>
+<td align="center">R</td>
+<td align="center">I</td>
+<td align="center">I</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td>30-day optimization backlog ownership</td>
+<td align="center">C</td>
+<td align="center">R</td>
+<td align="center">C</td>
+<td align="center">A</td>
+</tr>
+</tbody></table>
+<p><em>R = Responsible, A = Accountable, C = Consulted, I = Informed.</em></p>
+<h3 id="steps">Steps</h3>
+<p>Draft a prioritized <strong>30-Day Optimization Backlog</strong> worksheet:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Priority</th>
+<th>Backlog Item</th>
+<th>Owner (from RACI)</th>
+<th align="center">Target Week</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">P0</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">P0</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">P1</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">P1</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">P2</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>Your backlog must include, at minimum: one item closing the ULB/spending-budget gap from Lab 4, one item establishing or refining an anomaly-response threshold, one item naming your showback-vs-chargeback decision, and one item scheduling your first monthly KPI review ahead of September 1, 2026.</p>
+<h3 id="example-answer-contoso-scenario">Example Answer (Contoso scenario)</h3>
+<table>
+<thead>
+<tr>
+<th align="center">Priority</th>
+<th>Backlog Item</th>
+<th>Owner (from RACI)</th>
+<th align="center">Target Week</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">P0</td>
+<td>Raise enterprise spending budget from $2,000 to $3,800 to close the sizing gap</td>
+<td>Platform/DevEx (R), Program Owner (A)</td>
+<td align="center">Week 1</td>
+</tr>
+<tr>
+<td align="center">P0</td>
+<td>Set anomaly-response trigger: blocked-user count doubling day-over-day, or burn rate &gt;25% above 7-day rolling average, escalates to FinOps + Platform/DevEx same-day</td>
+<td>Platform/DevEx (R), FinOps (C)</td>
+<td align="center">Week 1</td>
+</tr>
+<tr>
+<td align="center">P1</td>
+<td>Decide Data Science included usage control: allow overage, pending confirmation of legitimate heavy use</td>
+<td>Eng. Manager (R), Program Owner (A)</td>
+<td align="center">Week 2</td>
+</tr>
+<tr>
+<td align="center">P1</td>
+<td>Adopt showback for all cost centers this cycle; revisit chargeback after two clean baseline months</td>
+<td>FinOps (R), Program Owner (A)</td>
+<td align="center">Week 3</td>
+</tr>
+<tr>
+<td align="center">P2</td>
+<td>Schedule recurring monthly KPI review, with an added mid-cycle check the week of September 1, 2026 for the promotional-pool transition</td>
+<td>Platform/DevEx (R), Program Owner (A)</td>
+<td align="center">Week 4</td>
+</tr>
+</tbody></table>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Your backlog includes a P0 item that directly resolves the budget-tuning gap from Lab 4</li>
+<li>✅ Your backlog names at least three KPIs from Lab 3 with a defined review cadence</li>
+<li>✅ Your backlog states an explicit anomaly-response trigger and an owner from the RACI table</li>
+<li>✅ Your backlog states a showback-vs-chargeback decision and a target week for your next KPI review ahead of September 1, 2026</li>
+</ul>
+</details>
+
+<hr>
+<h2 id="key-reference-tables-quick-lookup">Key Reference Tables (Quick Lookup)</h2>
+<h3 id="budget-control-comparison">Budget Control Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What It Caps</th>
+<th>When Active</th>
+<th>Hard Stop?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Universal user-level budget (ULB)</strong></td>
+<td>Each user&#39;s total consumption (pool + metered)</td>
+<td>Always</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>Cost-center user-level budget (ULB)</strong></td>
+<td>Each cost-center member&#39;s total consumption (overrides universal)</td>
+<td>Always</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>Individual user-level budget (ULB)</strong></td>
+<td>One user&#39;s total consumption (overrides both above)</td>
+<td>Always</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>Cost-center / organization / enterprise budget</strong></td>
+<td>Metered charges only, after the shared pool is exhausted</td>
+<td>Metered phase only</td>
+<td>Only if &quot;Stop usage when budget limit is reached&quot; is enabled</td>
+</tr>
+</tbody></table>
+<h3 id="pricing-snapshot-2026-08-08--verify-before-use">Pricing Snapshot (2026-08-08 — verify before use)</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th align="right">Input</th>
+<th align="right">Cached Input</th>
+<th align="right">Cache Write</th>
+<th align="right">Output</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GPT-5 mini</strong></td>
+<td align="right">$0.25</td>
+<td align="right">$0.025</td>
+<td align="right">N/A</td>
+<td align="right">$2.00</td>
+</tr>
+<tr>
+<td><strong>GPT-5.4 nano</strong></td>
+<td align="right">$0.20</td>
+<td align="right">$0.02</td>
+<td align="right">N/A</td>
+<td align="right">$1.25</td>
+</tr>
+<tr>
+<td><strong>Claude Sonnet 5</strong></td>
+<td align="right">$2.00</td>
+<td align="right">$0.20</td>
+<td align="right">$2.50</td>
+<td align="right">$10.00</td>
+</tr>
+<tr>
+<td><strong>Claude Opus 5</strong></td>
+<td align="right">$5.00</td>
+<td align="right">$0.50</td>
+<td align="right">$6.25</td>
+<td align="right">$25.00</td>
+</tr>
+</tbody></table>
+<p><em>All prices are USD per 1 million tokens. Source: <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing for GitHub Copilot</a>.</em></p>
+<h3 id="sizing-check-formula">Sizing Check Formula</h3>
+<pre><code>1. Max ULB consumption = Σ (users at each ULB tier × that tier&#39;s ULB amount)
+2. Pool value          = (Business seats × $19) + (Enterprise seats × $39)
+3. Gap to cover         = Max ULB consumption − Pool value
+   → Your cost-center + organization + enterprise budgets must cover this gap,
+     or users will be blocked by a spending budget before reaching their own ULB.
+</code></pre>
+<hr>
+<h2 id="related-modules">Related Modules</h2>
+<ul>
+<li>Module 1 — Admin Guardrails &amp; Budget Setup: <a href="../github-copilot-token-admin/github-copilot-token-admin-workshop.md">github-copilot-token-admin-workshop.md</a></li>
+<li>Module 2 — Developer Optimization Patterns: <a href="../github-copilot-token-developer/github-copilot-token-developer-workshop.md">github-copilot-token-developer-workshop.md</a></li>
+<li>Curriculum overview: <a href="../github-copilot-token/github-copilot-token-workshop.md">github-copilot-token-workshop.md</a></li>
+</ul>
+<hr>
+<p><em>Hands-on lab guide for Module 3: Measurement &amp; Optimization at Scale, part of the GitHub Copilot AI Credits Optimization workshop series (standalone-capable)</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module">document.querySelectorAll("pre").forEach(t=>{if(t.querySelector("code.language-mermaid"))return;const e=document.createElement("button");e.className="copy-btn",e.textContent="Copy",e.addEventListener("click",async()=>{const o=(t.querySelector("code")||t).textContent||"";await navigator.clipboard.writeText(o),e.textContent="Copied!",e.classList.add("copied"),setTimeout(()=>{e.textContent="Copy",e.classList.remove("copied")},2e3)}),t.appendChild(e)});</script>
