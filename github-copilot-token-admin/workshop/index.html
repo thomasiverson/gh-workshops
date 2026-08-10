@@ -299,6 +299,35 @@
 <li>There is <strong>no automatic fallback to a cheaper model</strong> when a budget is exhausted — the user is simply blocked</li>
 <li><strong>Cost centers have two distinct controls, not one</strong>: a cost center&#39;s <strong>included-usage allocation</strong> is simply the sum of its members&#39; included pooled credits (part of the shared-pool phase); a <strong>cost-center budget</strong> is a separate spending-limit construct that only governs the metered phase after that allocation is exhausted. Sizing one does not automatically size the other</li>
 </ul>
+<h3 id="enterprise-teams-as-the-membership-layer">Enterprise Teams as the Membership Layer</h3>
+<p>Enterprise teams provide a scalable way to align identity, Copilot access, and cost attribution without maintaining individual user lists in multiple places.</p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Administrative Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Assign an enterprise team to a cost center</strong></td>
+<td>Every current team member is added to the cost center, and cost-center membership updates automatically as people join or leave the team</td>
+</tr>
+<tr>
+<td><strong>Assign Copilot Business licenses directly</strong></td>
+<td>Copilot access follows enterprise-team membership independently of organization membership</td>
+</tr>
+<tr>
+<td><strong>Sync an enterprise team with an IdP group (EMU)</strong></td>
+<td>Membership changes flow from the identity provider through SCIM; an IdP-managed enterprise team cannot also contain manually assigned users</td>
+</tr>
+<tr>
+<td><strong>Enforce single cost-center ownership</strong></td>
+<td>An organization, repository, user, or enterprise team can belong to only one cost center; assigning it elsewhere moves it to the new cost center</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: Enterprise teams automate <strong>who belongs</strong> to a cost center; they do not automatically size the cost-center ULB, included-usage control, or metered spending budget. Administrators must still review those controls as membership changes.</p>
+</blockquote>
 <h3 id="budget-control-comparison">Budget Control Comparison</h3>
 <table>
 <thead>
@@ -430,10 +459,10 @@
 </ul>
 <h3 id="-demo-setting-up-a-bundled-ai-credits-budget">🖥️ Demo: Setting Up a Bundled AI Credits Budget</h3>
 <ol>
-<li>Navigate to <strong>Organization/Enterprise Settings → Billing &amp; Licensing → Budgets and alerts</strong></li>
-<li>Click <strong>New budget</strong></li>
-<li>Under <strong>Budget Type</strong>, select <strong>Bundled AI credits budget</strong></li>
-<li>Choose the <strong>scope</strong>: Universal, cost-center, individual user, organization, or enterprise</li>
+<li>Navigate to <strong>Enterprise → Billing &amp; licensing → Cost centers</strong>, then click <strong>New cost center</strong></li>
+<li>Under <strong>Resources</strong>, select the enterprise team that should fund and track the group&#39;s usage</li>
+<li>Confirm the team is not already assigned to another cost center; reassignment moves the resource</li>
+<li>Open <strong>Budgets and alerts</strong>, then create the appropriate cost-center ULB and metered spending budget</li>
 <li>Set the <strong>amount</strong> — for a universal ULB, set it above the per-license value ($19 Business / $39 Enterprise)</li>
 <li>Configure <strong>alerts</strong>: included-usage alerts fire at 90% and 100%; budget alerts fire at 75%, 90%, and 100%</li>
 <li>Where available, enable <strong>Stop usage when budget limit is reached</strong> to convert the budget into a hard stop</li>
@@ -453,6 +482,9 @@
 <li>Universal ULB amount (must be above $19)</li>
 <li>At least one individual ULB override, with a reason</li>
 <li>A cost-center included-usage allocation vs. a separate cost-center spending budget (explain the difference in your own words)</li>
+<li>The enterprise team used to maintain cost-center membership and whether it is manually managed or IdP-synced</li>
+<li>Whether Copilot Business licenses are assigned directly to the enterprise team</li>
+<li>A single-cost-center ownership check before assigning the enterprise team</li>
 <li>Enterprise spending limit amount</li>
 <li>Whether &quot;Stop usage when budget limit is reached&quot; is enabled, and why</li>
 </ul>
@@ -463,6 +495,7 @@
 <li>✅ You can explain why a $0 ULB blocks a user immediately, while an unconfigured enterprise budget does not</li>
 <li>✅ Your worksheet&#39;s universal ULB is set above the per-license value</li>
 <li>✅ You can explain the difference between a cost center&#39;s included-usage allocation and its spending budget</li>
+<li>✅ You can explain how enterprise-team membership automates cost-center membership without automatically sizing the budgets</li>
 <li>✅ (Admin path only) You have located the Budgets and alerts screen and can name all five fields in the &quot;New budget&quot; flow, without saving a production change</li>
 </ul>
 </details>
@@ -471,6 +504,7 @@
 <ul>
 <li>Who in your organization currently has the ability to set or change a budget — is that the right set of people?</li>
 <li>If your universal ULB is set too low, what&#39;s the practical impact on end users versus if it&#39;s set too high?</li>
+<li>Which enterprise teams should map to financial cost centers, and who owns their membership source of truth?</li>
 <li>Should your organization enable &quot;Stop usage when budget limit is reached&quot; on the enterprise budget on day one, or only after a baseline month of data?</li>
 <li>How would you communicate a budget change to end users before it takes effect?</li>
 </ul>
@@ -503,7 +537,7 @@
 </tr>
 <tr>
 <td>3</td>
-<td>Re-validate each cost center&#39;s included-usage allocation against current headcount (new hires/departures change the math)</td>
+<td>Reconcile cost-center membership against enterprise teams or IdP groups; confirm headcount and re-validate the included-usage allocation</td>
 <td>FinOps Lead</td>
 </tr>
 <tr>
@@ -529,14 +563,14 @@
 <p>For each request below, decide: <strong>(a)</strong> who should approve it, <strong>(b)</strong> whether it changes a ULB, a cost-center budget, or an enterprise budget, and <strong>(c)</strong> what you would document as the reason:</p>
 <ol>
 <li>A single power user is blocked by their individual ULB three times in one week, but their manager confirms the work is legitimate and time-sensitive.</li>
-<li>A cost center&#39;s included-usage allocation is exhausted on day 10 of a 30-day cycle because it onboarded 15 new engineers mid-month.</li>
+<li>An IdP-synced enterprise team adds 15 engineers mid-month; the cost center updates automatically but exhausts its included-usage allocation on day 10.</li>
 <li>An enterprise-wide spending budget is projected to hit 100% five days before the monthly reset, with hard stop <strong>not</strong> enabled.</li>
 <li>A team requests that their cost center&#39;s spending budget hard stop be <strong>disabled</strong> because a legitimate multi-day agent task keeps getting blocked.</li>
 </ol>
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
 <li>✅ You correctly route Scenario 1 to an individual ULB increase, approved by a Billing Manager or the user&#39;s manager per your escalation policy</li>
-<li>✅ You correctly identify Scenario 2 as a cost-center included-usage allocation problem, not a spending-budget problem</li>
+<li>✅ You correctly identify Scenario 2 as successful membership automation followed by a cost-center included-usage allocation problem, not a spending-budget problem</li>
 <li>✅ You correctly identify Scenario 3 as a case where alert-only behavior means the team must act manually before the reset, since hard stop is not enabled</li>
 <li>✅ You can articulate at least one risk of approving Scenario 4 outright versus raising the budget amount instead</li>
 </ul>
@@ -598,6 +632,22 @@
 </tr>
 <tr>
 <td>Cost-center spending budget amount (metered phase only)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Enterprise team assigned to the cost center</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Enterprise-team membership source (manual or IdP-synced)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Copilot Business licenses assigned directly to the enterprise team? (Y/N)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Single-cost-center ownership conflict checked? (Y/N)</td>
 <td>_______</td>
 </tr>
 <tr>
@@ -669,6 +719,14 @@
 <td>Controlling and tracking costs at scale (cost centers)</td>
 <td><a href="https://docs.github.com/en/billing/tutorials/control-costs-at-scale">https://docs.github.com/en/billing/tutorials/control-costs-at-scale</a></td>
 </tr>
+<tr>
+<td>Using cost centers to allocate costs</td>
+<td><a href="https://docs.github.com/en/billing/how-tos/products/use-cost-centers">https://docs.github.com/en/billing/how-tos/products/use-cost-centers</a></td>
+</tr>
+<tr>
+<td>Creating enterprise teams</td>
+<td><a href="https://docs.github.com/en/enterprise-cloud@latest/admin/managing-accounts-and-repositories/managing-users-in-your-enterprise/create-enterprise-teams">https://docs.github.com/en/enterprise-cloud@latest/admin/managing-accounts-and-repositories/managing-users-in-your-enterprise/create-enterprise-teams</a></td>
+</tr>
 </tbody></table>
 <blockquote>
 <p><strong>Note</strong>: All dated facts (pricing, promotional-window dates, included-credit amounts) reflect the docs as verified on <strong>2026-08-08</strong>. Re-verify against these live URLs before every delivery of this workshop.</p>
@@ -677,6 +735,7 @@
 <ul>
 <li><input disabled="" type="checkbox"> Re-verify the included-credit amounts and promotional-window dates (Section 1) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">Usage-based billing</a> page</li>
 <li><input disabled="" type="checkbox"> Re-verify ULB precedence, hard-stop behavior, and alert thresholds (Section 2) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/budgets-for-usage-based-billing">Budgets for usage-based billing</a> page</li>
+<li><input disabled="" type="checkbox"> Confirm the current enterprise-team licensing and cost-center resource behavior against the live <a href="https://docs.github.com/en/enterprise-cloud@latest/admin/managing-accounts-and-repositories/managing-users-in-your-enterprise/create-enterprise-teams">Creating enterprise teams</a> and <a href="https://docs.github.com/en/billing/how-tos/products/use-cost-centers">Using cost centers</a> pages</li>
 <li><input disabled="" type="checkbox"> Confirm which attendees have organization/enterprise billing access ahead of time so you can pre-assign Admin-path vs. Simulation-path (Observer) roles for Section 3</li>
 <li><input disabled="" type="checkbox"> If demonstrating the live Budgets and alerts UI, use a sandbox/test organization — never enable hard stop, and never save a production change, during the live demo</li>
 <li><input disabled="" type="checkbox"> Print or share the Budget Design Worksheet (LAB guide) in case attendees prefer a paper artifact</li>

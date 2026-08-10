@@ -148,6 +148,31 @@
 <li><strong>Admin</strong>: Drives the live Billing &amp; Licensing UI (sandbox/test scope only — never saved to production)</li>
 <li><strong>Observer</strong>: Completes the Budget Design Worksheet in parallel</li>
 </ul>
+<h3 id="reference--enterprise-teams-as-the-membership-layer">Reference — Enterprise Teams as the Membership Layer</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Administrative Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Assign an enterprise team to a cost center</strong></td>
+<td>Every current team member is added to the cost center, and cost-center membership updates automatically as people join or leave the team</td>
+</tr>
+<tr>
+<td><strong>Assign Copilot Business licenses directly</strong></td>
+<td>Copilot access follows enterprise-team membership independently of organization membership</td>
+</tr>
+<tr>
+<td><strong>Sync an enterprise team with an IdP group (EMU)</strong></td>
+<td>Membership changes flow from the identity provider through SCIM; an IdP-managed enterprise team cannot also contain manually assigned users</td>
+</tr>
+<tr>
+<td><strong>Enforce single cost-center ownership</strong></td>
+<td>An organization, repository, user, or enterprise team can belong to only one cost center; assigning it elsewhere moves it to the new cost center</td>
+</tr>
+</tbody></table>
 <h3 id="steps">Steps</h3>
 <p><strong>Step 1 — Choose your path</strong>:</p>
 <ul>
@@ -192,6 +217,22 @@
 <td>_______</td>
 </tr>
 <tr>
+<td>Enterprise team assigned to the cost center</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Enterprise-team membership source (manual or IdP-synced)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Copilot Business licenses assigned directly to the enterprise team? (Y/N)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Single-cost-center ownership conflict checked? (Y/N)</td>
+<td>_______</td>
+</tr>
+<tr>
 <td>Enterprise spending limit amount</td>
 <td>_______</td>
 </tr>
@@ -219,6 +260,7 @@
 <li>✅ You can explain why a $0 ULB blocks a user immediately, while an unconfigured enterprise budget does not</li>
 <li>✅ Your worksheet&#39;s universal ULB is set above the per-license value ($19 Business / $39 Enterprise)</li>
 <li>✅ You can explain the difference between a cost center&#39;s included-usage allocation and its spending budget</li>
+<li>✅ You can explain how enterprise-team membership automates cost-center membership without automatically sizing the budgets</li>
 <li>✅ (Admin path only) You have located the Budgets and alerts screen and can name all five fields in the &quot;New budget&quot; flow, without saving a production change</li>
 </ul>
 </details>
@@ -255,7 +297,7 @@
 </tr>
 <tr>
 <td>3</td>
-<td>Re-validate each cost center&#39;s included-usage allocation against current headcount (new hires/departures change the math)</td>
+<td>Reconcile cost-center membership against enterprise teams or IdP groups; confirm headcount and re-validate the included-usage allocation</td>
 <td>FinOps Lead</td>
 </tr>
 <tr>
@@ -278,7 +320,7 @@
 <p>For each request below, decide: <strong>(a)</strong> who should approve it, <strong>(b)</strong> whether it changes a ULB, a cost-center budget, or an enterprise budget, and <strong>(c)</strong> what you would document as the reason:</p>
 <ol>
 <li>A single power user is blocked by their individual ULB three times in one week, but their manager confirms the work is legitimate and time-sensitive.</li>
-<li>A cost center&#39;s included-usage allocation is exhausted on day 10 of a 30-day cycle because it onboarded 15 new engineers mid-month.</li>
+<li>An IdP-synced enterprise team adds 15 engineers mid-month; the cost center updates automatically but exhausts its included-usage allocation on day 10.</li>
 <li>An enterprise-wide spending budget is projected to hit 100% five days before the monthly reset, with hard stop <strong>not</strong> enabled.</li>
 <li>A team requests that their cost center&#39;s spending budget hard stop be <strong>disabled</strong> because a legitimate multi-day agent task keeps getting blocked.</li>
 </ol>
@@ -337,7 +379,7 @@
 <td align="right">2</td>
 <td>FinOps Lead</td>
 <td>Cost-center included-usage allocation (not the spending budget)</td>
-<td>Headcount grew mid-cycle; the allocation was sized for the old headcount and needs re-baselining, not a spending-budget change</td>
+<td>Enterprise-team membership automation worked, but headcount grew mid-cycle; re-baseline the allocation rather than changing the spending budget</td>
 </tr>
 <tr>
 <td align="right">3</td>
@@ -355,7 +397,7 @@
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
 <li>✅ You correctly routed Scenario 1 to an individual ULB increase, approved per your escalation policy</li>
-<li>✅ You correctly identified Scenario 2 as a cost-center included-usage allocation problem, not a spending-budget problem</li>
+<li>✅ You correctly identified Scenario 2 as successful membership automation followed by a cost-center included-usage allocation problem, not a spending-budget problem</li>
 <li>✅ You correctly identified Scenario 3 as a case where alert-only behavior means the team must act manually before the reset</li>
 <li>✅ You articulated at least one risk of approving Scenario 4 outright versus raising the budget amount instead</li>
 </ul>
