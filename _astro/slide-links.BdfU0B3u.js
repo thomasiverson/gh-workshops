@@ -1,0 +1,1 @@
+const r="width=1280,height=720,menubar=no,toolbar=no,location=no,status=no";function t(o=document){o.querySelectorAll('.markdown-body a[href*="/slides/"]').forEach(e=>{e.target="_blank",e.rel="noopener noreferrer",e.addEventListener("click",n=>{n.preventDefault(),window.open(e.href,"_blank",r)})})}export{t as c};
