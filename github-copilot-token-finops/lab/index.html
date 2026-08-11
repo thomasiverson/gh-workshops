@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
 <style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
 </style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization--module-3-measurement--optimization-at-scale--hands-on-lab-guide">GitHub Copilot AI Credits Optimization — Module 3: Measurement &amp; Optimization at Scale — Hands-On Lab Guide</h1>
-<p><strong>Duration</strong>: ~63 minutes of hands-on exercises (across the ~135-minute module)<br><strong>Format</strong>: Step-by-step lab exercises with worksheets and answer keys<br><strong>Audience</strong>: FinOps practitioners, platform/DevEx engineers, engineering managers, Copilot program owners, advanced admins<br><strong>Roles used throughout</strong>: <strong>FinOps</strong> (cost/budget ownership), <strong>Platform/DevEx</strong> (drives reporting and tooling), <strong>Eng. Manager</strong> (team-level context), <strong>Program Owner</strong> (accountable for the operating model)</p>
+<p><strong>Duration</strong>: ~85 minutes of hands-on exercises (across the ~180-minute module)<br><strong>Format</strong>: Step-by-step lab exercises with worksheets and answer keys<br><strong>Audience</strong>: FinOps practitioners, platform/DevEx engineers, engineering managers, Copilot program owners, advanced admins<br><strong>Roles used throughout</strong>: <strong>FinOps</strong> (cost/budget ownership), <strong>Platform/DevEx</strong> (drives reporting and tooling), <strong>Eng. Manager</strong> (team-level context), <strong>Program Owner</strong> (accountable for the operating model)</p>
 <hr>
 <h2 id="lab-overview">Lab Overview</h2>
 <p>This lab guide contains all the hands-on exercises from <strong>Module 3: Measurement &amp; Optimization at Scale</strong>, part of the standalone-capable <strong>GitHub Copilot AI Credits Optimization</strong> workshop series. Each lab maps to a workshop section and builds on the previous one. Complete them in order.</p>
@@ -415,10 +415,236 @@ AI credits (USD × 100)              = 9.16 credits
 
 <hr>
 <details>
-<summary><h2 id="lab-4-budget-tuning-exercise-18-min">Lab 4: Budget Tuning Exercise (18 min)</h2></summary>
+<summary><h2 id="lab-4-outcome-economics-comparison-22-min">Lab 4: Outcome Economics Comparison (22 min)</h2></summary>
 
 <blockquote>
-<p><strong>Workshop Section</strong>: 4 — Budget Tuning &amp; Operating Model Capstone</p>
+<p><strong>Workshop Section</strong>: 4 — Economics of Accepted Outcomes</p>
+</blockquote>
+<h3 id="roles">Roles</h3>
+<ul>
+<li>Work in groups of 3–4</li>
+<li><strong>FinOps</strong> leads the calculation</li>
+<li><strong>Engineering Manager</strong> challenges the acceptance definition</li>
+<li><strong>Platform/DevEx</strong> checks data feasibility</li>
+<li><strong>Program Owner</strong> owns the decision</li>
+</ul>
+<h3 id="reference--outcome--cost-formulas">Reference — Outcome &amp; Cost Formulas</h3>
+<pre><code>Durable acceptance rate =
+durable accepted outcomes ÷ attempted outcomes
+
+Total assisted-delivery cost =
+AI-credit (model) cost
++ human prompting, review, correction, and escalation cost
++ relevant compute and CI/CD rerun cost
++ allocated license cost
++ amortized enablement and workflow-development cost
+
+Full cost per durable accepted outcome =
+total assisted-delivery cost ÷ durable accepted outcomes
+
+Net contribution =
+estimated value of durable accepted outcomes − total assisted-delivery cost
+</code></pre>
+<h3 id="reference--benefit-classification">Reference — Benefit Classification</h3>
+<table>
+<thead>
+<tr>
+<th>Benefit Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Realized cash savings</strong></td>
+<td>An actual expense was removed or reduced</td>
+</tr>
+<tr>
+<td><strong>Cost avoidance</strong></td>
+<td>Future hiring, contractor, infrastructure, or remediation spend was avoided</td>
+</tr>
+<tr>
+<td><strong>Capacity released</strong></td>
+<td>Existing employees can perform additional valuable work</td>
+</tr>
+<tr>
+<td><strong>Revenue contribution</strong></td>
+<td>Faster or better delivery produced attributable revenue or margin</td>
+</tr>
+<tr>
+<td><strong>Risk reduction</strong></td>
+<td>Incidents, defects, audit findings, or remediation exposure were reduced</td>
+</tr>
+</tbody></table>
+<h3 id="scenario">Scenario</h3>
+<p>Compare two workflows across <strong>100 attempts</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Measure</th>
+<th align="right">Workflow A</th>
+<th align="right">Workflow B</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>AI-credit cost per attempt</strong></td>
+<td align="right">$1.00</td>
+<td align="right">$4.00</td>
+</tr>
+<tr>
+<td><strong>Human review/correction cost per attempt</strong></td>
+<td align="right">$14.00</td>
+<td align="right">$8.00</td>
+</tr>
+<tr>
+<td><strong>Compute cost per attempt</strong></td>
+<td align="right">$1.00</td>
+<td align="right">$1.00</td>
+</tr>
+<tr>
+<td><strong>Durable acceptance rate</strong></td>
+<td align="right">50%</td>
+<td align="right">80%</td>
+</tr>
+<tr>
+<td><strong>Estimated value per durable accepted outcome</strong></td>
+<td align="right">$40.00</td>
+<td align="right">$40.00</td>
+</tr>
+</tbody></table>
+<p>For the core comparison, assume license and enablement allocations are equal and excluded from both workflows. Step 9 calculates a separate enablement allocation.</p>
+<h3 id="steps">Steps</h3>
+<ol>
+<li>Calculate full cost per attempt for each workflow.</li>
+<li>Calculate durable accepted outcomes per 100 attempts.</li>
+<li>Calculate total assisted-delivery cost for 100 attempts.</li>
+<li>Calculate full cost per durable accepted outcome.</li>
+<li>Calculate net contribution: <code>(durable outcomes × $40) − total assisted-delivery cost</code>.</li>
+<li>Choose the economically better workflow and explain why AI-credit cost alone selects the wrong one.</li>
+<li>If the same employees use released time on the backlog and payroll does not change, classify the benefit.</li>
+<li>Calculate end-to-end acceptance for four required stages at 90% each.</li>
+<li>Calculate amortized enablement cost for a $30,000 investment spread across 3,000 expected durable outcomes.</li>
+<li>Name at least three assumptions you would test at low/expected/high values before presenting the decision.</li>
+</ol>
+<p>Use this worksheet:</p>
+<table>
+<thead>
+<tr>
+<th>Calculation</th>
+<th align="right">Workflow A</th>
+<th align="right">Workflow B</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Full cost per attempt</td>
+<td align="right">$_______</td>
+<td align="right">$_______</td>
+</tr>
+<tr>
+<td>Durable accepted outcomes</td>
+<td align="right">_______</td>
+<td align="right">_______</td>
+</tr>
+<tr>
+<td>Total assisted-delivery cost</td>
+<td align="right">$_______</td>
+<td align="right">$_______</td>
+</tr>
+<tr>
+<td>Full cost per durable accepted outcome</td>
+<td align="right">$_______</td>
+<td align="right">$_______</td>
+</tr>
+<tr>
+<td>Net contribution</td>
+<td align="right">$_______</td>
+<td align="right">$_______</td>
+</tr>
+</tbody></table>
+<h3 id="answer-key">Answer Key</h3>
+<table>
+<thead>
+<tr>
+<th>Calculation</th>
+<th align="right">Workflow A</th>
+<th align="right">Workflow B</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Full cost per attempt</td>
+<td align="right"><strong>$16.00</strong></td>
+<td align="right"><strong>$13.00</strong></td>
+</tr>
+<tr>
+<td>Durable accepted outcomes</td>
+<td align="right"><strong>50</strong></td>
+<td align="right"><strong>80</strong></td>
+</tr>
+<tr>
+<td>Total assisted-delivery cost</td>
+<td align="right"><strong>$1,600</strong></td>
+<td align="right"><strong>$1,300</strong></td>
+</tr>
+<tr>
+<td>Full cost per durable accepted outcome</td>
+<td align="right"><strong>$32.00</strong></td>
+<td align="right"><strong>$16.25</strong></td>
+</tr>
+<tr>
+<td>Net contribution</td>
+<td align="right"><strong>$400</strong></td>
+<td align="right"><strong>$1,900</strong></td>
+</tr>
+</tbody></table>
+<ol>
+<li><strong>Full cost per attempt</strong>:<ul>
+<li>Workflow A: $1 AI + $14 human + $1 compute = <strong>$16</strong></li>
+<li>Workflow B: $4 AI + $8 human + $1 compute = <strong>$13</strong></li>
+</ul>
+</li>
+<li><strong>Durable outcomes</strong>:<ul>
+<li>Workflow A: 100 × 50% = <strong>50</strong></li>
+<li>Workflow B: 100 × 80% = <strong>80</strong></li>
+</ul>
+</li>
+<li><strong>Total cost</strong>:<ul>
+<li>Workflow A: 100 × $16 = <strong>$1,600</strong></li>
+<li>Workflow B: 100 × $13 = <strong>$1,300</strong></li>
+</ul>
+</li>
+<li><strong>Full cost per durable accepted outcome</strong>:<ul>
+<li>Workflow A: $1,600 ÷ 50 = <strong>$32.00</strong></li>
+<li>Workflow B: $1,300 ÷ 80 = <strong>$16.25</strong></li>
+</ul>
+</li>
+<li><strong>Net contribution</strong>:<ul>
+<li>Workflow A: (50 × $40) − $1,600 = <strong>$400</strong></li>
+<li>Workflow B: (80 × $40) − $1,300 = <strong>$1,900</strong></li>
+</ul>
+</li>
+<li><strong>Decision</strong>: Choose <strong>Workflow B</strong>. Token-only analysis favors A ($1 versus $4), but B has lower full cost per attempt, higher durable yield, lower full cost per durable outcome, and higher contribution.</li>
+<li><strong>Benefit</strong>: <strong>Capacity released</strong>, not realized cash savings, because payroll and headcount did not change.</li>
+<li><strong>Rolled acceptance</strong>: 0.90 × 0.90 × 0.90 × 0.90 = <strong>65.61%</strong>.</li>
+<li><strong>Amortized enablement</strong>: $30,000 ÷ 3,000 = <strong>$10 per durable outcome</strong>.</li>
+<li><strong>Sensitivity examples</strong>: human review time, loaded labor rate, durable acceptance rate, outcome value, enablement useful life, and attribution percentage.</li>
+</ol>
+<blockquote>
+<p><strong>Important</strong>: These values are illustrative. They are not GitHub benchmarks or universal accounting assumptions. Use representative samples, approved rates, and a defined outcome/stabilization rule for real decisions.</p>
+</blockquote>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Your full-cost, durable-outcome, and contribution calculations match the answer key</li>
+<li>✅ You selected Workflow B despite its higher AI-credit cost</li>
+<li>✅ You classified the labor benefit as capacity released</li>
+<li>✅ You calculated 65.61% rolled acceptance and $10 amortized enablement cost per outcome</li>
+<li>✅ You named at least three assumptions and would report a range rather than false precision</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-5-budget-tuning-exercise-18-min">Lab 5: Budget Tuning Exercise (18 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 5 — Budget Tuning &amp; Operating Model Capstone</p>
 </blockquote>
 <h3 id="roles">Roles</h3>
 <ul>
@@ -500,14 +726,14 @@ Gap to cover = $10,975 − $7,650 = $3,325
 
 <hr>
 <details>
-<summary><h2 id="lab-5-30-day-optimization-backlog-capstone-12-min">Lab 5: 30-Day Optimization Backlog Capstone (12 min)</h2></summary>
+<summary><h2 id="lab-6-30-day-optimization-backlog-capstone-12-min">Lab 6: 30-Day Optimization Backlog Capstone (12 min)</h2></summary>
 
 <blockquote>
-<p><strong>Workshop Section</strong>: 4 — Budget Tuning &amp; Operating Model Capstone</p>
+<p><strong>Workshop Section</strong>: 5 — Budget Tuning &amp; Operating Model Capstone</p>
 </blockquote>
 <h3 id="roles">Roles</h3>
 <ul>
-<li>Same groups of 3–4 from Lab 4</li>
+<li>Same groups of 3–4 from Lab 5</li>
 </ul>
 <h3 id="reference--raci">Reference — RACI</h3>
 <table>
@@ -526,6 +752,20 @@ Gap to cover = $10,975 − $7,650 = $3,325
 <td align="center">R</td>
 <td align="center">C</td>
 <td align="center">I</td>
+</tr>
+<tr>
+<td>Outcome definition &amp; stabilization rule</td>
+<td align="center">C</td>
+<td align="center">C</td>
+<td align="center">R</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td>Economic scorecard &amp; benefit classification</td>
+<td align="center">R</td>
+<td align="center">C</td>
+<td align="center">C</td>
+<td align="center">A</td>
 </tr>
 <tr>
 <td>Budget tuning (ULBs, spending budgets)</td>
@@ -600,13 +840,19 @@ Gap to cover = $10,975 − $7,650 = $3,325
 <td align="center"></td>
 </tr>
 <tr>
+<td align="center">P1</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+</tr>
+<tr>
 <td align="center">P2</td>
 <td></td>
 <td></td>
 <td align="center"></td>
 </tr>
 </tbody></table>
-<p>Your backlog must include, at minimum: one item closing the ULB/spending-budget gap from Lab 4, one item establishing or refining an anomaly-response threshold, one item naming your showback-vs-chargeback decision, and one item scheduling your first monthly KPI review ahead of September 1, 2026.</p>
+<p>Your backlog must include, at minimum: one item closing the ULB/spending-budget gap from Lab 5, one item establishing or refining an anomaly-response threshold, one item defining a pilot outcome/stabilization rule and economic scorecard owner, one item naming your showback-vs-chargeback decision, and one item scheduling your first monthly KPI review ahead of September 1, 2026.</p>
 <h3 id="example-answer-contoso-scenario">Example Answer (Contoso scenario)</h3>
 <table>
 <thead>
@@ -637,6 +883,12 @@ Gap to cover = $10,975 − $7,650 = $3,325
 </tr>
 <tr>
 <td align="center">P1</td>
+<td>Pilot &quot;merged PR with no material correction or revert for 14 days&quot; as the durable outcome; baseline full cost per durable accepted outcome with low/expected/high assumptions</td>
+<td>Eng. Manager (R), Program Owner (A), FinOps (C)</td>
+<td align="center">Week 2</td>
+</tr>
+<tr>
+<td align="center">P1</td>
 <td>Adopt showback for all cost centers this cycle; revisit chargeback after two clean baseline months</td>
 <td>FinOps (R), Program Owner (A)</td>
 <td align="center">Week 3</td>
@@ -650,9 +902,10 @@ Gap to cover = $10,975 − $7,650 = $3,325
 </tbody></table>
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
-<li>✅ Your backlog includes a P0 item that directly resolves the budget-tuning gap from Lab 4</li>
+<li>✅ Your backlog includes a P0 item that directly resolves the budget-tuning gap from Lab 5</li>
 <li>✅ Your backlog names at least three KPIs from Lab 3 with a defined review cadence</li>
 <li>✅ Your backlog states an explicit anomaly-response trigger and an owner from the RACI table</li>
+<li>✅ Your backlog names a pilot outcome, stabilization rule, and owner for the first full-cost-per-durable-outcome baseline</li>
 <li>✅ Your backlog states a showback-vs-chargeback decision and a target week for your next KPI review ahead of September 1, 2026</li>
 </ul>
 </details>

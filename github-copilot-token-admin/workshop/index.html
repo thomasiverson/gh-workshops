@@ -52,6 +52,7 @@
 <li>Trace a Copilot request through the full billing flow: user budget check → shared pool → additional usage policy → applicable spending budget/hard stop</li>
 <li>Distinguish a cost center&#39;s <strong>included-usage allocation</strong> from a cost center&#39;s <strong>spending budget</strong></li>
 <li>Explain where content exclusion can reduce supported context, where it is unsupported, and why developer scoping remains necessary</li>
+<li>Distinguish budget governance from outcome economics and identify who owns outcome, acceptance, and benefit definitions</li>
 <li>Draft a monthly administrative runbook covering alerts, reviews, and an exception/escalation path</li>
 <li>Identify what changes for existing customers when the June–September 2026 promotional credit window ends</li>
 </ul>
@@ -520,6 +521,21 @@
 <li><strong>Monthly cadence</strong> should cover: reviewing alert history (included-usage and budget alerts), checking blocked-user counts, reviewing metered overage, and re-validating cost-center included-usage allocations against current headcount</li>
 <li>An <strong>exception/escalation path</strong> should be lightweight — a single request form or ticket type — so a legitimate power user or team isn&#39;t blocked for days waiting on a manual budget increase</li>
 </ul>
+<h3 id="budgets-govern-spend-outcome-economics-governs-value">Budgets Govern Spend; Outcome Economics Governs Value</h3>
+<ul>
+<li>AI-credit budgets constrain vendor consumption; they do <strong>not</strong> prove that the resulting work created value</li>
+<li>The Module 3 economic scorecard adds the missing denominator: <strong>durable accepted outcomes</strong>, not prompts, sessions, or attempted tasks</li>
+<li>Before reporting ROI, administrators should confirm three owners:<ul>
+<li><strong>Engineering / Program Owner</strong> defines the outcome, acceptance rule, and stabilization period</li>
+<li><strong>FinOps / Finance</strong> approves loaded labor rates and classifies benefits as cash savings, cost avoidance, capacity released, revenue contribution, or risk reduction</li>
+<li><strong>Platform / DevEx</strong> reconciles AI usage and sampled workflow data without turning individual token consumption into a performance score</li>
+</ul>
+</li>
+<li>A budget can be correctly configured while a workflow is still economically poor because review, correction, compute, or enablement cost outweighs its accepted output</li>
+</ul>
+<blockquote>
+<p><strong>Important</strong>: Never present unused budget or lower AI-credit spend as ROI by itself. Pair spend with durable accepted output and full assisted-delivery cost in Module 3.</p>
+</blockquote>
 <h3 id="content-exclusion-is-a-governance-boundary-not-a-universal-token-control">Content Exclusion Is a Governance Boundary, Not a Universal Token Control</h3>
 <ul>
 <li>Repository and organization administrators can define path-based <strong>content exclusions</strong> so supported Copilot surfaces ignore sensitive or irrelevant content</li>
@@ -608,6 +624,7 @@
 <ul>
 <li>AI Credits are simple in principle (1 credit = $0.01, pooled, reset monthly) but the guardrails around them have real nuance — precedence, hard-stop rules, and the included-usage-vs-spending-budget distinction all matter</li>
 <li>ULBs always hard-stop; cost-center/org/enterprise budgets only hard-stop when explicitly enabled — most incidents trace back to that distinction being misunderstood</li>
+<li>Budget compliance is not ROI — hand spend data to Module 3&#39;s durable-outcome scorecard before making value or savings claims</li>
 <li>A monthly administrative runbook, not a one-time setup, is what keeps budgets correctly sized as usage evolves</li>
 <li>This module stands alone, but Module 2 (developer optimization patterns) and Module 3 (FinOps reporting) build directly on the guardrails established here</li>
 </ul>

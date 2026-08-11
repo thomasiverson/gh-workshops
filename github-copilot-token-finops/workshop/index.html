@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
 <style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
 </style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization--module-3-measurement--optimization-at-scale--workshop-guide">GitHub Copilot AI Credits Optimization — Module 3: Measurement &amp; Optimization at Scale — Workshop Guide</h1>
-<p><strong>Duration</strong>: ~135 minutes (including one 10-minute break)<br><strong>Format</strong>: Presentation + Live Demo + Hands-On Exercises<br><strong>Audience</strong>: FinOps practitioners, platform/DevEx engineers, engineering managers, Copilot program owners, advanced admins<br><strong>Focus</strong>: Reporting and observability layers, token cost calculations, KPI baselines and anomaly analysis, budget tuning, and a sustainable operating model at scale</p>
+<p><strong>Duration</strong>: ~180 minutes (including one 10-minute break)<br><strong>Format</strong>: Presentation + Live Demo + Hands-On Exercises<br><strong>Audience</strong>: FinOps practitioners, platform/DevEx engineers, engineering managers, Copilot program owners, advanced admins<br><strong>Focus</strong>: Reporting and observability layers, token cost calculations, KPI baselines, outcome economics, budget tuning, and a sustainable operating model at scale</p>
 <hr>
 <h2 id="module-overview">Module Overview</h2>
 <p>This is <strong>Module 3 of 3</strong> in the <strong>GitHub Copilot AI Credits Optimization</strong> workshop series. Where Module 1 focuses on admin guardrail setup and Module 2 focuses on developer-level optimization habits, Module 3 is built for the people who own the numbers: FinOps, platform/DevEx, engineering managers, Copilot program owners, and advanced admins who need to measure consumption at scale, distinguish legitimate heavy use from waste, tune budgets across every layer, and run a repeatable monthly operating cadence.</p>
@@ -45,6 +45,10 @@
 <li>Establish KPI baselines — burn rate, projected exhaustion date, credits per active user/task, blocked users, overage, feature/model mix, and adoption/quality — from a live export or a supplied sample dataset</li>
 <li>Distinguish legitimate heavy use from waste using session-level signals, not just total credits consumed</li>
 <li>Analyze a sample dataset correctly, including recognizing when a correlation between two metrics does <strong>not</strong> establish that one caused the other</li>
+<li>Define a measurable outcome, first-pass durable acceptance rule, and stabilization period before calculating economic value</li>
+<li>Calculate total assisted-delivery cost, full cost per durable accepted outcome, and net contribution using sampled human effort and explicit assumptions</li>
+<li>Distinguish realized cash savings from cost avoidance, capacity released, revenue contribution, and risk reduction</li>
+<li>Evaluate model and multi-stage workflow economics using durable acceptance, rolled yield, and amortized enablement cost</li>
 <li>Tune budgets across every layer — universal, cost-center, and individual user-level budgets, plus cost-center/organization/enterprise spending budgets — and apply included usage controls and power-user exceptions</li>
 <li>Explain the &quot;lowest remaining headroom wins&quot; behavior when multiple budgets apply to the same user</li>
 <li>Draft a 30-day optimization backlog and an operating model (RACI, review cadence, anomaly response, showback/chargeback) that a FinOps or platform team can run every cycle</li>
@@ -118,11 +122,16 @@
 </tr>
 <tr>
 <td>4</td>
-<td><a href="#4-budget-tuning--operating-model-capstone-hands-on-35-min">Budget Tuning &amp; Operating Model Capstone (Hands-On)</a></td>
+<td><a href="#4-economics-of-accepted-outcomes-hands-on-45-min">Economics of Accepted Outcomes (Hands-On)</a></td>
+<td>45 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="#5-budget-tuning--operating-model-capstone-hands-on-35-min">Budget Tuning &amp; Operating Model Capstone (Hands-On)</a></td>
 <td>35 min</td>
 </tr>
 </tbody></table>
-<p><strong>Total: ~135 min (~2h 15min)</strong></p>
+<p><strong>Total: ~180 min (~3 hours)</strong></p>
 <hr>
 <h2 id="welcome--budget-refresher-15-min">Welcome &amp; Budget Refresher (15 min)</h2>
 <h3 id="key-points">Key Points</h3>
@@ -406,7 +415,7 @@ AI credits (USD × 100)                   = 41.8 credits
 </tr>
 <tr>
 <td><strong>Credits per active user/task</strong></td>
-<td>Efficiency metric — rising cost-per-task with flat output may signal a false-economy or waste pattern</td>
+<td>Consumption-intensity metric — useful for anomaly detection, but not a complete economic measure without accepted output and full delivery cost</td>
 </tr>
 <tr>
 <td><strong>Blocked users</strong></td>
@@ -617,7 +626,241 @@ AI credits (USD × 100)                   = 41.8 credits
 <li>Who should receive an anomaly alert when blocked users or burn rate spike mid-cycle, and how quickly should they be expected to respond?</li>
 </ul>
 <hr>
-<h2 id="4-budget-tuning--operating-model-capstone-hands-on-35-min">4. Budget Tuning &amp; Operating Model Capstone (Hands-On) (35 min)</h2>
+<h2 id="4-economics-of-accepted-outcomes-hands-on-45-min">4. Economics of Accepted Outcomes (Hands-On) (45 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Token cost is an input, not the outcome.</strong> AI credits answer &quot;what did the model cost?&quot; but not &quot;did the assisted work create durable value?&quot;</li>
+<li>Freeze the outcome definition, acceptance rule, stabilization period, and reporting period <strong>before</strong> collecting or comparing data</li>
+<li>Measure teams and repeatable workflow categories — not individual developers as a performance ranking based on token consumption</li>
+<li>Use representative samples and ranges; do not create measurement overhead larger than the decision it supports</li>
+</ul>
+<h3 id="freeze-the-outcome-definition">Freeze the Outcome Definition</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Outcome unit</strong></td>
+<td>Pull request merged into the default branch</td>
+</tr>
+<tr>
+<td><strong>Acceptance event</strong></td>
+<td>Required checks pass, review approved, and PR merged</td>
+</tr>
+<tr>
+<td><strong>Material corrective cycle</strong></td>
+<td>Substantial changes required after first review</td>
+</tr>
+<tr>
+<td><strong>Stabilization period</strong></td>
+<td>14 days after merge</td>
+</tr>
+<tr>
+<td><strong>Durable failure</strong></td>
+<td>Revert, hotfix, or substantial rewrite during stabilization</td>
+</tr>
+<tr>
+<td><strong>Reporting period</strong></td>
+<td>Calendar month</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: The example is not a universal standard. Documentation, production code, security remediation, and operational workflows can require different outcome units and stabilization periods.</p>
+<p>Report outcomes by cohort or with a reporting lag: work still inside its stabilization period is <strong>pending</strong>, not accepted or rejected.</p>
+</blockquote>
+<h3 id="first-pass-durable-acceptance">First-Pass Durable Acceptance</h3>
+<p>An attempted outcome counts as <strong>durably accepted</strong> only when it meets the defined acceptance rule without a material corrective cycle and remains valid through the stabilization period.</p>
+<pre><code>Durable acceptance rate =
+durable accepted outcomes ÷ attempted outcomes
+</code></pre>
+<p>This is stricter than suggestion acceptance, initial test pass, or PR merge rate. Those remain useful leading indicators, but none proves the result stayed accepted.</p>
+<h3 id="total-assisted-delivery-cost">Total Assisted-Delivery Cost</h3>
+<pre><code>Total assisted-delivery cost =
+AI-credit (model) cost
++ human prompting, review, correction, and escalation cost
++ relevant compute and CI/CD rerun cost
++ allocated license cost
++ amortized enablement and workflow-development cost
+
+Full cost per durable accepted outcome =
+total assisted-delivery cost ÷ durable accepted outcomes
+</code></pre>
+<p>Human effort can be estimated from a representative sample:</p>
+<pre><code>Sampled human cost =
+sampled hours × approved loaded labor rate
+</code></pre>
+<p>Document the sample size, roles, rates, exclusions, and uncertainty. Do not rely on self-reported &quot;hours saved&quot; as the sole monetary input.</p>
+<h3 id="economic-scorecard">Economic Scorecard</h3>
+<table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Why It Matters</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Durable accepted outcomes</strong></td>
+<td>Delivery scale — how much accepted output remained valid</td>
+</tr>
+<tr>
+<td><strong>Durable acceptance rate</strong></td>
+<td>Yield — how many attempts became durable outcomes</td>
+</tr>
+<tr>
+<td><strong>Full cost per attempt</strong></td>
+<td>Cost before rejection and rework are reflected in the denominator</td>
+</tr>
+<tr>
+<td><strong>Full cost per durable accepted outcome</strong></td>
+<td>Comparable unit economics across models or workflows</td>
+</tr>
+<tr>
+<td><strong>Accepted-output volume</strong></td>
+<td>Prevents an efficiency ratio from looking better merely because less work was delivered</td>
+</tr>
+<tr>
+<td><strong>Net contribution</strong></td>
+<td>Estimated value of durable outcomes minus total assisted-delivery cost</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: Never report unit-cost improvement alone. Pair it with accepted-output volume or net contribution so reduced delivery cannot masquerade as improved efficiency.</p>
+</blockquote>
+<h3 id="benefit-classification">Benefit Classification</h3>
+<table>
+<thead>
+<tr>
+<th>Benefit Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Realized cash savings</strong></td>
+<td>An actual expense was removed or reduced</td>
+</tr>
+<tr>
+<td><strong>Cost avoidance</strong></td>
+<td>Future hiring, contractor, infrastructure, or remediation spend was avoided</td>
+</tr>
+<tr>
+<td><strong>Capacity released</strong></td>
+<td>Existing employees can perform additional valuable work</td>
+</tr>
+<tr>
+<td><strong>Revenue contribution</strong></td>
+<td>Faster or better delivery produced attributable revenue or margin</td>
+</tr>
+<tr>
+<td><strong>Risk reduction</strong></td>
+<td>Incidents, defects, audit findings, or remediation exposure were reduced</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: If payroll and headcount did not change, multiplying &quot;hours saved&quot; by a labor rate does not automatically produce cash savings. It usually represents capacity released or cost avoidance until an actual expense or measurable output changes.</p>
+</blockquote>
+<h3 id="advanced-economics-multi-stage-yield--enablement">Advanced Economics: Multi-Stage Yield &amp; Enablement</h3>
+<p>When every workflow stage must succeed:</p>
+<pre><code>End-to-end durable acceptance =
+stage 1 acceptance × stage 2 acceptance × ... × stage n acceptance
+
+Four required stages at 90% each:
+0.90 × 0.90 × 0.90 × 0.90 = 65.61%
+</code></pre>
+<p>Shorten unnecessary chains, improve the weakest stage, or make failed stages recoverable rather than optimizing token cost alone.</p>
+<p>Treat instructions, skills, agent definitions, evaluations, training, and workflow design as enablement investment:</p>
+<pre><code>Amortized enablement cost per outcome =
+enablement investment ÷ expected durable outcomes over its useful period
+
+$30,000 ÷ 3,000 durable outcomes = $10 per outcome
+</code></pre>
+<p>Expect a <strong>maturation J-curve</strong>: early enablement cost can increase before acceptance and throughput improve. Amortize the investment, but do not hide it.</p>
+<h3 id="evidence--uncertainty">Evidence &amp; Uncertainty</h3>
+<p>Use evidence in this order:</p>
+<ol>
+<li>Operational outcome and durable-failure data</li>
+<li>Sampled human review, correction, and escalation effort</li>
+<li>AI-credit, compute, license, and enablement cost</li>
+<li>Surveys for friction, confidence, and explanatory context — not as the sole financial source of truth</li>
+</ol>
+<p>Use low/expected/high assumptions for labor rate, review time, acceptance, useful life, and outcome value. Report a defensible range when the inputs do not support a precise point estimate.</p>
+<details>
+<summary><h3 id="-hands-on-outcome-economics-comparison-22-min">🧪 Hands-On: Outcome Economics Comparison (22 min)</h3></summary>
+
+<p><strong>Roles</strong>: Work in groups of 3–4. FinOps leads the calculation, Engineering Manager challenges the acceptance definition, Platform/DevEx checks data feasibility, and Program Owner owns the decision.</p>
+<p>Compare two workflows across <strong>100 attempts</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Measure</th>
+<th align="right">Workflow A</th>
+<th align="right">Workflow B</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>AI-credit cost per attempt</strong></td>
+<td align="right">$1.00</td>
+<td align="right">$4.00</td>
+</tr>
+<tr>
+<td><strong>Human review/correction cost per attempt</strong></td>
+<td align="right">$14.00</td>
+<td align="right">$8.00</td>
+</tr>
+<tr>
+<td><strong>Compute cost per attempt</strong></td>
+<td align="right">$1.00</td>
+<td align="right">$1.00</td>
+</tr>
+<tr>
+<td><strong>Durable acceptance rate</strong></td>
+<td align="right">50%</td>
+<td align="right">80%</td>
+</tr>
+<tr>
+<td><strong>Estimated value per durable accepted outcome</strong></td>
+<td align="right">$40.00</td>
+<td align="right">$40.00</td>
+</tr>
+</tbody></table>
+<p>For the core comparison, assume license and enablement allocations are equal and excluded from both workflows. Step 9 calculates a separate enablement allocation.</p>
+<p>Calculate and answer:</p>
+<ol>
+<li>Full cost per attempt for each workflow</li>
+<li>Durable accepted outcomes per 100 attempts</li>
+<li>Total assisted-delivery cost for 100 attempts</li>
+<li>Full cost per durable accepted outcome</li>
+<li>Net contribution: <code>(durable outcomes × $40) − total assisted-delivery cost</code></li>
+<li>Which workflow is economically better, and why would AI-credit cost alone select the wrong one?</li>
+<li>If the same employees use released time on the backlog and payroll does not change, which benefit classification applies?</li>
+<li>What is the end-to-end acceptance of four required stages at 90% each?</li>
+<li>What amortized enablement cost should be added for a $30,000 investment spread across 3,000 expected durable outcomes?</li>
+<li>Name at least three assumptions you would sensitivity-test before presenting this decision.</li>
+</ol>
+<p>Check your work against the <strong>Answer Key</strong> in the LAB guide.</p>
+<h4 id="success-criteria">Success Criteria</h4>
+<ul>
+<li>✅ You calculated full cost per attempt as <strong>$16 for Workflow A</strong> and <strong>$13 for Workflow B</strong></li>
+<li>✅ You calculated <strong>50 versus 80</strong> durable accepted outcomes</li>
+<li>✅ You calculated full cost per durable accepted outcome as <strong>$32.00 versus $16.25</strong></li>
+<li>✅ You calculated net contribution as <strong>$400 versus $1,900</strong></li>
+<li>✅ You chose Workflow B despite its higher AI-credit cost and classified the labor benefit as <strong>capacity released</strong></li>
+<li>✅ You calculated four-stage rolled acceptance as <strong>65.61%</strong> and amortized enablement cost as <strong>$10 per outcome</strong></li>
+<li>✅ You named assumptions and would report a range rather than unsupported precision</li>
+</ul>
+</details>
+
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which outcome in your organization is valuable and measurable enough to pilot this scorecard?</li>
+<li>Who should approve the acceptance rule and stabilization period?</li>
+<li>Which human-effort component is most likely to reverse a token-only model decision?</li>
+<li>What evidence would Finance require before recognizing cash savings rather than capacity released?</li>
+</ul>
+<hr>
+<h2 id="5-budget-tuning--operating-model-capstone-hands-on-35-min">5. Budget Tuning &amp; Operating Model Capstone (Hands-On) (35 min)</h2>
 <h3 id="key-points">Key Points</h3>
 <ul>
 <li>Budget tuning spans two independent dimensions that must both be sized correctly:<ul>
@@ -703,6 +946,10 @@ AI credits (USD × 100)                   = 41.8 credits
 <td>Track a quality proxy (acceptance rate, PR review pass rate) alongside every cost metric; never treat a cost reduction as a win if it correlates with declining quality without ruling out other causes first</td>
 </tr>
 <tr>
+<td><strong>Outcome economics</strong></td>
+<td>Freeze outcome and durable-acceptance definitions; report full cost per durable accepted outcome with accepted volume, benefit classification, and uncertainty</td>
+</tr>
+<tr>
 <td><strong>Showback/chargeback</strong></td>
 <td>Report cost to a business unit (showback) or charge it back to their budget (chargeback) via cost centers — many organizations start with showback and move to chargeback once baselines are trusted</td>
 </tr>
@@ -724,6 +971,20 @@ AI credits (USD × 100)                   = 41.8 credits
 <td align="center">R</td>
 <td align="center">C</td>
 <td align="center">I</td>
+</tr>
+<tr>
+<td>Outcome definition &amp; stabilization rule</td>
+<td align="center">C</td>
+<td align="center">C</td>
+<td align="center">R</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td>Economic scorecard &amp; benefit classification</td>
+<td align="center">R</td>
+<td align="center">C</td>
+<td align="center">C</td>
+<td align="center">A</td>
 </tr>
 <tr>
 <td>Budget tuning (ULBs, spending budgets)</td>
@@ -766,7 +1027,7 @@ AI credits (USD × 100)                   = 41.8 credits
 <summary><h3 id="-hands-on-capstone-30-day-optimization-backlog-12-min">🧪 Hands-On Capstone: 30-Day Optimization Backlog (12 min)</h3></summary>
 
 <p><strong>Roles</strong>: Same groups of 3–4 from the budget tuning exercise.</p>
-<p>Using everything from Sections 1–4, draft a prioritized <strong>30-Day Optimization Backlog</strong> for your organization (or for the Contoso scenario above):</p>
+<p>Using everything from Sections 1–5, draft a prioritized <strong>30-Day Optimization Backlog</strong> for your organization (or for the Contoso scenario above):</p>
 <table>
 <thead>
 <tr>
@@ -801,18 +1062,25 @@ AI credits (USD × 100)                   = 41.8 credits
 <td align="center">______</td>
 </tr>
 <tr>
+<td align="center">P1</td>
+<td>______</td>
+<td>______</td>
+<td align="center">______</td>
+</tr>
+<tr>
 <td align="center">P2</td>
 <td>______</td>
 <td>______</td>
 <td align="center">______</td>
 </tr>
 </tbody></table>
-<p>At minimum, your backlog must include: one item that closes the ULB/spending-budget gap identified in the tuning exercise, one item that establishes or refines an anomaly-response threshold, one item that names your showback-vs-chargeback decision, and one item that schedules your first monthly KPI review before September 1, 2026.</p>
+<p>At minimum, your backlog must include: one item that closes the ULB/spending-budget gap identified in the tuning exercise, one item that establishes or refines an anomaly-response threshold, one item that defines a pilot outcome/stabilization rule and economic scorecard owner, one item that names your showback-vs-chargeback decision, and one item that schedules your first monthly KPI review before September 1, 2026.</p>
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
 <li>✅ Your backlog includes a P0 item that directly resolves the budget-tuning gap from the hands-on exercise</li>
 <li>✅ Your backlog names at least three KPIs from Section 3 with a defined review cadence</li>
 <li>✅ Your backlog states an explicit anomaly-response trigger and an owner from the RACI table</li>
+<li>✅ Your backlog names a pilot outcome, stabilization rule, and owner for the first full-cost-per-durable-outcome baseline</li>
 <li>✅ Your backlog states a showback-vs-chargeback decision and a target week for your next KPI review ahead of the September 1, 2026 promotional pool change</li>
 </ul>
 </details>
@@ -831,6 +1099,8 @@ AI credits (USD × 100)                   = 41.8 credits
 <li>Cost is tokens × per-model, per-category pricing — always re-verify against live pricing, never memorize it</li>
 <li>Baseline before you tune: burn rate, exhaustion date, credits/user, blocked users, overage, feature/model mix, and quality together — not cost in isolation</li>
 <li>Total credits alone don&#39;t identify waste — pair volume with quality and session-behavior signals, and never assume correlation is causation without checking for a confounding factor</li>
+<li>Define durable accepted outcomes and calculate total assisted-delivery cost — token cost alone does not establish economic value</li>
+<li>Report full cost per durable accepted outcome with accepted volume or net contribution; classify benefits honestly and expose uncertainty</li>
 <li>Budgets are tuned across two independent dimensions — ULBs and spending budgets — and the <strong>lowest remaining headroom wins</strong> when they disagree</li>
 <li>A written 30-day optimization backlog, owned through a clear RACI, turns this session into a lasting operating cadence</li>
 </ul>
@@ -840,6 +1110,8 @@ AI credits (USD × 100)                   = 41.8 credits
 <li>&quot;How do we handle third-party coding agents in our KPI and budget math?&quot;</li>
 <li>&quot;What specifically changes for us on September 1, 2026?&quot;</li>
 <li>&quot;If overage and a quality dip happen together again, how fast can we tell whether they&#39;re actually related?&quot;</li>
+<li>&quot;Can we count developer time saved as cash savings, or is it capacity released?&quot;</li>
+<li>&quot;How long should our stabilization period be before an outcome counts as durable?&quot;</li>
 </ul>
 <hr>
 <h2 id="appendix-official-sources--facilitator-reference">Appendix: Official Sources &amp; Facilitator Reference</h2>
@@ -914,6 +1186,7 @@ AI credits (USD × 100)                   = 41.8 credits
 <li><input disabled="" type="checkbox"> Confirm which attendees have AI usage dashboard access ahead of time so you can plan the Section 1 live demo versus a screenshot walkthrough</li>
 <li><input disabled="" type="checkbox"> If discussing OTel, run <code>copilot help monitoring</code> on the installed CLI version and review the organization&#39;s telemetry privacy, retention, and access requirements; do not enable prompt/response capture for the workshop</li>
 <li><input disabled="" type="checkbox"> Print or share the Sample Dataset and Answer Key (LAB guide) in case attendees lack access to a real AI usage export</li>
+<li><input disabled="" type="checkbox"> Confirm the outcome-economics exercise assumptions are presented as illustrative, not GitHub product benchmarks or universal accounting rules</li>
 <li><input disabled="" type="checkbox"> Bookmark all Key URLs above in a dedicated browser folder for quick reference during Q&amp;A</li>
 <li><input disabled="" type="checkbox"> If your organization has already run Module 1 and/or Module 2, review those decisions (budget amounts, developer optimization habits already adopted) so this module&#39;s tuning exercise reflects real numbers where possible</li>
 </ul>

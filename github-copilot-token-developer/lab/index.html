@@ -347,6 +347,29 @@
 <li>Work individually, then discuss as a table</li>
 </ul>
 <h3 id="steps">Steps</h3>
+<p>Use this full-cost comparison for Scenario 5:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th align="right">Full Cost per Attempt</th>
+<th align="right">Durable Acceptance Rate</th>
+<th align="right">Full Cost per Durable Accepted Outcome</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Lightweight model</strong></td>
+<td align="right">$8.00</td>
+<td align="right">40%</td>
+<td align="right">$8.00 ÷ 0.40 = <strong>$20.00</strong></td>
+</tr>
+<tr>
+<td><strong>Powerful model</strong></td>
+<td align="right">$14.00</td>
+<td align="right">80%</td>
+<td align="right">$14.00 ÷ 0.80 = <strong>$17.50</strong></td>
+</tr>
+</tbody></table>
 <p>For each scenario, decide <strong>(a)</strong> Auto or a manual model choice (and if manual, lightweight or powerful), and <strong>(b)</strong> one quality-first verification step to pair with it:</p>
 <table>
 <thead>
@@ -373,6 +396,11 @@
 </tr>
 <tr>
 <td align="right">4. A developer who insists on manually forcing the most powerful model for every single Chat question, &quot;to be safe&quot;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">5. The model comparison above: which option is economically better, and what evidence is required before making it the team default?</td>
 <td></td>
 <td></td>
 </tr>
@@ -406,6 +434,11 @@
 <td>This is the &quot;cheaper models are always safe&quot; myth in reverse — Auto would be more efficient, since it already reserves powerful models for tasks that need them</td>
 <td>N/A — the fix here is adopting Auto as the default, not adding a check</td>
 </tr>
+<tr>
+<td align="right">5</td>
+<td>Powerful model — <strong>$17.50 versus $20.00 per durable accepted outcome</strong>, despite its higher per-attempt cost</td>
+<td>Require representative samples, a defined outcome and stabilization period, and low/expected/high assumptions before standardizing</td>
+</tr>
 </tbody></table>
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
@@ -413,6 +446,7 @@
 <li>✅ You chose a powerful/reasoning model for Scenario 2 and can justify why</li>
 <li>✅ You chose a cheaper, scoped model for the Scenario 3 subagent</li>
 <li>✅ You correctly diagnosed Scenario 4 as over-provisioning power without justification, and named Auto as the more efficient default</li>
+<li>✅ You chose the powerful model for Scenario 5 based on full cost per durable accepted outcome and named the evidence required before making it a default</li>
 </ul>
 </details>
 

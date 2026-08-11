@@ -28,6 +28,7 @@
 <li>Set Copilot CLI/SDK AI-credit session limits as a complement to monthly budgets</li>
 <li>Build a model strategy centered on Auto model selection, proportional reasoning, and scoped subagents — reserving powerful models for cases that justify them</li>
 <li>Recognize false-economy anti-patterns and evaluate cost per <strong>completed, verified</strong> task rather than cost per turn</li>
+<li>Compare models by full cost per durable accepted outcome and recognize how multi-stage workflow yield compounds</li>
 <li>Draft a 30-day personal/team habit plan to make these practices stick</li>
 </ul>
 <h3 id="prerequisites">Prerequisites</h3>
@@ -464,6 +465,8 @@
 <ul>
 <li><strong>Judge cost per completed, verified task — not cost per turn.</strong> A cheap, low-quality result that needs a human rework cycle, or a second and larger request to fix it, costs more in total credits and time than doing it right once</li>
 <li>Pair deterministic guardrails (tests, linters, security checks from Section 2) with model choice: a well-scoped task run on an appropriately capable model, verified by a fast automated check, is the efficient path — not the cheapest model regardless of outcome</li>
+<li><strong>Use full cost per durable accepted outcome for model escalation</strong>, not AI-credit price alone. Full cost includes AI usage plus human review/correction and relevant compute; durable acceptance requires the result to pass its defined acceptance rule without material correction and remain valid through its stabilization period</li>
+<li><strong>Keep multi-stage agent workflows as short and recoverable as the task allows.</strong> When every stage must succeed, end-to-end acceptance compounds across the chain; removing a redundant stage or making one failed stage retryable can improve economics more than trimming a small number of tokens</li>
 </ul>
 <table>
 <thead>
@@ -493,6 +496,32 @@
 <td>Cached tokens are typically priced well below fresh input, but the exact discount can vary by model — verify current pricing rather than quoting one fixed ratio</td>
 </tr>
 </tbody></table>
+<h3 id="full-cost-model-decision">Full-Cost Model Decision</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th align="right">Full Cost per Attempt</th>
+<th align="right">Durable Acceptance Rate</th>
+<th align="right">Full Cost per Durable Accepted Outcome</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Lightweight model</strong></td>
+<td align="right">$8.00</td>
+<td align="right">40%</td>
+<td align="right">$8.00 ÷ 0.40 = <strong>$20.00</strong></td>
+</tr>
+<tr>
+<td><strong>Powerful model</strong></td>
+<td align="right">$14.00</td>
+<td align="right">80%</td>
+<td align="right">$14.00 ÷ 0.80 = <strong>$17.50</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: The powerful model costs more per attempt but less per durable accepted outcome. This is a decision framework, not a universal model ranking; use measured acceptance and full-cost data for the task category.</p>
+</blockquote>
 <details>
 <summary><h3 id="-hands-on-model--interface-scenario-practice-12-min">🧪 Hands-On: Model & Interface Scenario Practice (12 min)</h3></summary>
 
@@ -503,6 +532,7 @@
 <li>Designing the approach for a cross-service architecture change before any code is written</li>
 <li>A subagent tasked with only summarizing test failures from a CI run</li>
 <li>A developer who insists on manually forcing the most powerful model for every single Chat question, &quot;to be safe&quot;</li>
+<li>The lightweight-versus-powerful model comparison above: which option is economically better, and what additional evidence would you require before making it the team default?</li>
 </ol>
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
@@ -510,6 +540,7 @@
 <li>✅ You chose a powerful/reasoning model for Scenario 2 and explained why the planning phase justifies it</li>
 <li>✅ You chose a cheaper, scoped model for the subagent in Scenario 3</li>
 <li>✅ You correctly identified Scenario 4 as the &quot;cheaper models are always safe&quot; myth in reverse — over-provisioning power without justification — and can explain why Auto would be the more efficient default</li>
+<li>✅ You chose the powerful model for Scenario 5 based on <strong>$17.50 versus $20.00 per durable accepted outcome</strong>, while requiring representative samples and a defined stabilization period before standardizing the choice</li>
 </ul>
 </details>
 
@@ -564,6 +595,7 @@
 <li>Use <code>/usage</code>, <code>/resume</code>, <code>/cwd</code>, and <code>/add-dir</code> intentionally; keep file and tool scope no broader than the task requires</li>
 <li>Auto model selection is the default; manual choice (lightweight or powerful) is the justified exception</li>
 <li>Judge cost per completed, verified task — never per turn — and don&#39;t fall for false-economy myths</li>
+<li>Compare model and workflow choices by full cost per durable accepted outcome; keep multi-stage chains short or recoverable</li>
 </ul>
 <hr>
 <h2 id="appendix-official-sources--facilitator-reference">Appendix: Official Sources &amp; Facilitator Reference</h2>
