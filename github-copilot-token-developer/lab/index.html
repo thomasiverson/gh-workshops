@@ -242,12 +242,50 @@
 <li>Work individually, then discuss as a table</li>
 </ul>
 <h3 id="part-a--session-design">Part A — Session Design</h3>
-<p>For each scenario, decide: continue the current session, start a new one, or run <code>/compact</code> first.</p>
+<p>Use this command reference, then decide whether to continue the current session, start a new one, compact, inspect, resume, or expand file scope.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Use It When</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/new</code> or <code>/clear</code></td>
+<td>The problem or work phase changed</td>
+</tr>
+<tr>
+<td><code>/resume</code></td>
+<td>A saved session still matches the task</td>
+</tr>
+<tr>
+<td><code>/usage</code></td>
+<td>You need current session usage metrics</td>
+</tr>
+<tr>
+<td><code>/context</code></td>
+<td>You need to inspect context-window consumption</td>
+</tr>
+<tr>
+<td><code>/compact [focus]</code></td>
+<td>A still-relevant thread has grown large</td>
+</tr>
+<tr>
+<td><code>/cwd</code></td>
+<td>You need to inspect or change the working-directory root</td>
+</tr>
+<tr>
+<td><code>/add-dir</code></td>
+<td>One additional directory is genuinely required</td>
+</tr>
+</tbody></table>
 <ol>
 <li>You just finished debugging an auth issue and now want to ask an unrelated question about a CSS layout bug</li>
 <li>Your Copilot CLI thread has been open for two hours on the same refactor and is starting to feel sluggish</li>
 <li>You finished research and a plan for a feature and are about to start implementation</li>
 <li>You return to yesterday&#39;s Chat session to ask one more follow-up question on the same topic</li>
+<li>You want to confirm whether tool definitions or message history are consuming most of a long CLI session</li>
+<li>A task in the current repository needs one sibling directory, but not access to the rest of the parent directory</li>
 </ol>
 <h3 id="part-b--session-limit-worksheet">Part B — Session Limit Worksheet</h3>
 <p>Define a soft AI-credit session limit for a Copilot CLI task you run regularly (or a hypothetical one):</p>
@@ -279,17 +317,20 @@
 <p><strong>Part A</strong>:</p>
 <ol>
 <li><strong>New session</strong> — unrelated problem; carrying the auth debugging history into a CSS question wastes context</li>
-<li><strong><code>/compact</code>, then continue</strong> — the thread is still relevant; use <code>/compact</code> to shrink history rather than losing all context by restarting, and use <code>/context</code> first to see how much is actually being carried</li>
+<li><strong><code>/context</code>, then <code>/compact</code> if warranted</strong> — the thread is still relevant; inspect it first, then compact to replace the large history with a smaller summary. Compaction uses a summarization step and can lose fine detail, so it is not an every-turn habit</li>
 <li><strong>New session</strong> — a phase change (plan → implement); implementation needs only the plan&#39;s outcome, not the full research trail</li>
 <li><strong>Depends on elapsed time</strong> — if the session is still within its cache-active window and on-topic, continuing may still benefit from cached context; if it&#39;s been long enough that the cache has likely expired (commonly cited as around 24 hours for some model families, around 1 hour for most others — verify current behavior), treat it like a new session or <code>/compact</code> first</li>
+<li><strong><code>/context</code></strong> — it breaks context usage down across instructions, system/MCP tools, messages, free space, and buffer</li>
+<li><strong><code>/add-dir</code></strong> — add only the required sibling directory instead of broadening the working root to the entire parent</li>
 </ol>
 <p><strong>Part B</strong>: There&#39;s no single correct number — a good answer names a specific credit amount tied to the task&#39;s typical cost (for example, based on past <code>/context</code> usage or Chronicle cost-tips), and a concrete next step (for example, &quot;review what&#39;s been done so far, then raise the limit only if the remaining work is clearly scoped&quot;).</p>
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
 <li>✅ You correctly chose &quot;new session&quot; for Scenario 1</li>
-<li>✅ You correctly chose &quot;<code>/compact</code>, then continue&quot; for Scenario 2</li>
+<li>✅ You correctly chose &quot;<code>/context</code>, then <code>/compact</code> if warranted&quot; for Scenario 2</li>
 <li>✅ You correctly chose &quot;new session&quot; for Scenario 3</li>
 <li>✅ You reasoned about Scenario 4 using cache-expiration timing, not just topic relevance</li>
+<li>✅ You chose <code>/context</code> for Scenario 5 and <code>/add-dir</code> for Scenario 6</li>
 <li>✅ Your session limit worksheet names a specific credit amount and a concrete next step</li>
 </ul>
 </details>
@@ -433,6 +474,31 @@
 
 <hr>
 <h2 id="key-reference-tables-quick-lookup">Key Reference Tables (Quick Lookup)</h2>
+<h3 id="billing-mental-model">Billing Mental Model</h3>
+<table>
+<thead>
+<tr>
+<th>Former Mental Model</th>
+<th>Usage-Based Billing Mental Model</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Count premium requests</td>
+<td>Measure tokens and AI credits</td>
+</tr>
+<tr>
+<td>Treat a request as one visible cost unit</td>
+<td>Account for prompt, context, history, tools, and output</td>
+</tr>
+<tr>
+<td>Focus on model multipliers</td>
+<td>Use per-model, per-token-category pricing</td>
+</tr>
+<tr>
+<td>Optimize request count</td>
+<td>Optimize cost per completed, verified task</td>
+</tr>
+</tbody></table>
 <h3 id="billed-vs-unbilled-at-a-glance">Billed vs. Unbilled at a Glance</h3>
 <table>
 <thead>

@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
 <style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
 </style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization--module-3-measurement--optimization-at-scale--workshop-guide">GitHub Copilot AI Credits Optimization — Module 3: Measurement &amp; Optimization at Scale — Workshop Guide</h1>
-<p><strong>Duration</strong>: ~135 minutes (including one 10-minute break)<br><strong>Format</strong>: Presentation + Live Demo + Hands-On Exercises<br><strong>Audience</strong>: FinOps practitioners, platform/DevEx engineers, engineering managers, Copilot program owners, advanced admins<br><strong>Focus</strong>: Reporting and data sources, token cost calculations, KPI baselines and anomaly analysis, budget tuning, and a sustainable operating model at scale</p>
+<p><strong>Duration</strong>: ~135 minutes (including one 10-minute break)<br><strong>Format</strong>: Presentation + Live Demo + Hands-On Exercises<br><strong>Audience</strong>: FinOps practitioners, platform/DevEx engineers, engineering managers, Copilot program owners, advanced admins<br><strong>Focus</strong>: Reporting and observability layers, token cost calculations, KPI baselines and anomaly analysis, budget tuning, and a sustainable operating model at scale</p>
 <hr>
 <h2 id="module-overview">Module Overview</h2>
 <p>This is <strong>Module 3 of 3</strong> in the <strong>GitHub Copilot AI Credits Optimization</strong> workshop series. Where Module 1 focuses on admin guardrail setup and Module 2 focuses on developer-level optimization habits, Module 3 is built for the people who own the numbers: FinOps, platform/DevEx, engineering managers, Copilot program owners, and advanced admins who need to measure consumption at scale, distinguish legitimate heavy use from waste, tune budgets across every layer, and run a repeatable monthly operating cadence.</p>
@@ -40,6 +40,7 @@
 <h3 id="learning-objectives">Learning Objectives</h3>
 <ul>
 <li>Locate and filter AI usage reporting by user, model, organization, and cost center, and know where individual users see their own consumption</li>
+<li>Select the least-complex visibility layer for a question: session commands, AI usage dashboard/CSV, or optional privacy-reviewed Copilot CLI OpenTelemetry</li>
 <li>Apply the detailed token cost formula to calculate USD and AI-credit cost for a Copilot interaction, using live, current pricing rather than memorized numbers</li>
 <li>Establish KPI baselines — burn rate, projected exhaustion date, credits per active user/task, blocked users, overage, feature/model mix, and adoption/quality — from a live export or a supplied sample dataset</li>
 <li>Distinguish legitimate heavy use from waste using session-level signals, not just total credits consumed</li>
@@ -191,6 +192,42 @@
 <li><strong>Individual visibility</strong>: every Business/Enterprise user sees their own consumption under <strong>Copilot settings → Usage</strong> — the card shows credits consumed against their budget if one applies (for example, &quot;450 / 1,000 AI credits used&quot;), or total credits consumed if no ULB applies to them; VS Code and other IDEs also surface personal usage and reset date</li>
 <li><strong>Cost center home pages</strong> show <strong>&quot;AI credit pool enabled&quot;</strong> and current consumption against the included-usage cap when a cost center has an included usage control turned on</li>
 </ul>
+<h3 id="three-visibility-layers">Three Visibility Layers</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Best For</th>
+<th>Important Boundary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Copilot CLI <code>/usage</code> and <code>/context</code></strong></td>
+<td>A developer inspecting one session&#39;s usage and context composition</td>
+<td>Local/session-level evidence, not enterprise reporting</td>
+</tr>
+<tr>
+<td><strong>AI usage dashboard and CSV export</strong></td>
+<td>Cost-center, user, model, SKU, and cycle-level FinOps analysis</td>
+<td>Aggregated billing/usage view, not a tool-by-tool execution trace</td>
+</tr>
+<tr>
+<td><strong>Copilot CLI OpenTelemetry (optional)</strong></td>
+<td>Advanced traces and metrics for agent interactions, model calls, tool execution, latency, tokens, and costs</td>
+<td>Off by default; requires an approved OTel backend and privacy/security design</td>
+</tr>
+</tbody></table>
+<h3 id="optional-advanced-telemetry-with-opentelemetry">Optional Advanced Telemetry with OpenTelemetry</h3>
+<ul>
+<li>Copilot CLI can export OTel traces and metrics when explicitly enabled; confirm current configuration with <code>copilot help monitoring</code></li>
+<li>Use it when dashboard aggregation cannot answer a bounded engineering question such as &quot;which tool stage drives retries or token growth?&quot;</li>
+<li>Keep full prompt/response capture <strong>disabled by default</strong>. The content-capture setting can expose source, prompts, tool output, or sensitive data to the telemetry pipeline</li>
+<li>Define retention, access, redaction, data residency, and incident-response ownership before enabling an exporter</li>
+<li>Do not build chargeback from raw traces alone. Reconcile telemetry with the AI usage dashboard/CSV, which remains the billing-oriented source</li>
+</ul>
+<blockquote>
+<p><strong>Important</strong>: Start with <code>/usage</code>, <code>/context</code>, and the AI usage dashboard. Add OTel only when a specific observability question justifies its operational and privacy cost.</p>
+</blockquote>
 <h3 id="live-prices-not-memorized-numbers">Live Prices, Not Memorized Numbers</h3>
 <blockquote>
 <p><strong>Important</strong>: Pricing, included-credit amounts, and reporting UI details change over time. Treat every number in this module — including the pricing snapshot in Section 2 — as a dated example, not a permanent reference. Always confirm against the live <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing</a> page and the live AI usage dashboard before quoting numbers to stakeholders or making a budget decision.</p>
@@ -208,12 +245,13 @@
 <summary><h3 id="-hands-on-dashboard-filter-practice-6-min">🧪 Hands-On: Dashboard Filter Practice (6 min)</h3></summary>
 
 <p><strong>Roles</strong>: Work individually or in pairs. If you have live dashboard access, use it; otherwise, use the supplied sample dataset from Section 3 as a stand-in and reason about which filters you&#39;d apply.</p>
-<p><strong>Exercise</strong>: For each request below, write down the exact filter/group-by combination you&#39;d use on the AI usage page:</p>
+<p><strong>Exercise</strong>: For each request below, choose the least-complex visibility layer that answers it; for dashboard requests, also write down the exact filter/group-by combination:</p>
 <ol>
 <li>&quot;Which model is driving the most spend enterprise-wide this cycle?&quot;</li>
 <li>&quot;How much has the Data Science cost center consumed so far this month?&quot;</li>
 <li>&quot;Is one specific user responsible for an unusual share of a cost center&#39;s credits?&quot;</li>
 <li>&quot;I need to hand a FinOps analyst a CSV they can pivot in a spreadsheet — how do I get it to them?&quot;</li>
+<li>&quot;A platform team needs to determine whether model calls or tool executions dominate one CLI workflow, including latency and errors.&quot;</li>
 </ol>
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
@@ -221,6 +259,7 @@
 <li>✅ You identified filtering by cost center (or a <code>cost_center:</code> query) for Question 2</li>
 <li>✅ You identified filtering by user within a cost center for Question 3</li>
 <li>✅ You identified the CSV export action for Question 4</li>
+<li>✅ You identified optional Copilot CLI OpenTelemetry for Question 5, with content capture disabled unless explicitly approved</li>
 </ul>
 </details>
 
@@ -841,6 +880,10 @@ AI credits (USD × 100)                   = 41.8 credits
 <td><a href="https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/monitor-ai-usage">https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/monitor-ai-usage</a></td>
 </tr>
 <tr>
+<td>GitHub Copilot CLI command reference</td>
+<td><a href="https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference">https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference</a></td>
+</tr>
+<tr>
 <td>Managing your company&#39;s spending</td>
 <td><a href="https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/manage-company-spending">https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/manage-company-spending</a></td>
 </tr>
@@ -869,6 +912,7 @@ AI credits (USD × 100)                   = 41.8 credits
 <li><input disabled="" type="checkbox"> Re-verify the pricing snapshot table (Section 2) against the live <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing</a> page</li>
 <li><input disabled="" type="checkbox"> Re-verify the promotional-window dates and standard credit amounts (Welcome section) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">Usage-based billing</a> page</li>
 <li><input disabled="" type="checkbox"> Confirm which attendees have AI usage dashboard access ahead of time so you can plan the Section 1 live demo versus a screenshot walkthrough</li>
+<li><input disabled="" type="checkbox"> If discussing OTel, run <code>copilot help monitoring</code> on the installed CLI version and review the organization&#39;s telemetry privacy, retention, and access requirements; do not enable prompt/response capture for the workshop</li>
 <li><input disabled="" type="checkbox"> Print or share the Sample Dataset and Answer Key (LAB guide) in case attendees lack access to a real AI usage export</li>
 <li><input disabled="" type="checkbox"> Bookmark all Key URLs above in a dedicated browser folder for quick reference during Q&amp;A</li>
 <li><input disabled="" type="checkbox"> If your organization has already run Module 1 and/or Module 2, review those decisions (budget amounts, developer optimization habits already adopted) so this module&#39;s tuning exercise reflects real numbers where possible</li>

@@ -54,13 +54,42 @@
 <td>Cost center home page (shows &quot;AI credit pool enabled&quot; when configured)</td>
 </tr>
 </tbody></table>
+<h3 id="reference--three-visibility-layers">Reference — Three Visibility Layers</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Best For</th>
+<th>Important Boundary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Copilot CLI <code>/usage</code> and <code>/context</code></strong></td>
+<td>A developer inspecting one session&#39;s usage and context composition</td>
+<td>Local/session-level evidence, not enterprise reporting</td>
+</tr>
+<tr>
+<td><strong>AI usage dashboard and CSV export</strong></td>
+<td>Cost-center, user, model, SKU, and cycle-level FinOps analysis</td>
+<td>Aggregated billing/usage view, not a tool-by-tool execution trace</td>
+</tr>
+<tr>
+<td><strong>Copilot CLI OpenTelemetry (optional)</strong></td>
+<td>Advanced traces and metrics for agent interactions, model calls, tool execution, latency, tokens, and costs</td>
+<td>Off by default; requires an approved OTel backend and privacy/security design</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: Keep full prompt/response capture disabled unless security and privacy owners explicitly approve it. Start with <code>/usage</code>, <code>/context</code>, and the dashboard; add OTel only for a defined observability question.</p>
+</blockquote>
 <h3 id="steps">Steps</h3>
-<p>For each request, write down the exact filter/group-by combination you&#39;d use:</p>
+<p>For each request, choose the least-complex visibility layer that answers it; for dashboard requests, also write down the exact filter/group-by combination:</p>
 <ol>
 <li>&quot;Which model is driving the most spend enterprise-wide this cycle?&quot;</li>
 <li>&quot;How much has the Data Science cost center consumed so far this month?&quot;</li>
 <li>&quot;Is one specific user responsible for an unusual share of a cost center&#39;s credits?&quot;</li>
 <li>&quot;I need to hand a FinOps analyst a CSV they can pivot in a spreadsheet — how do I get it to them?&quot;</li>
+<li>&quot;A platform team needs to determine whether model calls or tool executions dominate one CLI workflow, including latency and errors.&quot;</li>
 </ol>
 <h3 id="answer-key">Answer Key</h3>
 <ol>
@@ -68,6 +97,7 @@
 <li><strong>AI usage</strong> page (or <strong>Metered usage</strong> search) filtered by <strong>cost center: Data Science</strong>, current-cycle timeframe. Cross-check against the cost center&#39;s home page if an included usage control is enabled.</li>
 <li><strong>AI usage</strong> page filtered by <strong>cost center</strong>, then further filtered/grouped by <strong>user</strong> to compare individual shares within that cost center.</li>
 <li>Apply the desired filters on the <strong>AI usage</strong> page, then use the <strong>export</strong> action to download the filtered view as <strong>CSV</strong>.</li>
+<li>Use optional <strong>Copilot CLI OpenTelemetry</strong> for the bounded workflow analysis, after approving the OTel backend and telemetry controls. Keep prompt/response content capture disabled unless explicitly approved; reconcile results with the dashboard rather than treating traces as the billing ledger.</li>
 </ol>
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
@@ -75,6 +105,7 @@
 <li>✅ You identified filtering by cost center for Question 2</li>
 <li>✅ You identified filtering by user within a cost center for Question 3</li>
 <li>✅ You identified the CSV export action for Question 4</li>
+<li>✅ You identified optional Copilot CLI OpenTelemetry for Question 5 and stated the content-capture/privacy boundary</li>
 </ul>
 </details>
 

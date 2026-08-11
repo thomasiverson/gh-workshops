@@ -315,17 +315,23 @@
 </tr>
 <tr>
 <td>6</td>
-<td>Communicate any budget changes to affected users/teams before they take effect</td>
+<td>Review content-exclusion patterns and supported-surface limitations after repository, policy, or sensitive-path changes</td>
+<td>Platform Admin / Security</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Communicate any budget or governance changes to affected users/teams before they take effect</td>
 <td>Platform Admin</td>
 </tr>
 </tbody></table>
 <h3 id="steps">Steps</h3>
-<p>For each request below, decide: <strong>(a)</strong> who should approve it, <strong>(b)</strong> whether it changes a ULB, a cost-center budget, or an enterprise budget, and <strong>(c)</strong> what you would document as the reason:</p>
+<p>For each request below, decide: <strong>(a)</strong> who should approve it, <strong>(b)</strong> which budget control or governance action applies, and <strong>(c)</strong> what you would document as the reason:</p>
 <ol>
 <li>A single power user is blocked by their individual ULB three times in one week, but their manager confirms the work is legitimate and time-sensitive.</li>
 <li>An IdP-synced enterprise team adds 15 engineers mid-month; the cost center updates automatically but exhausts its included-usage allocation on day 10.</li>
 <li>An enterprise-wide spending budget is projected to hit 100% five days before the monthly reset, with hard stop <strong>not</strong> enabled.</li>
 <li>A team requests that their cost center&#39;s spending budget hard stop be <strong>disabled</strong> because a legitimate multi-day agent task keeps getting blocked.</li>
+<li>A security team asks for one content-exclusion rule to reduce context in Copilot CLI and Agent mode across every repository.</li>
 </ol>
 <p>Fill in your worksheet:</p>
 <table>
@@ -357,6 +363,12 @@
 </tr>
 <tr>
 <td align="right">4</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="right">5</td>
 <td></td>
 <td></td>
 <td></td>
@@ -396,6 +408,12 @@
 <td>Cost-center budget hard-stop toggle</td>
 <td>Balance the legitimate multi-day task against the risk of uncapped overage; consider raising the budget amount instead of disabling hard stop outright</td>
 </tr>
+<tr>
+<td align="right">5</td>
+<td>Platform Admin / Security</td>
+<td>Content exclusion on supported surfaces, plus developer scope/tool guidance</td>
+<td>Reject the universal claim: current content exclusions do not apply to Copilot CLI or Agent mode in IDEs; use narrow working directories, explicit file scope, tool controls, and <code>.gitignore</code>/ignore hygiene there</td>
+</tr>
 </tbody></table>
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
@@ -403,6 +421,7 @@
 <li>✅ You correctly identified Scenario 2 as successful membership automation followed by a cost-center included-usage allocation problem, not a spending-budget problem</li>
 <li>✅ You correctly identified Scenario 3 as a case where alert-only behavior means the team must act manually before the reset</li>
 <li>✅ You articulated at least one risk of approving Scenario 4 outright versus raising the budget amount instead</li>
+<li>✅ You identified the current content-exclusion limitation in Scenario 5 and paired the governance control with developer scoping practices</li>
 </ul>
 </details>
 

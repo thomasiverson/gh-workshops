@@ -51,6 +51,7 @@
 <li>Configure and interpret budgets at the universal, cost-center, individual-user, organization, and enterprise levels — including precedence and hard-stop behavior</li>
 <li>Trace a Copilot request through the full billing flow: user budget check → shared pool → additional usage policy → applicable spending budget/hard stop</li>
 <li>Distinguish a cost center&#39;s <strong>included-usage allocation</strong> from a cost center&#39;s <strong>spending budget</strong></li>
+<li>Explain where content exclusion can reduce supported context, where it is unsupported, and why developer scoping remains necessary</li>
 <li>Draft a monthly administrative runbook covering alerts, reviews, and an exception/escalation path</li>
 <li>Identify what changes for existing customers when the June–September 2026 promotional credit window ends</li>
 </ul>
@@ -519,6 +520,17 @@
 <li><strong>Monthly cadence</strong> should cover: reviewing alert history (included-usage and budget alerts), checking blocked-user counts, reviewing metered overage, and re-validating cost-center included-usage allocations against current headcount</li>
 <li>An <strong>exception/escalation path</strong> should be lightweight — a single request form or ticket type — so a legitimate power user or team isn&#39;t blocked for days waiting on a manual budget increase</li>
 </ul>
+<h3 id="content-exclusion-is-a-governance-boundary-not-a-universal-token-control">Content Exclusion Is a Governance Boundary, Not a Universal Token Control</h3>
+<ul>
+<li>Repository and organization administrators can define path-based <strong>content exclusions</strong> so supported Copilot surfaces ignore sensitive or irrelevant content</li>
+<li>Organization exclusions can cover Git repositories and non-repository file-system paths; repository settings can use path patterns for files and directories</li>
+<li>Content exclusion is primarily a security and governance control. It may also prevent irrelevant supported content from entering context, but it does not replace good developer scoping</li>
+<li><strong>Current limitation</strong>: GitHub Copilot CLI and Agent mode in Copilot Chat in IDEs do <strong>not</strong> support content exclusion. For those surfaces, developers must use narrow working directories, explicit file scope, tool controls, and <code>.gitignore</code>/repository ignore hygiene</li>
+<li>Review exclusions after repository reorganizations and policy changes; inherited organization exclusions appear read-only at the repository level</li>
+</ul>
+<blockquote>
+<p><strong>Important</strong>: Do not promise that a content-exclusion rule reduces every Copilot interaction. Validate the supported-surface matrix before delivery and pair exclusions with the Module 2 file/tool-scoping practices.</p>
+</blockquote>
 <h3 id="administrative-runbook-monthly-cycle">Administrative Runbook (Monthly Cycle)</h3>
 <table>
 <thead>
@@ -555,7 +567,12 @@
 </tr>
 <tr>
 <td>6</td>
-<td>Communicate any budget changes to affected users/teams before they take effect</td>
+<td>Review content-exclusion patterns and supported-surface limitations after repository, policy, or sensitive-path changes</td>
+<td>Platform Admin / Security</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Communicate any budget or governance changes to affected users/teams before they take effect</td>
 <td>Platform Admin</td>
 </tr>
 </tbody></table>
@@ -563,12 +580,13 @@
 <summary><h3 id="-hands-on-exception--escalation-exercise-10-min">🧪 Hands-On: Exception & Escalation Exercise (10 min)</h3></summary>
 
 <p><strong>Roles</strong>: Admin and Observer work together; rotate who writes the decision.</p>
-<p>For each request below, decide: <strong>(a)</strong> who should approve it, <strong>(b)</strong> whether it changes a ULB, a cost-center budget, or an enterprise budget, and <strong>(c)</strong> what you would document as the reason:</p>
+<p>For each request below, decide: <strong>(a)</strong> who should approve it, <strong>(b)</strong> which budget control or governance action applies, and <strong>(c)</strong> what you would document as the reason:</p>
 <ol>
 <li>A single power user is blocked by their individual ULB three times in one week, but their manager confirms the work is legitimate and time-sensitive.</li>
 <li>An IdP-synced enterprise team adds 15 engineers mid-month; the cost center updates automatically but exhausts its included-usage allocation on day 10.</li>
 <li>An enterprise-wide spending budget is projected to hit 100% five days before the monthly reset, with hard stop <strong>not</strong> enabled.</li>
 <li>A team requests that their cost center&#39;s spending budget hard stop be <strong>disabled</strong> because a legitimate multi-day agent task keeps getting blocked.</li>
+<li>A security team asks for one content-exclusion rule to reduce context in Copilot CLI and Agent mode across every repository.</li>
 </ol>
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
@@ -576,6 +594,7 @@
 <li>✅ You correctly identify Scenario 2 as successful membership automation followed by a cost-center included-usage allocation problem, not a spending-budget problem</li>
 <li>✅ You correctly identify Scenario 3 as a case where alert-only behavior means the team must act manually before the reset, since hard stop is not enabled</li>
 <li>✅ You can articulate at least one risk of approving Scenario 4 outright versus raising the budget amount instead</li>
+<li>✅ You reject Scenario 5&#39;s universal claim: current content exclusions do not apply to Copilot CLI or Agent mode in IDEs, so those surfaces also require developer-controlled scope and tool hygiene</li>
 </ul>
 </details>
 
@@ -730,6 +749,10 @@
 <td>Creating enterprise teams</td>
 <td><a href="https://docs.github.com/en/enterprise-cloud@latest/admin/managing-accounts-and-repositories/managing-users-in-your-enterprise/create-enterprise-teams">https://docs.github.com/en/enterprise-cloud@latest/admin/managing-accounts-and-repositories/managing-users-in-your-enterprise/create-enterprise-teams</a></td>
 </tr>
+<tr>
+<td>Excluding content from GitHub Copilot</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/configure-content-exclusion/exclude-content-from-copilot">https://docs.github.com/en/copilot/how-tos/configure-content-exclusion/exclude-content-from-copilot</a></td>
+</tr>
 </tbody></table>
 <blockquote>
 <p><strong>Note</strong>: All dated facts (pricing, promotional-window dates, included-credit amounts) reflect the docs as verified on <strong>2026-08-08</strong>. Re-verify against these live URLs before every delivery of this workshop.</p>
@@ -739,6 +762,7 @@
 <li><input disabled="" type="checkbox"> Re-verify the included-credit amounts and promotional-window dates (Section 1) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">Usage-based billing</a> page</li>
 <li><input disabled="" type="checkbox"> Re-verify ULB precedence, hard-stop behavior, and alert thresholds (Section 2) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/budgets-for-usage-based-billing">Budgets for usage-based billing</a> page</li>
 <li><input disabled="" type="checkbox"> Confirm the current enterprise-team licensing and cost-center resource behavior against the live <a href="https://docs.github.com/en/enterprise-cloud@latest/admin/managing-accounts-and-repositories/managing-users-in-your-enterprise/create-enterprise-teams">Creating enterprise teams</a> and <a href="https://docs.github.com/en/billing/how-tos/products/use-cost-centers">Using cost centers</a> pages</li>
+<li><input disabled="" type="checkbox"> Re-verify content-exclusion scope and unsupported surfaces against the live <a href="https://docs.github.com/en/copilot/how-tos/configure-content-exclusion/exclude-content-from-copilot">Excluding content from GitHub Copilot</a> page</li>
 <li><input disabled="" type="checkbox"> Confirm which attendees have organization/enterprise billing access ahead of time so you can pre-assign Admin-path vs. Simulation-path (Observer) roles for Section 3</li>
 <li><input disabled="" type="checkbox"> If demonstrating the live Budgets and alerts UI, use a sandbox/test organization — never enable hard stop, and never save a production change, during the live demo</li>
 <li><input disabled="" type="checkbox"> Print or share the Budget Design Worksheet (LAB guide) in case attendees prefer a paper artifact</li>

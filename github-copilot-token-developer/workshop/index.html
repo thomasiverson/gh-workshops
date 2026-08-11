@@ -20,9 +20,10 @@
 <h3 id="learning-objectives">Learning Objectives</h3>
 <ul>
 <li>Explain the AI-credit billing basics relevant to a developer: <code>1 credit = $0.01</code>, unlimited completions/next-edit suggestions, and which interfaces are billed</li>
+<li>Explain how usage-based billing differs from the former premium-request mental model</li>
 <li>Choose the right interface (completions, Ask, Edit, Agent, Copilot CLI, cloud agent) for a given task</li>
-<li>Apply context- and instruction-efficiency practices: smallest authoritative context, clear task/context/stop conditions, concise grounded custom instructions, scoped instructions, and relevant MCP/tool sets only</li>
-<li>Use session boundaries deliberately — new sessions between unrelated tasks or research/plan/implement phases, and <code>/context</code> / <code>/compact</code> for long-running Copilot CLI threads</li>
+<li>Apply context- and instruction-efficiency practices: smallest authoritative context, clear task/context/stop conditions, concise grounded custom instructions, scoped instructions, narrow working-directory/tool scope, and relevant MCP/tool sets only</li>
+<li>Use session boundaries deliberately — new sessions between unrelated tasks or research/plan/implement phases, and the Copilot CLI session-control commands for long-running work</li>
 <li>Explain what invalidates cached context (model switches, reasoning changes, tool changes, expired sessions) and why cached tokens are typically cheaper, without assuming one universal ratio</li>
 <li>Set Copilot CLI/SDK AI-credit session limits as a complement to monthly budgets</li>
 <li>Build a model strategy centered on Auto model selection, proportional reasoning, and scoped subagents — reserving powerful models for cases that justify them</li>
@@ -153,6 +154,34 @@
 <td>Yes</td>
 </tr>
 </tbody></table>
+<h3 id="replace-the-premium-request-mental-model">Replace the Premium-Request Mental Model</h3>
+<table>
+<thead>
+<tr>
+<th>Former Mental Model</th>
+<th>Usage-Based Billing Mental Model</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Count premium requests</td>
+<td>Measure tokens and AI credits</td>
+</tr>
+<tr>
+<td>Treat a request as one visible cost unit</td>
+<td>Account for prompt, context, history, tools, and output</td>
+</tr>
+<tr>
+<td>Focus on model multipliers</td>
+<td>Use per-model, per-token-category pricing</td>
+</tr>
+<tr>
+<td>Optimize request count</td>
+<td>Optimize cost per completed, verified task</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: Request count alone no longer explains cost. Two requests can consume very different credits when their context, model, tool output, reasoning, or generated output differs.</p>
+</blockquote>
 <blockquote>
 <p><strong>Note</strong>: For the full budget, pooling, and policy mechanics behind AI credits, see Module 1 — Admin Guardrails. This module assumes credits exist and focuses only on what you, as a developer, control.</p>
 </blockquote>
@@ -252,6 +281,9 @@
 <li><strong>Concise, grounded custom instructions</strong>: keep repository-wide instructions (for example, <code>copilot-instructions.md</code> or <code>AGENTS.md</code>) short and specific — they are sent with every single interaction, so noise there is a recurring tax</li>
 <li><strong>Scoped/path-specific instructions</strong>: put detail that only applies to part of the repo (a language, a service, a folder) into scoped instructions that load only when relevant, instead of bloating the repo-wide file</li>
 <li><strong>Use only relevant MCP/tool sets</strong>: a large MCP server&#39;s full tool catalog adds tool definitions to every request; enable only the toolsets the task actually needs</li>
+<li><strong>Start in the narrowest correct working directory</strong>: Copilot CLI limits file access to the current working directory and its subdirectories by default. Use <code>/cwd</code> to inspect or change that root and <code>/add-dir</code> only when the task genuinely requires another directory</li>
+<li><strong>Separate tool visibility from tool approval</strong>: <code>--available-tools</code> and <code>--excluded-tools</code> control which tools the model can see; <code>--allow-tool</code> and <code>--deny-tool</code> control approval behavior. Denial rules take precedence, and permission flags do not expose a tool that was filtered out</li>
+<li><strong>Keep repository discovery clean</strong>: maintain <code>.gitignore</code> and other applicable ignore rules for generated output, dependencies, and non-source artifacts so searches and context collection focus on authoritative files</li>
 <li><strong>Output concision</strong>: ask for the diff or the specific change rather than a fully restated file when a shorter response satisfies the task</li>
 <li><strong>Deterministic guardrails — tests, linters, security checks</strong>: unit tests, linters, and security scans give a clear pass/fail signal that catches drift early. Teams that invest here see fewer retries and more predictable results, which lowers total token consumption even though each individual check adds a small amount of tokens upfront</li>
 </ul>
@@ -326,7 +358,7 @@
 <ul>
 <li><strong>Start a new session when you switch to an unrelated problem.</strong> A long thread carries its entire history into every new request — an unrelated question doesn&#39;t need yesterday&#39;s debugging context</li>
 <li><strong>Start a new session between research, planning, and implementation phases.</strong> Research explores the codebase; planning produces a structured spec (often with a stronger reasoning model); implementation executes against that plan (often with a cheaper, execution-focused model). Carrying all three phases in one thread accumulates context none of the later phases need</li>
-<li><strong>For a long, still-relevant Copilot CLI thread, don&#39;t restart — manage it instead</strong>: use <code>/context</code> to inspect current usage at any time, and <code>/compact</code> to summarize history and shrink the context window (optionally with a focus, for example <code>/compact focus on the auth module</code>)</li>
+<li><strong>For a long, still-relevant Copilot CLI thread, don&#39;t restart — manage it instead</strong> with the session-control toolkit below</li>
 <li><strong>Cache awareness</strong>: within one active, on-topic session, reusing a stable session lets the model reuse cached context, and cached tokens are typically billed well below the fresh-input rate — but the exact discount can vary by model and is not a fixed ratio you should promise stakeholders. Confirm current rates on the official pricing page before quoting a number</li>
 <li><strong>What invalidates the cache</strong> (forces the full context to be re-sent and billed as fresh input):<ul>
 <li><strong>Switching models mid-session</strong> — a different model can&#39;t reuse another model&#39;s cache</li>
@@ -337,27 +369,74 @@
 <li><strong>Set an AI-credit session limit for agentic work</strong>: Copilot CLI and the Copilot SDK support soft session limits — when reached, the agent stops cleanly, tells you, and asks whether to continue or raise the limit. This is most useful for capping a single task&#39;s cost and for tuning the minimum credits that still produce a good result</li>
 <li>Session limits are <strong>soft, per-task controls that complement — not replace — monthly user-level budgets and spending limits</strong>, which are set by admins and cover total consumption (see Module 1)</li>
 </ul>
+<h3 id="copilot-cli-session-control-toolkit">Copilot CLI Session-Control Toolkit</h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Use It When</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/new</code> or <code>/clear</code></td>
+<td>The problem or work phase changed and the old history is no longer useful</td>
+</tr>
+<tr>
+<td><code>/resume</code></td>
+<td>You need to switch to a saved session that still matches the task</td>
+</tr>
+<tr>
+<td><code>/usage</code></td>
+<td>You want the current session&#39;s usage metrics and statistics</td>
+</tr>
+<tr>
+<td><code>/context</code></td>
+<td>You want to see what is consuming the context window and how much space remains</td>
+</tr>
+<tr>
+<td><code>/compact [focus]</code></td>
+<td>The thread is still relevant, but its history is large; optionally tell the summary what to preserve</td>
+</tr>
+<tr>
+<td><code>/cwd</code></td>
+<td>You need to inspect or change the session&#39;s working-directory root</td>
+</tr>
+<tr>
+<td><code>/add-dir</code></td>
+<td>The task genuinely needs file access outside the current working directory</td>
+</tr>
+</tbody></table>
+<h3 id="compaction-is-a-tradeoff-not-a-reflex">Compaction Is a Tradeoff, Not a Reflex</h3>
+<ul>
+<li>Copilot CLI automatically compacts near the context-window limit, and <code>/compact</code> lets you trigger it earlier</li>
+<li>Compaction sends the conversation for summarization, replaces the old history with a structured summary, and frees most of the context window</li>
+<li>Fine-grained details can be lost; review <code>/session checkpoints</code> if continuity or an earlier decision matters</li>
+<li>Compact a long, still-relevant thread before its next phase — do not compact after every turn or use it to preserve an unrelated conversation that should simply start fresh</li>
+</ul>
 <blockquote>
-<p><strong>Important — two things this section does not claim</strong>: (1) it does not promise one universal cached-token discount ratio across all models — verify current pricing before quoting a figure, and (2) it does not say you should never start a new session. Restart when the problem or phase genuinely changes; stay in one session when the task is still active and on-topic.</p>
+<p><strong>Important — three things this section does not claim</strong>: (1) it does not promise one universal cached-token discount ratio across all models, (2) it does not say you should never start a new session, and (3) it does not treat compaction as free or lossless. Restart when the problem or phase changes; compact when the task remains relevant and the smaller summary is worth the summarization step and possible loss of detail.</p>
 </blockquote>
 <details>
 <summary><h3 id="-hands-on-session-design-exercise--session-limit-worksheet-12-min">🧪 Hands-On: Session Design Exercise & Session Limit Worksheet (12 min)</h3></summary>
 
 <p><strong>Roles</strong>: Work individually, then discuss as a table.</p>
-<p><strong>Part A — Session Design</strong>: For each scenario, decide whether to continue the current session, start a new one, or run <code>/compact</code> first:</p>
+<p><strong>Part A — Session Design</strong>: For each scenario, decide whether to continue the current session, start a new one, run <code>/compact</code>, or use another command from the toolkit:</p>
 <ol>
 <li>You just finished debugging an auth issue and now want to ask an unrelated question about a CSS layout bug</li>
 <li>Your Copilot CLI thread has been open for two hours on the same refactor and is starting to feel sluggish</li>
 <li>You finished research and a plan for a feature and are about to start implementation</li>
 <li>You return to yesterday&#39;s Chat session to ask one more follow-up question on the same topic</li>
+<li>You want to confirm whether tool definitions or message history are consuming most of a long CLI session</li>
+<li>A task in the current repository needs one sibling directory, but not access to the rest of the parent directory</li>
 </ol>
 <p><strong>Part B — Session Limit Worksheet</strong>: Using the LAB guide worksheet, define a soft AI-credit session limit for a Copilot CLI task you run regularly (or a hypothetical one), and state what you&#39;ll do if the agent stops at the limit.</p>
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
 <li>✅ You correctly chose &quot;new session&quot; for Scenario 1 (unrelated problem)</li>
-<li>✅ You correctly chose &quot;<code>/compact</code>, then continue&quot; for Scenario 2 (long but still-relevant thread)</li>
+<li>✅ You correctly chose &quot;<code>/context</code>, then <code>/compact</code> if warranted&quot; for Scenario 2 (long but still-relevant thread)</li>
 <li>✅ You correctly chose &quot;new session&quot; for Scenario 3 (phase change: plan → implement)</li>
 <li>✅ You correctly reasoned about Scenario 4, considering the cache-expiration guidance above</li>
+<li>✅ You chose <code>/context</code> for Scenario 5 and <code>/add-dir</code> for Scenario 6</li>
 <li>✅ Your session limit worksheet names a specific credit amount and a concrete next step if the limit is hit</li>
 </ul>
 </details>
@@ -482,6 +561,7 @@
 <li>Smallest authoritative context and clear task/context/stop conditions beat &quot;shorter prompts&quot; as a rule of thumb</li>
 <li>Concise, grounded instructions and scoped tool sets keep every request lean</li>
 <li>Session boundaries and cache awareness matter — new session for a new problem or phase, <code>/context</code>/<code>/compact</code> for a long relevant CLI thread, and awareness of what invalidates the cache</li>
+<li>Use <code>/usage</code>, <code>/resume</code>, <code>/cwd</code>, and <code>/add-dir</code> intentionally; keep file and tool scope no broader than the task requires</li>
 <li>Auto model selection is the default; manual choice (lightweight or powerful) is the justified exception</li>
 <li>Judge cost per completed, verified task — never per turn — and don&#39;t fall for false-economy myths</li>
 </ul>
@@ -518,6 +598,10 @@
 <tr>
 <td>Managing context in GitHub Copilot CLI</td>
 <td><a href="https://docs.github.com/en/copilot/concepts/agents/copilot-cli/context-management">https://docs.github.com/en/copilot/concepts/agents/copilot-cli/context-management</a></td>
+</tr>
+<tr>
+<td>GitHub Copilot CLI command reference</td>
+<td><a href="https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference">https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference</a></td>
 </tr>
 <tr>
 <td>Setting an AI credit session limit in Copilot CLI</td>
@@ -559,7 +643,7 @@
 <ul>
 <li><input disabled="" type="checkbox"> Re-verify the Auto model selection discount rate against the live <a href="https://docs.github.com/en/copilot/concepts/models/auto-model-selection">About Copilot auto model selection</a> page</li>
 <li><input disabled="" type="checkbox"> Re-verify cache-expiration windows and cached-token pricing against the live <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing</a> page before stating any specific figure</li>
-<li><input disabled="" type="checkbox"> Confirm Copilot CLI is installed and available for the <code>/context</code> / <code>/compact</code> demo, or have a recorded/screenshot fallback ready</li>
+<li><input disabled="" type="checkbox"> Confirm Copilot CLI is installed and that <code>/usage</code>, <code>/context</code>, <code>/compact</code>, <code>/cwd</code>, and <code>/add-dir</code> match the current command reference; have a recorded/screenshot fallback ready</li>
 <li><input disabled="" type="checkbox"> Bring a real (or de-identified sample) <code>copilot-instructions.md</code> excerpt for the instruction-trimming exercise</li>
 <li><input disabled="" type="checkbox"> Print or share the LAB guide worksheets (before/after prompt, session limit worksheet, 30-day habit plan) for attendees without laptops</li>
 <li><input disabled="" type="checkbox"> Confirm this module is running standalone or as part of the full curriculum, and mention Module 1/Module 3 accordingly during the welcome</li>
