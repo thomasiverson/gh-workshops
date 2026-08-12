@@ -1,0 +1,1816 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot AI Credits Optimization — Optional Module 4: Agent Fleet Efficiency and Cost Governance Workshop</title><link rel="stylesheet" href="/gh-workshops/_astro/index.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization--optional-module-4-agent-fleet-efficiency-and-cost-governance-workshop">GitHub Copilot AI Credits Optimization — Optional Module 4: Agent Fleet Efficiency and Cost Governance Workshop</h1>
+<p><strong>Duration</strong>: 170 minutes (including one 10-minute break); the optional runnable lab appendix adds 45 minutes and is delivered separately<br><strong>Format</strong>: Optional advanced module — presentation + design exercises + optional runnable appendix<br><strong>Audience</strong>: Platform and DevEx engineers, automation and SRE-adjacent engineers, Copilot program owners who operate unattended Copilot automation<br><strong>Focus</strong>: Programmatic GitHub Copilot CLI and SDK automation — fixed session cost, lane profiles, isolation, pre-spend gates, layered budgets, failure handling, durable landing, and safe rollout of cost changes</p>
+<blockquote>
+<p><strong>Note</strong>: This is <strong>Optional Module 4</strong> of the <strong>GitHub Copilot AI Credits Optimization</strong> curriculum. It is <strong>not</strong> part of the advertised 7-hour-10-minute core (Modules 1–3) and is <strong>not required</strong> for any core learning path. Deliver it only for teams that already run — or are about to run — Copilot programmatically in scripts, schedulers, workers, or CI/CD.</p>
+</blockquote>
+<blockquote>
+<p><strong>Important</strong>: Every product behavior, flag, default, and feature status in this module was verified against GitHub documentation on <strong>2026-08-12</strong>, and the command surfaces were cross-checked against <strong>Copilot CLI v1.0.79</strong> help output on the same date. Copilot CLI and SDK surfaces change quickly, and several controls used here are <strong>public preview</strong> or <strong>experimental</strong>. Re-verify every flag in the Appendix control reference — and re-run <code>copilot help</code>, <code>copilot help environment</code>, and <code>copilot help limits</code> for your installed version — before each delivery.</p>
+</blockquote>
+<hr>
+<h2 id="workshop-overview">Workshop Overview</h2>
+<p>Modules 1–3 optimize what a <strong>person</strong> does with Copilot and what an <strong>organization</strong> measures. This optional module addresses a different failure mode: <strong>unattended automation that spends AI credits while nobody is watching</strong>.</p>
+<p>A fleet is any set of programmatic Copilot invocations — a nightly batch, a queue worker, a scheduled audit, a CI step, or an SDK service. In a fleet, every configuration decision is multiplied by invocation volume, and every unbounded input, silent retry, duplicated worker, or discarded result becomes a recurring cost line instead of a one-time annoyance.</p>
+<p>This module treats fleet cost as an engineering problem with four levers:</p>
+<table>
+<thead>
+<tr>
+<th>Lever</th>
+<th>Question it answers</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Fixed cost per invocation</strong></td>
+<td>What does every call pay for before it does any useful work?</td>
+</tr>
+<tr>
+<td><strong>Variable cost per invocation</strong></td>
+<td>How much work, fan-out, and retry does the task actually require?</td>
+</tr>
+<tr>
+<td><strong>Avoided calls</strong></td>
+<td>Which paid calls should never happen at all?</td>
+</tr>
+<tr>
+<td><strong>Realized value</strong></td>
+<td>Did the paid work land, get consumed, and get accepted?</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: This module does not reteach Modules 1–3. It assumes their vocabulary — AI credits, token categories, cached input, budgets, user-level budgets, durable accepted outcomes, and full cost per durable accepted outcome — and extends it to unattended work.</p>
+</blockquote>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<p>By the end of this module, participants will be able to:</p>
+<ol>
+<li><strong>Measure</strong> the fixed and variable cost of a programmatic Copilot lane, and design a repeatable baseline experiment instead of estimating from intuition.</li>
+<li><strong>Build</strong> a least-context, least-tool, least-permission lane profile using documented Copilot CLI controls, with feature status recorded for every preview or experimental control used.</li>
+<li><strong>Design</strong> safe pre-spend gates and a complete cache key that cannot serve a stale or wrong verdict.</li>
+<li><strong>Design</strong> layered budget, fan-out, retry, backoff, and circuit-breaker controls that fail closed without generating retry storms.</li>
+<li><strong>Verify</strong> that paid output lands durably, is consumed downstream, and is attributed to a durable accepted outcome.</li>
+<li><strong>Produce</strong> a canary-ready fleet optimization plan with an explicit quality-parity gate and rollback trigger.</li>
+</ol>
+<p>Each objective is exercised in the paired lab: Objective 1 → Lab 1, Objective 2 → Lab 2 and Lab 3, Objective 3 → Lab 4, Objective 4 → Lab 5, Objectives 5 and 6 → Lab 6.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Curriculum prerequisite</strong></td>
+<td>Module 2 (Developer Efficiency) and Module 3 (Measurement and Optimization at Scale), or equivalent working knowledge of AI credits, cached input, budgets, and cost per durable accepted outcome</td>
+</tr>
+<tr>
+<td><strong>Role prerequisite</strong></td>
+<td>You own, build, or operate programmatic Copilot invocations (Copilot CLI in scripts/CI, or a Copilot SDK service)</td>
+</tr>
+<tr>
+<td><strong>Engineering prerequisite</strong></td>
+<td>Comfort with shell scripting, queues or schedulers, exit codes, and caching concepts</td>
+</tr>
+<tr>
+<td><strong>Copilot license</strong></td>
+<td>Business or Enterprise for the discussion content; <strong>no license and no paid call is required to complete any core exercise</strong></td>
+</tr>
+<tr>
+<td><strong>Optional appendix only</strong></td>
+<td>A personal or non-production sandbox repository, a Copilot license you are authorized to spend from, and Copilot CLI installed</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: <strong>No core section of this module requires making a paid AI request.</strong> All six core exercises are design and review activities completed with the supplied worksheets and answer keys. The runnable appendix in the lab guide is <strong>optional, bounded, and clearly labeled</strong>, and it must never be run against a production repository, production identity, or customer data.</p>
+</blockquote>
+<blockquote>
+<p><strong>Important</strong>: Tool-permission flags discussed in this module are a <strong>security boundary</strong>, not only a cost control. Treat every change to them as a security-relevant change, reviewed accordingly.</p>
+</blockquote>
+<h3 id="related-modules">Related Modules</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Workshop</th>
+<th>Relationship to this module</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Module 1</td>
+<td><a href="../../github-copilot-token-admin/workshop/">Administration and Budget Guardrails</a></td>
+<td>Supplies the organization-level budget layer this module operates inside</td>
+</tr>
+<tr>
+<td>Module 2</td>
+<td><a href="../../github-copilot-token-developer/workshop/">Developer Efficiency</a></td>
+<td>Supplies the per-session habits this module automates and enforces in a harness</td>
+</tr>
+<tr>
+<td>Module 3</td>
+<td><a href="../../github-copilot-token-finops/workshop/">Measurement and Optimization at Scale</a></td>
+<td>Supplies the outcome definition and cost-per-durable-accepted-outcome metric this module reports against</td>
+</tr>
+<tr>
+<td>Curriculum overview</td>
+<td><a href="../../github-copilot-token/">GitHub Copilot AI Credits Optimization</a></td>
+<td>Role-based learning paths and duration treatment</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="session-agenda">Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>—</td>
+<td><a href="#welcome-prerequisites-and-the-fleet-cost-model-10-min">Welcome, Prerequisites, and the Fleet Cost Model</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>1</td>
+<td><a href="#1-measure-the-fixed-session-tax-20-min">Measure the Fixed Session Tax</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#2-lane-profiles-for-model-context-tools-mcp-and-permissions-30-min">Lane Profiles for Model, Context, Tools, MCP, and Permissions</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#3-isolation-worktrees-and-concurrent-ownership-20-min">Isolation, Worktrees, and Concurrent Ownership</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>☕</td>
+<td>Break</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#4-pre-spend-gates-cache-correctness-and-prompt-budgets-30-min">Pre-Spend Gates, Cache Correctness, and Prompt Budgets</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="#5-runtime-governance-for-budgets-fan-out-retries-and-breakers-30-min">Runtime Governance for Budgets, Fan-Out, Retries, and Breakers</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="#6-durable-landing-telemetry-canary-rollout-and-capstone-20-min">Durable Landing, Telemetry, Canary Rollout, and Capstone</a></td>
+<td>20 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total: 170 min (2h 50min), including the 10-minute break</strong></p>
+<p><strong>Optional runnable lab appendix: +45 min</strong> — delivered as a separate hands-on block, not included in the 170 minutes.</p>
+<hr>
+<h2 id="welcome-prerequisites-and-the-fleet-cost-model-10-min">Welcome, Prerequisites, and the Fleet Cost Model (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>A fleet is any set of unattended, programmatic Copilot invocations.</strong> The defining property is not scale — it is that <strong>no human reviews the cost of each call before it happens</strong>.</li>
+<li>Interactive users self-correct: they notice a bad answer, stop, and rephrase. A scheduler does not. <strong>Every configuration mistake in a fleet is charged once per invocation, forever, until someone measures it.</strong></li>
+<li>The unit of analysis for the whole module is the <strong>lane</strong>: a named class of work with one invocation profile. &quot;Nightly dependency audit&quot; is a lane. &quot;Fix failing test in service X&quot; is a lane. A fleet is a set of lanes.</li>
+<li>Cost optimization <strong>chooses among options that already clear the quality bar</strong>. It never lowers the bar. If a cheaper profile produces work humans must redo, it is more expensive — Module 3&#39;s full cost per durable accepted outcome is the arbiter.</li>
+<li>The largest savings in practice come from two places, and neither is &quot;shorter prompts&quot;:<ol>
+<li><strong>Not paying for things the agent never uses</strong> — inherited instructions, tool schemas, MCP servers, and injected context that no task in the lane can act on.</li>
+<li><strong>Not paying twice</strong> — duplicate workers, unnecessary retries, cache misses on identical inputs, and paid results that are thrown away.</li>
+</ol>
+</li>
+</ul>
+<h3 id="the-fleet-cost-identity">The Fleet Cost Identity</h3>
+<p>Use this as the mental model for every later section:</p>
+<pre><code>Fleet cost per window
+  = Σ over lanes of [ invocations
+                      × (session tax + task work + fan-out + retries)
+                      × (1 − avoided-call rate) ]
+  + human correction cost
+
+Value per window
+  = durable accepted outcomes × value per outcome
+
+Decision metric (Module 3)
+  = full cost per durable accepted outcome
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Where it is controlled</th>
+<th>Covered in</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Session tax</strong></td>
+<td>Instructions, tools, MCP servers, memory, injected context</td>
+<td>Sections 1–3</td>
+</tr>
+<tr>
+<td><strong>Task work</strong></td>
+<td>Model, reasoning effort, context tier, prompt budget</td>
+<td>Sections 2 and 4</td>
+</tr>
+<tr>
+<td><strong>Fan-out</strong></td>
+<td>Subagents, votes, parallel workers</td>
+<td>Section 5</td>
+</tr>
+<tr>
+<td><strong>Retries</strong></td>
+<td>Outcome taxonomy, backoff, breakers</td>
+<td>Section 5</td>
+</tr>
+<tr>
+<td><strong>Avoided calls</strong></td>
+<td>Pre-spend gates and caches</td>
+<td>Section 4</td>
+</tr>
+<tr>
+<td><strong>Human correction</strong></td>
+<td>Quality parity, verification, landing</td>
+<td>Sections 4–6</td>
+</tr>
+</tbody></table>
+<h3 id="lane-lifecycle">Lane Lifecycle</h3>
+<p>Every section of this module maps to one stage of this lifecycle:</p>
+<pre><code>                    ┌──────────────────── Governance envelope (§5) ────────────────────┐
+                    │                                                                  │
+  ┌──────────┐   ┌──┴───────────────┐   ┌──────────────────┐   ┌──────────────┐   ┌────┴──────────┐
+  │  Queue   │──►│ Pre-spend gates  │──►│ Lane profile     │──►│  Paid call   │──►│ Verify + land │
+  │ (work    │   │ (§4)             │   │ (§2) in isolation│   │ (bounded by  │   │ (§6)          │
+  │  items)  │   │ probe · dedupe   │   │ (§3)             │   │  credit cap) │   │ atomic · ack  │
+  └──────────┘   │ cache · ledger   │   └──────────────────┘   └──────────────┘   └────┬──────────┘
+                 └──────────────────┘             ▲                                    │
+                          │                       │                                    ▼
+                          │ skip (free)           └────── measured session tax (§1) ── Telemetry
+                          ▼                                                            ledger (§6)
+                    Recorded outcome
+</code></pre>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which of your automated Copilot invocations could run today without a human noticing the cost for a full week?</li>
+<li>If your fleet doubled tomorrow, which cost line would grow fastest — session tax, retries, or duplicated work?</li>
+<li>Who currently approves a change to an automated lane&#39;s model, tools, or permissions, and is that the same reviewer who approves production code?</li>
+</ul>
+<hr>
+<h2 id="1-measure-the-fixed-session-tax-20-min">1. Measure the Fixed Session Tax (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>The <strong>session tax</strong> is the fixed cost every invocation pays <em>before</em> the task-specific work begins: system prompt, custom instructions, tool definitions, MCP tool schemas, and anything else injected at session start.</li>
+<li><strong>One-shot runs cannot amortize conversation context across turns.</strong> An interactive user spreads the session tax over many turns in one session; a one-shot worker pays the full session-start cost for a single turn of work. Whether any provider-side cache reuse survives <em>between</em> separate runs is <strong>not something GitHub documents</strong> — do not assume either a cold start or a warm one; measure your own lane.</li>
+<li>Copilot CLI exposes the composition of a session&#39;s context window through the <code>/context</code> command, which reports token usage and context-window percentage for <strong>System Prompt</strong>, <strong>Custom Instructions</strong>, <strong>System Tools</strong>, <strong>MCP Tools</strong>, <strong>Messages</strong>, <strong>Free Space</strong>, and <strong>Buffer</strong> (<a href="https://docs.github.com/en/copilot/concepts/agents/copilot-cli/context-management">Managing context in GitHub Copilot CLI</a>). Those categories are your session-tax line items.</li>
+<li><code>copilot plugins list</code> non-interactively inventories <strong>every plugin, MCP server, skill, instruction source, and language server discovered for the current working directory</strong>, grouped by kind and configuration scope, with <code>--kind</code>, <code>--scope</code>, and <code>--json</code> filters. It is an inventory command, not a model call. Custom agents and session-scoped hooks are <strong>not</strong> covered by it and require a live session (<a href="https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference">GitHub Copilot CLI command reference</a>).</li>
+<li><strong>GitHub does not publish a per-instruction-file, per-tool, or per-MCP-server token overhead.</strong> Any specific number is environment-specific. Measure yours; never quote someone else&#39;s.</li>
+</ul>
+<h3 id="session-tax-contributors-and-their-instruments">Session-Tax Contributors and Their Instruments</h3>
+<table>
+<thead>
+<tr>
+<th>Contributor</th>
+<th>How it enters the session</th>
+<th>How to inspect it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>System prompt and built-in tool definitions</strong></td>
+<td>Always present</td>
+<td><code>/context</code> — System Prompt, System Tools rows</td>
+</tr>
+<tr>
+<td><strong>Custom instructions</strong> (<code>AGENTS.md</code>, <code>.github/copilot-instructions.md</code>, and related)</td>
+<td>Discovered from the working directory and configured directories</td>
+<td><code>/context</code> — Custom Instructions row; <code>copilot plugins list --kind instruction</code></td>
+</tr>
+<tr>
+<td><strong>MCP server tool schemas</strong></td>
+<td>Every enabled server contributes its tool definitions</td>
+<td><code>/context</code> — MCP Tools row; <code>copilot plugins list --kind mcp</code></td>
+</tr>
+<tr>
+<td><strong>Skills and plugins</strong></td>
+<td>Discovered per working directory and scope</td>
+<td><code>copilot plugins list --kind skill --kind plugin</code></td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td>Disabled by default in prompt mode; enabled with <code>--enable-memory</code></td>
+<td>Lane profile review; transcript inspection via <code>--share</code></td>
+</tr>
+<tr>
+<td><strong>Conversation and tool output</strong></td>
+<td>Accumulates during the run</td>
+<td><code>/context</code> — Messages row; <code>/usage</code> for per-model token totals</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: Prompt mode (<code>-p</code>) is deliberately conservative by default: memory is <strong>off</strong> unless <code>--enable-memory</code> is passed, and tools do not run automatically without an explicit permission grant (<code>--allow-all-tools</code>, also settable through <code>COPILOT_ALLOW_ALL</code>). Additional prompt-mode trust toggles have existed under version-specific environment variables; <strong>CLI v1.0.79 does not list any of them in <code>copilot help environment</code></strong>, so do not teach them as stable controls. Confirm what your harness sets, and re-read <code>copilot help environment</code> for your installed version before assuming a clean baseline.</p>
+</blockquote>
+<h3 id="designing-a-baseline-experiment">Designing a Baseline Experiment</h3>
+<p>A defensible baseline changes <strong>one factor at a time</strong> and reports a distribution, not a single run.</p>
+<table>
+<thead>
+<tr>
+<th>Design element</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Probe prompt</strong></td>
+<td>Trivial, deterministic, and identical across arms (for example, &quot;Reply with the single word OK.&quot;)</td>
+</tr>
+<tr>
+<td><strong>Pinned configuration</strong></td>
+<td>Same model, same reasoning effort, same context tier, same working directory</td>
+</tr>
+<tr>
+<td><strong>Repetitions</strong></td>
+<td>Enough runs per arm to see spread; report median and range, never one run</td>
+</tr>
+<tr>
+<td><strong>Recorded fields</strong></td>
+<td>AI credits, input/cached-input/output tokens, latency, outcome, exit status</td>
+</tr>
+<tr>
+<td><strong>Isolation</strong></td>
+<td>No unrelated work in the same session; fresh session per arm</td>
+</tr>
+<tr>
+<td><strong>Single variable</strong></td>
+<td>Change exactly one profile element per arm (for example, MCP servers enabled vs. disabled)</td>
+</tr>
+<tr>
+<td><strong>Quality control arm</strong></td>
+<td>Repeat the comparison with a <strong>representative real task</strong>, not only the trivial probe, before adopting a reduced profile</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: A trivial probe measures the <strong>session tax</strong>. It does not tell you whether a reduced profile still solves real tasks. Never adopt a cheaper profile on probe evidence alone — Section 6&#39;s canary gate exists for exactly this reason.</p>
+</blockquote>
+<h3 id="what-is-measurable-today-and-what-must-be-verified">What Is Measurable Today, and What Must Be Verified</h3>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Status on 2026-08-12</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Can I see the context breakdown of a session?</td>
+<td><strong>Yes</strong> — <code>/context</code> in an interactive session</td>
+</tr>
+<tr>
+<td>Can I inventory discovered instructions, MCP servers, skills, plugins, and LSP servers without a model call?</td>
+<td><strong>Yes</strong> — <code>copilot plugins list [--kind] [--scope] [--json]</code></td>
+</tr>
+<tr>
+<td>Can I see per-model token totals for a session?</td>
+<td><strong>Yes</strong> — <code>/usage</code></td>
+</tr>
+<tr>
+<td>Can I capture a full transcript of a programmatic run?</td>
+<td><strong>Yes</strong> — <code>--share=PATH</code> writes the session transcript to Markdown after a programmatic run; treat transcripts as potentially sensitive</td>
+</tr>
+<tr>
+<td>Can I get machine-readable run output?</td>
+<td><strong>Yes</strong> — <code>--output-format=json</code> emits JSONL, one JSON object per line</td>
+</tr>
+<tr>
+<td>Does that JSONL include a per-call AI-credit cost field?</td>
+<td><strong>Verify in your version.</strong> The published CLI reference documents the JSONL output format, not a guaranteed per-call cost field. Do not design a billing ledger around an unverified field</td>
+</tr>
+<tr>
+<td>Can an SDK application read per-call usage?</td>
+<td><strong>Yes, with caveats</strong> — the Copilot SDK emits an <code>assistant.usage</code> event per model API call with <code>model</code>, <code>inputTokens</code>, <code>outputTokens</code>, and <code>cost</code> (documented as the premium request multiplier applied to that call). Accumulated totals come from <code>session.usage.getMetrics</code>, which is marked <strong>experimental</strong> (<a href="https://docs.github.com/en/copilot/how-tos/copilot-sdk/features/usage-and-billing">Usage and billing metrics</a>)</td>
+</tr>
+</tbody></table>
+<h3 id="exercise-connection">Exercise Connection</h3>
+<p><strong>Lab 1 — Session-Tax Inventory and Baseline Design (10 min)</strong>: participants inventory the contributors in a supplied lane description, mark each as required/optional/unknown, and write a one-factor-at-a-time baseline experiment. No paid calls.</p>
+<blockquote>
+<p><strong>Facilitation — no live demo required</strong>: this section teaches instruments, not a demonstration. If you choose to show <code>copilot plugins list</code> live and it fails (no CLI, no network, unexpected output), stop after one attempt and switch to the <strong>illustrative sample output in the lab&#39;s Backup Path section</strong>. Do not troubleshoot the CLI in front of the room — the teaching point is <em>what the categories mean</em>, and the sample carries it.</p>
+</blockquote>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Do you currently know what fraction of a typical automated invocation is session tax versus task work? If not, what would it cost you to find out?</li>
+<li>Which instruction files, MCP servers, or skills in your automation exist for humans rather than for the agent?</li>
+<li>What would convince your team that a reduced profile is safe — a token delta, a credit delta, or a quality comparison on real tasks?</li>
+</ul>
+<hr>
+<h2 id="2-lane-profiles-for-model-context-tools-mcp-and-permissions-30-min">2. Lane Profiles for Model, Context, Tools, MCP, and Permissions (30 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>A <strong>lane profile</strong> is the explicit, version-controlled configuration for one class of programmatic work. Nothing in a fleet should inherit &quot;whatever the CLI defaults to&quot; — defaults change, and an inherited default is an unreviewed decision.</li>
+<li>Copilot CLI separates <strong>tool visibility</strong> from <strong>tool permission</strong>, and the distinction matters for both cost and security (<a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/allowing-tools">Allowing and denying tool use in GitHub Copilot CLI</a>):<ul>
+<li><code>--available-tools</code> and <code>--excluded-tools</code> control which tools the <strong>model is aware of and can choose from</strong>. A tool that is not visible cannot be used at all, even if it is also allowed. These options take tool names <strong>as your installed CLI and agent configuration name them</strong>; GitHub&#39;s reference does not publish a stable enumeration, so discover the names in your own environment before pinning them in a profile.</li>
+<li><code>--allow-tool</code> and <code>--deny-tool</code> control <strong>permission</strong> — whether a tool runs without prompting. <strong>Deny rules always take precedence over allow rules</strong>, even when <code>--allow-all</code> is set or an approval was previously saved. The CLI&#39;s own documented examples use identifiers such as <code>write</code>, <code>shell</code>, <code>shell(git:*)</code>, <code>shell(git push)</code>, and <code>SERVER(tool)</code>.</li>
+<li>If <code>--available-tools</code> and <code>--excluded-tools</code> are used together, the CLI applies the allowlist and ignores the denylist.</li>
+<li><strong>Visibility is a token and scope-creep control; permission is the security boundary.</strong> Enforce a read-only lane with denials first, then narrow visibility once you have verified the tool names your version uses.</li>
+</ul>
+</li>
+<li>Command-line <code>--allow-tool</code> and <code>--deny-tool</code> apply only to the current session and are not written to the persisted <code>permissions-config.json</code>. Saved approvals from interactive use can otherwise leak into automation running as the same identity — an audit item for every fleet.</li>
+<li>Model selection is a routing decision, not a habit. GitHub&#39;s guidance is to match capability to work: reasoning models for architecture and complex debugging, mid-tier models when the plan is already clear, lighter models for routine well-scoped changes; auto model selection is recommended as the default and carries a documented <strong>10% discount on model costs for paid plans</strong>, and it changes models only at cache boundaries (<a href="https://docs.github.com/en/copilot/tutorials/optimize-ai-usage">Optimizing your AI usage</a>).</li>
+<li>Escalate model capability <strong>on a measured signal recorded in code</strong> (for example, &quot;escalate only when the deterministic check still fails after the first attempt&quot;), never by default and never by operator habit.</li>
+<li>Configuration churn is expensive: changing reasoning effort, context size, or the set of enabled tools and MCP servers <strong>during</strong> a session invalidates the cache. Fleet lanes should decide everything before the session starts and change nothing during it.</li>
+</ul>
+<h3 id="model-routing-and-measured-escalation">Model Routing and Measured Escalation</h3>
+<p>Route before you tune. In a fleet, the model decision is made once per lane and applied thousands of times, so it deserves a written rule rather than a preference.</p>
+<table>
+<thead>
+<tr>
+<th>Lane work shape</th>
+<th>Routing choice</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Architecture, multi-file reasoning, hard debugging</td>
+<td>Reasoning-capable model, higher effort</td>
+<td>The failure mode is a wrong plan, and rework costs more than the call</td>
+</tr>
+<tr>
+<td>Plan already specified in the work item</td>
+<td>Mid-tier model, low or medium effort</td>
+<td>The hard thinking is already done; the lane executes it</td>
+</tr>
+<tr>
+<td>Routine, well-scoped, mechanical change</td>
+<td>Lighter model, low effort</td>
+<td>Capability beyond the task is paid-for and unused</td>
+</tr>
+<tr>
+<td>Mixed or unpredictable task shapes in one lane</td>
+<td><code>auto</code></td>
+<td>Documented <strong>10% discount on model costs for paid plans</strong>, and model changes happen only at cache boundaries</td>
+</tr>
+</tbody></table>
+<p>An escalation rule is only a cost control when it is <strong>measured and recorded in code</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Requirement</th>
+<th>Anti-pattern it prevents</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Trigger</strong></td>
+<td>A deterministic signal — the named check still fails after attempt 1</td>
+<td>&quot;The operator felt the answer was weak&quot;</td>
+</tr>
+<tr>
+<td><strong>Ceiling</strong></td>
+<td>One escalation step per fingerprint, then stop</td>
+<td>Silent laddering to the most expensive model</td>
+</tr>
+<tr>
+<td><strong>Record</strong></td>
+<td>Attempt number, model used, and outcome written to the ledger</td>
+<td>An escalation nobody can audit or price</td>
+</tr>
+<tr>
+<td><strong>Review</strong></td>
+<td>Escalation rate is a reported metric per lane</td>
+<td>Escalation becoming the default path without a decision</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: A lane whose escalation rate climbs over time is telling you the cheap arm no longer clears the quality bar. That is a routing decision to remake with data, not a rule to loosen quietly.</p>
+</blockquote>
+<h3 id="lane-profile-fields">Lane Profile Fields</h3>
+<p>Every lane profile in your fleet should be a reviewed file with these fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Copilot control</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Purpose and stop condition</strong></td>
+<td>Prompt text</td>
+<td>One task shape per lane; explicit definition of done</td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td><code>--model</code> (or <code>COPILOT_MODEL</code>, or <code>model</code> in settings)</td>
+<td>Pin explicitly per lane; <code>auto</code> is a deliberate choice, not a fallback</td>
+</tr>
+<tr>
+<td><strong>Reasoning effort</strong></td>
+<td><code>--effort</code> / <code>--reasoning-effort</code> (<code>none</code>, <code>minimal</code>, <code>low</code>, <code>medium</code>, <code>high</code>, <code>xhigh</code>, <code>max</code>)</td>
+<td>Choices as listed by CLI v1.0.79 help; configurable reasoning is available for <strong>supported models only</strong>; <code>max</code> is documented as the highest-depth tier for Anthropic models</td>
+</tr>
+<tr>
+<td><strong>Context window tier</strong></td>
+<td><code>--context TIER</code> (<code>default</code>, <code>long_context</code>)</td>
+<td>For tiered-pricing models; treat <code>long_context</code> as a justified exception</td>
+</tr>
+<tr>
+<td><strong>Tool visibility</strong></td>
+<td><code>--available-tools</code>, <code>--excluded-tools</code></td>
+<td>Smallest set the lane can succeed with; use the tool names your installed version reports, not a copied list</td>
+</tr>
+<tr>
+<td><strong>Tool permission</strong></td>
+<td><code>--allow-tool</code>, <code>--deny-tool</code></td>
+<td>Deny wins; scope shell and write tools by pattern</td>
+</tr>
+<tr>
+<td><strong>Path and URL scope</strong></td>
+<td><code>-C</code>, <code>--add-dir</code>, <code>--allow-url</code>, <code>--deny-url</code>, <code>--disallow-temp-dir</code></td>
+<td>Least privilege, not convenience</td>
+</tr>
+<tr>
+<td><strong>MCP servers</strong></td>
+<td><code>--disable-builtin-mcps</code>, <code>--disable-mcp-server=NAME</code>, <code>--additional-mcp-config</code></td>
+<td>Built-in disable currently covers <code>github-mcp-server</code></td>
+</tr>
+<tr>
+<td><strong>GitHub MCP tool scope</strong></td>
+<td><code>--add-github-mcp-toolset</code>, <code>--add-github-mcp-tool</code>, <code>--enable-all-github-mcp-tools</code></td>
+<td>The CLI enables a default subset; enabling everything is a cost and risk decision</td>
+</tr>
+<tr>
+<td><strong>Custom instructions</strong></td>
+<td><code>--no-custom-instructions</code>, <code>COPILOT_CUSTOM_INSTRUCTIONS_DIRS</code></td>
+<td>Disable only when measured as unnecessary for the lane</td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td><code>--enable-memory</code></td>
+<td>Disabled by default in prompt mode — leave it off unless the lane needs it</td>
+</tr>
+<tr>
+<td><strong>Credit cap</strong></td>
+<td><code>--max-ai-credits</code></td>
+<td>Soft limit; <strong>public preview</strong>; CLI v1.0.79 rejects values below <strong>30</strong></td>
+</tr>
+<tr>
+<td><strong>Output contract</strong></td>
+<td><code>--output-format=json</code>, <code>--share</code>, <code>--secret-env-vars</code>, <code>-s</code></td>
+<td>Machine-readable output plus redaction of named secret variables; <code>-s</code> prints the agent response only and <strong>suppresses stats</strong>, so keep it off measurement runs</td>
+</tr>
+<tr>
+<td><strong>Interaction contract</strong></td>
+<td><code>--no-ask-user</code></td>
+<td>Prevents an unattended run from stalling on a clarifying question</td>
+</tr>
+<tr>
+<td><strong>Isolation</strong></td>
+<td><code>-C</code>, <code>COPILOT_HOME</code>, <code>--worktree</code>, <code>--sandbox</code></td>
+<td>Worktree and sandbox flags are <strong>experimental</strong> (Section 3)</td>
+</tr>
+<tr>
+<td><strong>Fan-out caps</strong></td>
+<td>Harness scheduler limits</td>
+<td>Cap concurrent subagent-style work and depth <strong>in your harness</strong>; CLI v1.0.79 help lists no supported environment variable for this (claim ledger)</td>
+</tr>
+<tr>
+<td><strong>Wait timeout</strong></td>
+<td>Harness watchdog</td>
+<td>Bound how long the harness waits on a run and kill it deterministically; do not rely on an undocumented CLI timeout variable</td>
+</tr>
+</tbody></table>
+<h3 id="three-reference-lanes">Three Reference Lanes</h3>
+<p>Use these as the starting shapes in the lab. The values are <strong>design defaults to argue about</strong>, not recommendations to copy blindly.</p>
+<table>
+<thead>
+<tr>
+<th>Profile element</th>
+<th>Read-only audit lane</th>
+<th>Bounded code-fix lane</th>
+<th>Structured synthesis lane</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Task shape</strong></td>
+<td>Inspect and report; no changes</td>
+<td>Small, specified fix with a deterministic check</td>
+<td>Text-to-structured-output transformation</td>
+</tr>
+<tr>
+<td><strong>Model class</strong></td>
+<td>Lighter model</td>
+<td>Mid-tier, escalate on signal</td>
+<td>Mid-tier</td>
+</tr>
+<tr>
+<td><strong>Reasoning effort</strong></td>
+<td>Low</td>
+<td>Low to medium; raise only on escalation</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Tool visibility</strong></td>
+<td>Read/search tools only (names verified in your version)</td>
+<td>Read, search, edit, and the specific shell commands needed</td>
+<td>Minimal or none</td>
+</tr>
+<tr>
+<td><strong>Tool permission</strong></td>
+<td>Deny <code>write</code>; deny shell mutation</td>
+<td>Allow scoped shell and write; deny <code>shell(git push)</code></td>
+<td>Deny <code>write</code>, deny <code>shell</code></td>
+</tr>
+<tr>
+<td><strong>MCP servers</strong></td>
+<td>None unless the audit needs one</td>
+<td>Only servers the fix path uses</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>Custom instructions</strong></td>
+<td>Repository standards only if the report depends on them</td>
+<td>Yes — the fix must follow repository conventions</td>
+<td>Usually none</td>
+</tr>
+<tr>
+<td><strong>Credit cap</strong></td>
+<td>Low</td>
+<td>Moderate</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Isolation</strong></td>
+<td>Working directory scope</td>
+<td>Isolated worktree or clone</td>
+<td>Working directory scope</td>
+</tr>
+<tr>
+<td><strong>Primary risk if under-configured</strong></td>
+<td>Silent scope creep into writes</td>
+<td>Unverified or unmergeable changes</td>
+<td>Oversized inputs</td>
+</tr>
+</tbody></table>
+<h3 id="read-only-means-enforced-not-requested">Read-Only Means Enforced, Not Requested</h3>
+<p>A read-only rule written in prompt text is a <strong>request</strong>. A read-only rule enforced by the harness is a <strong>guarantee</strong>. Enforce it with <strong>permission</strong> first, because deny rules use identifiers the CLI itself documents and deny always wins:</p>
+<pre><code class="language-bash"># Read-only audit lane: mutation denied, no clarifying questions,
+# machine-readable output, bounded credits, transcript captured for review.
+copilot -p &quot;$PROMPT&quot; \
+  --no-ask-user \
+  --model &quot;$LANE_MODEL&quot; --effort low \
+  --deny-tool &#39;write&#39; --deny-tool &#39;shell&#39; \
+  --disable-builtin-mcps \
+  --max-ai-credits &quot;$LANE_CREDIT_CAP&quot; \
+  --output-format=json \
+  --share &quot;$RUN_DIR/transcript.md&quot;
+</code></pre>
+<p>Narrowing <strong>visibility</strong> is the second, token-saving step, and it is version-specific:</p>
+<pre><code class="language-bash"># Add visibility restriction only after verifying the tool names your
+# installed CLI uses — substitute the names you observed, do not copy a list.
+  --available-tools &#39;&lt;TOOL-NAME&gt;,&lt;TOOL-NAME&gt;&#39;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Flag</th>
+<th>What it buys you</th>
+<th>What it does not do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Permission</strong></td>
+<td><code>--deny-tool &#39;write&#39;</code>, <code>--deny-tool &#39;shell&#39;</code></td>
+<td>Enforcement — a denied tool cannot run, and deny beats allow, <code>--allow-all</code>, and saved approvals</td>
+<td>It does not remove the tool&#39;s schema from the session, so the token cost may remain</td>
+</tr>
+<tr>
+<td><strong>Visibility</strong></td>
+<td><code>--available-tools</code>, <code>--excluded-tools</code></td>
+<td>Fewer tool schemas in the session, and less scope creep</td>
+<td>It is <strong>not</strong> a substitute for denial; a wrong or unrecognized tool name may simply not restrict anything</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: Verify option spellings <strong>and values</strong> for your installed CLI version with <code>copilot help</code> before shipping a profile. An <strong>unknown option is rejected</strong>: CLI v1.0.79 exits non-zero with <code>error: unknown option &#39;--deny-toool&#39;</code> and makes no model call, so a misspelled flag fails loudly. The real fail-open risk is a <strong>valid flag carrying a wrong or unverified value</strong> — a tool name, pattern, or MCP server name that matches nothing still parses, and the lane runs without the restriction you believed you applied. Verify restrictions by observing behavior, not by reading your own command line.</p>
+</blockquote>
+<h3 id="disabling-context-is-a-trade-not-a-win">Disabling Context Is a Trade, Not a Win</h3>
+<table>
+<thead>
+<tr>
+<th>Reduction</th>
+<th>What you might gain</th>
+<th>What you might lose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--no-custom-instructions</code></td>
+<td>Fixed tokens per call</td>
+<td>Repository conventions, safety rules, build/test commands the agent needs to be correct</td>
+</tr>
+<tr>
+<td><code>--disable-builtin-mcps</code> / <code>--disable-mcp-server</code></td>
+<td>Tool-schema tokens per call</td>
+<td>Capabilities the lane silently needs; the failure often looks like a bad answer, not an error</td>
+</tr>
+<tr>
+<td>Narrower <code>--available-tools</code></td>
+<td>Tool-schema tokens and scope creep</td>
+<td>Legitimate task paths, causing retries that cost more than the tokens saved</td>
+</tr>
+<tr>
+<td>Lighter model or lower effort</td>
+<td>Per-token and per-call cost</td>
+<td>First-pass quality, which shows up as human correction cost, not credit cost</td>
+</tr>
+</tbody></table>
+<p>The only honest way to decide is to compare <strong>cost per durable accepted outcome</strong> on representative tasks, with a quality-parity gate. That is Section 6.</p>
+<h3 id="exercise-connection">Exercise Connection</h3>
+<p><strong>Lab 2 — Design Three Lane Profiles (15 min)</strong>: teams complete the lane-profile worksheet for the three reference lanes, then justify each reduction with the evidence they would need before adopting it. No paid calls.</p>
+<blockquote>
+<p><strong>Facilitation — compression cue (30-minute section)</strong>: if you enter this section more than five minutes behind, present the lane profile field tables as a read-out instead of a walkthrough and reduce <strong>Model Routing and Measured Escalation</strong> to the <code>auto</code> discount sentence plus the escalation trigger. Protect <strong>Visibility vs. Permission</strong>, <strong>Read-Only Means Enforced</strong>, and the full 15 minutes of Lab 2 — the worksheet is the artifact participants keep.</p>
+</blockquote>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which of your automated invocations currently run with broader tool permissions than the task requires, and what would break if you narrowed them tomorrow?</li>
+<li>Where would an escalation rule (&quot;try cheap, escalate on failure&quot;) beat always using a capable model — and where would it cost more?</li>
+<li>Who reviews lane profile changes today? Should a permission change require the same review as a production deployment?</li>
+</ul>
+<hr>
+<h2 id="3-isolation-worktrees-and-concurrent-ownership-20-min">3. Isolation, Worktrees, and Concurrent Ownership (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>The working directory is a configuration input.</strong> Copilot CLI discovers instruction sources, MCP servers, skills, and language servers relative to the current working directory and configuration scope. Moving a worker changes what it inherits — in both directions.</li>
+<li>A worker started inside a directory tree that carries large human-oriented instruction files inherits them on every invocation. A worker moved out of that tree may <strong>silently lose</strong> the MCP servers or instructions it actually needed. Both are configuration bugs; both are found the same way — run <code>copilot plugins list</code> <strong>from the exact working directory the harness uses</strong>, not from your shell&#39;s default directory.</li>
+<li>Resolve configuration paths relative to the harness&#39;s own location rather than hardcoding absolute paths, and commit configuration files in the same change as the code that references them. A clone or worktree copy must keep working without edits.</li>
+<li>Copilot CLI provides documented isolation controls with distinct maturity levels:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What it does</th>
+<th>Status on 2026-08-12</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-C DIRECTORY</code></td>
+<td>Change working directory before doing anything else</td>
+<td>Documented CLI option</td>
+</tr>
+<tr>
+<td><code>--add-dir=PATH</code></td>
+<td>Add a directory to the allowed-paths list</td>
+<td>Documented CLI option</td>
+</tr>
+<tr>
+<td><code>--disallow-temp-dir</code></td>
+<td>Prevent automatic access to the system temporary directory</td>
+<td>Documented CLI option</td>
+</tr>
+<tr>
+<td><code>COPILOT_HOME</code></td>
+<td>Override the configuration and state directory (default <code>$HOME/.copilot</code>)</td>
+<td>Documented environment variable</td>
+</tr>
+<tr>
+<td><code>-w</code> / <code>--worktree[=NAME]</code></td>
+<td>Create or reuse an isolated Git worktree under <code>&lt;repo&gt;.worktrees/</code> and start the session inside it; conflicts with <code>--resume</code>, <code>--continue</code>, <code>--connect</code></td>
+<td><strong>Experimental</strong> — only available in experimental mode; not listed in CLI v1.0.79 top-level help</td>
+</tr>
+<tr>
+<td><code>--sandbox</code> / <code>--no-sandbox</code></td>
+<td>Enable or disable the OS-level shell sandbox for this session only</td>
+<td><strong>Experimental</strong> — only available in experimental mode (<code>copilot help sandbox</code>)</td>
+</tr>
+<tr>
+<td><code>--secret-env-vars=VAR ...</code></td>
+<td>Redact named environment variable values in output (<code>GITHUB_TOKEN</code> and <code>COPILOT_GITHUB_TOKEN</code> are redacted by default)</td>
+<td>Documented CLI option</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: <code>--worktree</code> and <code>--sandbox</code> are documented as experimental. Do not build a fleet whose safety depends on an experimental flag without a non-experimental fallback and an explicit re-verification date. Sensible fallbacks are <strong>generic engineering practice, not Copilot features</strong>: a per-worker clone plus filesystem permissions in place of <code>--worktree</code>, and running the worker inside your existing container or VM isolation in place of <code>--sandbox</code>. Neither is a documented Copilot control, and neither inherits Copilot&#39;s tool-permission model — you still need <code>--deny-tool</code> rules.</p>
+</blockquote>
+<blockquote>
+<p><strong>Important — worktree conflicts</strong>: worktrees are shared Git state, not private sandboxes. Two workers that reuse the same worktree name collide; a worktree left behind by a killed run keeps its lock and its branch checkout, so the next run either reuses dirty state or fails to create the worktree; and <code>--worktree</code> conflicts with <code>--resume</code>, <code>--continue</code>, and <code>--connect</code>. Every lane that creates worktrees needs a unique name per run, a cleanup step, and a stray-worktree recovery procedure (<code>git worktree list</code>, <code>git worktree remove</code>, <code>git worktree prune</code>).</p>
+</blockquote>
+<ul>
+<li><strong>Per-lane configuration isolation</strong> — giving each lane its own <code>COPILOT_HOME</code> so that saved permissions, settings, and state do not leak between lanes or from interactive use — is a <strong>harness pattern built on a documented environment variable</strong>, not a documented fleet feature. Teach it as a pattern, verify it in your environment, and record the verification.</li>
+<li>Session transcripts and gists can carry sensitive content. <code>--share-gist</code> publishes to GitHub.com and is <strong>not available to Enterprise Managed Users or GitHub Enterprise Cloud with data residency (<code>*.ghe.com</code>)</strong>. Prefer <code>--share=PATH</code> into a controlled location with a retention rule.</li>
+</ul>
+<h3 id="concurrent-ownership">Concurrent Ownership</h3>
+<p>Two watchers whose scopes overlap will race to fix the same target, and you will pay twice for one outcome — sometimes with conflicting results.</p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Purpose</th>
+<th>Minimum implementation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Work fingerprint</strong></td>
+<td>Identify the <em>problem</em>, not the queue message</td>
+<td>Stable hash of target identifier plus error signature</td>
+</tr>
+<tr>
+<td><strong>Idempotency key</strong></td>
+<td>Make a retried dispatch harmless</td>
+<td>Fingerprint plus attempt-independent key stored with the result</td>
+</tr>
+<tr>
+<td><strong>Single-owner lease</strong></td>
+<td>Prevent two workers spending on one target</td>
+<td>Time-bounded claim with owner ID and expiry; renew or lose it</td>
+</tr>
+<tr>
+<td><strong>Disjoint scope</strong></td>
+<td>Prevent overlap by construction</td>
+<td>Exactly one owner per target set; overlap is a configuration error, not a runtime race to resolve</td>
+</tr>
+<tr>
+<td><strong>Attempt ledger</strong></td>
+<td>Stop infinite spend on an unfixable target</td>
+<td>Per-fingerprint attempt counter with a hard cap and a parked state</td>
+</tr>
+<tr>
+<td><strong>Workspace isolation</strong></td>
+<td>Prevent workers corrupting each other&#39;s files</td>
+<td>One worktree or clone per worker, with a unique name and guaranteed cleanup</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: Isolation without cleanup becomes its own problem. Every worktree, clone, temporary directory, and transcript needs an owner and a deletion rule — decided when the lane is designed, not after disk fills. Include stray-worktree recovery in the runbook: list them (<code>git worktree list</code>), remove the abandoned one (<code>git worktree remove &lt;path&gt;</code>, adding <code>--force</code> only for a worker you know is dead), then <code>git worktree prune</code>.</p>
+</blockquote>
+<h3 id="exercise-connection">Exercise Connection</h3>
+<p><strong>Lab 3 — Two-Watcher Fleet Review (10 min)</strong>: participants review a supplied two-watcher fleet description, identify the overlap and inheritance defects, and specify the fingerprint, lease, and cleanup rules that fix them. No paid calls.</p>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Could two of your automations act on the same target today? How would you find out — and would the duplicate spend be visible in your reporting?</li>
+<li>What in your automation would break first if a worker ran from a different directory than expected?</li>
+<li>Which experimental controls would you be comfortable depending on, and what fallback would you require before doing so?</li>
+</ul>
+<hr>
+<h2 id="-break-10-min">☕ Break (10 min)</h2>
+<p>Use the break to note which lane in your own environment is the best canary candidate for Section 6.</p>
+<hr>
+<h2 id="4-pre-spend-gates-cache-correctness-and-prompt-budgets-30-min">4. Pre-Spend Gates, Cache Correctness, and Prompt Budgets (30 min)</h2>
+<blockquote>
+<p><strong>Facilitation — post-break reset (60 seconds, inside this section&#39;s 30 minutes; the agenda is unchanged)</strong>: before the first slide, invite the room to stand if they are able, roll the shoulders twice, look at something roughly 20 feet away for 20 seconds, and sit back down. State that participation is optional. Then give the section&#39;s one-sentence promise — &quot;the cheapest call is the one you never make&quot; — and start. The section budget is roughly 1 minute reset, 14 minutes of content, and 15 minutes for Lab 4.</p>
+</blockquote>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>The cheapest call is the one you never make.</strong> Every paid invocation should sit behind a ladder of deterministic checks that can answer &quot;this work is unnecessary&quot; for free.</li>
+<li>A gate that is only <em>usually</em> right is worse than no gate: a wrong &quot;already done&quot; verdict silently drops real work. Gates must be conservative — when uncertain, spend.</li>
+<li><strong>Cache correctness is a data-integrity problem, not an optimization.</strong> A cache key that omits an input that can change the answer will confidently serve a wrong verdict, and the failure is invisible in cost reporting because it looks like a saving.</li>
+<li>Bound every prompt field that can grow. Unbounded diffs, log tails, accumulated notes, and generated file contents are the most common cause of oversized, expensive, low-quality calls.</li>
+<li>Copilot CLI already bounds one growth source for you: <strong>tool output larger than 20 KiB is saved to a temporary file by default, and the model receives the file path and a preview instead of the full output</strong> (<a href="https://docs.github.com/en/copilot/concepts/agents/copilot-cli/context-management">Managing context in GitHub Copilot CLI</a>). The documentation names an environment variable for that threshold, but <strong>CLI v1.0.79 does not list it in <code>copilot help environment</code></strong> — treat the variable as version-sensitive (claim ledger) and bound large inputs in <strong>your harness</strong>, where the cap is yours to test.</li>
+</ul>
+<h3 id="the-pre-spend-gate-ladder">The Pre-Spend Gate Ladder</h3>
+<p>Evaluate in this order; stop at the first gate that resolves the item.</p>
+<table>
+<thead>
+<tr>
+<th align="right">Order</th>
+<th>Gate</th>
+<th>Question</th>
+<th>Outcome when it fires</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td><strong>Configuration validation</strong></td>
+<td>Is this lane&#39;s profile valid and complete?</td>
+<td><code>invalid_config</code> — fail fast, alert, do not spend</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td><strong>Ownership lease</strong></td>
+<td>Does another worker already own this target?</td>
+<td><code>already_owned</code> — release without spending</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td><strong>Skip-if-done</strong></td>
+<td>Does the required artifact already exist?</td>
+<td><code>already_done</code> — record and stop (with an explicit force override implemented in <strong>your harness</strong>, for example <code>--force</code>)</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td><strong>Baseline probe</strong></td>
+<td>Is the problem already resolved? Run the test, linter, or scan first</td>
+<td><code>already_green</code> — record success for free</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td><strong>Attempt ledger</strong></td>
+<td>Have we already failed on this fingerprint N times?</td>
+<td><code>parked</code> — stop retrying, escalate to a human</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td><strong>Result cache</strong></td>
+<td>Have we produced a verdict for exactly these inputs?</td>
+<td><code>cache_hit</code> — reuse with provenance</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td><strong>Budget check</strong></td>
+<td>Does the lane and fleet envelope allow this spend <strong>before</strong> the call?</td>
+<td><code>budget_refused</code> — park the worker, keep the item queued, <strong>no credits spent</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: Gate 7 is a <strong>pre-spend</strong> decision and produces <code>budget_refused</code>. A cap that is reached <strong>during</strong> a run — most commonly the per-run <code>--max-ai-credits</code> soft limit — is a different outcome, <code>run_cap_exhausted</code>, because credits were already spent. Section 5 separates the two.</p>
+</blockquote>
+<blockquote>
+<p><strong>Important</strong>: Gates 3 and 4 are the highest-value gates in most fleets and the easiest to get wrong. &quot;The file exists&quot; is not the same as &quot;the correct current artifact exists,&quot; and &quot;the test passed&quot; is not the same as &quot;the test ran.&quot;</p>
+</blockquote>
+<h3 id="complete-cache-keys">Complete Cache Keys</h3>
+<p>A result cache is safe only when the key covers <strong>everything that could change the verdict</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Key component</th>
+<th>Why it must be included</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Fully rendered prompt</strong></td>
+<td>Template, rubric, and instruction text changes must invalidate old verdicts — hashing raw inputs alone silently pins results from an old rubric</td>
+</tr>
+<tr>
+<td><strong>Model identifier</strong></td>
+<td>A different model can produce a different verdict</td>
+</tr>
+<tr>
+<td><strong>Reasoning effort</strong></td>
+<td>Effort changes answer depth and quality</td>
+</tr>
+<tr>
+<td><strong>Context tier</strong></td>
+<td><code>default</code> vs <code>long_context</code> changes both behavior and price</td>
+</tr>
+<tr>
+<td><strong>Tool visibility and permission set</strong></td>
+<td>A verdict produced without write access is not the same as one produced with it</td>
+</tr>
+<tr>
+<td><strong>MCP server configuration</strong></td>
+<td>Available capabilities change the achievable answer</td>
+</tr>
+<tr>
+<td><strong>Instruction and rubric version</strong></td>
+<td>Version the content, not just the file path</td>
+</tr>
+<tr>
+<td><strong>Relevant repository state</strong></td>
+<td>Commit SHA or content hash of the inputs actually read</td>
+</tr>
+<tr>
+<td><strong>Harness and CLI version</strong></td>
+<td>Behavior changes across versions; pin and record both</td>
+</tr>
+</tbody></table>
+<p>Cache hygiene rules that belong in the same design:</p>
+<ul>
+<li><strong>Missing key component in an old entry = cache miss.</strong> Never guess.</li>
+<li><strong>Record provenance</strong> with every stored result: key components, timestamp, run ID, and whether it was later accepted.</li>
+<li><strong>Decide the negative-result policy explicitly.</strong> Caching failures can be correct (deterministic refusal) or dangerous (transient outage). Default to not caching transient failures.</li>
+<li><strong>Provide a documented bypass implemented in your harness</strong> (for example, a <code>--no-cache</code> flag on your own runner — not a Copilot CLI option) and log every bypass so a permanent bypass cannot hide.</li>
+<li><strong>Set a TTL</strong> based on how quickly the underlying inputs go stale, and invalidate on profile change.</li>
+</ul>
+<h3 id="prompt-budgets-and-bounded-fields">Prompt Budgets and Bounded Fields</h3>
+<table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>Implementation</th>
+<th>Failure it prevents</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Reference, don&#39;t inline</strong></td>
+<td>Point to a path and let the agent read on demand when the lane grants read access</td>
+<td>Paying to send a file the task never needed</td>
+</tr>
+<tr>
+<td><strong>Cap every growing field</strong></td>
+<td>Hard truncation with a visible <code>...[truncated]</code> marker</td>
+<td>Silent, invisible input growth</td>
+</tr>
+<tr>
+<td><strong>Trim to budget in priority order</strong></td>
+<td>Drop least-important sections first, deterministically</td>
+<td>Random loss of the most important content</td>
+</tr>
+<tr>
+<td><strong>Refuse rather than overflow</strong></td>
+<td>Emit a distinct <code>context_too_large</code> outcome before calling</td>
+<td>Paying to assemble and send a request that is rejected</td>
+</tr>
+<tr>
+<td><strong>Keep stable text stable</strong></td>
+<td>Put invariant instruction blocks in a fixed position and change them rarely</td>
+<td>Unnecessary cache invalidation</td>
+</tr>
+<tr>
+<td><strong>Bound tool output</strong></td>
+<td>Keep the documented 20 KiB default behavior; enforce your own input caps in the harness</td>
+<td>One command&#39;s output consuming the context window</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: Whether a specific prompt layout improves provider-side cache reuse is <strong>not something GitHub documents at the byte level</strong>. What <em>is</em> documented is that mid-session changes to model, reasoning, context size, or the enabled tool/MCP set invalidate the cache, and that cached input tokens are typically billed at a fraction of fresh input. Optimize for stability of configuration first; treat prompt-layout cache theories as hypotheses to measure.</p>
+</blockquote>
+<h3 id="exercise-connection">Exercise Connection</h3>
+<p><strong>Lab 4 — Unsafe Cache-Key Review (15 min)</strong>: teams review an intentionally unsafe cache design, list the omissions, and describe the specific wrong result each omission can produce. No paid calls.</p>
+<blockquote>
+<p><strong>Facilitation — compression cue (30-minute section)</strong>: if you are behind, deliver <strong>Complete Cache Keys</strong> as the two split slides without commentary, reduce <strong>Cache Hygiene</strong> to its three bold rules (miss on unknown, never cache transient failures, log every bypass), and cut the prompt-budget table to the two rows the room reacted to. Never shorten Lab 4 — it is the highest-value exercise in the module.</p>
+</blockquote>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which paid call in your current automation could be replaced by a deterministic check tomorrow?</li>
+<li>If your rubric or prompt template changed today, would any cached verdict in your system still be served? How would you know?</li>
+<li>What is your policy for caching failures — and does it distinguish a deterministic refusal from a service outage?</li>
+</ul>
+<hr>
+<h2 id="5-runtime-governance-for-budgets-fan-out-retries-and-breakers-30-min">5. Runtime Governance for Budgets, Fan-Out, Retries, and Breakers (30 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Autonomous lanes need governance because a single bad day can erase a quarter of savings. Governance is layered: <strong>organization budgets bound the blast radius, the harness bounds the fleet, and per-run caps bound one invocation</strong>.</li>
+<li>A lane that bypasses the harness budget module is <strong>invisible spend</strong>. Every paid call goes through one <code>check()</code> before and one <code>record()</code> after — no exceptions, including ad-hoc scripts.</li>
+<li><strong>Record honestly.</strong> If one logical task fans out into three model calls, record three. Undercounting hides exactly the lanes you most need to see.</li>
+<li><strong>Copilot&#39;s own per-run cap is a soft limit and is in public preview.</strong> <code>--max-ai-credits</code> sets a soft maximum for AI credits; if a response is in progress when the limit is reached, that response completes, so actual usage may slightly exceed the configured number. In non-interactive mode, the run ends when the limit is reached. GitHub documents session limits as <strong>currently in public preview and subject to change</strong>, and notes they work best when set above 30 AI credits because most model calls cost more than 20 (<a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/set-session-limit">Setting an AI credit session limit in GitHub Copilot CLI</a>). CLI v1.0.79 also enforces a <strong>floor of 30</strong>: <code>--max-ai-credits 10</code> is rejected with <code>Use at least 30 AI credits</code>. Pick a value above 30 — this module uses <strong>40</strong> — and treat a cap that stops a run as a signal to decompose the task, not a number to raise.</li>
+<li>Session limits <strong>do not replace</strong> user-level budgets or spending limits, which govern overall monthly consumption (<a href="https://docs.github.com/en/copilot/tutorials/optimize-ai-usage">Optimizing your AI usage</a>). Module 1 owns that layer.</li>
+</ul>
+<h3 id="layered-budget-controls">Layered Budget Controls</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Control</th>
+<th>Owner</th>
+<th>Enforcement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Enterprise / organization / cost center</strong></td>
+<td>Spending budgets and user-level budgets</td>
+<td>Admin and FinOps (Modules 1 and 3)</td>
+<td>GitHub-enforced; a user-level budget always hard-stops</td>
+</tr>
+<tr>
+<td><strong>Fleet envelope</strong></td>
+<td>Credits per lane per window</td>
+<td>Platform team</td>
+<td>Harness-enforced <code>check()</code> before every paid call</td>
+</tr>
+<tr>
+<td><strong>Run</strong></td>
+<td><code>--max-ai-credits</code> (CLI) or <code>sessionLimits.maxAiCredits</code> (SDK)</td>
+<td>Lane profile</td>
+<td>Copilot-enforced <strong>soft</strong> limit, <strong>public preview</strong>; minimum 30 in CLI v1.0.79</td>
+</tr>
+<tr>
+<td><strong>Fan-out</strong></td>
+<td>Concurrency and depth caps for subagent-style work</td>
+<td>Lane profile</td>
+<td><strong>Harness-enforced</strong> — CLI v1.0.79 help lists no supported environment variable for this (claim ledger)</td>
+</tr>
+<tr>
+<td><strong>Worker concurrency</strong></td>
+<td>Parallel workers per lane</td>
+<td>Harness</td>
+<td>Scheduler-enforced</td>
+</tr>
+<tr>
+<td><strong>Retries</strong></td>
+<td>Attempts per fingerprint</td>
+<td>Harness</td>
+<td>Attempt ledger</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: The identity a fleet runs as consumes credits like any other user, and a user-level budget applied to that identity is a hard stop. Decide deliberately whether a hard stop on your automation identity is the outcome you want, and coordinate it with the Module 1 owner.</p>
+</blockquote>
+<h3 id="outcome-taxonomy">Outcome Taxonomy</h3>
+<p>The single most common dispatcher defect is treating every non-success as &quot;the model failed.&quot; The second is treating &quot;we declined to spend&quot; and &quot;we spent and ran out&quot; as the same event.</p>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Meaning</th>
+<th>Retry?</th>
+<th>Counts toward breaker?</th>
+<th>Queue behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>success</code></td>
+<td>Verified result landed</td>
+<td>No</td>
+<td>No</td>
+<td>Acknowledge and remove</td>
+</tr>
+<tr>
+<td><code>already_done</code> / <code>already_green</code></td>
+<td>Work was unnecessary</td>
+<td>No</td>
+<td><strong>No</strong></td>
+<td>Acknowledge with reason</td>
+</tr>
+<tr>
+<td><code>model_failure</code></td>
+<td>Model produced unusable or failing output</td>
+<td>Yes, bounded</td>
+<td><strong>Yes</strong></td>
+<td>Retain with attempt increment</td>
+</tr>
+<tr>
+<td><code>context_too_large</code></td>
+<td>Input exceeded the prompt budget</td>
+<td>No — fix the input first</td>
+<td><strong>No</strong></td>
+<td>Retain and flag for redesign</td>
+</tr>
+<tr>
+<td><code>policy_denied</code></td>
+<td>Permission, policy, or content control blocked the action</td>
+<td>No</td>
+<td><strong>No</strong></td>
+<td>Retain and alert an owner</td>
+</tr>
+<tr>
+<td><code>service_unavailable</code></td>
+<td>Transient service or network failure</td>
+<td>Yes, with backoff and jitter</td>
+<td><strong>No</strong></td>
+<td>Retain</td>
+</tr>
+<tr>
+<td><code>budget_refused</code></td>
+<td><strong>Pre-spend</strong>: a budget or envelope check refused the call before it was made; <strong>no credits were spent</strong></td>
+<td>Not immediately — park the worker</td>
+<td><strong>No</strong></td>
+<td>Retain; retry after the park window; do <strong>not</strong> increment the attempt counter</td>
+</tr>
+<tr>
+<td><code>run_cap_exhausted</code></td>
+<td><strong>Post-spend</strong>: the run started and hit a credit ceiling mid-flight (per-run <code>--max-ai-credits</code> soft cap or the harness envelope) and stopped before finishing; <strong>credits were spent</strong></td>
+<td>Not automatically</td>
+<td><strong>No</strong></td>
+<td>Retain; record the spend, <strong>increment the attempt counter</strong>, and require task decomposition or an explicit, reviewed cap change before the next attempt</td>
+</tr>
+<tr>
+<td><code>invalid_config</code></td>
+<td>Lane profile or harness misconfiguration</td>
+<td>No</td>
+<td><strong>No</strong></td>
+<td>Halt the lane and alert</td>
+</tr>
+<tr>
+<td><code>landing_failed</code></td>
+<td>The model produced output, but it did not land or was not consumed</td>
+<td>Yes, after the landing path is fixed</td>
+<td><strong>No</strong></td>
+<td>Retain — never acknowledge</td>
+</tr>
+</tbody></table>
+<p><strong>Why <code>budget_refused</code> and <code>run_cap_exhausted</code> must be different outcomes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th><code>budget_refused</code></th>
+<th><code>run_cap_exhausted</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Were credits spent?</td>
+<td>No</td>
+<td><strong>Yes</strong> — record them against the lane</td>
+</tr>
+<tr>
+<td>Attempt counter</td>
+<td>Unchanged — the work was never tried</td>
+<td><strong>Incremented</strong> — the fingerprint consumed budget without landing</td>
+</tr>
+<tr>
+<td>Correct next step</td>
+<td>Wait for the window to reset, then retry unchanged</td>
+<td>Decompose the task, or make an explicit reviewed decision to raise the cap; only then retry</td>
+</tr>
+<tr>
+<td>What automatic retry would cause</td>
+<td>A slower queue</td>
+<td><strong>Repeated partial spend on work that cannot finish inside the cap</strong></td>
+</tr>
+<tr>
+<td>Signal to the owner</td>
+<td>&quot;We are at our limit&quot;</td>
+<td>&quot;This task does not fit the lane&#39;s shape&quot;</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: An automatic retry after <code>run_cap_exhausted</code> is the most expensive mistake in this taxonomy: each attempt pays close to the full cap and lands nothing. Retry must be gated on a change — smaller work item, different lane, or a reviewed cap decision — never on time alone.</p>
+</blockquote>
+<h3 id="backoff-breakers-and-parking">Backoff, Breakers, and Parking</h3>
+<ul>
+<li><strong>Exponential backoff with jitter</strong> (for example, 10m → 20m → 40m, capped) recovers quickly when conditions change. A long fixed timeout is a throughput tax that outlives the incident that caused it.</li>
+<li><strong>Park on refusal, do not poll.</strong> When a pre-spend budget check refuses, park the whole worker for a fixed window and log <strong>one</strong> summary line. Per-item refusal checks at poll cadence generate thousands of log events per day and hide real signal.</li>
+<li><strong>Escalate, do not retry, on <code>run_cap_exhausted</code>.</strong> Record the spend, increment the attempt, and route the item to a human or a decomposition step. The item stays queued but blocked until someone changes the work or the cap.</li>
+<li><strong>Trip breakers on consecutive <code>model_failure</code> only.</strong> Counting routing, policy, budget, or &quot;already done&quot; outcomes punishes the model for the dispatcher&#39;s mistakes and takes down healthy lanes.</li>
+<li><strong>Half-open carefully.</strong> After the open window (a defensible default is 20 minutes), allow exactly one probe item; close on success, reopen for the next window on failure.</li>
+<li><strong>Dead-letter with context.</strong> An item that exhausts its attempts must land in a dead-letter queue with the last outcome, the profile hash, and the transcript pointer — never be deleted.</li>
+<li><strong>Refused work is delayed, not lost.</strong> The queue must still contain it after the park window.</li>
+</ul>
+<h3 id="where-runtime-cost-data-comes-from">Where Runtime Cost Data Comes From</h3>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Scope</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/usage</code> in a session</td>
+<td>Per-session usage metrics and per-model token totals</td>
+<td>Documented CLI command</td>
+</tr>
+<tr>
+<td><code>--output-format=json</code> (JSONL)</td>
+<td>Machine-readable programmatic output</td>
+<td>Documented; <strong>verify which usage fields your version emits</strong> before depending on them</td>
+</tr>
+<tr>
+<td><code>--share=PATH</code> transcript</td>
+<td>Full run transcript for audit</td>
+<td>Documented; may contain sensitive content</td>
+</tr>
+<tr>
+<td>SDK <code>assistant.usage</code> event</td>
+<td>Per model API call: <code>model</code>, <code>inputTokens</code>, <code>outputTokens</code>, <code>cost</code> (premium request multiplier)</td>
+<td>Documented SDK event</td>
+</tr>
+<tr>
+<td>SDK <code>session.usage.getMetrics</code></td>
+<td>Accumulated AI credit and token totals</td>
+<td>Documented as <strong>experimental</strong></td>
+</tr>
+<tr>
+<td>AI usage dashboard and CSV export</td>
+<td>Billing-grade totals by user, model, organization, and cost center</td>
+<td>Documented (Module 3)</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: GitHub&#39;s billing views attribute usage to identities, models, organizations, and cost centers — <strong>not to your lane names</strong>. Lane-level attribution is your harness&#39;s responsibility: record the lane, profile hash, and run ID in your own ledger and reconcile totals against the dashboard. Do not promise lane-level chargeback from GitHub reporting alone without verifying the dimensions available to you.</p>
+</blockquote>
+<h3 id="exercise-connection">Exercise Connection</h3>
+<p><strong>Lab 5 — Dispatcher Outcome Taxonomy (15 min)</strong>: teams map nine supplied run results — including a pre-spend budget refusal and a post-spend cap exhaustion — to outcomes, retry behavior, breaker counting, and queue action, then identify which mapping errors would cause a retry storm, silent work loss, or repeated partial spend. No paid calls.</p>
+<blockquote>
+<p><strong>Facilitation — compression cue (30-minute section)</strong>: if you are behind, teach the layered budget table and the first half of the outcome taxonomy live, hand the second half to the lab worksheet, and cut the backoff bullets to three (backoff with jitter, breakers on <code>model_failure</code> only, refused work is delayed not lost). Keep the <code>budget_refused</code> versus <code>run_cap_exhausted</code> contrast — it is the new decision this section exists to teach — and keep Lab 5 at 15 minutes.</p>
+</blockquote>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Does your automation today distinguish &quot;the model failed&quot; from &quot;the service was unavailable&quot; and &quot;the work was already done&quot;?</li>
+<li>What would your fleet do if a budget refused every call for two hours — and how many log lines would that generate?</li>
+<li>Which layer would catch a runaway lane first in your environment, and how long would it take?</li>
+</ul>
+<hr>
+<h2 id="6-durable-landing-telemetry-canary-rollout-and-capstone-20-min">6. Durable Landing, Telemetry, Canary Rollout, and Capstone (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>The most expensive token is one spent on a result that gets thrown away.</strong> A fleet is only as efficient as its landing path.</li>
+<li><strong>No silent success.</strong> A merge, write, or publish step that finds nothing to do must say so distinctly — a dedicated exit signal or a prominent warning — not exit successfully while the caller acknowledges and deletes the work item.</li>
+<li><strong>Exit codes are a contract.</strong> Adding a new failure signal changes the behavior of every caller. Trace all callers before changing one, because a signal that is correct for one lane can quarantine every item in another.</li>
+<li><strong>Never acknowledge on ambiguous success.</strong> Validate the output, write atomically (or verify the merge), record provenance, and only then acknowledge. If validation is inconclusive, retain the item.</li>
+<li><strong>Fixes do not count until deployed.</strong> Long-running workers load code at start; committing a change without restarting the service means the old code is still spending. Commit, deploy, restart, then confirm the new behavior in live logs.</li>
+<li><strong>Resolve shared paths through one helper.</strong> Two components with different ideas of &quot;the current round&quot; means paid work written where nobody reads it.</li>
+</ul>
+<h3 id="the-landing-contract">The Landing Contract</h3>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Requirement</th>
+<th>Evidence it worked</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. Validate</td>
+<td>Output matches the expected schema or check</td>
+<td>Validation result recorded</td>
+</tr>
+<tr>
+<td>2. Persist</td>
+<td>Atomic write or verified merge</td>
+<td>Artifact exists at the resolved path</td>
+</tr>
+<tr>
+<td>3. Attribute</td>
+<td>Provenance: lane, run ID, profile hash, model, cache status</td>
+<td>Ledger row</td>
+</tr>
+<tr>
+<td>4. Signal</td>
+<td>Distinct exit status for success, no-op, and failure</td>
+<td>Caller behavior verified for each</td>
+</tr>
+<tr>
+<td>5. Consume</td>
+<td>A downstream consumer actually reads it</td>
+<td>Consumer log or downstream artifact</td>
+</tr>
+<tr>
+<td>6. Acknowledge</td>
+<td>Remove the queue item only after 1–5</td>
+<td>Queue depth reflects real progress</td>
+</tr>
+<tr>
+<td>7. Deploy</td>
+<td>Restart the worker and verify in live logs</td>
+<td>Post-restart log line showing new behavior</td>
+</tr>
+</tbody></table>
+<h3 id="fleet-telemetry-what-every-run-records">Fleet Telemetry: What Every Run Records</h3>
+<table>
+<thead>
+<tr>
+<th>Field group</th>
+<th>Fields</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Identity</strong></td>
+<td>Lane, run ID, fingerprint, owner/lease ID, harness and CLI version</td>
+</tr>
+<tr>
+<td><strong>Configuration</strong></td>
+<td>Profile hash, model, effort, context tier, tool and MCP set, instruction version</td>
+</tr>
+<tr>
+<td><strong>Spend</strong></td>
+<td>AI credits, token counts by category, fan-out call count</td>
+</tr>
+<tr>
+<td><strong>Behavior</strong></td>
+<td>Outcome, retries, backoff events, breaker state, cache result, gate that fired</td>
+</tr>
+<tr>
+<td><strong>Value</strong></td>
+<td>Landed, consumed, human correction time, durable acceptance after the stabilization period</td>
+</tr>
+</tbody></table>
+<p>Those fields roll directly into the Module 3 metric: <strong>full cost per durable accepted outcome</strong>, per lane. Cost per invocation and tokens saved are diagnostics; they are not the decision metric.</p>
+<h3 id="canary-rollout-for-cost-changes">Canary Rollout for Cost Changes</h3>
+<p>Treat a cost-optimization change exactly like a production code change.</p>
+<pre><code>Baseline ──► Canary one lane ──► Quality-parity gate ──► Adversarial review ──► Expand ──► Monitor
+   │              │                      │                      │                 │         │
+   │              │                      │                      │                 │         └─ rollback trigger stays armed
+   │              │                      │                      │                 └─ one lane at a time
+   │              │                      │                      └─ integration seams, cache keys, flag spelling and values, exit-code blast radius
+   │              │                      └─ durable acceptance must not regress
+   │              └─ same task mix, same window, single variable
+   └─ measured, not remembered
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Pass condition</th>
+<th>If it fails</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Baseline captured</strong></td>
+<td>Median and range recorded for the canary lane before the change</td>
+<td>Do not proceed</td>
+</tr>
+<tr>
+<td><strong>Single variable</strong></td>
+<td>Exactly one profile element changed</td>
+<td>Split the change</td>
+</tr>
+<tr>
+<td><strong>Quality parity</strong></td>
+<td>Durable acceptance and human correction time do not regress beyond the agreed tolerance</td>
+<td>Roll back</td>
+</tr>
+<tr>
+<td><strong>Cost improvement</strong></td>
+<td>Full cost per durable accepted outcome improves</td>
+<td>Roll back or keep the old profile</td>
+</tr>
+<tr>
+<td><strong>Adversarial review</strong></td>
+<td>A reviewer explicitly hunts integration seams, cache-key completeness, flag spelling <strong>and flag values</strong>, and exit-code blast radius</td>
+<td>Fix and re-review</td>
+</tr>
+<tr>
+<td><strong>Deployed and verified</strong></td>
+<td>Live logs confirm the new behavior in the running worker</td>
+<td>Not done</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: Report savings as <strong>measured cost per durable accepted outcome</strong>, not as assumed token reductions. A profile that saves tokens and loses acceptance is a cost increase wearing a savings label.</p>
+</blockquote>
+<h3 id="exercise-connection">Exercise Connection</h3>
+<p><strong>Lab 6 — Capstone: Fleet Lane Optimization Checklist and Canary Scorecard (12 min)</strong>: teams complete the capstone templates for one anonymized real lane, naming the canary lane, the single variable, the quality-parity gate, the rollback trigger, and the owner. No paid calls.</p>
+<blockquote>
+<p><strong>Facilitation — pacing (20-minute section)</strong>: this section carries a 12-minute lab, so the live budget is about 8 minutes — roughly 2 minutes on the landing contract, 2 on telemetry, 3 on canary rollout, and 1 for the hand-off. Deliver the tables as pointers, not readings. The claim ledger and the &quot;Translating Playbooks&quot; table are <strong>reference material in the deck appendix</strong>; do not teach them live unless the room asks.</p>
+</blockquote>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Where in your pipeline could paid work land somewhere nobody reads, and how long would it take you to notice?</li>
+<li>Which lane is your best canary — highest volume, lowest blast radius, clearest acceptance signal?</li>
+<li>What is your rollback trigger, and who is allowed to pull it without a meeting?</li>
+</ul>
+<hr>
+<h2 id="recap">Recap</h2>
+<ul>
+<li>A fleet&#39;s cost is fixed session tax plus variable task work, multiplied by invocations and inflated by retries, fan-out, duplication, and discarded results.</li>
+<li>Measure the session tax before optimizing it: <code>/context</code>, <code>/usage</code>, <code>copilot plugins list</code>, and a one-factor-at-a-time baseline — never someone else&#39;s token numbers.</li>
+<li>A lane profile pins model, effort, context tier, tool visibility, tool permission, MCP set, instructions, memory, credit cap, isolation, and fan-out. Nothing inherits a default.</li>
+<li>Tool <strong>visibility</strong> and tool <strong>permission</strong> are different layers; deny always wins; permission changes are security changes.</li>
+<li>Isolation controls exist at several maturity levels — <code>-C</code>, <code>--add-dir</code>, and <code>COPILOT_HOME</code> are documented options; <code>--worktree</code> and <code>--sandbox</code> are experimental and need a fallback.</li>
+<li>Deterministic gates and complete cache keys avoid paid calls safely; an incomplete cache key is a correctness bug that looks like a saving.</li>
+<li>Governance is layered: organization budgets, fleet envelope, per-run soft credit cap (public preview, minimum 30 in CLI v1.0.79), harness fan-out caps, worker concurrency, and retry caps — with honest accounting at every level.</li>
+<li>A failure taxonomy prevents retry storms and breaker misfires; a <strong>pre-spend</strong> refusal parks the work, a <strong>post-spend</strong> <code>run_cap_exhausted</code> records the spend and blocks retry until the task or the cap changes; dead-lettered work keeps its context.</li>
+<li>Paid work counts only when it lands, is consumed, and is accepted — verified in live logs after deployment.</li>
+<li>Roll out cost changes like production changes: baseline, canary, quality parity, adversarial review, expand, and keep the rollback trigger armed.</li>
+</ul>
+<hr>
+<h2 id="appendix">Appendix</h2>
+<h3 id="package-artifacts">Package Artifacts</h3>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Canonical workshop guide (this document)</td>
+<td><code>github-copilot-token-platform-automation-workshop.md</code></td>
+</tr>
+<tr>
+<td>Hands-on lab, including the optional runnable appendix and printable template copies</td>
+<td><code>github-copilot-token-platform-automation-LAB.md</code></td>
+</tr>
+<tr>
+<td>Slidev deck</td>
+<td><code>github-copilot-token-platform-automation.slidev.md</code></td>
+</tr>
+<tr>
+<td>Lane profile worksheet (source)</td>
+<td><code>templates/lane-profile-worksheet.md</code></td>
+</tr>
+<tr>
+<td>Cache-key review worksheet (source)</td>
+<td><code>templates/cache-key-review-worksheet.md</code></td>
+</tr>
+<tr>
+<td>Failure taxonomy and breaker worksheet (source)</td>
+<td><code>templates/failure-taxonomy-worksheet.md</code></td>
+</tr>
+<tr>
+<td>Fleet lane optimization checklist and canary scorecard (source)</td>
+<td><code>templates/canary-scorecard.md</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: The four templates are also <strong>inlined as printable copies in Appendix B of the lab guide</strong>, because the published site renders the lab page but does not publish the <code>templates/</code> folder. Participants reading the published lab therefore need no repository access. The <code>templates/</code> files remain the editable sources — <strong>change both copies in the same edit</strong> and keep them identical in content.</p>
+</blockquote>
+<h3 id="key-urls">Key URLs</h3>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GitHub Copilot CLI command reference</td>
+<td><a href="https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference">https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference</a></td>
+</tr>
+<tr>
+<td>GitHub Copilot CLI programmatic reference</td>
+<td><a href="https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-programmatic-reference">https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-programmatic-reference</a></td>
+</tr>
+<tr>
+<td>Running GitHub Copilot CLI programmatically</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/automate-copilot-cli/run-cli-programmatically">https://docs.github.com/en/copilot/how-tos/copilot-cli/automate-copilot-cli/run-cli-programmatically</a></td>
+</tr>
+<tr>
+<td>Allowing and denying tool use in GitHub Copilot CLI</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/allowing-tools">https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/allowing-tools</a></td>
+</tr>
+<tr>
+<td>Setting an AI credit session limit in GitHub Copilot CLI</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/set-session-limit">https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/set-session-limit</a></td>
+</tr>
+<tr>
+<td>Managing context in GitHub Copilot CLI</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/agents/copilot-cli/context-management">https://docs.github.com/en/copilot/concepts/agents/copilot-cli/context-management</a></td>
+</tr>
+<tr>
+<td>Optimizing your AI usage to maximize efficiency and reduce cost</td>
+<td><a href="https://docs.github.com/en/copilot/tutorials/optimize-ai-usage">https://docs.github.com/en/copilot/tutorials/optimize-ai-usage</a></td>
+</tr>
+<tr>
+<td>Copilot SDK usage and billing metrics</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/copilot-sdk/features/usage-and-billing">https://docs.github.com/en/copilot/how-tos/copilot-sdk/features/usage-and-billing</a></td>
+</tr>
+<tr>
+<td>Copilot SDK session limits</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/copilot-sdk/features/session-limits">https://docs.github.com/en/copilot/how-tos/copilot-sdk/features/session-limits</a></td>
+</tr>
+<tr>
+<td>About cloud and local sandboxes for GitHub Copilot (<strong>coding-agent sandboxes — not the CLI <code>--sandbox</code> flag</strong>)</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/about-cloud-and-local-sandboxes">https://docs.github.com/en/copilot/concepts/about-cloud-and-local-sandboxes</a></td>
+</tr>
+<tr>
+<td>Models and pricing for GitHub Copilot</td>
+<td><a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing</a></td>
+</tr>
+<tr>
+<td>Monitoring your GitHub AI Credits usage</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/monitor-ai-usage">https://docs.github.com/en/copilot/how-tos/manage-and-track-spending/monitor-ai-usage</a></td>
+</tr>
+</tbody></table>
+<h3 id="copilot-cli-control-reference-documentation-verified-2026-08-12-help-output-cross-checked-against-cli-v1079">Copilot CLI Control Reference (documentation verified 2026-08-12; help output cross-checked against CLI v1.0.79)</h3>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>Control</th>
+<th>Documented behavior and status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Programmatic run</td>
+<td><code>-p</code> / <code>--prompt</code>, piped stdin</td>
+<td>Executes a prompt and exits; piped input is ignored if <code>-p</code> is also supplied</td>
+</tr>
+<tr>
+<td>Version check</td>
+<td><code>copilot --version</code></td>
+<td>Prints the installed version; proves installation only, <strong>not</strong> authentication</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td><code>copilot login</code> (<code>--device-code</code>, <code>--web-flow</code>, <code>--host</code>), or <code>COPILOT_GITHUB_TOKEN</code> / <code>GH_TOKEN</code> / <code>GITHUB_TOKEN</code> in that precedence</td>
+<td>v1.0.79 exposes no non-interactive &quot;auth status&quot; subcommand; the first real run is the authoritative check</td>
+</tr>
+<tr>
+<td>Clean output</td>
+<td><code>-s</code> / <code>--silent</code></td>
+<td>Outputs only the agent response and <strong>suppresses stats</strong> — do not use it on measurement runs</td>
+</tr>
+<tr>
+<td>No stalling</td>
+<td><code>--no-ask-user</code></td>
+<td>Prevents the agent from pausing for clarification</td>
+</tr>
+<tr>
+<td>Model</td>
+<td><code>--model</code>, <code>COPILOT_MODEL</code>, settings <code>model</code></td>
+<td>Precedence: custom agent → <code>--model</code> → <code>COPILOT_MODEL</code> → settings → CLI default; <code>auto</code> selects automatically and carries a documented 10% model-cost discount on paid plans</td>
+</tr>
+<tr>
+<td>Reasoning effort</td>
+<td><code>--effort</code> / <code>--reasoning-effort</code></td>
+<td>v1.0.79 choices: <code>none</code>, <code>minimal</code>, <code>low</code>, <code>medium</code>, <code>high</code>, <code>xhigh</code>, <code>max</code>; available for supported models only; <code>max</code> documented as the highest-depth tier for Anthropic models</td>
+</tr>
+<tr>
+<td>Context tier</td>
+<td><code>--context TIER</code></td>
+<td><code>default</code> or <code>long_context</code> for tiered-pricing models; documented as overriding the persisted setting and honored in fresh interactive sessions — <strong>verify behavior for <code>-p</code> runs in your version</strong></td>
+</tr>
+<tr>
+<td>Tool visibility</td>
+<td><code>--available-tools</code>, <code>--excluded-tools</code></td>
+<td>Allowlist wins if both are supplied; invisible tools cannot be used even if allowed; <strong>tool-name values are version- and configuration-specific and are not enumerated in the published reference</strong></td>
+</tr>
+<tr>
+<td>Tool permission</td>
+<td><code>--allow-tool</code>, <code>--deny-tool</code>, <code>--allow-all-tools</code>, <code>--allow-all</code> / <code>--yolo</code></td>
+<td>Deny always wins, including over saved approvals; documented example identifiers include <code>write</code>, <code>shell(git:*)</code>, <code>shell(git push)</code>, and <code>SERVER(tool)</code>; allow-all options are session-wide permission grants intended for isolated environments</td>
+</tr>
+<tr>
+<td>Unknown options</td>
+<td>any misspelling</td>
+<td>Rejected: v1.0.79 prints <code>error: unknown option &#39;&lt;flag&gt;&#39;</code>, suggests the closest match, and exits non-zero without a model call</td>
+</tr>
+<tr>
+<td>Path and URL scope</td>
+<td><code>-C</code>, <code>--add-dir</code>, <code>--allow-url</code>, <code>--deny-url</code>, <code>--allow-all-paths</code>, <code>--disallow-temp-dir</code></td>
+<td>Deny URL takes precedence over allow URL</td>
+</tr>
+<tr>
+<td>MCP scope</td>
+<td><code>--disable-builtin-mcps</code>, <code>--disable-mcp-server=NAME</code>, <code>--additional-mcp-config</code></td>
+<td>Built-in disable currently covers <code>github-mcp-server</code></td>
+</tr>
+<tr>
+<td>GitHub MCP tools</td>
+<td><code>--add-github-mcp-toolset</code>, <code>--add-github-mcp-tool</code>, <code>--enable-all-github-mcp-tools</code></td>
+<td>The CLI enables a default subset unless overridden</td>
+</tr>
+<tr>
+<td>MCP instructions</td>
+<td><code>--allow-all-mcp-server-instructions</code></td>
+<td>By default only allowlisted server instructions are included up front; others are retrieved on demand</td>
+</tr>
+<tr>
+<td>Custom instructions</td>
+<td><code>--no-custom-instructions</code>, <code>COPILOT_CUSTOM_INSTRUCTIONS_DIRS</code></td>
+<td>Disables loading of <code>AGENTS.md</code> and related files</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td><code>--enable-memory</code></td>
+<td>Memory is disabled by default in prompt mode</td>
+</tr>
+<tr>
+<td>Broad permission via environment</td>
+<td><code>COPILOT_ALLOW_ALL</code></td>
+<td>Documented equivalent of <code>--allow-all-tools</code>; audit whether your harness sets it</td>
+</tr>
+<tr>
+<td>Credit cap</td>
+<td><code>--max-ai-credits</code>, <code>/limits set max-ai-credits</code></td>
+<td>Soft limit; <strong>public preview</strong>; minimum accepted value is <strong>30</strong> in v1.0.79; documentation advises setting it above 30; in non-interactive mode the run ends when the limit is reached</td>
+</tr>
+<tr>
+<td>Output</td>
+<td><code>--output-format=json</code>, <code>-s</code>, <code>--share=PATH</code>, <code>--share-gist</code>, <code>--secret-env-vars</code></td>
+<td>JSON format emits JSONL; gists are unavailable to EMU and <code>*.ghe.com</code></td>
+</tr>
+<tr>
+<td>Isolation</td>
+<td><code>COPILOT_HOME</code>, <code>-w</code> / <code>--worktree</code>, <code>--sandbox</code> / <code>--no-sandbox</code></td>
+<td><code>COPILOT_HOME</code> is a documented environment variable; worktree and sandbox flags are <strong>experimental</strong> and are not listed in v1.0.79 top-level help (<code>copilot help sandbox</code> documents sandboxing as experimental)</td>
+</tr>
+<tr>
+<td>Fan-out and run timeouts</td>
+<td>Harness scheduler and watchdog</td>
+<td><strong>No supported CLI environment variable is listed in v1.0.79 <code>copilot help environment</code></strong> — implement concurrency, depth, and timeout caps in your harness (claim ledger)</td>
+</tr>
+<tr>
+<td>Tool output size</td>
+<td>Documented 20 KiB behavior; threshold variable</td>
+<td>Larger tool output is written to a file and previewed; the threshold environment variable named in the context-management documentation is <strong>not listed in v1.0.79 help</strong> — treat as version-sensitive (claim ledger)</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td><code>copilot plugins list [--kind] [--scope] [--json]</code></td>
+<td>Inventories plugins, MCP servers, skills, instruction sources, and language servers; <code>--kind</code> supports <code>plugin</code>, <code>mcp</code>, <code>skill</code>, <code>instruction</code>, <code>lsp</code>; excludes custom agents and session-scoped hooks</td>
+</tr>
+<tr>
+<td>Session inspection</td>
+<td><code>/context</code>, <code>/usage</code>, <code>/compact</code></td>
+<td>Interactive session commands</td>
+</tr>
+</tbody></table>
+<h3 id="claim-ledger-verify-before-delivery">Claim Ledger: Verify Before Delivery</h3>
+<p>These items are <strong>not settled facts</strong> and must be presented as measurement questions, not product guarantees.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Why it is uncertain</th>
+<th>How to handle it in delivery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Token overhead per instruction file, tool schema, MCP server, or plugin</td>
+<td>Not published by GitHub; environment-specific</td>
+<td>Measure locally with <code>/context</code>; never quote a number from another environment</td>
+</tr>
+<tr>
+<td>Per-call AI-credit detail in <code>--output-format=json</code> output</td>
+<td>The JSONL format is documented; a guaranteed per-call cost field is not</td>
+<td>Verify with your installed version before building a ledger on it</td>
+</tr>
+<tr>
+<td><code>--context</code> behavior in <code>-p</code> runs</td>
+<td>Documented as honored in fresh interactive sessions</td>
+<td>Verify empirically; do not promise programmatic behavior you have not observed</td>
+</tr>
+<tr>
+<td>Valid <code>--available-tools</code> / <code>--excluded-tools</code> values</td>
+<td>Tool names vary by version, agent, and MCP configuration; not enumerated in the published reference</td>
+<td>Discover names in your environment, pin them per lane, and re-verify on upgrade — never copy a tool list from a slide</td>
+</tr>
+<tr>
+<td>Model availability per environment</td>
+<td>Model catalogs change over time and differ by plan and host</td>
+<td>Pin a model per lane and treat an unknown model name as <code>invalid_config</code>. <strong>Do not claim the CLI silently falls back to another model</strong> — that behavior is unverified</td>
+</tr>
+<tr>
+<td>Subagent concurrency/depth and run-wait environment variables</td>
+<td>Not listed in v1.0.79 <code>copilot help environment</code> and not found in the current CLI reference pages</td>
+<td>Do not teach them as controls; cap fan-out and wait time in the harness</td>
+</tr>
+<tr>
+<td>Tool-output threshold environment variable</td>
+<td>Named in the context-management documentation but not listed in v1.0.79 help</td>
+<td>Teach the documented 20 KiB behavior; bound inputs in the harness; verify the variable before depending on it</td>
+</tr>
+<tr>
+<td>Prompt-mode trust environment variables (extensions, repository hooks, workspace MCP)</td>
+<td>Not listed in v1.0.79 <code>copilot help environment</code></td>
+<td>Teach only what your installed version documents; audit <code>COPILOT_ALLOW_ALL</code></td>
+</tr>
+<tr>
+<td>Cross-run prompt-cache reuse and provider-side cache benefit from prompt layout</td>
+<td>Not documented at that level of detail</td>
+<td>Teach configuration stability; treat layout and cross-run cache theories as hypotheses to measure</td>
+</tr>
+<tr>
+<td>Per-lane cost attribution in GitHub billing views</td>
+<td>Reporting attributes to identities, models, organizations, and cost centers</td>
+<td>Attribute in your own ledger; reconcile with the dashboard</td>
+</tr>
+<tr>
+<td>Per-lane <code>COPILOT_HOME</code> profiles as an isolation boundary</td>
+<td>Built on a documented variable, but not a documented fleet feature</td>
+<td>Teach as a harness pattern and verify in your environment</td>
+</tr>
+<tr>
+<td>Experimental controls (<code>--worktree</code>, <code>--sandbox</code>) and preview features (session limits)</td>
+<td>Explicitly labeled experimental or public preview and subject to change</td>
+<td>State the status out loud every time; require a fallback</td>
+</tr>
+</tbody></table>
+<h3 id="translating-playbooks-from-other-agent-clis">Translating Playbooks From Other Agent CLIs</h3>
+<p>Teams often arrive with a playbook written for a different agent CLI. The <strong>principles</strong> usually transfer; the <strong>commands</strong> usually do not.</p>
+<table>
+<thead>
+<tr>
+<th>Principle (portable)</th>
+<th>Do <strong>not</strong> assume</th>
+<th>Copilot equivalent to verify</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Suppress memory and injected context for headless runs</td>
+<td>Another tool&#39;s environment variables or settings-file overrides</td>
+<td>Memory is off by default in prompt mode; <code>--enable-memory</code> opts in</td>
+</tr>
+<tr>
+<td>Give a call only the tools it needs</td>
+<td>Another tool&#39;s allow/disallow flag names <strong>or its tool-name values</strong></td>
+<td><code>--available-tools</code> / <code>--excluded-tools</code> for visibility plus <code>--allow-tool</code> / <code>--deny-tool</code> for permission; discover valid tool names in your own environment</td>
+</tr>
+<tr>
+<td>Restrict MCP servers per lane</td>
+<td>Another tool&#39;s strict-config flags</td>
+<td><code>--disable-builtin-mcps</code>, <code>--disable-mcp-server</code>, <code>--additional-mcp-config</code></td>
+</tr>
+<tr>
+<td>Control inherited instruction files</td>
+<td>Another tool&#39;s instruction-file hierarchy semantics</td>
+<td>Working-directory scope, <code>--no-custom-instructions</code>, <code>COPILOT_CUSTOM_INSTRUCTIONS_DIRS</code></td>
+</tr>
+<tr>
+<td>Cap spend per invocation</td>
+<td>That the cap is hard</td>
+<td><code>--max-ai-credits</code> is a <strong>soft</strong> limit in <strong>public preview</strong></td>
+</tr>
+<tr>
+<td>Hook into every tool call</td>
+<td>Another tool&#39;s hook matcher syntax</td>
+<td>Copilot hooks and SDK hook surfaces have their own documented model — verify before designing around them</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: Never present a flag from another vendor&#39;s CLI as a GitHub Copilot flag. If a control does not exist in the current Copilot documentation, say so, and implement the principle in your harness instead.</p>
+</blockquote>
+<h3 id="instructor-preflight-checklist">Instructor Preflight Checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Re-verify every row of the <strong>Copilot CLI Control Reference</strong> against the live command reference; update the verification date in the guide, lab, and deck together</li>
+<li><input disabled="" type="checkbox"> Confirm the current status of <code>--max-ai-credits</code> (public preview), <code>--worktree</code>, and <code>--sandbox</code> (experimental) and say the status out loud when the slide appears</li>
+<li><input disabled="" type="checkbox"> Confirm the audience actually operates programmatic Copilot automation; if not, deliver Module 2 or Module 3 instead</li>
+<li><input disabled="" type="checkbox"> Decide before the session whether the optional runnable appendix will be delivered, and confirm participants have a non-production sandbox and authorization to spend</li>
+<li><input disabled="" type="checkbox"> Print or share the four templates for participants without laptops — printable copies are inlined in <strong>Appendix B of the lab guide</strong>, and the editable sources are in <code>templates/</code></li>
+<li><input disabled="" type="checkbox"> Prepare one anonymized real lane from your own environment as a worked example; remove customer names, repository names, and internal figures</li>
+<li><input disabled="" type="checkbox"> Confirm the Module 1 budget owner is identified for the layered-governance discussion</li>
+<li><input disabled="" type="checkbox"> Re-run <code>copilot help</code>, <code>copilot help environment</code>, and <code>copilot help limits</code> on the delivery machine and note any drift from the control reference</li>
+</ul>
+<h3 id="backup-plan">Backup Plan</h3>
+<p>If any live element is unavailable (no CLI, no license, restricted network, or a UI change):</p>
+<ol>
+<li>Deliver all six core exercises from the lab worksheets — none of them requires a live product.</li>
+<li>Replace any live inventory demonstration with the <strong>illustrative sample <code>copilot plugins list</code> output in the lab&#39;s Backup Path section</strong> (Lab 1 and Lab 3 both reference it). Say out loud that the sample is synthetic and that real output differs by machine.</li>
+<li>Screen-share the linked documentation pages instead of the product when a flag&#39;s behavior is questioned.</li>
+<li>Skip the optional appendix entirely; it is not required for any learning objective.</li>
+<li>If a documented flag has changed since verification, say so explicitly and record it as a follow-up rather than improvising a replacement.</li>
+</ol>
+<hr>
+<p><em>Workshop guide for GitHub Copilot AI Credits Optimization — Optional Module 4: Agent Fleet Efficiency and Cost Governance (optional; excluded from the 7-hour-10-minute core curriculum of Modules 1–3)</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/workshop.astro_astro_type_script_index_0_lang.CNkWxYwE.js"></script>

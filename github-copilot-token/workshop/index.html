@@ -2,11 +2,11 @@
 <link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
 <style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
 </style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization-curriculum">GitHub Copilot AI Credits Optimization Curriculum</h1>
-<p><strong>Format</strong>: Three standalone role-based modules<br><strong>Total Duration</strong>: ~7 hours 10 minutes across all modules<br><strong>Audience</strong>: GitHub administrators, billing managers, FinOps and platform teams, engineering leaders, developers, and Copilot champions<br><strong>Focus</strong>: Budget guardrails, developer efficiency, and measurement-driven optimization of GitHub Copilot AI Credits</p>
+<p><strong>Format</strong>: Three standalone role-based core modules, plus one optional advanced module<br><strong>Total Duration</strong>: ~7 hours 10 minutes across the three core modules (Optional Module 4 adds ~2 hours 50 minutes and is <strong>not</strong> included in that total)<br><strong>Audience</strong>: GitHub administrators, billing managers, FinOps and platform teams, engineering leaders, developers, and Copilot champions<br><strong>Focus</strong>: Budget guardrails, developer efficiency, and measurement-driven optimization of GitHub Copilot AI Credits</p>
 <hr>
 <h2 id="curriculum-overview">Curriculum Overview</h2>
-<p>GitHub Copilot usage-based billing creates different responsibilities for administrators, developers, and FinOps or platform teams. This curriculum separates those responsibilities into three standalone modules so attendees can take only the training they need.</p>
-<p>Each module includes:</p>
+<p>GitHub Copilot usage-based billing creates different responsibilities for administrators, developers, and FinOps or platform teams. This curriculum separates those responsibilities into three standalone core modules so attendees can take only the training they need. A fourth <strong>optional</strong> module extends the material to teams that run Copilot programmatically as unattended automation.</p>
+<p>Each core module includes:</p>
 <ul>
 <li>A workshop guide</li>
 <li>A synchronized Slidev presentation</li>
@@ -14,6 +14,7 @@
 <li>A standalone primer covering the prerequisite concepts needed for that audience</li>
 <li>Official GitHub documentation references and dated billing facts</li>
 </ul>
+<p>Optional Module 4 follows the same artifact contract (guide, deck, lab, templates) but assumes Modules 2 and 3 instead of restating their primers.</p>
 <blockquote>
 <p><strong>Note</strong>: Billing facts and pricing examples in this curriculum were verified on <strong>2026-08-08</strong>. GitHub can change included allowances, model availability, pricing, and product behavior. Instructors must complete each module&#39;s preflight checklist before delivery.</p>
 </blockquote>
@@ -47,13 +48,20 @@
 </tr>
 <tr>
 <td><strong>Platform or DevEx engineer</strong></td>
-<td>Module 1 → Module 2 → Module 3</td>
+<td>Module 1 → Module 2 → Module 3 (add Optional Module 4 when the team runs unattended Copilot automation)</td>
+</tr>
+<tr>
+<td><strong>Platform or automation engineer running programmatic Copilot</strong></td>
+<td>Module 2 → Module 3 → Optional Module 4</td>
 </tr>
 <tr>
 <td><strong>Executive sponsor</strong></td>
 <td>Module 1 billing overview + Module 3 operating-model summary</td>
 </tr>
 </tbody></table>
+<blockquote>
+<p><strong>Note</strong>: Optional Module 4 is never required to complete a role path. It is an add-on for teams that already run — or are about to run — Copilot CLI or Copilot SDK automation without a human reviewing each call.</p>
+</blockquote>
 <hr>
 <h2 id="module-1-administration--budget-guardrails">Module 1: Administration &amp; Budget Guardrails</h2>
 <p><strong>Duration</strong>: ~115 minutes<br><strong>Primary Audience</strong>: Enterprise and organization owners, billing managers, FinOps leaders, platform administrators, engineering leaders</p>
@@ -133,6 +141,35 @@
 <li><a href="../../github-copilot-token-finops/slides/1">Module 3 Slidev deck</a></li>
 </ul>
 <hr>
+<h2 id="optional-module-4-agent-fleet-efficiency--cost-governance">Optional Module 4: Agent Fleet Efficiency &amp; Cost Governance</h2>
+<p><strong>Duration</strong>: ~170 minutes (including one 10-minute break), plus an optional 45-minute runnable lab appendix<br><strong>Status</strong>: <strong>Optional add-on — excluded from the ~7-hour-10-minute core total and not required for any role path</strong><br><strong>Primary Audience</strong>: Platform and DevEx engineers, automation and SRE-adjacent engineers, Copilot program owners who operate unattended Copilot automation<br><strong>Prerequisites</strong>: Module 2 and Module 3, or equivalent working knowledge of AI credits, cached input, budgets, and durable accepted outcomes</p>
+<p>Engineer unattended Copilot automation so that programmatic invocations spend deliberately, fail safely, and produce work that actually lands.</p>
+<h3 id="topics">Topics</h3>
+<ul>
+<li>Fleet cost model: fixed session tax, task work, fan-out, retries, avoided calls, and human correction</li>
+<li>Measuring the session tax with <code>/context</code>, <code>/usage</code>, and <code>copilot plugins list</code>, and designing one-variable baseline experiments</li>
+<li>Lane profiles pinning model, reasoning effort, context tier, tool visibility, tool permission, MCP scope, instructions, memory, and credit caps</li>
+<li>Tool visibility versus tool permission as separate layers, and permission changes as security changes</li>
+<li>Isolation controls and their maturity, including experimental worktree and sandbox flags and per-lane configuration patterns</li>
+<li>Concurrent ownership: fingerprints, idempotency keys, single-owner leases, disjoint scope, and attempt ledgers</li>
+<li>Pre-spend gates, complete cache keys, cache provenance and negative-result policy, and prompt budgets</li>
+<li>Layered governance: organization budgets, fleet envelope, per-run soft credit caps in public preview, fan-out caps, and worker concurrency</li>
+<li>Outcome taxonomy, exponential backoff with jitter, circuit breakers, parking, and dead-letter handling</li>
+<li>Durable landing contract, fleet telemetry fields, and lane-level cost per durable accepted outcome</li>
+<li>Canary rollout of cost changes with a quality-parity gate, adversarial review, and a rollback trigger</li>
+<li>Design exercises and templates: lane profile, cache-key review, failure taxonomy, and canary scorecard</li>
+</ul>
+<h3 id="resources">Resources</h3>
+<ul>
+<li><a href="../../github-copilot-token-platform-automation/workshop/">Optional Module 4 workshop guide</a></li>
+<li><a href="../../github-copilot-token-platform-automation/lab/">Optional Module 4 hands-on lab and runnable appendix</a></li>
+<li><a href="../../github-copilot-token-platform-automation/slides/1">Optional Module 4 Slidev deck</a></li>
+<li><a href="../../github-copilot-token-platform-automation/lab/#appendix-b-printable-templates">Printable Module 4 templates</a></li>
+</ul>
+<blockquote>
+<p><strong>Important</strong>: All six core exercises in Optional Module 4 are completed without making a paid AI request. The runnable lab appendix is optional, spends AI credits, and must only be run against a non-production sandbox repository with explicit spend authorization.</p>
+</blockquote>
+<hr>
 <h2 id="delivery-options">Delivery Options</h2>
 <table>
 <thead>
@@ -154,8 +191,12 @@
 <td>Deliver Module 2 during Copilot onboarding or an engineering productivity program</td>
 </tr>
 <tr>
-<td><strong>Full curriculum</strong></td>
-<td>Deliver all three modules across separate sessions for platform, administrator, champion, and leadership cohorts</td>
+<td><strong>Full core curriculum</strong></td>
+<td>Deliver all three core modules across separate sessions for platform, administrator, champion, and leadership cohorts</td>
+</tr>
+<tr>
+<td><strong>Platform automation add-on</strong></td>
+<td>Deliver Optional Module 4 as a separate session, only for teams operating programmatic Copilot automation</td>
 </tr>
 <tr>
 <td><strong>Mixed-audience kickoff</strong></td>
@@ -168,6 +209,7 @@
 <li>Deliver <strong>Module 2</strong> as part of developer onboarding and repeat it when agentic usage expands.</li>
 <li>Deliver <strong>Module 3</strong> after enough usage data exists to establish a meaningful baseline.</li>
 <li>Revisit the Module 3 operating model at least monthly during the first three billing cycles.</li>
+<li>Deliver <strong>Optional Module 4</strong> only after Modules 2 and 3, and only when the audience runs unattended Copilot automation. Do not add it to the advertised core duration.</li>
 </ol>
 <hr>
 <h2 id="curriculum-maintenance">Curriculum Maintenance</h2>
@@ -176,8 +218,9 @@
 <li>Re-verify the official sources linked in each module.</li>
 <li>Update repeated billing facts consistently across all affected workshop, LAB, and Slidev files.</li>
 <li>Recalculate every worked example and answer key.</li>
-<li>Rebuild all three Slidev decks.</li>
+<li>Rebuild all Slidev decks, including Optional Module 4.</li>
 <li>Confirm the site still presents the modules under one curriculum card.</li>
+<li>Re-verify Optional Module 4&#39;s Copilot CLI control reference and claim ledger separately — it depends on faster-moving CLI, SDK, preview, and experimental surfaces than the core modules.</li>
 </ol>
 <hr>
 <p><em>Curriculum overview for GitHub Copilot AI Credits Optimization</em></p>

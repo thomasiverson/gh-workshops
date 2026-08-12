@@ -1,0 +1,2881 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot AI Credits Optimization — Optional Module 4: Agent Fleet Efficiency and Cost Governance — Hands-On Lab Guide</title><link rel="stylesheet" href="/gh-workshops/_astro/index.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization--optional-module-4-agent-fleet-efficiency-and-cost-governance--hands-on-lab-guide">GitHub Copilot AI Credits Optimization — Optional Module 4: Agent Fleet Efficiency and Cost Governance — Hands-On Lab Guide</h1>
+<p><strong>Duration</strong>: ~77 minutes of hands-on exercises within the 170-minute module; the optional runnable appendix adds 45 minutes<br><strong>Format</strong>: Design and review exercises with worksheets and answer keys, plus one optional runnable appendix<br><strong>Audience</strong>: Platform and DevEx engineers, automation and SRE-adjacent engineers, Copilot program owners<br><strong>Repository</strong>: No repository is required for the core labs. The optional appendix requires a <strong>personal or non-production sandbox repository you own</strong></p>
+<hr>
+<h2 id="lab-overview">Lab Overview</h2>
+<p>This lab guide contains the hands-on work for <strong>Optional Module 4</strong> of the <strong>GitHub Copilot AI Credits Optimization</strong> curriculum. Each lab maps to one workshop section and to one learning objective. Complete them in order — Lab 6 consumes the outputs of Labs 1–5.</p>
+<blockquote>
+<p><strong>Important</strong>: <strong>Labs 1–6 require no paid AI request, no Copilot license, and no live product access.</strong> They are completed with the supplied scenarios, worksheets, and answer keys. Appendix A is <strong>optional</strong>, <strong>bounded</strong>, and <strong>spends AI credits</strong>; it is not required for any learning objective.</p>
+</blockquote>
+<blockquote>
+<p><strong>Important</strong>: All scenarios in this guide are synthetic. Do not use customer repositories, production identities, production queues, or real incident data in any exercise.</p>
+</blockquote>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Applies to</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Module 2 and Module 3 concepts</strong></td>
+<td>Labs 1–6</td>
+<td>AI credits, token categories, cached input, budgets, durable accepted outcomes</td>
+</tr>
+<tr>
+<td><strong>Printed or shared templates</strong></td>
+<td>Labs 1–6</td>
+<td>Printable copies are inlined in <strong>Appendix B</strong> of this guide; editable sources are in <code>templates/</code> beside this guide</td>
+</tr>
+<tr>
+<td><strong>Pen, worksheet, or text editor</strong></td>
+<td>Labs 1–6</td>
+<td>No product access needed</td>
+</tr>
+<tr>
+<td><strong>Copilot CLI installed</strong></td>
+<td>Appendix A only</td>
+<td>Verify with <code>copilot --version</code> — this proves installation only</td>
+</tr>
+<tr>
+<td><strong>Copilot CLI authenticated</strong></td>
+<td>Appendix A only</td>
+<td>Separate step: authenticate with <code>copilot login</code>, or supply <code>COPILOT_GITHUB_TOKEN</code> / <code>GH_TOKEN</code> / <code>GITHUB_TOKEN</code> (that precedence)</td>
+</tr>
+<tr>
+<td><strong>Copilot license you are authorized to spend from</strong></td>
+<td>Appendix A only</td>
+<td>Appendix A makes a small number of bounded paid calls</td>
+</tr>
+<tr>
+<td><strong>Non-production sandbox repository you own</strong></td>
+<td>Appendix A only</td>
+<td>Never a customer, production, or shared repository</td>
+</tr>
+<tr>
+<td><strong>Approval to spend a small number of AI credits</strong></td>
+<td>Appendix A only</td>
+<td>Confirm your budget owner is aware before running</td>
+</tr>
+<tr>
+<td><strong>A shell you can copy commands into</strong></td>
+<td>Appendix A only</td>
+<td>Appendix A gives <strong>PowerShell (Windows-first)</strong> commands with a bash alternative for each step</td>
+</tr>
+</tbody></table>
+<h3 id="setup">Setup</h3>
+<ol>
+<li>Open the four templates. Printable copies are inlined in <strong><a href="#appendix-b-printable-templates">Appendix B</a></strong> of this guide; the editable sources live in the <code>templates/</code> folder beside it:<ul>
+<li><code>lane-profile-worksheet.md</code></li>
+<li><code>cache-key-review-worksheet.md</code></li>
+<li><code>failure-taxonomy-worksheet.md</code></li>
+<li><code>canary-scorecard.md</code></li>
+</ul>
+</li>
+<li>Form pairs or groups of three. Each group needs one person who can describe a <strong>real automated workload</strong> from their own environment in general terms — no customer names, repository names, or internal figures.</li>
+<li>Agree on a shared vocabulary before starting: <strong>lane</strong>, <strong>lane profile</strong>, <strong>session tax</strong>, <strong>pre-spend gate</strong>, <strong>fingerprint</strong>, <strong>lease</strong>, <strong>outcome</strong>, <strong>durable accepted outcome</strong>.</li>
+</ol>
+<h4 id="setup-checkpoint">Setup Checkpoint</h4>
+<ul>
+<li>✅ Every group has all four templates available</li>
+<li>✅ Every group has one anonymized real workload to reason about</li>
+<li>✅ Everyone agrees that no exercise in Labs 1–6 will call a model</li>
+<li>✅ If Appendix A will be delivered, everyone has confirmed a sandbox repository and spend authorization</li>
+</ul>
+<h3 id="lab-summary">Lab Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Workshop section</th>
+<th>Exercise</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1 — Measure the Fixed Session Tax</td>
+<td>Session-tax inventory and baseline design</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2 — Lane Profiles</td>
+<td>Design three lane profiles</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3 — Isolation and Ownership</td>
+<td>Two-watcher fleet review</td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4 — Pre-Spend Gates and Caching</td>
+<td>Unsafe cache-key review</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>5 — Runtime Governance</td>
+<td>Dispatcher outcome taxonomy</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td>6 — Landing, Telemetry, and Rollout</td>
+<td>Capstone: checklist and canary scorecard</td>
+<td>12 min</td>
+</tr>
+<tr>
+<td>A</td>
+<td>Optional</td>
+<td>Runnable bounded Copilot CLI probes</td>
+<td>45 min</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Reference</td>
+<td>Printable copies of the four templates</td>
+<td>Not timed</td>
+</tr>
+</tbody></table>
+<p><strong>Core hands-on total: 77 min</strong> (inside the 170-minute module). <strong>Optional appendix A: +45 min.</strong> Appendix B is reference material and adds no time.</p>
+<hr>
+<details>
+<summary><h2 id="lab-1-session-tax-inventory-and-baseline-design-10-min">Lab 1: Session-Tax Inventory and Baseline Design (10 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 1 — Measure the Fixed Session Tax<br><strong>Objective</strong>: Identify what a programmatic invocation pays for before it starts working, and design a baseline experiment that could prove it.</p>
+</blockquote>
+<h3 id="starting-state">Starting State</h3>
+<p>You are handed the following lane description. Nothing has been measured.</p>
+<pre><code class="language-text">LANE: nightly-dependency-audit
+Runs:        1 invocation per repository per night, 240 repositories
+Invocation:  copilot -p &quot;$PROMPT&quot; --allow-all-tools
+Working dir: /home/automation/workspaces/monorepo-parent/&lt;repo&gt;
+Discovered:  AGENTS.md at the monorepo parent (human onboarding guide, long)
+             .github/copilot-instructions.md in each repository (short, mechanical)
+             3 MCP servers configured at user scope (issue tracker, wiki, code search)
+             2 skills installed at user scope
+Model:       not specified
+Effort:      not specified
+Memory:      not specified
+Output:      plain text captured to a log file
+Task:        list dependencies with known advisories and open one issue per finding
+</code></pre>
+<h3 id="steps">Steps</h3>
+<ol>
+<li><strong>(3 min)</strong> List every contributor to this lane&#39;s <strong>session tax</strong>. For each, mark it <code>REQUIRED</code>, <code>OPTIONAL</code>, or <code>UNKNOWN</code> for this task, and name the instrument you would use to inspect it.</li>
+<li><strong>(3 min)</strong> List every <strong>unbounded or unspecified</strong> element that could change cost from night to night.</li>
+<li><strong>(4 min)</strong> Write a baseline experiment for one single factor. Specify: probe prompt, pinned configuration, number of repetitions, recorded fields, and the one variable that changes between arms.</li>
+</ol>
+<h3 id="expected-result">Expected Result</h3>
+<p>A one-page inventory plus a baseline experiment that a colleague could run without asking you a question.</p>
+<h3 id="answer-key">Answer Key</h3>
+<p><strong>Session-tax contributors</strong></p>
+<table>
+<thead>
+<tr>
+<th>Contributor</th>
+<th>Verdict</th>
+<th>Instrument</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>System prompt and built-in tool definitions</td>
+<td><code>REQUIRED</code></td>
+<td><code>/context</code> — System Prompt and System Tools rows</td>
+</tr>
+<tr>
+<td>Parent <code>AGENTS.md</code> (human onboarding guide)</td>
+<td><code>OPTIONAL</code> — almost certainly not needed by this task</td>
+<td><code>/context</code> — Custom Instructions row; <code>copilot plugins list --kind instruction</code></td>
+</tr>
+<tr>
+<td>Repository <code>copilot-instructions.md</code></td>
+<td><code>UNKNOWN</code> — may carry dependency conventions</td>
+<td>Same as above, plus a quality comparison</td>
+</tr>
+<tr>
+<td>Wiki MCP server</td>
+<td><code>OPTIONAL</code> — no obvious role in a dependency audit</td>
+<td><code>copilot plugins list --kind mcp</code></td>
+</tr>
+<tr>
+<td>Issue-tracker MCP server</td>
+<td><code>UNKNOWN</code> — the task opens issues, so it may be the intended path</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Code-search MCP server</td>
+<td><code>UNKNOWN</code></td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Two user-scope skills</td>
+<td><code>UNKNOWN</code></td>
+<td><code>copilot plugins list --kind skill</code></td>
+</tr>
+<tr>
+<td>Memory</td>
+<td><code>OPTIONAL</code> — disabled by default in prompt mode; confirm the harness does not enable it</td>
+<td>Lane profile review</td>
+</tr>
+</tbody></table>
+<p><strong>Unbounded or unspecified elements</strong></p>
+<ul>
+<li>No <code>--model</code>, so the lane inherits a default that can change without review.</li>
+<li>No <code>--effort</code>, so reasoning depth is unpinned.</li>
+<li><code>--allow-all-tools</code> grants full tool permission; there is no visibility restriction at all.</li>
+<li>No <code>--max-ai-credits</code>, so a single pathological repository has no per-run ceiling.</li>
+<li>No <code>--no-ask-user</code>, so an unattended run can stall waiting for input.</li>
+<li>Working directory sits under a parent that carries a long human-oriented instruction file.</li>
+<li>Advisory output size per repository is unbounded.</li>
+<li>Plain-text output makes per-run accounting hard; <code>--output-format=json</code> would be machine-readable.</li>
+</ul>
+<p><strong>Baseline experiment (example)</strong></p>
+<ul>
+<li><strong>Probe prompt</strong>: <code>Reply with the single word OK.</code></li>
+<li><strong>Pinned</strong>: one model, <code>--effort low</code>, one working directory, fresh session per run, <code>--no-ask-user</code>, <code>--output-format=json</code>. Do <strong>not</strong> add <code>-s</code> — it prints only the agent response and suppresses the stats you are trying to measure.</li>
+<li><strong>Arms</strong>: (A) current discovery as-is; (B) identical, plus <code>--disable-builtin-mcps</code>.</li>
+<li><strong>Repetitions</strong>: at least 5 runs per arm; report median and range.</li>
+<li><strong>Recorded fields</strong>: AI credits, input/cached-input/output tokens, latency, outcome, exit status.</li>
+<li><strong>Second experiment, run separately</strong>: repeat the same design with <code>--no-custom-instructions</code> as the single variable. One arm, one variable — never both in the same comparison.</li>
+<li><strong>Follow-up arm</strong>: repeat with 3 representative real repositories to check quality parity before adopting arm B.</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ Every contributor is classified <code>REQUIRED</code>, <code>OPTIONAL</code>, or <code>UNKNOWN</code> with a named instrument</li>
+<li>✅ At least four unbounded or unspecified elements are identified, including the missing model pin</li>
+<li>✅ The baseline experiment changes exactly one variable and specifies repetitions</li>
+<li>✅ The plan includes a real-task quality check, not only the trivial probe</li>
+<li>✅ No token or credit figure is invented from memory</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-2-design-three-lane-profiles-15-min">Lab 2: Design Three Lane Profiles (15 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 2 — Lane Profiles<br><strong>Objective</strong>: Build least-context, least-tool, least-permission profiles and state the evidence required before adopting each reduction.</p>
+</blockquote>
+<h3 id="starting-state">Starting State</h3>
+<p>Use the <strong>Lane Profile Worksheet</strong> (<code>templates/lane-profile-worksheet.md</code>, printable copy in Appendix B). Your fleet has three lanes:</p>
+<table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>A — Repository audit</strong></td>
+<td>Read a repository and produce a findings report. Must not modify anything</td>
+</tr>
+<tr>
+<td><strong>B — Bounded test fix</strong></td>
+<td>One failing test named in the work item; a deterministic test command proves success</td>
+</tr>
+<tr>
+<td><strong>C — Release-note synthesis</strong></td>
+<td>Convert a supplied structured changelog into a formatted release note. No repository access required</td>
+</tr>
+</tbody></table>
+<h3 id="steps">Steps</h3>
+<ol>
+<li><strong>(9 min)</strong> Complete one worksheet per lane. Fill every field; write <code>UNKNOWN — measure</code> rather than guessing.</li>
+<li><strong>(3 min)</strong> For each reduction you propose (fewer tools, no MCP servers, no custom instructions, lighter model, lower effort), write the <strong>evidence you would require</strong> before adopting it in production.</li>
+<li><strong>(3 min)</strong> Identify the one field in each lane most likely to cause a silent failure if you get it wrong.</li>
+</ol>
+<h3 id="expected-result">Expected Result</h3>
+<p>Three completed worksheets where every restriction is enforced by a flag, not by prompt wording.</p>
+<h3 id="answer-key">Answer Key</h3>
+<p><strong>Lane A — Repository audit (read-only)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tool visibility</td>
+<td>Read and search tools only, using the tool names your installed CLI reports (verify; do not copy a list)</td>
+</tr>
+<tr>
+<td>Tool permission</td>
+<td>Deny <code>write</code>; deny <code>shell</code> (deny always wins) — this is the enforcement that makes the lane read-only</td>
+</tr>
+<tr>
+<td>MCP servers</td>
+<td>None required; <code>--disable-builtin-mcps</code> unless a finding must be filed through an MCP tool</td>
+</tr>
+<tr>
+<td>Custom instructions</td>
+<td>Only if the report format depends on repository conventions</td>
+</tr>
+<tr>
+<td>Model and effort</td>
+<td>Lighter model, low effort</td>
+</tr>
+<tr>
+<td>Credit cap</td>
+<td><code>--max-ai-credits</code> set above the CLI minimum of 30</td>
+</tr>
+<tr>
+<td>Output</td>
+<td><code>--output-format=json</code> plus <code>--share</code> for audit trail (leave <code>-s</code> off anything you measure)</td>
+</tr>
+<tr>
+<td>Silent-failure risk</td>
+<td>A read-only rule stated only in the prompt, or a visibility list whose tool names do not match this version — enforce with <code>--deny-tool</code></td>
+</tr>
+</tbody></table>
+<p><strong>Lane B — Bounded test fix</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tool visibility</td>
+<td>Read, search, edit, and the specific shell commands the test run needs</td>
+</tr>
+<tr>
+<td>Tool permission</td>
+<td>Allow scoped shell and write; deny <code>shell(git push)</code>; deny writes outside the target path</td>
+</tr>
+<tr>
+<td>MCP servers</td>
+<td>Only servers the fix path uses</td>
+</tr>
+<tr>
+<td>Custom instructions</td>
+<td>Yes — the fix must follow repository conventions</td>
+</tr>
+<tr>
+<td>Model and effort</td>
+<td>Mid-tier with a coded escalation rule tied to the deterministic check (one escalation step per fingerprint, recorded in the ledger)</td>
+</tr>
+<tr>
+<td>Credit cap</td>
+<td>Moderate <code>--max-ai-credits</code> (above the CLI minimum of 30); a run that exhausts it is <code>run_cap_exhausted</code>, not an automatic retry</td>
+</tr>
+<tr>
+<td>Isolation</td>
+<td>Isolated worktree or clone per worker, with cleanup</td>
+</tr>
+<tr>
+<td>Silent-failure risk</td>
+<td>Escalation by habit instead of by measured signal; also unverified &quot;fixed&quot; claims without running the test</td>
+</tr>
+</tbody></table>
+<p><strong>Lane C — Release-note synthesis</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tool visibility</td>
+<td>Minimal or none — this is text-to-text</td>
+</tr>
+<tr>
+<td>Tool permission</td>
+<td>Deny <code>write</code> and <code>shell</code></td>
+</tr>
+<tr>
+<td>MCP servers</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Custom instructions</td>
+<td>Usually none</td>
+</tr>
+<tr>
+<td>Model and effort</td>
+<td>Mid-tier, low effort</td>
+</tr>
+<tr>
+<td>Prompt budget</td>
+<td>Hard cap on changelog size with a visible truncation marker and a <code>context_too_large</code> outcome</td>
+</tr>
+<tr>
+<td>Silent-failure risk</td>
+<td>Unbounded input growth as the changelog accumulates</td>
+</tr>
+</tbody></table>
+<p><strong>Evidence required before adopting any reduction</strong></p>
+<ul>
+<li>A baseline and a reduced arm measured on the <strong>same representative task mix</strong>.</li>
+<li>Durable acceptance and human correction time compared, not just tokens or credits.</li>
+<li>A canary lane, a rollback trigger, and an owner (Lab 6).</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ All three worksheets have every field completed or explicitly marked <code>UNKNOWN — measure</code></li>
+<li>✅ Every read-only claim is enforced by a visibility or permission flag</li>
+<li>✅ Each proposed reduction has named evidence attached</li>
+<li>✅ Lane B specifies an escalation rule that lives in code, not in operator habit</li>
+<li>✅ Each lane names its most likely silent-failure field</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-3-two-watcher-fleet-review-10-min">Lab 3: Two-Watcher Fleet Review (10 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 3 — Isolation, Worktrees, and Concurrent Ownership<br><strong>Objective</strong>: Find inheritance and ownership defects that cause duplicate or misconfigured spend.</p>
+</blockquote>
+<h3 id="starting-state">Starting State</h3>
+<pre><code class="language-text">WATCHER 1: &quot;failing-tests&quot;   — scans all repositories every 10 minutes for failing tests
+WATCHER 2: &quot;flaky-tests&quot;     — scans the same repositories every 15 minutes for flaky tests
+Both watchers:
+  - run as the same automation identity
+  - share one checkout at /srv/agents/workspace
+  - build the prompt, then invoke Copilot CLI with --allow-all
+  - delete the queue item as soon as the CLI exits with status 0
+  - have no attempt limit per target
+  - were recently moved from /srv/monorepo/tools to /srv/agents to &quot;reduce inherited context&quot;
+</code></pre>
+<h3 id="steps">Steps</h3>
+<ol>
+<li><strong>(4 min)</strong> List every defect you can find. Group them as <strong>inheritance</strong>, <strong>ownership</strong>, <strong>isolation</strong>, or <strong>landing</strong> defects.</li>
+<li><strong>(3 min)</strong> For each ownership defect, specify the fingerprint, lease, and dedupe rule that fixes it.</li>
+<li><strong>(3 min)</strong> Specify the verification step that proves the move to <code>/srv/agents</code> did not silently remove needed configuration.</li>
+</ol>
+<h3 id="expected-result">Expected Result</h3>
+<p>A defect list with a concrete fix for each, including one verification command.</p>
+<h3 id="answer-key">Answer Key</h3>
+<table>
+<thead>
+<tr>
+<th>Defect</th>
+<th>Category</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Both watchers can select the same failing test as a target</td>
+<td>Ownership</td>
+<td>Fingerprint on target plus error signature; single-owner time-bounded lease; disjoint scope by construction</td>
+</tr>
+<tr>
+<td>No attempt limit per target</td>
+<td>Ownership</td>
+<td>Attempt ledger keyed by fingerprint with a hard cap and a parked state</td>
+</tr>
+<tr>
+<td>Shared checkout allows workers to corrupt each other&#39;s working tree</td>
+<td>Isolation</td>
+<td>One worktree or clone per worker with guaranteed cleanup</td>
+</tr>
+<tr>
+<td><code>--allow-all</code> grants full permission for both lanes</td>
+<td>Isolation / security</td>
+<td>Replace with explicit <code>--deny-tool</code> rules for everything mutating that the lane must not do, then narrow visibility with <code>--available-tools</code> using tool names verified in this CLI version</td>
+</tr>
+<tr>
+<td>The move may have dropped needed MCP servers, instructions, or skills</td>
+<td>Inheritance</td>
+<td>Run <code>copilot plugins list</code> <strong>from the exact working directory the harness uses</strong> and compare against the expected inventory; pass MCP configuration explicitly if it is required</td>
+</tr>
+<tr>
+<td>Saved interactive approvals may leak into automation running as the same identity</td>
+<td>Inheritance</td>
+<td>Isolate per-lane configuration state (for example, a dedicated <code>COPILOT_HOME</code> per lane — a harness pattern to verify in your environment) and pass permissions per invocation</td>
+</tr>
+<tr>
+<td>Deleting the queue item on exit status 0</td>
+<td>Landing</td>
+<td>Acknowledge only after validated, persisted, and consumed output (Section 6); use a distinct signal for &quot;nothing to do&quot;</td>
+</tr>
+<tr>
+<td>No per-run credit cap</td>
+<td>Governance</td>
+<td>Add <code>--max-ai-credits</code> per lane (minimum 30 in CLI v1.0.79), remembering it is a soft limit in public preview</td>
+</tr>
+<tr>
+<td>Shared worktrees or checkouts left behind by killed runs</td>
+<td>Isolation</td>
+<td>Unique worktree or clone name per run, cleanup on exit, and a recovery step (<code>git worktree list</code> → <code>git worktree remove</code> → <code>git worktree prune</code>)</td>
+</tr>
+</tbody></table>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ At least six defects identified and categorized</li>
+<li>✅ A fingerprint, lease, and dedupe rule specified for the overlap</li>
+<li>✅ Per-worker workspace isolation with cleanup specified</li>
+<li>✅ The verification step names running the inventory from the harness&#39;s actual working directory</li>
+<li>✅ The premature acknowledgment defect is identified as a landing problem, not a cost problem</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-4-unsafe-cache-key-review-15-min">Lab 4: Unsafe Cache-Key Review (15 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 4 — Pre-Spend Gates, Cache Correctness, and Prompt Budgets<br><strong>Objective</strong>: Find cache-key omissions and name the specific wrong result each one can produce.</p>
+</blockquote>
+<h3 id="starting-state">Starting State</h3>
+<p>Use the <strong>Cache-Key Review Worksheet</strong> (<code>templates/cache-key-review-worksheet.md</code>, printable copy in Appendix B). A team ships this cache to avoid re-scoring unchanged files:</p>
+<pre><code class="language-text">CACHE DESIGN v1
+  key            = sha256(file_contents)
+  value          = { score: int, rationale: string }
+  ttl            = none
+  negative cache = yes, failures cached like successes
+  bypass         = none
+  provenance     = none
+  invalidation   = manual, by deleting the cache directory
+NOTES
+  - The scoring rubric lives in prompts/rubric.md and is edited about twice a month
+  - The lane recently changed from a lighter model to a mid-tier model
+  - Reasoning effort was raised from low to high last week
+  - Some entries were written before the team added a &quot;severity&quot; field to the value
+</code></pre>
+<h3 id="steps">Steps</h3>
+<ol>
+<li><strong>(6 min)</strong> List every missing key component and, for each, the <strong>specific wrong outcome</strong> it can produce.</li>
+<li><strong>(5 min)</strong> Rewrite the cache design: key components, value schema, provenance, TTL, invalidation, negative-result policy, and bypass.</li>
+<li><strong>(4 min)</strong> Decide what the system should do when it encounters an entry written before the schema change.</li>
+</ol>
+<h3 id="expected-result">Expected Result</h3>
+<p>A corrected cache design that a reviewer could approve without further questions.</p>
+<h3 id="answer-key">Answer Key</h3>
+<table>
+<thead>
+<tr>
+<th>Missing component</th>
+<th>Wrong outcome it produces</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Fully rendered prompt (including rubric text)</td>
+<td>After a rubric edit, every unchanged file keeps its <strong>old rubric&#39;s verdict</strong> forever — the most dangerous omission here</td>
+</tr>
+<tr>
+<td>Model identifier</td>
+<td>Verdicts produced by the previous lighter model are served as if produced by the current model</td>
+</tr>
+<tr>
+<td>Reasoning effort</td>
+<td>Low-effort verdicts are served after the lane moved to high effort</td>
+</tr>
+<tr>
+<td>Context tier</td>
+<td><code>default</code> and <code>long_context</code> results are treated as interchangeable</td>
+</tr>
+<tr>
+<td>Tool visibility and permission set</td>
+<td>A verdict produced without repository access is served for a lane that now has it</td>
+</tr>
+<tr>
+<td>MCP configuration</td>
+<td>Capability differences are invisible in the key</td>
+</tr>
+<tr>
+<td>Repository state beyond the single file</td>
+<td>Verdicts that depend on neighboring files or configuration go stale silently</td>
+</tr>
+<tr>
+<td>Harness and CLI version</td>
+<td>Behavior changes across versions are invisible</td>
+</tr>
+<tr>
+<td>TTL</td>
+<td>Nothing ever expires, so staleness is unbounded</td>
+</tr>
+<tr>
+<td>Provenance</td>
+<td>You cannot audit which configuration produced a stored verdict</td>
+</tr>
+<tr>
+<td>Negative-result policy</td>
+<td>A transient outage is cached as a permanent failure</td>
+</tr>
+<tr>
+<td>Bypass</td>
+<td>No safe way to force a re-run during an incident</td>
+</tr>
+</tbody></table>
+<p><strong>Corrected design (example)</strong></p>
+<pre><code class="language-text">CACHE DESIGN v2
+  key = sha256(
+          rendered_prompt          # includes rubric and template text
+        + rubric_version
+        + model_id
+        + reasoning_effort
+        + context_tier
+        + tool_visibility_set
+        + tool_permission_set
+        + mcp_config_hash
+        + input_state_hash        # file contents plus relevant neighbors/config
+        + harness_version
+        + cli_version )
+  value       = { schema_version, score, severity, rationale, produced_at, run_id }
+  provenance  = { key_components, lane, profile_hash, accepted_later: bool }
+  ttl         = 30 days, plus immediate invalidation on any profile change
+  negative    = cache deterministic refusals only; never cache service_unavailable
+  bypass      = harness --no-cache flag (your runner, not a Copilot CLI option), logged every time it is used
+  migration   = entry missing any key component or schema_version -&gt; treat as MISS
+</code></pre>
+<p><strong>Old-schema entries</strong>: treat as a miss and re-run. Never infer a missing field, and never serve a value whose schema version is unknown.</p>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ At least eight missing components identified</li>
+<li>✅ The rendered-prompt/rubric omission is identified as the highest-severity defect</li>
+<li>✅ The corrected key includes model, effort, context tier, tool sets, and versions</li>
+<li>✅ Negative caching distinguishes deterministic refusals from transient failures</li>
+<li>✅ Missing or unknown key components are treated as a cache miss</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-5-dispatcher-outcome-taxonomy-15-min">Lab 5: Dispatcher Outcome Taxonomy (15 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 5 — Runtime Governance<br><strong>Objective</strong>: Map real run results to outcomes, retry behavior, breaker counting, and queue action.</p>
+</blockquote>
+<h3 id="starting-state">Starting State</h3>
+<p>Use the <strong>Failure Taxonomy and Breaker Worksheet</strong> (<code>templates/failure-taxonomy-worksheet.md</code>, printable copy in Appendix B). Today the dispatcher has exactly two outcomes: <code>ok</code> (exit status 0) and <code>failed</code> (anything else). Failures are retried immediately up to 10 times, and 5 consecutive failures trip a breaker that parks the lane for 7 hours.</p>
+<h3 id="steps">Steps</h3>
+<ol>
+<li><strong>(8 min)</strong> Classify each of the nine run results below: outcome name, retry behavior, whether it counts toward the breaker, and queue action.</li>
+<li><strong>(4 min)</strong> Identify which current behaviors cause a <strong>retry storm</strong>, a <strong>breaker misfire</strong>, or <strong>silent work loss</strong>.</li>
+<li><strong>(3 min)</strong> Propose the backoff schedule, park window, breaker rule (including how long the breaker stays open), and dead-letter policy you would ship instead.</li>
+</ol>
+<p><strong>Run results to classify</strong></p>
+<ol>
+<li>The test named in the work item already passes before any model call.</li>
+<li>The model edited a file, but the deterministic test still fails.</li>
+<li>The CLI returned a permission error because the lane denies <code>write</code> and the task requires it.</li>
+<li>The prompt assembler found the diff exceeds the lane&#39;s input budget.</li>
+<li>The service returned a transient network error after 40 seconds.</li>
+<li>The harness budget module refused the call <strong>before</strong> it was made: the lane&#39;s window envelope was already spent.</li>
+<li>The lane profile references a model name the CLI does not recognize.</li>
+<li>The run succeeded and the report was written, but the consumer directory does not exist.</li>
+<li>The run started, consumed nearly all of its per-run <code>--max-ai-credits</code> cap, and stopped mid-task without producing a usable result.</li>
+</ol>
+<h3 id="answer-key">Answer Key</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Outcome</th>
+<th>Retry</th>
+<th>Counts toward breaker</th>
+<th>Queue action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><code>already_green</code></td>
+<td>No</td>
+<td>No</td>
+<td>Acknowledge with reason; record as a free success</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>model_failure</code></td>
+<td>Yes, bounded by the attempt ledger</td>
+<td><strong>Yes</strong></td>
+<td>Retain, increment attempt</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>policy_denied</code></td>
+<td>No</td>
+<td>No</td>
+<td>Retain and alert an owner — the profile or the task is wrong</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>context_too_large</code></td>
+<td>No — fix the input first</td>
+<td>No</td>
+<td>Retain and flag for prompt-budget redesign</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>service_unavailable</code></td>
+<td>Yes, with exponential backoff and jitter</td>
+<td>No</td>
+<td>Retain</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>budget_refused</code> (<strong>pre-spend, no credits used</strong>)</td>
+<td>Not immediately — park the worker</td>
+<td>No</td>
+<td>Retain; retry unchanged after the park window; <strong>do not</strong> increment the attempt counter</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>invalid_config</code></td>
+<td>No</td>
+<td>No</td>
+<td>Halt the lane and alert; an unrecognized model name is a configuration error to fix, not a condition to retry</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>landing_failed</code></td>
+<td>Yes, after the path is resolved</td>
+<td>No</td>
+<td><strong>Retain</strong> — never acknowledge; this is paid work that did not land</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>run_cap_exhausted</code> (<strong>post-spend</strong>)</td>
+<td>Not automatically</td>
+<td>No</td>
+<td>Retain; record the spend, <strong>increment the attempt counter</strong>, and require task decomposition or an explicit reviewed cap decision before another attempt</td>
+</tr>
+</tbody></table>
+<p><strong>Current behaviors that break</strong></p>
+<ul>
+<li><strong>Retry storm</strong>: immediate retries with no backoff, plus retrying <code>policy_denied</code>, <code>context_too_large</code>, and <code>invalid_config</code>, which can never succeed on retry.</li>
+<li><strong>Most expensive retry storm</strong>: retrying <code>run_cap_exhausted</code> unchanged — every attempt pays close to the whole cap and lands nothing.</li>
+<li><strong>Breaker misfire</strong>: counting every non-zero exit toward the streak lets routing, budget, and configuration errors trip the breaker and take down a healthy lane.</li>
+<li><strong>Silent work loss</strong>: treating exit status 0 as success acknowledges case 8, where nothing landed.</li>
+<li><strong>Attempt-ledger corruption</strong>: counting case 6 as an attempt eventually dead-letters work that was never actually tried.</li>
+<li><strong>Throughput loss</strong>: a 7-hour park is far longer than most incidents last.</li>
+</ul>
+<p><strong>Recommended replacement</strong></p>
+<ul>
+<li>Backoff: 10m → 20m → 40m with jitter, capped at 40m; maximum 3 attempts per fingerprint.</li>
+<li>Park on <code>budget_refused</code> for a fixed window (30 minutes is a reasonable start); log <strong>one</strong> summary line, not one line per item; leave the attempt counter untouched.</li>
+<li>On <code>run_cap_exhausted</code>: record the spend against the lane, increment the attempt counter, and block further attempts on that fingerprint until the work item is decomposed or the cap is changed by a named owner.</li>
+<li>Breaker: 5 consecutive <code>model_failure</code> outcomes only; <strong>open for 20 minutes</strong>, then half-open with exactly one probe item — close on success, reopen for another 20 minutes on failure; alert the lane owner on every trip.</li>
+<li>Dead-letter after the attempt cap with last outcome, profile hash, and transcript pointer retained.</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ All nine results classified with outcome, retry, breaker, and queue action</li>
+<li>✅ <code>already_green</code> and <code>context_too_large</code> are excluded from breaker counting</li>
+<li>✅ Case 6 and case 9 are given <strong>different</strong> outcomes, and only case 9 records spend and increments the attempt counter</li>
+<li>✅ Case 8 is retained rather than acknowledged</li>
+<li>✅ Retry storm, breaker misfire, and silent work loss are each identified with a cause</li>
+<li>✅ The proposed backoff, park window, breaker rule (including open duration), and dead-letter policy are specific</li>
+</ul>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="lab-6-capstone--fleet-lane-optimization-checklist-and-canary-scorecard-12-min">Lab 6: Capstone — Fleet Lane Optimization Checklist and Canary Scorecard (12 min)</h2></summary>
+
+<blockquote>
+<p><strong>Workshop Section</strong>: 6 — Durable Landing, Telemetry, Canary Rollout, and Capstone<br><strong>Objective</strong>: Produce a canary-ready plan for one real lane, with a quality gate, a rollback trigger, and an owner.</p>
+</blockquote>
+<h3 id="starting-state">Starting State</h3>
+<p>Each group picks <strong>one anonymized real lane</strong> from a member&#39;s environment (or Lane A, B, or C from Lab 2 if no real lane is available). You will need your Lab 1–5 outputs.</p>
+<h3 id="steps">Steps</h3>
+<ol>
+<li><strong>(6 min)</strong> Complete the <strong>Fleet Lane Optimization Checklist</strong> section of the canary scorecard (<code>templates/canary-scorecard.md</code>, printable copy in Appendix B) for that lane: profile, gates, governance, landing, telemetry.</li>
+<li><strong>(4 min)</strong> Complete the <strong>Canary Scorecard</strong>: the single variable you will change, the baseline you will capture, the quality-parity gate, the cost metric, the rollback trigger, and the owner.</li>
+<li><strong>(2 min)</strong> Each group reports one line: <em>&quot;Our canary lane is X, our single variable is Y, and we roll back if Z.&quot;</em></li>
+</ol>
+<h3 id="expected-result">Expected Result</h3>
+<p>One completed scorecard per group, ready to take back to a real backlog.</p>
+<h3 id="answer-key--model-response">Answer Key — Model Response</h3>
+<p>A complete scorecard names all of the following:</p>
+<ul>
+<li><strong>Canary lane</strong>: highest volume with the lowest blast radius and a clear acceptance signal.</li>
+<li><strong>Single variable</strong>: exactly one profile element (for example, disabling two MCP servers that the audit lane never uses).</li>
+<li><strong>Baseline</strong>: median and range for credits, latency, retries, and durable acceptance over a stated window <strong>before</strong> the change.</li>
+<li><strong>Quality-parity gate</strong>: durable acceptance and human correction time must not regress beyond an agreed tolerance.</li>
+<li><strong>Cost metric</strong>: full cost per durable accepted outcome — not tokens saved.</li>
+<li><strong>Adversarial review</strong>: integration seams, cache-key completeness, flag spelling, exit-code blast radius.</li>
+<li><strong>Rollback trigger</strong>: a specific, pre-agreed threshold and a named person allowed to pull it without a meeting.</li>
+<li><strong>Deployment verification</strong>: restart the worker and confirm the new behavior in live logs.</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ The checklist is complete for one specific lane, with unknowns marked <code>UNKNOWN — measure</code></li>
+<li>✅ Exactly one variable is changed in the canary</li>
+<li>✅ A quality-parity gate is stated in measurable terms</li>
+<li>✅ The cost metric is full cost per durable accepted outcome</li>
+<li>✅ A rollback trigger and a named owner are recorded</li>
+<li>✅ Deployment verification in live logs is included</li>
+</ul>
+</details>
+
+<hr>
+<h2 id="backup-path-sample-inventory-output-no-product-access">Backup Path: Sample Inventory Output (No Product Access)</h2>
+<p>Use this when the facilitator cannot run <code>copilot plugins list</code> live — no CLI installed, no network, restricted machine, or a demo that failed once. It supports Lab 1 (session-tax inventory) and Lab 3 (verifying what a working directory contributes).</p>
+<blockquote>
+<p><strong>Important</strong>: The listing below is <strong>illustrative and synthetic</strong>. It was written for teaching and is <strong>not</strong> captured from any customer, production, or personal environment. Real output differs by machine, repository, version, and configuration — never quote counts, names, or costs from it as fact.</p>
+</blockquote>
+<p><strong>Command (illustrative)</strong></p>
+<pre><code class="language-text">$ copilot plugins list
+</code></pre>
+<p><strong>Sample output (illustrative — synthetic, not a real environment)</strong></p>
+<pre><code class="language-text">MCP servers:
+  User:
+    ✓ issue-tracker     -- http transport
+    ✓ wiki-search       -- stdio transport
+    ✓ code-search       -- http transport
+  Built-in:
+    ✗ github-mcp-server -- stdio transport (disabled for this directory)
+
+Skills:
+  User:
+    ✓ release-notes-formatter  -- Format a structured changelog into release notes.
+    ✓ dependency-advisories    -- Summarize dependency advisories for a repository.
+  Repository:
+    ✓ run-unit-tests           -- Run the repository&#39;s unit test command and report failures.
+  Built-in:
+    ✓ github-pr-media          -- Upload media and embed it in a pull request or comment.
+
+Instructions:
+  Repository:
+    ✓ .github/copilot-instructions.md
+  Working Directory:
+    ✓ AGENTS.md
+    ✓ team-onboarding.instructions.md
+
+Language servers:
+  Repository:
+    ✓ typescript-language-server
+
+Plugins:
+  User:
+    ✓ internal-platform-tools
+</code></pre>
+<p><strong>How to use it in the room</strong></p>
+<table>
+<thead>
+<tr>
+<th>Question to ask</th>
+<th>What the sample shows</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Which of these would a nightly dependency audit actually use?</td>
+<td><code>dependency-advisories</code> and possibly <code>issue-tracker</code>; <code>wiki-search</code>, <code>release-notes-formatter</code>, and <code>team-onboarding.instructions.md</code> are candidates for removal</td>
+</tr>
+<tr>
+<td>What is grouped by scope, and why does it matter?</td>
+<td>User scope follows the identity; repository and working-directory scope follow the checkout — moving a worker changes the second group, not the first</td>
+</tr>
+<tr>
+<td>What is missing from this inventory?</td>
+<td>Custom agents and session-scoped hooks are <strong>not</strong> covered by <code>plugins list</code>; they require a live session</td>
+</tr>
+<tr>
+<td>What can this output tell you about cost?</td>
+<td>Only <em>what is present</em>. It shows no token or credit figures — those must be measured with <code>/context</code> and <code>/usage</code> in your own environment</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: <code>copilot plugins list</code> performs discovery only and makes <strong>no model call</strong>, so running it costs nothing when the environment does allow it.</p>
+</blockquote>
+<hr>
+<h2 id="core-lab-cleanup">Core Lab Cleanup</h2>
+<p>Labs 1–6 create no product state. Before leaving:</p>
+<ul>
+<li>✅ Confirm no worksheet contains customer names, repository names, identities, or internal figures</li>
+<li>✅ Decide who keeps the completed scorecard and where it will live</li>
+<li>✅ Record any claim your group could not verify as a follow-up item for the technical accuracy owner</li>
+</ul>
+<hr>
+<h2 id="core-lab-troubleshooting">Core Lab Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Recovery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A group has no real lane to analyze</td>
+<td>Audience is pre-automation</td>
+<td>Use Lane A, B, or C from Lab 2 as the capstone subject</td>
+</tr>
+<tr>
+<td>A group argues about exact token overhead numbers</td>
+<td>Those numbers are environment-specific and unpublished</td>
+<td>Redirect to the baseline experiment in Lab 1: the answer is measured, not quoted</td>
+</tr>
+<tr>
+<td>A group wants to reuse a flag from another agent CLI</td>
+<td>Different products, different flags</td>
+<td>Use the &quot;Translating Playbooks From Other Agent CLIs&quot; table in the workshop Appendix</td>
+</tr>
+<tr>
+<td>A group finishes early</td>
+<td>Scenario is smaller than their real system</td>
+<td>Ask them to add a second lane to the capstone and compare rollback triggers</td>
+</tr>
+<tr>
+<td>Disagreement about a flag&#39;s current behavior</td>
+<td>Documentation changes</td>
+<td>Record it as a verification item; do not settle it by assertion</td>
+</tr>
+<tr>
+<td>No CLI, no network, or a live inventory demo fails</td>
+<td>Environment restriction</td>
+<td>Switch to <strong>Backup Path: Sample Inventory Output</strong> above after one attempt; state clearly that the sample is synthetic</td>
+</tr>
+</tbody></table>
+<hr>
+<details>
+<summary><h2 id="appendix-a-optional-runnable-copilot-cli-probes-45-min">Appendix A: Optional Runnable Copilot CLI Probes (45 min)</h2></summary>
+
+<blockquote>
+<p><strong>Optional. Not required for any learning objective. This appendix spends AI credits.</strong></p>
+</blockquote>
+<h3 id="-safety-and-scope">⚠️ Safety and Scope</h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Use a personal or non-production sandbox repository you own</strong></td>
+<td>Prevents any change to customer, production, or shared code</td>
+</tr>
+<tr>
+<td><strong>Never use a production automation identity</strong></td>
+<td>Spend and permissions must be attributable to you for this exercise</td>
+</tr>
+<tr>
+<td><strong>Confirm spend authorization first</strong></td>
+<td>This appendix makes a small number of paid calls</td>
+</tr>
+<tr>
+<td><strong>Keep every run bounded with <code>--max-ai-credits</code></strong></td>
+<td>The cap is a <strong>soft</strong> limit in <strong>public preview</strong> — actual usage may slightly exceed it. CLI v1.0.79 rejects values below <strong>30</strong>, and GitHub&#39;s documentation advises setting limits above 30 because most model calls cost more than 20 AI credits. This appendix uses <strong>40</strong> for every run</td>
+</tr>
+<tr>
+<td><strong>Do not grant <code>--allow-all</code> or <code>--yolo</code></strong></td>
+<td>These are session-wide permission grants intended for isolated environments only</td>
+</tr>
+<tr>
+<td><strong>Treat transcripts as sensitive</strong></td>
+<td>Session transcripts can contain repository content; store them locally and delete them at cleanup</td>
+</tr>
+<tr>
+<td><strong>Do not run <code>--share-gist</code></strong></td>
+<td>It publishes a transcript to GitHub.com and is unavailable to EMU and <code>*.ghe.com</code> users</td>
+</tr>
+<tr>
+<td><strong>Stop after Exercise A5</strong></td>
+<td>The comparison is the objective; do not extend it into real work</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Important</strong>: Command syntax reflects GitHub documentation verified on <strong>2026-08-12</strong> and <code>copilot help</code> output from <strong>CLI v1.0.79</strong>. Verify option spellings and values against <code>copilot help</code> for your installed version before running. An unknown option is <strong>rejected</strong> — the CLI prints <code>error: unknown option &#39;&lt;flag&gt;&#39;</code> and exits non-zero without making a model call. The fail-open risk is a valid flag carrying a <strong>wrong or unverified value</strong>, which parses cleanly and silently restricts nothing.</p>
+</blockquote>
+<blockquote>
+<p><strong>Shell note</strong>: Commands are given <strong>PowerShell-first (Windows)</strong>, with a bash alternative under each step. Run one or the other consistently — do not mix them in a single run. In PowerShell, output is captured with <code>| Set-Content -Encoding utf8</code> rather than <code>&gt;</code> so the file encoding is predictable.</p>
+</blockquote>
+<h3 id="prerequisites-check">Prerequisites Check</h3>
+<p><strong>Step 1 — Version (proves the CLI is installed; it does <em>not</em> prove authentication)</strong></p>
+<pre><code class="language-powershell">copilot --version
+</code></pre>
+<pre><code class="language-bash">copilot --version
+</code></pre>
+<p><strong>Step 2 — Authentication (a separate check)</strong></p>
+<p>CLI v1.0.79 exposes no non-interactive &quot;auth status&quot; subcommand, so authentication is confirmed either by an interactive login or by the first real run in Exercise A2 failing or succeeding. If you have not authenticated on this machine, do it now:</p>
+<pre><code class="language-powershell">copilot login
+</code></pre>
+<pre><code class="language-bash">copilot login
+</code></pre>
+<p>Automation-style alternative: export a supported token instead of logging in. The CLI reads <code>COPILOT_GITHUB_TOKEN</code>, then <code>GH_TOKEN</code>, then <code>GITHUB_TOKEN</code>. Never paste a token into a command line that will be captured in a transcript or shell history.</p>
+<p><strong>Step 3 — Sandbox repository and clean tree</strong></p>
+<pre><code class="language-powershell">Set-Location &lt;PATH-TO-YOUR-SANDBOX-REPOSITORY&gt;
+git status
+</code></pre>
+<pre><code class="language-bash">cd &lt;PATH-TO-YOUR-SANDBOX-REPOSITORY&gt;
+git status
+</code></pre>
+<p><strong>Step 4 — Scratch directory for outputs</strong></p>
+<pre><code class="language-powershell">New-Item -ItemType Directory -Force -Path .\.module4-probe | Out-Null
+</code></pre>
+<pre><code class="language-bash">mkdir -p ./.module4-probe
+</code></pre>
+<p>Confirm you are in a <strong>sandbox repository you own</strong> with a clean working tree before continuing.</p>
+<h4 id="setup-checkpoint">Setup Checkpoint</h4>
+<ul>
+<li>✅ <code>copilot --version</code> prints a version (installation confirmed)</li>
+<li>✅ You have either completed <code>copilot login</code> or exported a supported token (authentication addressed separately from version)</li>
+<li>✅ You are inside a non-production sandbox repository you own, and <code>git status</code> shows a clean tree</li>
+<li>✅ You have spend authorization and know your credit cap for this exercise</li>
+<li>✅ The scratch directory <code>./.module4-probe</code> exists</li>
+</ul>
+<hr>
+<h3 id="exercise-a1--establish-the-zero-cost-inventory-8-min">Exercise A1 — Establish the Zero-Cost Inventory (8 min)</h3>
+<p><strong>Objective</strong>: See exactly what this working directory would contribute to a session, without making a model call.</p>
+<ol>
+<li><p>Run the inventory from the directory your automation would use:</p>
+<pre><code class="language-powershell">copilot plugins list
+</code></pre>
+<pre><code class="language-bash">copilot plugins list
+</code></pre>
+</li>
+<li><p>Capture a machine-readable copy:</p>
+<pre><code class="language-powershell">copilot plugins list --json | Set-Content -Encoding utf8 .\.module4-probe\inventory-before.json
+</code></pre>
+<pre><code class="language-bash">copilot plugins list --json &gt; ./.module4-probe/inventory-before.json
+</code></pre>
+</li>
+<li><p>Inspect only MCP servers and instruction sources:</p>
+<pre><code class="language-powershell">copilot plugins list --kind mcp --kind instruction
+</code></pre>
+<pre><code class="language-bash">copilot plugins list --kind mcp --kind instruction
+</code></pre>
+</li>
+</ol>
+<p><strong>Expected result</strong>: A grouped listing by kind and configuration scope. <code>copilot plugins list</code> performs discovery and does <strong>not</strong> make a model call. If you cannot run it, use the <strong>Backup Path: Sample Inventory Output</strong> section earlier in this guide — the sample is illustrative and synthetic.</p>
+<p><strong>Checkpoint</strong>: You can name every MCP server, skill, plugin, and instruction source this directory would contribute — and identify at least one your automation would not need.</p>
+<blockquote>
+<p><strong>Note</strong>: Custom agents and session-scoped hooks are <strong>not</strong> covered by <code>copilot plugins list</code>; they require a live session. Do not treat this inventory as complete evidence of everything a session loads.</p>
+</blockquote>
+<p><strong>Success criteria</strong></p>
+<ul>
+<li>✅ Inventory captured to <code>inventory-before.json</code></li>
+<li>✅ At least one discovered resource identified as unnecessary for a hypothetical audit lane</li>
+<li>✅ No model call was made in this exercise</li>
+</ul>
+<hr>
+<h3 id="exercise-a2--run-a-bounded-baseline-probe-12-min">Exercise A2 — Run a Bounded Baseline Probe (12 min)</h3>
+<p><strong>Objective</strong>: Measure a minimal invocation with everything pinned and bounded.</p>
+<blockquote>
+<p><strong>Warning</strong>: This step spends AI credits. The cap is set to <strong>40</strong>: CLI v1.0.79 rejects anything below 30, and GitHub&#39;s documentation advises setting session limits above 30 because most model calls cost more than 20 AI credits. Do <strong>not</strong> raise it if the run stops — a stop is the control working.</p>
+</blockquote>
+<blockquote>
+<p><strong>Note</strong>: <code>-s</code> (<code>--silent</code>) is deliberately <strong>omitted</strong>. It prints only the agent response and suppresses run stats, which is the opposite of what a measurement probe needs. Add it only in a production lane where you have proven the JSONL channel carries the fields you depend on.</p>
+</blockquote>
+<ol>
+<li><p>Run the baseline probe:</p>
+<pre><code class="language-powershell">copilot -p &quot;Reply with the single word OK.&quot; `
+  --no-ask-user `
+  --model claude-haiku-4.5 `
+  --max-ai-credits 40 `
+  --output-format=json `
+  --share .\.module4-probe\baseline-transcript.md |
+  Set-Content -Encoding utf8 .\.module4-probe\baseline.jsonl
+</code></pre>
+<pre><code class="language-bash">copilot -p &quot;Reply with the single word OK.&quot; \
+  --no-ask-user \
+  --model claude-haiku-4.5 \
+  --max-ai-credits 40 \
+  --output-format=json \
+  --share ./.module4-probe/baseline-transcript.md \
+  &gt; ./.module4-probe/baseline.jsonl
+</code></pre>
+</li>
+<li><p>Inspect the JSONL output:</p>
+<pre><code class="language-powershell">Get-Content .\.module4-probe\baseline.jsonl -TotalCount 5
+</code></pre>
+<pre><code class="language-bash">head -n 5 ./.module4-probe/baseline.jsonl
+</code></pre>
+</li>
+<li><p>Inspect the transcript:</p>
+<pre><code class="language-powershell">Get-Content .\.module4-probe\baseline-transcript.md -TotalCount 40
+</code></pre>
+<pre><code class="language-bash">head -n 40 ./.module4-probe/baseline-transcript.md
+</code></pre>
+</li>
+<li><p>Record what your version actually reports: which fields exist, and whether any of them expose per-call cost.</p>
+</li>
+</ol>
+<p><strong>Expected result</strong>: A completed run, a JSONL file, and a Markdown transcript.</p>
+<p><strong>Checkpoint</strong>: You can state, from evidence rather than assumption, which usage fields your installed CLI emits.</p>
+<blockquote>
+<p><strong>Note</strong>: <code>--model</code> values change over time and differ by plan and host. If the model string above is not available in your environment, substitute a lightweight model you know is available and <strong>record the substitution</strong>. Treat an unrecognized model name as a configuration error to fix — do not assume the CLI substitutes another model for you; that behavior is unverified and sits in the workshop&#39;s claim ledger.</p>
+</blockquote>
+<p><strong>Success criteria</strong></p>
+<ul>
+<li>✅ The run completed within the credit cap</li>
+<li>✅ <code>baseline.jsonl</code> exists and was inspected</li>
+<li>✅ A transcript was written locally (not to a gist)</li>
+<li>✅ You recorded which usage fields are present, rather than assuming</li>
+</ul>
+<hr>
+<h3 id="exercise-a3--run-a-single-variable-comparison-12-min">Exercise A3 — Run a Single-Variable Comparison (12 min)</h3>
+<p><strong>Objective</strong>: Change <strong>exactly one</strong> factor and observe the difference.</p>
+<p>The only difference between this arm and Exercise A2 is <code>--disable-builtin-mcps</code>. Everything else — prompt, model, credit cap, and output format — stays identical, which is what makes the two runs comparable.</p>
+<ol>
+<li><p>Run the same probe with built-in MCP servers disabled:</p>
+<pre><code class="language-powershell">copilot -p &quot;Reply with the single word OK.&quot; `
+  --no-ask-user `
+  --model claude-haiku-4.5 `
+  --max-ai-credits 40 `
+  --disable-builtin-mcps `
+  --output-format=json `
+  --share .\.module4-probe\reduced-transcript.md |
+  Set-Content -Encoding utf8 .\.module4-probe\reduced.jsonl
+</code></pre>
+<pre><code class="language-bash">copilot -p &quot;Reply with the single word OK.&quot; \
+  --no-ask-user \
+  --model claude-haiku-4.5 \
+  --max-ai-credits 40 \
+  --disable-builtin-mcps \
+  --output-format=json \
+  --share ./.module4-probe/reduced-transcript.md \
+  &gt; ./.module4-probe/reduced.jsonl
+</code></pre>
+</li>
+<li><p>Compare the first 60 lines of each transcript. Write both extracts to files first — no process substitution, so the same approach works in both shells:</p>
+<pre><code class="language-powershell">Get-Content .\.module4-probe\baseline-transcript.md -TotalCount 60 |
+  Set-Content -Encoding utf8 .\.module4-probe\baseline-head.txt
+Get-Content .\.module4-probe\reduced-transcript.md -TotalCount 60 |
+  Set-Content -Encoding utf8 .\.module4-probe\reduced-head.txt
+Compare-Object (Get-Content .\.module4-probe\baseline-head.txt) (Get-Content .\.module4-probe\reduced-head.txt)
+</code></pre>
+<pre><code class="language-bash">head -n 60 ./.module4-probe/baseline-transcript.md &gt; ./.module4-probe/baseline-head.txt
+head -n 60 ./.module4-probe/reduced-transcript.md &gt; ./.module4-probe/reduced-head.txt
+diff ./.module4-probe/baseline-head.txt ./.module4-probe/reduced-head.txt
+</code></pre>
+</li>
+<li><p>Record credits, latency, and any visible context differences for both arms.</p>
+</li>
+</ol>
+<p><strong>Expected result</strong>: Two runs that differ by exactly one configuration element.</p>
+<p><strong>Checkpoint</strong>: You can state what changed between arms and what you still cannot see from this evidence.</p>
+<blockquote>
+<p><strong>Important</strong>: This comparison measures <strong>session tax on a trivial prompt only</strong>, and one run per arm is an anecdote — the workshop&#39;s baseline design calls for repetitions with median and range. It is not evidence that the reduced profile solves real tasks. Adopting it in production requires the quality-parity gate from Lab 6.</p>
+</blockquote>
+<blockquote>
+<p><strong>Note</strong>: Testing a second reduction (for example <code>--no-custom-instructions</code>) requires <strong>another arm run separately</strong>. Changing two things at once produces a result nobody can attribute — that is the defect this exercise exists to prevent. If time allows and you have spend authorization, run it as an additional arm and record it separately; otherwise write it down as a follow-up.</p>
+</blockquote>
+<p><strong>Success criteria</strong></p>
+<ul>
+<li>✅ Exactly one factor changed between the A2 and A3 arms</li>
+<li>✅ Both runs used identical model, cap, and output format</li>
+<li>✅ Both runs stayed within their credit caps</li>
+<li>✅ Differences recorded as observations, not conclusions</li>
+<li>✅ You stated explicitly what this evidence does <strong>not</strong> prove</li>
+</ul>
+<hr>
+<h3 id="exercise-a4--verify-a-permission-restriction-empirically-8-min">Exercise A4 — Verify a Permission Restriction Empirically (8 min)</h3>
+<p><strong>Objective</strong>: Prove that a restriction you configured is actually in effect — using <strong>permission</strong> denial, which uses identifiers the CLI itself documents.</p>
+<p>The run below keeps the same model, cap, and output format as A2 and A3 so its output is comparable with them. Reasoning effort remains a lane-profile decision, but this probe does not set it because support varies by model.</p>
+<ol>
+<li><p>Ask the agent to describe its tools while <code>write</code> and <code>shell</code> are denied:</p>
+<pre><code class="language-powershell">copilot -p &quot;List the names of the tools you can use. Do not use any tool to answer.&quot; `
+  --no-ask-user `
+  --model claude-haiku-4.5 `
+  --max-ai-credits 40 `
+  --deny-tool &#39;write&#39; --deny-tool &#39;shell&#39; `
+  --output-format=json `
+  --share .\.module4-probe\exclusion-transcript.md |
+  Set-Content -Encoding utf8 .\.module4-probe\exclusion.jsonl
+</code></pre>
+<pre><code class="language-bash">copilot -p &quot;List the names of the tools you can use. Do not use any tool to answer.&quot; \
+  --no-ask-user \
+  --model claude-haiku-4.5 \
+  --max-ai-credits 40 \
+  --deny-tool &#39;write&#39; --deny-tool &#39;shell&#39; \
+  --output-format=json \
+  --share ./.module4-probe/exclusion-transcript.md \
+  &gt; ./.module4-probe/exclusion.jsonl
+</code></pre>
+</li>
+<li><p>Compare the response and transcript against your intent.</p>
+</li>
+<li><p><strong>Optional, visibility layer</strong>: if you want to test <code>--available-tools</code>, first discover the tool names your installed version actually uses (from this run&#39;s output or an interactive session), then add <code>--available-tools &#39;&lt;NAME&gt;,&lt;NAME&gt;&#39;</code> with those exact names. Do <strong>not</strong> copy a tool list from a slide or another product — an unmatched name parses fine and restricts nothing.</p>
+</li>
+</ol>
+<p><strong>Expected result</strong>: Evidence about which tools the model reports as available under your restriction.</p>
+<p><strong>Checkpoint</strong>: You have first-hand evidence rather than a belief about your restriction.</p>
+<blockquote>
+<p><strong>Important</strong>: A model&#39;s self-report is <strong>corroborating evidence, not proof</strong>. The authoritative check is the enforcement behavior itself: a denied tool cannot run, and deny always wins over allow, <code>--allow-all</code>, and saved approvals. Treat any mismatch between intent and observation as a configuration bug to investigate, and verify option spelling <strong>and values</strong> with <code>copilot help</code>.</p>
+</blockquote>
+<p><strong>Success criteria</strong></p>
+<ul>
+<li>✅ The run completed within its credit cap</li>
+<li>✅ The run used the same model, effort, cap, and output format as A2 and A3</li>
+<li>✅ You compared the observed tool list against your intended restriction</li>
+<li>✅ Any tool name you used with <code>--available-tools</code> came from your own environment, not from a copied list</li>
+<li>✅ Any mismatch was recorded as a follow-up, not explained away</li>
+</ul>
+<hr>
+<h3 id="exercise-a5--record-findings-and-stop-5-min">Exercise A5 — Record Findings and Stop (5 min)</h3>
+<ol>
+<li>Write four lines in your notes:<ul>
+<li>What the inventory showed that you did not expect.</li>
+<li>What the baseline arm cost and how long it took.</li>
+<li>What changed in the reduced arm.</li>
+<li>What you still cannot determine without a real-task comparison.</li>
+</ul>
+</li>
+<li>Add any documentation mismatch you found to your team&#39;s verification backlog.</li>
+<li><strong>Stop here.</strong> Do not extend these probes into real work in this session.</li>
+</ol>
+<p><strong>Success criteria</strong></p>
+<ul>
+<li>✅ Four findings recorded</li>
+<li>✅ At least one open verification question written down</li>
+<li>✅ No further paid runs started</li>
+</ul>
+<hr>
+<h3 id="appendix-a-cleanup">Appendix A Cleanup</h3>
+<ol>
+<li><p>Remove local transcripts and outputs:</p>
+<pre><code class="language-powershell">Remove-Item -Recurse -Force .\.module4-probe
+</code></pre>
+<pre><code class="language-bash">rm -rf ./.module4-probe
+</code></pre>
+</li>
+<li><p>Confirm no repository changes were made:</p>
+<pre><code class="language-powershell">git status
+</code></pre>
+<pre><code class="language-bash">git status
+</code></pre>
+</li>
+<li><p>Check for stray Git worktrees. These exercises do not create any, but a killed run in your own automation can, and worktrees are shared Git state that outlives the process:</p>
+<pre><code class="language-powershell">git worktree list
+Get-ChildItem -Directory -Filter &quot;*.worktrees&quot; -Path .. -ErrorAction SilentlyContinue
+</code></pre>
+<pre><code class="language-bash">git worktree list
+ls -d ../*.worktrees 2&gt;/dev/null
+</code></pre>
+<p>If an abandoned worktree appears, remove it and prune the metadata (add <code>--force</code> only when you are certain no process is using it):</p>
+<pre><code class="language-powershell">git worktree remove &lt;PATH-TO-WORKTREE&gt;
+git worktree prune
+</code></pre>
+<pre><code class="language-bash">git worktree remove &lt;PATH-TO-WORKTREE&gt;
+git worktree prune
+</code></pre>
+</li>
+<li><p>Confirm no session artifacts were published externally (you did not run <code>--share-gist</code>).</p>
+</li>
+<li><p>Confirm your total spend against your authorized cap.</p>
+</li>
+</ol>
+<p><strong>Cleanup success criteria</strong></p>
+<ul>
+<li>✅ <code>./.module4-probe</code> removed</li>
+<li>✅ <code>git status</code> shows a clean working tree</li>
+<li>✅ <code>git worktree list</code> shows only the worktrees you expect</li>
+<li>✅ No gist or external share was created</li>
+<li>✅ Spend reconciled against the cap you agreed before starting</li>
+</ul>
+<hr>
+<h3 id="appendix-a-troubleshooting">Appendix A Troubleshooting</h3>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Recovery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>copilot: command not found</code> / <code>The term &#39;copilot&#39; is not recognized</code></td>
+<td>CLI not installed or not on <code>PATH</code></td>
+<td>Install Copilot CLI, or skip the appendix — it is optional</td>
+</tr>
+<tr>
+<td>The run stops citing the credit limit</td>
+<td>The soft cap was reached</td>
+<td>This is the control working. Do <strong>not</strong> raise the cap; record the observation as <code>run_cap_exhausted</code> and note that credits were spent</td>
+</tr>
+<tr>
+<td><code>Use at least 30 AI credits</code></td>
+<td>A <code>--max-ai-credits</code> value below the CLI minimum</td>
+<td>Use the appendix value of 40; the minimum accepted by CLI v1.0.79 is 30</td>
+</tr>
+<tr>
+<td>Authentication error</td>
+<td>Not logged in, or the wrong host for your enterprise</td>
+<td>Run <code>copilot login</code> (add <code>--host https://&lt;your-host&gt;</code> for data residency), or export <code>COPILOT_GITHUB_TOKEN</code>; never paste a token into a command line</td>
+</tr>
+<tr>
+<td><code>error: unknown option &#39;&lt;flag&gt;&#39;</code></td>
+<td>Option names differ in your installed version</td>
+<td>The CLI rejects unknown options and makes no model call. Run <code>copilot help</code>, use the current spelling, and record the discrepancy as a documentation-drift finding</td>
+</tr>
+<tr>
+<td>The restriction appears to have no effect</td>
+<td>A valid flag with an unmatched <strong>value</strong> (tool name, pattern, or server name)</td>
+<td>Re-check the value against your environment, not the documentation alone; prefer <code>--deny-tool &#39;write&#39;</code> / <code>--deny-tool &#39;shell&#39;</code> for enforcement and record the mismatch</td>
+</tr>
+<tr>
+<td>Error or unexpected behavior when pinning reasoning effort</td>
+<td>Configurable reasoning is available only for supported models</td>
+<td>Remove <code>--effort</code>, or choose a model documented to support configurable reasoning; record which model you used</td>
+</tr>
+<tr>
+<td>Model string not available</td>
+<td>Model availability changes over time and by plan and host</td>
+<td>Substitute a lightweight model available to you and <strong>record the substitution</strong>; treat an unrecognized model name as a configuration error, not as something the CLI will silently work around</td>
+</tr>
+<tr>
+<td>The run reports it cannot use tools in non-interactive mode</td>
+<td>Non-interactive runs need an explicit tool-permission grant in some versions</td>
+<td>These probes need no tool. If your version requires a grant, use <code>--allow-all-tools</code> <strong>together with</strong> <code>--deny-tool &#39;write&#39; --deny-tool &#39;shell&#39;</code> (deny always wins) — never <code>--allow-all</code> or <code>--yolo</code></td>
+</tr>
+<tr>
+<td>Output file is empty</td>
+<td>Redirection, encoding, or format mismatch</td>
+<td>Re-run without redirection to see the output in the terminal, then re-add flags one at a time. In PowerShell prefer <code>| Set-Content -Encoding utf8 &lt;path&gt;</code> over <code>&gt;</code></td>
+</tr>
+<tr>
+<td>PowerShell reports a parsing error on a multi-line command</td>
+<td>Backtick line continuations require no trailing spaces</td>
+<td>Paste the command as a single line, or re-copy it; do not mix bash <code>\</code> continuations into PowerShell</td>
+</tr>
+<tr>
+<td>The agent asks a clarifying question</td>
+<td><code>--no-ask-user</code> omitted</td>
+<td>Cancel, add <code>--no-ask-user</code>, and re-run</td>
+</tr>
+<tr>
+<td>A worktree or scratch directory is left behind after a cancelled run</td>
+<td>Cleanup did not execute</td>
+<td>Follow the cleanup steps above: remove <code>./.module4-probe</code>, then <code>git worktree list</code> → <code>git worktree remove</code> → <code>git worktree prune</code></td>
+</tr>
+</tbody></table>
+</details>
+
+<hr>
+<details>
+<summary><h2 id="appendix-b-printable-templates">Appendix B: Printable Templates</h2></summary>
+
+<blockquote>
+<p><strong>Why this appendix exists</strong>: the published site renders this lab guide but does not publish the <code>templates/</code> folder. The four worksheets are therefore reproduced here in full so that every learner — including anyone reading the published lab without repository access — can print or copy them. The files in <code>templates/</code> remain the editable sources; the copies below must be kept identical to them.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Used in</th>
+<th>Source file</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>B1 — Lane Profile Worksheet</td>
+<td>Lab 2</td>
+<td><code>templates/lane-profile-worksheet.md</code></td>
+</tr>
+<tr>
+<td>B2 — Cache-Key Review Worksheet</td>
+<td>Lab 4</td>
+<td><code>templates/cache-key-review-worksheet.md</code></td>
+</tr>
+<tr>
+<td>B3 — Failure Taxonomy and Breaker Worksheet</td>
+<td>Lab 5</td>
+<td><code>templates/failure-taxonomy-worksheet.md</code></td>
+</tr>
+<tr>
+<td>B4 — Fleet Lane Optimization Checklist and Canary Scorecard</td>
+<td>Lab 6 capstone</td>
+<td><code>templates/canary-scorecard.md</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: Appendix B is reference material. It adds <strong>no time</strong> to the 77-minute core lab total or to the optional 45-minute Appendix A.</p>
+</blockquote>
+<hr>
+<h3 id="b1--lane-profile-worksheet">B1 — Lane Profile Worksheet</h3>
+<blockquote>
+<p><strong>Used in</strong>: Lab 2 — one copy per lane. <strong>Source file</strong>: <code>templates/lane-profile-worksheet.md</code>.</p>
+</blockquote>
+<p>Complete one worksheet per lane. Write <code>UNKNOWN — measure</code> rather than guessing. Every restriction must be enforced by a flag or harness control, never by prompt wording alone.</p>
+<hr>
+<p><strong>Lane name</strong>: ___________________________________</p>
+<p><strong>Owner</strong>: ___________________________________  <strong>Review date</strong>: _______________</p>
+<p><strong>Verified against Copilot CLI docs on</strong>: _______________</p>
+<hr>
+<h4 id="1-purpose">1. Purpose</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Task shape (one shape per lane)</td>
+<td></td>
+</tr>
+<tr>
+<td>Definition of done (stop condition)</td>
+<td></td>
+</tr>
+<tr>
+<td>Deterministic check that proves success</td>
+<td></td>
+</tr>
+<tr>
+<td>Invocation volume per window</td>
+<td></td>
+</tr>
+<tr>
+<td>Blast radius if this lane misbehaves</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="2-model-and-reasoning">2. Model and Reasoning</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Control</th>
+<th>Value</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Model</td>
+<td><code>--model</code> / <code>COPILOT_MODEL</code> (<code>auto</code> carries a documented 10% model-cost discount on paid plans)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Reasoning effort</td>
+<td><code>--effort</code> / <code>--reasoning-effort</code> (<code>none</code>, <code>minimal</code>, <code>low</code>, <code>medium</code>, <code>high</code>, <code>xhigh</code>, <code>max</code> in CLI v1.0.79)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Context window tier</td>
+<td><code>--context</code> (<code>default</code> | <code>long_context</code>)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Escalation rule (in code, on a measured signal)</td>
+<td>Harness</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Escalation ceiling (steps per fingerprint) and where it is recorded</td>
+<td>Harness ledger</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="3-tools-and-permissions">3. Tools and Permissions</h4>
+<blockquote>
+<p>Visibility (<code>--available-tools</code> / <code>--excluded-tools</code>) controls what the model can choose from, and its values are <strong>version- and configuration-specific</strong> — verify the tool names in your own environment.
+Permission (<code>--allow-tool</code> / <code>--deny-tool</code>) controls what may run. <strong>Deny always wins</strong>, and it is the enforcement layer for any &quot;must not modify&quot; rule.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Control</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tools visible to the model (names verified in this CLI version ☐)</td>
+<td><code>--available-tools</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Tools excluded</td>
+<td><code>--excluded-tools</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Tools permitted without prompting</td>
+<td><code>--allow-tool</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Tools denied outright</td>
+<td><code>--deny-tool</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Directory scope</td>
+<td><code>-C</code>, <code>--add-dir</code></td>
+<td></td>
+</tr>
+<tr>
+<td>URL scope</td>
+<td><code>--allow-url</code>, <code>--deny-url</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Temp directory</td>
+<td><code>--disallow-temp-dir</code></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Read-only claim check</strong>: Is every &quot;must not modify&quot; statement enforced by a flag? ☐ Yes ☐ No</p>
+<hr>
+<h4 id="4-context-sources">4. Context Sources</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Control</th>
+<th>Value</th>
+<th>Evidence it is needed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MCP servers enabled</td>
+<td><code>--disable-builtin-mcps</code>, <code>--disable-mcp-server</code>, <code>--additional-mcp-config</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GitHub MCP tool scope</td>
+<td><code>--add-github-mcp-toolset</code>, <code>--add-github-mcp-tool</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Custom instructions</td>
+<td><code>--no-custom-instructions</code>, <code>COPILOT_CUSTOM_INSTRUCTIONS_DIRS</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Memory</td>
+<td><code>--enable-memory</code> (off by default in prompt mode)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Discovered inventory verified from the harness working directory</td>
+<td><code>copilot plugins list</code></td>
+<td>☐ Yes ☐ No</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="5-spend-and-fan-out-controls">5. Spend and Fan-Out Controls</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Control</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Per-run credit cap (soft limit, public preview; minimum 30 in CLI v1.0.79)</td>
+<td><code>--max-ai-credits</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Subagent concurrency cap</td>
+<td><strong>Harness scheduler</strong> (no supported CLI environment variable listed in v1.0.79 help)</td>
+<td></td>
+</tr>
+<tr>
+<td>Subagent depth cap</td>
+<td><strong>Harness scheduler</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Run wait timeout / watchdog</td>
+<td><strong>Harness</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Parallel workers per lane</td>
+<td>Harness</td>
+<td></td>
+</tr>
+<tr>
+<td>Attempts per fingerprint</td>
+<td>Harness attempt ledger</td>
+<td></td>
+</tr>
+<tr>
+<td>Behavior when a run exhausts its cap (<code>run_cap_exhausted</code>)</td>
+<td>Harness — record spend, increment attempt, require decomposition or a reviewed cap change</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="6-isolation">6. Isolation</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Control</th>
+<th>Value</th>
+<th>Status note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Working directory</td>
+<td><code>-C</code></td>
+<td></td>
+<td>Documented</td>
+</tr>
+<tr>
+<td>Configuration/state directory</td>
+<td><code>COPILOT_HOME</code></td>
+<td></td>
+<td>Documented variable; per-lane use is a harness pattern</td>
+</tr>
+<tr>
+<td>Worktree isolation</td>
+<td><code>--worktree</code></td>
+<td></td>
+<td><strong>Experimental</strong> (not listed in v1.0.79 top-level help) — fallback:</td>
+</tr>
+<tr>
+<td>Shell sandbox</td>
+<td><code>--sandbox</code></td>
+<td></td>
+<td><strong>Experimental</strong> — fallback (generic engineering practice, not a Copilot control):</td>
+</tr>
+<tr>
+<td>Secret redaction</td>
+<td><code>--secret-env-vars</code></td>
+<td></td>
+<td>Documented</td>
+</tr>
+<tr>
+<td>Cleanup rule and owner</td>
+<td>Harness</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Stray-worktree recovery step (<code>git worktree list</code> → <code>remove</code> → <code>prune</code>)</td>
+<td>Runbook</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="7-output-and-interaction-contract">7. Output and Interaction Contract</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Control</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Output format</td>
+<td><code>--output-format=json</code> (<code>-s</code> suppresses stats — keep it off measurement runs)</td>
+<td></td>
+</tr>
+<tr>
+<td>Transcript capture and retention</td>
+<td><code>--share=PATH</code></td>
+<td></td>
+</tr>
+<tr>
+<td>External sharing (default: none)</td>
+<td><code>--share-gist</code> — avoid; unavailable to EMU and <code>*.ghe.com</code></td>
+<td></td>
+</tr>
+<tr>
+<td>No clarifying questions</td>
+<td><code>--no-ask-user</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Exit-status contract (success / no-op / failure)</td>
+<td>Harness</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="8-reduction-log">8. Reduction Log</h4>
+<p>Record every reduction from the current profile and the evidence required before adoption.</p>
+<table>
+<thead>
+<tr>
+<th>Reduction</th>
+<th>Expected saving</th>
+<th>Evidence required</th>
+<th>Canary lane</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="9-sign-off">9. Sign-Off</h4>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Every field completed or marked <code>UNKNOWN — measure</code></td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Every restriction enforced by a control, not prompt text</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Flag <strong>values</strong> (tool names, patterns, server names) verified in this environment, not copied</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Preview/experimental controls have a stated fallback</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Permission changes reviewed as security changes</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Profile committed with the code that references it</td>
+<td>☐</td>
+</tr>
+</tbody></table>
+<p><strong>Reviewer</strong>: ___________________________________ <strong>Date</strong>: _______________</p>
+<hr>
+<hr>
+<h3 id="b2--cache-key-review-worksheet">B2 — Cache-Key Review Worksheet</h3>
+<blockquote>
+<p><strong>Used in</strong>: Lab 4 — one copy per cache. <strong>Source file</strong>: <code>templates/cache-key-review-worksheet.md</code>.</p>
+</blockquote>
+<p>A cache that omits an input which can change the answer will confidently serve a <strong>wrong</strong> result, and the failure looks like a saving in cost reporting. Review every cache in front of a paid call with this worksheet.</p>
+<hr>
+<p><strong>Cache name</strong>: ___________________________________</p>
+<p><strong>Lane(s) served</strong>: ___________________________________</p>
+<p><strong>Reviewer</strong>: ___________________________________  <strong>Date</strong>: _______________</p>
+<hr>
+<h4 id="1-key-completeness">1. Key Completeness</h4>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Included?</th>
+<th>If missing, the specific wrong result it can produce</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Fully rendered prompt (template, rubric, and instruction text)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Instruction / rubric version</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Model identifier</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Reasoning effort</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Context window tier (<code>default</code> / <code>long_context</code>)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Tool visibility set</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Tool permission set</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>MCP server configuration</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Relevant repository/input state (commit SHA or content hash)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Harness version</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Copilot CLI version</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Other lane-specific inputs: ____________________</td>
+<td>☐</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Highest-severity omission found</strong>: ___________________________________</p>
+<hr>
+<h4 id="2-value-and-provenance">2. Value and Provenance</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Present?</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Value schema version</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Result payload fully specified</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Produced-at timestamp</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Run ID</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Lane and profile hash</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Later accepted / rejected flag</td>
+<td>☐</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="3-lifecycle-policy">3. Lifecycle Policy</h4>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TTL</td>
+<td></td>
+</tr>
+<tr>
+<td>Invalidation triggers (profile change, rubric change, version bump)</td>
+<td></td>
+</tr>
+<tr>
+<td>Behavior when a key component is missing from an old entry</td>
+<td>Must be <strong>cache miss</strong> — confirm ☐</td>
+</tr>
+<tr>
+<td>Behavior when the value schema version is unknown</td>
+<td>Must be <strong>cache miss</strong> — confirm ☐</td>
+</tr>
+<tr>
+<td>Negative-result policy: deterministic refusals</td>
+<td></td>
+</tr>
+<tr>
+<td>Negative-result policy: transient failures (must not be cached)</td>
+<td>Confirm ☐</td>
+</tr>
+<tr>
+<td>Documented bypass flag (implemented in <strong>your harness</strong>, not a Copilot CLI option)</td>
+<td></td>
+</tr>
+<tr>
+<td>Bypass usage logged every time</td>
+<td>Confirm ☐</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="4-gate-ladder-placement">4. Gate Ladder Placement</h4>
+<p>Where does this cache sit relative to the other pre-spend gates?</p>
+<table>
+<thead>
+<tr>
+<th align="right">Order</th>
+<th>Gate</th>
+<th>Present in this lane?</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>Configuration validation</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>Ownership lease</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>Skip-if-done</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>Baseline probe</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>Attempt ledger</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>Result cache</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>Budget check (<strong>pre-spend</strong> — refusal is <code>budget_refused</code>, no credits spent)</td>
+<td>☐</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Is any gate optimistic (assumes done when uncertain)?</strong> ☐ Yes ☐ No — if yes, fix it to fail toward spending.</p>
+<hr>
+<h4 id="5-prompt-budget-review-same-input-path">5. Prompt Budget Review (same input path)</h4>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Every growing field has a hard cap</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Truncation is visible in the prompt (<code>...[truncated]</code>)</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Trim-to-budget drops sections in a defined priority order</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Oversized input produces a distinct <code>context_too_large</code> outcome instead of a call</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Files are referenced by path rather than inlined where the lane can read them</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Tool-output size behavior reviewed (documented default: output over 20 KiB is written to a file and previewed)</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Harness-level input caps defined, independent of any CLI threshold variable</td>
+<td>☐</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="6-corrected-design">6. Corrected Design</h4>
+<pre><code class="language-text">CACHE DESIGN v__
+  key         =
+  value       =
+  provenance  =
+  ttl         =
+  negative    =
+  bypass      =
+  migration   =
+</code></pre>
+<hr>
+<h4 id="7-sign-off">7. Sign-Off</h4>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Every key component reviewed with a stated failure mode</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Missing or unknown components treated as a miss</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Transient failures excluded from negative caching</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Bypass exists and is logged</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Change reviewed as a correctness change, not an optimization</td>
+<td>☐</td>
+</tr>
+</tbody></table>
+<hr>
+<hr>
+<h3 id="b3--failure-taxonomy-and-breaker-worksheet">B3 — Failure Taxonomy and Breaker Worksheet</h3>
+<blockquote>
+<p><strong>Used in</strong>: Lab 5 — one copy per lane. <strong>Source file</strong>: <code>templates/failure-taxonomy-worksheet.md</code>.</p>
+</blockquote>
+<p>Most dispatcher defects come from one mistake: treating every non-success as &quot;the model failed.&quot; Use this worksheet to classify outcomes and to size retries, parking, breakers, and dead-lettering.</p>
+<hr>
+<p><strong>Lane name</strong>: ___________________________________</p>
+<p><strong>Owner</strong>: ___________________________________  <strong>Date</strong>: _______________</p>
+<hr>
+<h4 id="1-outcome-map">1. Outcome Map</h4>
+<p>Fill one row per outcome your dispatcher can produce. The first ten are the recommended baseline set. Note that a <strong>pre-spend</strong> refusal and a <strong>post-spend</strong> cap exhaustion are different outcomes with different consequences.</p>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Detected by</th>
+<th>Retry?</th>
+<th>Backoff</th>
+<th>Counts toward breaker?</th>
+<th>Attempt counter</th>
+<th>Queue action</th>
+<th>Alert?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>success</code></td>
+<td></td>
+<td>No</td>
+<td>—</td>
+<td>No</td>
+<td>—</td>
+<td>Acknowledge and remove</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>already_done</code> / <code>already_green</code></td>
+<td></td>
+<td>No</td>
+<td>—</td>
+<td><strong>No</strong></td>
+<td>—</td>
+<td>Acknowledge with reason</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>model_failure</code></td>
+<td></td>
+<td>Bounded</td>
+<td>Exponential + jitter</td>
+<td><strong>Yes</strong></td>
+<td>Increment</td>
+<td>Retain, increment attempt</td>
+<td>On breaker trip</td>
+</tr>
+<tr>
+<td><code>context_too_large</code></td>
+<td></td>
+<td>No</td>
+<td>—</td>
+<td><strong>No</strong></td>
+<td>—</td>
+<td>Retain, flag for redesign</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>policy_denied</code></td>
+<td></td>
+<td>No</td>
+<td>—</td>
+<td><strong>No</strong></td>
+<td>—</td>
+<td>Retain, alert owner</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>service_unavailable</code></td>
+<td></td>
+<td>Yes</td>
+<td>Exponential + jitter</td>
+<td><strong>No</strong></td>
+<td>—</td>
+<td>Retain</td>
+<td>On sustained failure</td>
+</tr>
+<tr>
+<td><code>budget_refused</code> (<strong>pre-spend; no credits used</strong>)</td>
+<td></td>
+<td>After park window</td>
+<td>Fixed park</td>
+<td><strong>No</strong></td>
+<td><strong>Do not increment</strong></td>
+<td>Retain</td>
+<td>One summary line</td>
+</tr>
+<tr>
+<td><code>run_cap_exhausted</code> (<strong>post-spend; credits used</strong>)</td>
+<td></td>
+<td>Not automatically — requires decomposition or a reviewed cap change</td>
+<td>Blocked, not timed</td>
+<td><strong>No</strong></td>
+<td><strong>Increment</strong></td>
+<td>Retain, blocked until the work or cap changes</td>
+<td>Yes — to the lane owner</td>
+</tr>
+<tr>
+<td><code>invalid_config</code></td>
+<td></td>
+<td>No</td>
+<td>—</td>
+<td><strong>No</strong></td>
+<td>—</td>
+<td>Halt lane</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>landing_failed</code></td>
+<td></td>
+<td>Yes, after fix</td>
+<td>Exponential</td>
+<td><strong>No</strong></td>
+<td>Increment</td>
+<td><strong>Retain — never acknowledge</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Other: ______________</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Spend accounting check</strong>: does every <code>run_cap_exhausted</code> outcome record the credits actually consumed against the lane? ☐ Yes ☐ No</p>
+<hr>
+<h4 id="2-retry-and-backoff-design">2. Retry and Backoff Design</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Maximum attempts per fingerprint</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Backoff schedule</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Jitter</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Backoff cap</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Park window on budget refusal (pre-spend)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Required change before retrying after <code>run_cap_exhausted</code> (decompose / re-lane / reviewed cap change)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Log volume per park event (target: one summary line)</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="3-breaker-design">3. Breaker Design</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Outcomes counted toward the streak (should be <code>model_failure</code> only)</td>
+<td></td>
+</tr>
+<tr>
+<td>Consecutive failures to trip</td>
+<td></td>
+</tr>
+<tr>
+<td>Open duration (a defensible default is 20 minutes — long enough to clear a blip, short enough to protect throughput)</td>
+<td></td>
+</tr>
+<tr>
+<td>Half-open probe policy (exactly one item; close on success, reopen for another full window on failure)</td>
+<td></td>
+</tr>
+<tr>
+<td>Reset condition</td>
+<td></td>
+</tr>
+<tr>
+<td>Who is alerted when it trips</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Check</strong>: Could a routing, policy, budget, cap-exhaustion, configuration, or already-done outcome trip this breaker? ☐ Yes ☐ No
+If yes, the breaker will punish the model for the dispatcher&#39;s mistakes — fix before shipping.</p>
+<hr>
+<h4 id="4-dead-letter-policy">4. Dead-Letter Policy</h4>
+<table>
+<thead>
+<tr>
+<th>Field retained with a dead-lettered item</th>
+<th>Present?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Last outcome and error detail</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Attempt history</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Lane and profile hash</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Transcript pointer</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Fingerprint and lease history</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Owner responsible for triage</td>
+<td>☐</td>
+</tr>
+</tbody></table>
+<p><strong>Rule</strong>: an item that exhausts its attempts is <strong>moved</strong>, never deleted. Confirm ☐</p>
+<hr>
+<h4 id="5-layered-budget-check">5. Layered Budget Check</h4>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Control</th>
+<th>Configured value</th>
+<th>Enforced by</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Enterprise / organization / cost center</td>
+<td>Spending budgets, user-level budgets</td>
+<td></td>
+<td>GitHub</td>
+</tr>
+<tr>
+<td>Fleet envelope</td>
+<td>Credits per lane per window</td>
+<td></td>
+<td>Harness <code>check()</code> before every paid call</td>
+</tr>
+<tr>
+<td>Run</td>
+<td><code>--max-ai-credits</code> (soft, public preview, minimum 30 in CLI v1.0.79)</td>
+<td></td>
+<td>Copilot CLI</td>
+</tr>
+<tr>
+<td>Fan-out</td>
+<td>Subagent concurrency and depth caps</td>
+<td></td>
+<td><strong>Harness scheduler</strong> (no supported CLI environment variable in v1.0.79 help)</td>
+</tr>
+<tr>
+<td>Worker concurrency</td>
+<td>Parallel workers per lane</td>
+<td></td>
+<td>Scheduler</td>
+</tr>
+<tr>
+<td>Retries</td>
+<td>Attempts per fingerprint</td>
+<td></td>
+<td>Attempt ledger</td>
+</tr>
+</tbody></table>
+<p><strong>Honest accounting check</strong>: when one task fans out into N model calls, does the ledger record N? ☐ Yes ☐ No</p>
+<hr>
+<h4 id="6-failure-mode-review">6. Failure-Mode Review</h4>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Present today?</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Retry storm (immediate retries, or retrying non-retryable outcomes)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Automatic retry after <code>run_cap_exhausted</code> (pays the cap again and lands nothing)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Breaker misfire (non-model outcomes counted)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Attempt-ledger corruption (pre-spend refusals counted as attempts)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Silent work loss (acknowledging on ambiguous success)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Refusal log flood (per-item refusal logging)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Invisible spend (a lane that bypasses the budget module)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Park window longer than typical incident duration</td>
+<td>☐</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<hr>
+<h3 id="b4--fleet-lane-optimization-checklist-and-canary-scorecard">B4 — Fleet Lane Optimization Checklist and Canary Scorecard</h3>
+<blockquote>
+<p><strong>Used in</strong>: Lab 6 capstone — one copy per lane. <strong>Source file</strong>: <code>templates/canary-scorecard.md</code>.</p>
+</blockquote>
+<p>Use Part 1 to confirm a lane is ready to change. Use Part 2 to run the change like a production deployment.</p>
+<hr>
+<p><strong>Lane name</strong>: ___________________________________</p>
+<p><strong>Owner</strong>: ___________________________________  <strong>Date</strong>: _______________</p>
+<hr>
+<h4 id="part-1--fleet-lane-optimization-checklist">Part 1 — Fleet Lane Optimization Checklist</h4>
+<h5 id="11-measurement">1.1 Measurement</h5>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Session tax contributors inventoried for the harness working directory</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Baseline captured with median and range (not a single run)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Baseline includes a representative real-task arm, not only a trivial probe</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Recorded fields include credits, tokens, latency, retries, outcome</td>
+<td>☐</td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="12-lane-profile">1.2 Lane Profile</h5>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Model, effort, and context tier pinned explicitly</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Tool visibility restricted to what the lane needs</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Tool permissions least-privilege; deny rules present for anything the lane must never do</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>MCP servers and instruction sources justified or disabled</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Memory intentionally decided (off by default in prompt mode)</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Per-run credit cap set (soft limit, public preview; minimum 30 in CLI v1.0.79)</td>
+<td>☐</td>
+</tr>
+<tr>
+<td><code>--no-ask-user</code> set for unattended runs</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Flag <strong>values</strong> (tool names, patterns, MCP server names) verified in this environment</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Preview/experimental controls have a documented fallback</td>
+<td>☐</td>
+</tr>
+</tbody></table>
+<h5 id="13-isolation-and-ownership">1.3 Isolation and Ownership</h5>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Working directory and configuration paths resolved relative to the harness</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Per-worker workspace isolation with a unique name, a cleanup rule, and an owner</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Work fingerprint defined</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Single-owner lease with expiry</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Scopes disjoint by construction</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Attempt ledger with a hard cap</td>
+<td>☐</td>
+</tr>
+</tbody></table>
+<h5 id="14-pre-spend-gates">1.4 Pre-Spend Gates</h5>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Configuration validation before spend</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Skip-if-done with an explicit force override</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Baseline probe runs before the paid call</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Cache key complete and reviewed</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Prompt budget enforced with visible truncation and a <code>context_too_large</code> outcome</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Gates fail toward spending when uncertain</td>
+<td>☐</td>
+</tr>
+</tbody></table>
+<h5 id="15-runtime-governance">1.5 Runtime Governance</h5>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Every paid call passes through one budget <code>check()</code> and <code>record()</code></td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Fan-out recorded honestly (N calls recorded as N)</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Outcome taxonomy implemented, including separate <code>budget_refused</code> (pre-spend) and <code>run_cap_exhausted</code> (post-spend) outcomes</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Backoff with jitter; no immediate retries; no automatic retry after <code>run_cap_exhausted</code></td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Breaker counts model failures only, with a stated open duration and single-probe half-open</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Refusals park the worker and log one summary line</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Dead-letter retains context</td>
+<td>☐</td>
+</tr>
+</tbody></table>
+<h5 id="16-landing-and-telemetry">1.6 Landing and Telemetry</h5>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Output validated before acknowledgment</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Atomic write or verified merge</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Distinct signal for success, no-op, and failure</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Exit-code changes traced through every caller</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Downstream consumer confirmed to read the output</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Provenance recorded (lane, run ID, profile hash, model, cache status)</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Durable acceptance recorded after the stabilization period</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Worker restarted and new behavior confirmed in live logs</td>
+<td>☐</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="part-2--canary-scorecard">Part 2 — Canary Scorecard</h4>
+<h5 id="21-change-definition">2.1 Change Definition</h5>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Canary lane (highest volume, lowest blast radius, clear acceptance signal)</td>
+<td></td>
+</tr>
+<tr>
+<td>Single variable being changed</td>
+<td></td>
+</tr>
+<tr>
+<td>Everything explicitly held constant</td>
+<td></td>
+</tr>
+<tr>
+<td>Expected effect and mechanism</td>
+<td></td>
+</tr>
+<tr>
+<td>Reviewer for the change</td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="22-baseline-before-the-change">2.2 Baseline (before the change)</h5>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Median</th>
+<th>Range</th>
+<th>Window</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AI credits per invocation</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Latency per invocation</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Retries per accepted outcome</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Human correction time per accepted outcome</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Durable acceptance rate</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Full cost per durable accepted outcome</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="23-canary-result-after-the-change">2.3 Canary Result (after the change)</h5>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Median</th>
+<th>Range</th>
+<th>Delta vs. baseline</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AI credits per invocation</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Latency per invocation</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Retries per accepted outcome</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Human correction time per accepted outcome</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Durable acceptance rate</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Full cost per durable accepted outcome</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="24-gates">2.4 Gates</h5>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Pass condition</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Baseline captured</td>
+<td>Median and range recorded before the change</td>
+<td>☐ Pass ☐ Fail</td>
+</tr>
+<tr>
+<td>Single variable</td>
+<td>Exactly one profile element changed</td>
+<td>☐ Pass ☐ Fail</td>
+</tr>
+<tr>
+<td>Quality parity</td>
+<td>Durable acceptance and human correction do not regress beyond tolerance: ______</td>
+<td>☐ Pass ☐ Fail</td>
+</tr>
+<tr>
+<td>Cost improvement</td>
+<td>Full cost per durable accepted outcome improves</td>
+<td>☐ Pass ☐ Fail</td>
+</tr>
+<tr>
+<td>Adversarial review</td>
+<td>Integration seams, cache-key completeness, flag spelling <strong>and flag values</strong>, exit-code blast radius all reviewed</td>
+<td>☐ Pass ☐ Fail</td>
+</tr>
+<tr>
+<td>Deployed and verified</td>
+<td>New behavior confirmed in live logs after restart</td>
+<td>☐ Pass ☐ Fail</td>
+</tr>
+</tbody></table>
+<h5 id="25-rollback">2.5 Rollback</h5>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Rollback trigger (specific, pre-agreed threshold)</td>
+<td></td>
+</tr>
+<tr>
+<td>Person allowed to roll back without a meeting</td>
+<td></td>
+</tr>
+<tr>
+<td>Rollback procedure and expected time to restore</td>
+<td></td>
+</tr>
+<tr>
+<td>How the rollback is verified</td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="26-expansion">2.6 Expansion</h5>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Next lane to receive the change</td>
+<td></td>
+</tr>
+<tr>
+<td>Minimum observation window before expanding</td>
+<td></td>
+</tr>
+<tr>
+<td>Who signs off on expansion</td>
+<td></td>
+</tr>
+<tr>
+<td>Re-verification date for preview/experimental controls used</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>Report line</strong>: <em>&quot;Our canary lane is __________, our single variable is __________, and we roll back if __________.&quot;</em></p>
+<hr>
+<hr>
+</details>
+
+<hr>
+<p><em>Lab guide for GitHub Copilot AI Credits Optimization — Optional Module 4: Agent Fleet Efficiency and Cost Governance (optional; not counted in the 7-hour-10-minute core curriculum)</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/lab.astro_astro_type_script_index_0_lang.CNkWxYwE.js"></script>
