@@ -39,7 +39,7 @@
 <h2 id="workshop-overview">Workshop Overview</h2>
 <p>GitHub Copilot billing for Business and Enterprise plans is <strong>usage-based, measured in GitHub AI Credits</strong>. Before any developer optimization conversation makes sense, the people who own budgets — enterprise/org owners, billing managers, FinOps leads, and platform admins — need a precise, accurate mental model of how credits are consumed, pooled, and capped, and how to configure guardrails <strong>before</strong> a rollout scales. This module gives that audience a hands-on budget-configuration exercise, the exact billing-flow mechanics, and a repeatable administrative operating procedure to run every month.</p>
 <blockquote>
-<p><strong>Note</strong>: All facts, pricing, and screenshots referenced in this workshop reflect GitHub documentation as of <strong>2026-08-08</strong>. Pricing and included-credit amounts change over time — always verify against the live docs linked in the Appendix before delivering this workshop.</p>
+<p><strong>Verification status</strong>: Pricing and UI guidance reflect GitHub documentation verified on <strong>2026-08-08</strong>. Standard included-credit amounts, the historical promotional window, and the billed-feature list were re-verified on <strong>2026-09-01</strong>. Re-verify volatile pricing, feature status, and UI paths against the live Appendix links before every delivery.</p>
 </blockquote>
 <h3 id="learning-objectives">Learning Objectives</h3>
 <ul>
@@ -51,7 +51,7 @@
 <li>Explain where content exclusion can reduce supported context, where it is unsupported, and why developer scoping remains necessary</li>
 <li>Distinguish budget governance from outcome economics and identify who owns outcome, acceptance, and benefit definitions</li>
 <li>Draft a monthly administrative runbook covering alerts, reviews, and an exception/escalation path</li>
-<li>Identify what changes for existing customers when the June–September 2026 promotional credit window ends</li>
+<li>Normalize usage baselines from the June–September 2026 promotional credit window before comparing them with standard-period consumption</li>
 </ul>
 <h3 id="prerequisites">Prerequisites</h3>
 <table>
@@ -79,7 +79,7 @@
 </tr>
 </tbody></table>
 <blockquote>
-<p><strong>Important</strong>: No section of this workshop requires making a live paid AI request or saving a production configuration change. Every exercise can be completed on paper with the supplied worksheets. If you do configure a real budget during Section 3, enable <strong>Stop usage when budget limit is reached</strong> only in a sandbox/test scope — a live hard-stop budget can immediately block production users.</p>
+<p><strong>Important</strong>: No section of this workshop requires making a live paid AI request or saving a production configuration change. Every exercise can be completed on paper with the supplied worksheets. If you do configure a real budget during Section 3, use only a sandbox/test scope, enable <strong>Stop usage when budget limit is reached</strong> only there, and delete or disable the test configuration before the session ends. A live hard-stop budget can immediately block production users.</p>
 </blockquote>
 <h3 id="role-based-paths-no-admin-rights-start-here">Role-Based Paths (No Admin Rights? Start Here)</h3>
 <p>Not every attendee will have organization owner, enterprise owner, or billing manager access. Use this table to route yourself through the hands-on exercise in Section 3:</p>
@@ -181,15 +181,15 @@
 <li><strong>Additional usage (paid overage/metered billing) is enabled by default</strong> for organizations and enterprises — an admin must explicitly disable the <strong>AI credits paid usage</strong> policy to prevent any spend beyond included credits</li>
 </ul>
 <blockquote>
-<p><strong>Important — Promotional period ends 2026-09-01</strong>: Existing Business/Enterprise customers receive a higher promotional allotment from <strong>June 1 – September 1, 2026</strong>: <strong>3,000 credits/user/month (Business)</strong> and <strong>7,000 credits/user/month (Enterprise)</strong>. Starting <strong>September 1, 2026</strong>, allotments return to the <strong>standard 1,900 / 3,900</strong> amounts. Use the promotional window to baseline usage and size budgets <em>before</em> the pool shrinks — do not treat the promotional numbers as your permanent capacity.</p>
+<p><strong>Important — Historical promotional window</strong>: From <strong>June 1 – September 1, 2026</strong>, existing Business/Enterprise customers received <strong>3,000 credits/user/month (Business)</strong> and <strong>7,000 credits/user/month (Enterprise)</strong>. The standard <strong>1,900 / 3,900</strong> amounts apply from <strong>September 1, 2026</strong>. Normalize promotional-period exports before comparing them with standard-period usage or using them to size future budgets.</p>
 </blockquote>
 <h3 id="included-credits-at-a-glance">Included Credits at a Glance</h3>
 <table>
 <thead>
 <tr>
 <th>Plan</th>
-<th align="right">Standard (from Sep 1, 2026)</th>
-<th align="right">Promo (Jun 1 – Sep 1, 2026)</th>
+<th align="right">Standard (effective Sep 1, 2026)</th>
+<th align="right">Historical promo (Jun 1 – Sep 1, 2026)</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -254,7 +254,7 @@
 <ul>
 <li>✅ You calculated the standard-period pool as 950,000 credits</li>
 <li>✅ You calculated the promotional-period pool as 1,500,000 credits</li>
-<li>✅ You can state the dollar-value difference (550,000 credits × $0.01 = $5,500) and why it matters for September 1 planning</li>
+<li>✅ You can state the dollar-value difference (550,000 credits × $0.01 = $5,500) and why historical promotional-period baselines must be normalized for post-September 1 planning</li>
 </ul>
 </details>
 
@@ -262,7 +262,7 @@
 <ul>
 <li>Which of your currently used Copilot features fall outside the credit-billed list (completions/NES), and does that change how you&#39;ll message developers about &quot;cost&quot;?</li>
 <li>What&#39;s the business risk of leaving &quot;AI credits paid usage&quot; enabled with no budget guardrails configured at all?</li>
-<li>How should your organization use the June–September 2026 promotional window before the standard pool takes effect?</li>
+<li>How should your organization normalize June–September 2026 promotional-period data before comparing it with the standard pool?</li>
 </ul>
 <hr>
 <h2 id="2-budget-controls--billing-flow-25-min">2. Budget Controls &amp; Billing Flow (25 min)</h2>
@@ -304,6 +304,7 @@
 <li>Those higher-level budgets hard-stop <strong>only if &quot;Stop usage when budget limit is reached&quot; is enabled</strong> — this is <strong>off by default</strong>, meaning an unconfigured spending budget is an alert, not a guardrail</li>
 <li>There is <strong>no automatic fallback to a cheaper model</strong> when a budget is exhausted — the user is simply blocked</li>
 <li><strong>Cost centers have two distinct controls, not one</strong>: a cost center&#39;s <strong>included-usage allocation</strong> is simply the sum of its members&#39; included pooled credits (part of the shared-pool phase); a <strong>cost-center budget</strong> is a separate spending-limit construct that only governs the metered phase after that allocation is exhausted. Sizing one does not automatically size the other</li>
+<li>By default, a cost center&#39;s metered usage also counts against the <strong>enterprise budget</strong>. Enabling <strong>cost center exclusion</strong> removes that usage from the enterprise cap, so the team&#39;s metered spending is governed only by its own cost-center budget</li>
 </ul>
 <h3 id="enterprise-teams-as-the-membership-layer">Enterprise Teams as the Membership Layer</h3>
 <p>Enterprise teams provide a scalable way to align identity, Copilot access, and cost attribution without maintaining individual user lists in multiple places.</p>
@@ -389,23 +390,30 @@
 </tr>
 </tbody></table>
 <blockquote>
+<p><strong>Cost center exclusion</strong>: Keep the default behavior when cost-center usage should count against the enterprise cap. Enable exclusion only when a team has independent spending authority; its metered charges will no longer count against, or be blocked by, the enterprise budget and must be governed by its own cost-center budget.</p>
+</blockquote>
+<blockquote>
 <p><strong>Important</strong>: The enterprise budget is <strong>not</strong> your total monthly bill. Your <strong>maximum possible spend</strong> is <strong>license fees + the enterprise budget</strong>. Example: 400 Copilot Business licenses at $19/month = $7,600 in license fees. A $5,000 enterprise budget means your maximum bill is $12,600 — not $5,000.</p>
 </blockquote>
 <h3 id="alerts">Alerts</h3>
 <table>
 <thead>
 <tr>
-<th>Alert Type</th>
-<th>Thresholds</th>
+<th>Signal</th>
+<th>Behavior</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><strong>Included-usage alerts</strong></td>
-<td>Fire at 90% and 100% of included/pooled credits</td>
+<td><strong>AI-credit pool usage</strong></td>
+<td>Monitor the AI usage dashboard or export; GitHub&#39;s documented included-usage alert products do not currently include Copilot AI credits</td>
 </tr>
 <tr>
-<td><strong>Budget alerts</strong></td>
+<td><strong>Dollar spending-budget alerts</strong></td>
 <td>Fire at 75%, 90%, and 100% of the configured budget amount</td>
+</tr>
+<tr>
+<td><strong>User-level budget alerts</strong></td>
+<td>Availability is inconsistent; do not rely on these as the only signal — also monitor at the cost-center or enterprise level</td>
 </tr>
 </tbody></table>
 <h3 id="billing-flow-diagram">Billing Flow Diagram</h3>
@@ -420,7 +428,7 @@
 <li><strong>User budget check</strong> — the most specific active ULB (individual &gt; cost-center &gt; universal) is evaluated first. A <strong>$0 or exhausted ULB always blocks</strong>, regardless of pool or policy state — there is no fallback to a cheaper model.</li>
 <li><strong>Shared pool</strong> — if the user&#39;s ULB has room, the request draws from the pooled AI credits (org/enterprise, resets monthly at 00:00 UTC, no rollover). While the pool has credits, the request is served with <strong>no additional metered charge</strong> beyond the license fee.</li>
 <li><strong>Paid usage policy</strong> — once the pool is exhausted, the <strong>&quot;AI credits paid usage&quot;</strong> policy (enabled by default) decides whether metered usage even begins. If disabled, the user is <strong>blocked until the next billing cycle</strong>.</li>
-<li><strong>Spending budget / hard stop</strong> — if metered usage is allowed, the <strong>applicable spending budget</strong> (cost-center, organization, or enterprise) determines whether the charge goes through. It only hard-stops if <strong>&quot;Stop usage when budget limit is reached&quot;</strong> was explicitly enabled (off by default) — otherwise the charge is billed as overage and only an alert fires.</li>
+<li><strong>Spending budget / hard stop</strong> — if metered usage is allowed, the <strong>applicable spending budget</strong> (cost-center, organization, or enterprise) determines whether the charge goes through. By default, cost-center metered usage also counts against the enterprise budget; an excluded cost center is governed only by its own budget. A budget only hard-stops if <strong>&quot;Stop usage when budget limit is reached&quot;</strong> was explicitly enabled (off by default) — otherwise the charge is billed as overage and only an alert fires.</li>
 </ol>
 <details>
 <summary><h3 id="-hands-on-scenario-trace-8-min">🧪 Hands-On: Scenario Trace (8 min)</h3></summary>
@@ -469,8 +477,9 @@
 <li>Under <strong>Resources</strong>, select the enterprise team that should fund and track the group&#39;s usage</li>
 <li>Confirm the team is not already assigned to another cost center; reassignment moves the resource</li>
 <li>Open <strong>Budgets and alerts</strong>, then create the appropriate cost-center ULB and metered spending budget</li>
+<li>Review <strong>cost center exclusion</strong>; keep the default unless this team has independent spending authority outside the enterprise cap</li>
 <li>Set the <strong>amount</strong> — for a universal ULB, set it above the standard per-seat included-credit equivalent ($19 for 1,900 Business credits / $39 for 3,900 Enterprise credits); these are not license prices</li>
-<li>Configure <strong>alerts</strong>: included-usage alerts fire at 90% and 100%; budget alerts fire at 75%, 90%, and 100%</li>
+<li>Configure <strong>dollar spending-budget alerts</strong> at 75%, 90%, and 100%; monitor AI-credit pool usage in the AI usage dashboard/export, and do not rely on user-level budget alerts as the only signal</li>
 <li>Where available, enable <strong>Stop usage when budget limit is reached</strong> to convert the budget into a hard stop</li>
 </ol>
 <details>
@@ -482,12 +491,14 @@
 <li><strong>Admin path</strong>: If you have organization/enterprise billing access, open <strong>Billing &amp; Licensing → Budgets and alerts</strong> and follow the demo steps above in a <strong>test/sandbox scope</strong>. Do <strong>not</strong> enable hard stop on a production scope, and do <strong>not</strong> save the configuration against a production scope during this exercise.</li>
 <li><strong>Simulation path</strong>: If you do not have admin access, or as the Observer role regardless of access, complete the <strong>Budget Design Worksheet</strong> in the LAB guide instead — you will design the same budget on paper using the same fields the UI asks for.</li>
 </ul>
+<p>If the Admin path is unavailable because access, navigation, or prerequisite resources differ, switch immediately to the Simulation path.</p>
 <p><strong>Step 2 — Design your budget</strong> (both roles, both paths):</p>
 <p>Fill in the <strong>Budget Design Worksheet</strong> (see LAB) for a fictional <strong>500-user Copilot Business organization</strong>:</p>
 <ul>
 <li>Universal ULB amount (must be above $19)</li>
 <li>At least one individual ULB override, with a reason</li>
 <li>A cost-center included-usage allocation vs. a separate cost-center spending budget (explain the difference in your own words)</li>
+<li>Whether cost center exclusion is enabled and who approved the independent spending authority</li>
 <li>The enterprise team used to maintain cost-center membership and whether it is manually managed or IdP-synced</li>
 <li>Whether Copilot Business licenses are assigned directly to the enterprise team</li>
 <li>A single-cost-center ownership check before assigning the enterprise team</li>
@@ -495,12 +506,14 @@
 <li>Whether &quot;Stop usage when budget limit is reached&quot; is enabled, and why</li>
 </ul>
 <p><strong>Step 3 — Compare</strong>: Admin and Observer compare worksheet answers. Discuss any differences in the ULB amount chosen and why.</p>
+<p><strong>Step 4 — Clean up</strong>: If the Admin saved any sandbox/test budget or cost-center configuration, delete or disable it before ending the exercise and confirm that no test hard stop remains active.</p>
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
 <li>✅ You can state the precedence order of the three ULB types from memory</li>
 <li>✅ You can explain why a $0 ULB blocks a user immediately, while an unconfigured enterprise budget does not</li>
 <li>✅ Your worksheet&#39;s universal ULB is set above the standard per-seat included-credit equivalent, not an assumed license price</li>
 <li>✅ You can explain the difference between a cost center&#39;s included-usage allocation and its spending budget</li>
+<li>✅ You can explain when cost-center usage counts against the enterprise budget and what changes when cost center exclusion is enabled</li>
 <li>✅ You can explain how enterprise-team membership automates cost-center membership without automatically sizing the budgets</li>
 <li>✅ (Admin path only) You have located the Budgets and alerts screen and can name all five fields in the &quot;New budget&quot; flow, without saving a production change</li>
 </ul>
@@ -519,7 +532,7 @@
 <h3 id="key-points">Key Points</h3>
 <ul>
 <li>A budget configuration is not &quot;set and forget&quot; — it needs a recurring <strong>administrative runbook</strong> so guardrails stay correctly sized as usage patterns change</li>
-<li><strong>Monthly cadence</strong> should cover: reviewing alert history (included-usage and budget alerts), checking blocked-user counts, reviewing metered overage, and re-validating cost-center included-usage allocations against current headcount</li>
+<li><strong>Monthly cadence</strong> should cover: reviewing AI-credit pool usage and dollar spending-budget alert history, checking blocked-user counts, reviewing metered overage, and re-validating cost-center included-usage allocations against current headcount</li>
 <li>An <strong>exception/escalation path</strong> should be lightweight — a single request form or ticket type — so a legitimate power user or team isn&#39;t blocked for days waiting on a manual budget increase</li>
 </ul>
 <h3 id="budgets-govern-spend-outcome-economics-governs-value">Budgets Govern Spend; Outcome Economics Governs Value</h3>
@@ -559,7 +572,7 @@
 </thead>
 <tbody><tr>
 <td>1</td>
-<td>Review included-usage alerts (90%/100%) and budget alerts (75%/90%/100%) fired during the prior cycle</td>
+<td>Review AI-credit pool usage in the dashboard/export and dollar spending-budget alerts (75%/90%/100%); review user-level alert history where available, but do not use it as the only signal</td>
 <td>Billing Manager</td>
 </tr>
 <tr>
@@ -574,7 +587,7 @@
 </tr>
 <tr>
 <td>4</td>
-<td>Review metered overage against the enterprise/org spending budget; confirm hard-stop status is still the intended setting</td>
+<td>Review metered overage against the enterprise/org spending budget; confirm hard-stop and cost-center-exclusion choices still match approved spending authority</td>
 <td>Enterprise/Org Owner</td>
 </tr>
 <tr>
@@ -633,7 +646,7 @@
 <ul>
 <li>&quot;What happens to a user mid-task when a budget hard-stops them?&quot;</li>
 <li>&quot;Can we see cost by cost center versus by individual user in the same report?&quot;</li>
-<li>&quot;What changes for us specifically on September 1, 2026?&quot;</li>
+<li>&quot;How should we compare promotional-period baselines with standard-period usage after September 1, 2026?&quot;</li>
 <li>&quot;Does disabling &#39;AI credits paid usage&#39; affect the shared pool, or only metered overage?&quot;</li>
 </ul>
 <hr>
@@ -675,6 +688,14 @@
 <td>_______</td>
 </tr>
 <tr>
+<td>Cost center exclusion enabled? (Y/N)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Independent spending authority approver/reason (if enabled)</td>
+<td>_______</td>
+</tr>
+<tr>
 <td>Enterprise team assigned to the cost center</td>
 <td>_______</td>
 </tr>
@@ -703,12 +724,16 @@
 <td>_______</td>
 </tr>
 <tr>
-<td>Included-usage alert thresholds you&#39;ll keep active</td>
-<td>90% / 100% (fixed)</td>
+<td>AI-credit pool monitoring source (dashboard or export)</td>
+<td>_______</td>
 </tr>
 <tr>
-<td>Budget alert thresholds you&#39;ll keep active</td>
+<td>Dollar spending-budget alert thresholds</td>
 <td>75% / 90% / 100% (fixed)</td>
+</tr>
+<tr>
+<td>Cost-center or enterprise fallback signal for inconsistent user-level alerts</td>
+<td>_______</td>
 </tr>
 </tbody></table>
 <h3 id="key-urls">Key URLs</h3>
@@ -773,17 +798,18 @@
 </tr>
 </tbody></table>
 <blockquote>
-<p><strong>Note</strong>: All dated facts (pricing, promotional-window dates, included-credit amounts) reflect the docs as verified on <strong>2026-08-08</strong>. Re-verify against these live URLs before every delivery of this workshop.</p>
+<p><strong>Verification status</strong>: Pricing and UI guidance reflect docs verified on <strong>2026-08-08</strong>. Standard included-credit amounts, historical promotional-window dates, and the billed-feature list were re-verified on <strong>2026-09-01</strong>. Re-verify against these live URLs before every delivery.</p>
 </blockquote>
 <h3 id="instructor-preflight-checklist">Instructor Preflight Checklist</h3>
 <ul>
 <li><input disabled="" type="checkbox"> Re-verify the included-credit amounts and promotional-window dates (Section 1) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">Usage-based billing</a> page</li>
 <li><input disabled="" type="checkbox"> Re-verify the billed-feature list, including Copilot Spaces, GitHub Spark, and third-party coding agents, against the same usage-based billing page</li>
-<li><input disabled="" type="checkbox"> Re-verify ULB precedence, hard-stop behavior, and alert thresholds (Section 2) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/budgets-for-usage-based-billing">Budgets for usage-based billing</a> page</li>
+<li><input disabled="" type="checkbox"> Re-verify ULB precedence, hard-stop behavior, and cost center exclusion against <a href="https://docs.github.com/en/copilot/concepts/billing/budgets-for-usage-based-billing">Budgets for usage-based billing</a>, then verify supported alert types and thresholds against <a href="https://docs.github.com/en/billing/concepts/budgets-and-alerts">Budgets and alerts</a></li>
 <li><input disabled="" type="checkbox"> Confirm the current enterprise-team licensing and cost-center resource behavior against the live <a href="https://docs.github.com/en/enterprise-cloud@latest/admin/managing-accounts-and-repositories/managing-users-in-your-enterprise/create-enterprise-teams">Creating enterprise teams</a> and <a href="https://docs.github.com/en/billing/how-tos/products/use-cost-centers">Using cost centers</a> pages</li>
 <li><input disabled="" type="checkbox"> Re-verify content-exclusion scope and unsupported surfaces against the live <a href="https://docs.github.com/en/copilot/how-tos/configure-content-exclusion/exclude-content-from-copilot">Excluding content from GitHub Copilot</a> page</li>
 <li><input disabled="" type="checkbox"> Confirm which attendees have organization/enterprise billing access ahead of time so you can pre-assign Admin-path vs. Simulation-path (Observer) roles for Section 3</li>
 <li><input disabled="" type="checkbox"> If demonstrating the live Budgets and alerts UI, use a sandbox/test organization — never enable hard stop, and never save a production change, during the live demo</li>
+<li><input disabled="" type="checkbox"> If any sandbox/test budget or cost center will be saved, plan who will delete or disable it and verify that no test hard stop remains active after the exercise</li>
 <li><input disabled="" type="checkbox"> Print or share the Budget Design Worksheet (LAB guide) in case attendees prefer a paper artifact</li>
 <li><input disabled="" type="checkbox"> Bookmark all Key URLs above in a dedicated browser folder for quick reference during Q&amp;A</li>
 <li><input disabled="" type="checkbox"> Test screen sharing shows the Billing &amp; Licensing UI clearly before the session starts</li>

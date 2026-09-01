@@ -8,7 +8,7 @@
 <p>This lab guide contains all the hands-on exercises from <strong>Module 1: Administration &amp; Budget Guardrails</strong>, part of the <strong>GitHub Copilot AI Credits Optimization</strong> curriculum. Each lab maps to a workshop section and builds on the previous one. Complete them in order.</p>
 <p>This module — and this lab guide — can be delivered <strong>standalone</strong>. It does not depend on the labs for Module 2 (Developer Token Optimization Patterns, see the <a href="../../github-copilot-token-developer/workshop/">Module 2 workshop</a>) or Module 3 (FinOps Reporting &amp; Chargeback/Showback, see the <a href="../../github-copilot-token-finops/workshop/">Module 3 workshop</a>). For the complete learning path, see the <a href="../../github-copilot-token/">full curriculum overview</a>.</p>
 <blockquote>
-<p><strong>Important</strong>: No lab in this guide requires making a live paid AI request, and <strong>none require saving a production configuration change</strong>. Every calculation and configuration can be completed with the worked examples and the supplied worksheets. If you do configure a real budget during Lab 3, enable <strong>Stop usage when budget limit is reached</strong> only in a sandbox/test scope — a live hard-stop budget can immediately block production users.</p>
+<p><strong>Important</strong>: No lab in this guide requires making a live paid AI request, and <strong>none require saving a production configuration change</strong>. Every calculation and configuration can be completed with the worked examples and the supplied worksheets. If you do configure a real budget during Lab 3, use only a sandbox/test scope, enable <strong>Stop usage when budget limit is reached</strong> only there, and delete or disable the test configuration before the session ends. A live hard-stop budget can immediately block production users.</p>
 </blockquote>
 <h3 id="prerequisites">Prerequisites</h3>
 <table>
@@ -37,6 +37,18 @@
 </tbody></table>
 <h3 id="choosing-your-path">Choosing Your Path</h3>
 <p>Every lab in this guide has an <strong>Admin path</strong> (live UI, sandbox/test scope only, never saved to production) and a <strong>Simulation path</strong> (paper worksheet, driven by the <strong>Observer</strong> role). If you do not have organization/enterprise billing access, use the Simulation path. You will still produce a complete worksheet artifact either way, and the two roles are designed to compare notes at the end of each lab.</p>
+<h3 id="setup">Setup</h3>
+<ol>
+<li>Choose the <strong>Admin path</strong> only if you can open the sandbox/test enterprise or organization used for the workshop; otherwise choose the <strong>Simulation path</strong>.</li>
+<li>Admin-path participants should confirm they can open <strong>Billing &amp; Licensing</strong> and that the designated sandbox cost center and eligible enterprise team are available. Do not create or reassign production resources for this lab.</li>
+<li>Simulation-path participants should open this guide and prepare a copy of the Budget Design Worksheet in Lab 3.</li>
+</ol>
+<p><strong>Setup checkpoint</strong>:</p>
+<ul>
+<li>✅ Every participant has selected the Admin or Simulation path</li>
+<li>✅ Admin-path participants can open the sandbox/test Billing &amp; Licensing settings and have confirmed the prerequisite resources</li>
+<li>✅ Simulation-path participants can edit or print the worksheet</li>
+</ul>
 <hr>
 <details>
 <summary><h2 id="lab-1-included-credit-math-check-5-min">Lab 1: Included-Credit Math Check (5 min)</h2></summary>
@@ -53,8 +65,8 @@
 <thead>
 <tr>
 <th>Plan</th>
-<th align="right">Standard (from Sep 1, 2026)</th>
-<th align="right">Promo (Jun 1 – Sep 1, 2026)</th>
+<th align="right">Standard (effective Sep 1, 2026)</th>
+<th align="right">Historical promo (Jun 1 – Sep 1, 2026)</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -85,7 +97,7 @@
 <ul>
 <li>✅ You calculated the standard-period pool as 950,000 credits</li>
 <li>✅ You calculated the promotional-period pool as 1,500,000 credits</li>
-<li>✅ You can state the dollar-value difference ($5,500) and why it matters for September 1, 2026 planning</li>
+<li>✅ You can state the dollar-value difference ($5,500) and why historical promotional-period baselines must be normalized for post-September 1 planning</li>
 </ul>
 </details>
 
@@ -110,7 +122,7 @@
 <li><strong>User budget check</strong> — most specific active ULB (individual &gt; cost-center &gt; universal). A $0 or exhausted ULB always blocks — no fallback.</li>
 <li><strong>Shared pool</strong> — served with no additional metered charge beyond the license fee while the pool (org/enterprise, resets monthly at 00:00 UTC, no rollover) has credits.</li>
 <li><strong>Paid usage policy</strong> — once the pool is exhausted, the &quot;AI credits paid usage&quot; policy (default: enabled) decides whether metered usage begins.</li>
-<li><strong>Spending budget / hard stop</strong> — cost-center/org/enterprise budget hard-stops only if &quot;Stop usage when budget limit is reached&quot; is enabled (off by default); otherwise it&#39;s alert-only.</li>
+<li><strong>Spending budget / hard stop</strong> — cost-center/org/enterprise budget hard-stops only if &quot;Stop usage when budget limit is reached&quot; is enabled (off by default); otherwise it&#39;s alert-only. By default, cost-center metered usage also counts against the enterprise budget; an excluded cost center is governed only by its own budget.</li>
 </ol>
 <h3 id="steps">Steps</h3>
 <p>For each scenario, write down <strong>where</strong> the request is blocked (if at all) and <strong>why</strong>:</p>
@@ -179,9 +191,10 @@
 <h3 id="steps">Steps</h3>
 <p><strong>Step 1 — Choose your path</strong>:</p>
 <ul>
-<li><strong>Admin path</strong>: Open <strong>Organization/Enterprise Settings → Billing &amp; Licensing → Budgets and alerts</strong>. Click <strong>New budget</strong>. Walk through the fields (Budget Type → Bundled AI credits budget → scope → amount → alerts → stop option) <strong>without saving a production change</strong> — use a designated sandbox/test scope only.</li>
+<li><strong>Admin path</strong>: Confirm the designated sandbox cost center and enterprise team under <strong>Enterprise → Billing &amp; Licensing → Cost centers</strong>, then open <strong>Budgets and alerts</strong> and click <strong>New budget</strong>. Walk through the fields (Budget Type → Bundled AI credits budget → scope → amount → alerts → stop option) <strong>without saving a production change</strong> — use a designated sandbox/test scope only.</li>
 <li><strong>Simulation path</strong>: Skip directly to Step 2 and fill in the worksheet as if you were configuring the UI.</li>
 </ul>
+<p>If the Admin path is unavailable because access, navigation, plan features, or prerequisite resources differ, switch immediately to the Simulation path.</p>
 <p><strong>Step 2 — Complete the Budget Design Worksheet</strong>:</p>
 <p>Design a budget configuration for a fictional <strong>500-user Copilot Business organization</strong>. Fill in every field:</p>
 <table>
@@ -220,6 +233,14 @@
 <td>_______</td>
 </tr>
 <tr>
+<td>Cost center exclusion enabled? (Y/N)</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Independent spending authority approver/reason (if enabled)</td>
+<td>_______</td>
+</tr>
+<tr>
 <td>Enterprise team assigned to the cost center</td>
 <td>_______</td>
 </tr>
@@ -248,21 +269,27 @@
 <td>_______</td>
 </tr>
 <tr>
-<td>Included-usage alert thresholds you&#39;ll keep active</td>
-<td>90% / 100% (fixed)</td>
+<td>AI-credit pool monitoring source (dashboard or export)</td>
+<td>_______</td>
 </tr>
 <tr>
-<td>Budget alert thresholds you&#39;ll keep active</td>
+<td>Dollar spending-budget alert thresholds</td>
 <td>75% / 90% / 100% (fixed)</td>
+</tr>
+<tr>
+<td>Cost-center or enterprise fallback signal for inconsistent user-level alerts</td>
+<td>_______</td>
 </tr>
 </tbody></table>
 <p><strong>Step 3 — Compare</strong>: Admin and Observer compare worksheet answers. Discuss any difference in the universal ULB amount each chose, and whether the cost-center included-usage allocation vs. spending budget distinction was filled in correctly.</p>
+<p><strong>Step 4 — Clean up</strong>: If you saved any sandbox/test budget or cost-center configuration, delete or disable it before ending the exercise. Confirm that no test hard stop remains active. If you only viewed the UI or completed the Simulation path, no cleanup is required.</p>
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
 <li>✅ You can state the precedence order of the three ULB types (individual &gt; cost-center &gt; universal) from memory</li>
 <li>✅ You can explain why a $0 ULB blocks a user immediately, while an unconfigured enterprise budget does not</li>
 <li>✅ Your worksheet&#39;s universal ULB is set above the standard per-seat included-credit equivalent ($19 for 1,900 Business credits / $39 for 3,900 Enterprise credits), not an assumed license price</li>
 <li>✅ You can explain the difference between a cost center&#39;s included-usage allocation and its spending budget</li>
+<li>✅ You can explain when cost-center usage counts against the enterprise budget and what changes when cost center exclusion is enabled</li>
 <li>✅ You can explain how enterprise-team membership automates cost-center membership without automatically sizing the budgets</li>
 <li>✅ (Admin path only) You have located the Budgets and alerts screen and can name all five fields in the &quot;New budget&quot; flow, without saving a production change</li>
 </ul>
@@ -290,7 +317,7 @@
 </thead>
 <tbody><tr>
 <td>1</td>
-<td>Review included-usage alerts (90%/100%) and budget alerts (75%/90%/100%) fired during the prior cycle</td>
+<td>Review AI-credit pool usage in the dashboard/export and dollar spending-budget alerts (75%/90%/100%); review user-level alert history where available, but do not use it as the only signal</td>
 <td>Billing Manager</td>
 </tr>
 <tr>
@@ -305,7 +332,7 @@
 </tr>
 <tr>
 <td>4</td>
-<td>Review metered overage against the enterprise/org spending budget; confirm hard-stop status is still the intended setting</td>
+<td>Review metered overage against the enterprise/org spending budget; confirm hard-stop and cost-center-exclusion choices still match approved spending authority</td>
 <td>Enterprise/Org Owner</td>
 </tr>
 <tr>
@@ -481,13 +508,15 @@
 <td>Only if hard stop enabled</td>
 </tr>
 </tbody></table>
+<h3 id="cost-center-exclusion">Cost Center Exclusion</h3>
+<p>By default, cost-center metered usage also counts against the enterprise budget. Enable <strong>cost center exclusion</strong> only when the team has independent spending authority. Once excluded, that team&#39;s metered charges do not count against, and are not blocked by, the enterprise budget; its own cost-center budget becomes the spending cap.</p>
 <h3 id="included-credits-at-a-glance">Included Credits at a Glance</h3>
 <table>
 <thead>
 <tr>
 <th>Plan</th>
-<th align="right">Standard (from Sep 1, 2026)</th>
-<th align="right">Promo (Jun 1 – Sep 1, 2026)</th>
+<th align="right">Standard (effective Sep 1, 2026)</th>
+<th align="right">Historical promo (Jun 1 – Sep 1, 2026)</th>
 </tr>
 </thead>
 <tbody><tr>
