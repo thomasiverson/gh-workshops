@@ -2,7 +2,8 @@
 <link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
 <style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
 </style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization--module-2-developer-efficiency-workshop">GitHub Copilot AI Credits Optimization — Module 2: Developer Efficiency Workshop</h1>
-<p><strong>Duration</strong>: ~135 minutes (including one 10-minute break)<br><strong>Format</strong>: Standalone Presentation + Live Demos + Hands-On Exercises<br><strong>Audience</strong>: Developers, technical leads, Copilot champions<br><strong>Focus</strong>: Interface selection, context and instruction efficiency, session lifecycle and cache awareness, and model strategy — the developer-level habits that reduce AI-credit consumption without sacrificing quality</p>
+<p><strong>Duration</strong>: ~135 minutes (including one 10-minute break)<br><strong>Format</strong>: Standalone Presentation + Hands-On Exercises + Optional Live Instrumentation
+<strong>Audience</strong>: Developers, technical leads, Copilot champions<br><strong>Focus</strong>: Interface selection, context/customization and instruction efficiency, session lifecycle and cache awareness, and model strategy with a before/after evaluation loop — the developer-level habits that reduce AI-credit consumption without sacrificing quality</p>
 <blockquote>
 <p><strong>Note</strong>: This is <strong>Module 2 — Developer Efficiency</strong> of the <strong>GitHub Copilot AI Credits Optimization</strong> curriculum. It is fully <strong>standalone</strong> — you can run it on its own with a developer-only audience, no admin access required. It is also designed to slot into the full curriculum alongside:</p>
 <ul>
@@ -15,20 +16,24 @@
 <h2 id="workshop-overview">Workshop Overview</h2>
 <p>GitHub Copilot billing for Business and Enterprise plans is usage-based, measured in <strong>GitHub AI Credits</strong>. Module 1 covers the admin guardrails (budgets, policies) that bound total spend. This module — <strong>Developer Efficiency</strong> — is for the people actually writing prompts and running agent sessions every day. It gives developers, technical leads, and Copilot champions a practical, non-admin-heavy playbook: which interface to reach for, how to scope context and instructions, how session and cache mechanics affect cost, and how to choose a model — all in service of <strong>completing verified work efficiently</strong>, not chasing the lowest price per turn.</p>
 <blockquote>
-<p><strong>Note</strong>: All facts, pricing, and product behavior referenced in this workshop reflect GitHub documentation as of <strong>2026-08-08</strong>. Pricing, discount rates, and cache behavior change over time — always verify against the official docs linked in the Appendix before delivering this workshop.</p>
+<p><strong>Note</strong>: The 10% Auto discount and pricing snapshots reflect GitHub documentation as verified on <strong>2026-08-08</strong>. Cache-expiration windows, customization triggers, Copilot Memory, billed surfaces, session-limit behavior, VS Code <code>/fork</code> cache behavior, and cached-input wording were re-verified on <strong>2026-08-30</strong>. Re-verify all volatile claims against the Appendix sources before delivery.</p>
 </blockquote>
 <h3 id="learning-objectives">Learning Objectives</h3>
 <ul>
-<li>Explain the AI-credit billing basics relevant to a developer: <code>1 credit = $0.01</code>, unlimited completions/next-edit suggestions, and which interfaces are billed</li>
+<li>Explain the AI-credit billing basics relevant to a developer: <code>1 credit = $0.01</code>, unlimited completions/next-edit suggestions, and which interfaces and surfaces are billed</li>
 <li>Explain how usage-based billing differs from the former premium-request mental model</li>
 <li>Choose the right interface (completions, Ask, Edit, Agent, Copilot CLI, cloud agent) for a given task</li>
 <li>Apply context- and instruction-efficiency practices: smallest authoritative context, clear task/context/stop conditions, concise grounded custom instructions, scoped instructions, narrow working-directory/tool scope, and relevant MCP/tool sets only</li>
+<li>Classify each customization as <strong>always-on recurring context</strong> or <strong>on-demand context</strong>, and keep, scope, or retire it accordingly</li>
+<li>Apply Copilot Memory hygiene: review stored facts and preferences, remove stale or incorrect entries, and never rely on memory for secrets or one-time task detail</li>
 <li>Use session boundaries deliberately — new sessions between unrelated tasks or research/plan/implement phases, and the Copilot CLI session-control commands for long-running work</li>
-<li>Explain what invalidates cached context (model switches, reasoning changes, tool changes, expired sessions) and why cached tokens are typically cheaper, without assuming one universal ratio</li>
-<li>Set Copilot CLI/SDK AI-credit session limits as a complement to monthly budgets</li>
+<li>Write a six-field clean-session handoff that restarts work in a fresh context without losing decisions or constraints</li>
+<li>Explain what invalidates cached context (model switches, reasoning changes, tool changes, expired sessions), and state cached-input pricing as <em>typically about 10% of that model&#39;s fresh-input price</em> rather than a universal ratio</li>
+<li>Write and explain a valid Copilot CLI AI-credit session-limit command, identify the equivalent Copilot SDK setting, and explain how these soft controls complement monthly budgets</li>
 <li>Build a model strategy centered on Auto model selection, proportional reasoning, and scoped subagents — reserving powerful models for cases that justify them</li>
 <li>Recognize false-economy anti-patterns and evaluate cost per <strong>completed, verified</strong> task rather than cost per turn</li>
 <li>Compare models by full cost per durable accepted outcome and recognize how multi-stage workflow yield compounds</li>
+<li>Run a before/after evaluation loop on a fixed task set of 5–10 representative tasks, changing one variable at a time</li>
 <li>Draft a 30-day personal/team habit plan to make these practices stick</li>
 </ul>
 <h3 id="prerequisites">Prerequisites</h3>
@@ -57,7 +62,7 @@
 </tr>
 </tbody></table>
 <blockquote>
-<p><strong>Important</strong>: No exercise in this workshop requires making a live paid AI request beyond what you&#39;d normally run. Every exercise can be completed by analyzing supplied sample prompts, transcripts, and worksheets from the LAB guide.</p>
+<p><strong>Important</strong>: No exercise in this workshop requires making a live paid AI request beyond what you&#39;d normally run. Every exercise can be completed by analyzing supplied sample prompts, transcripts, inventories, datasets, and worksheets from the LAB guide. The live instrumentation in Section 4 is explicitly <strong>optional</strong> and spends AI credits.</p>
 </blockquote>
 <hr>
 <h2 id="session-agenda">Session Agenda</h2>
@@ -76,13 +81,13 @@
 </tr>
 <tr>
 <td>1</td>
-<td><a href="#1-right-interface-for-the-task-hands-on-20-min">Right Interface for the Task</a></td>
-<td>20 min</td>
+<td><a href="#1-right-interface-for-the-task-hands-on-15-min">Right Interface for the Task</a></td>
+<td>15 min</td>
 </tr>
 <tr>
 <td>2</td>
-<td><a href="#2-context--instruction-efficiency-hands-on-25-min">Context &amp; Instruction Efficiency (Hands-On)</a></td>
-<td>25 min</td>
+<td><a href="#2-context-customization--instruction-efficiency-hands-on-35-min">Context, Customization &amp; Instruction Efficiency (Hands-On)</a></td>
+<td>35 min</td>
 </tr>
 <tr>
 <td>☕</td>
@@ -91,18 +96,18 @@
 </tr>
 <tr>
 <td>3</td>
-<td><a href="#3-session-lifecycle-cache--session-limits-hands-on-25-min">Session Lifecycle, Cache &amp; Session Limits (Hands-On)</a></td>
+<td><a href="#3-session-lifecycle-handoff-cache--session-limits-hands-on-25-min">Session Lifecycle, Handoff, Cache &amp; Session Limits (Hands-On)</a></td>
 <td>25 min</td>
 </tr>
 <tr>
 <td>4</td>
-<td><a href="#4-model-strategy--quality-first-verification-hands-on-25-min">Model Strategy &amp; Quality-First Verification (Hands-On)</a></td>
+<td><a href="#4-model-strategy-verification--beforeafter-evaluation-hands-on-25-min">Model Strategy, Verification &amp; Before/After Evaluation (Hands-On)</a></td>
 <td>25 min</td>
 </tr>
 <tr>
 <td>5</td>
-<td><a href="#5-hands-on-optimization-capstone--close-15-min">Hands-On Optimization Capstone &amp; Close</a></td>
-<td>15 min</td>
+<td><a href="#5-hands-on-optimization-capstone--close-10-min">Hands-On Optimization Capstone &amp; Close</a></td>
+<td>10 min</td>
 </tr>
 </tbody></table>
 <p><strong>Total: 135 min (2h 15min)</strong></p>
@@ -112,7 +117,7 @@
 <ul>
 <li><strong>1 AI credit = $0.01 USD</strong> — that&#39;s the entire conversion you need as a developer; deeper budget math (pools, ULBs, spending limits) belongs to Module 1</li>
 <li><strong>Code completions and next-edit suggestions (NES) remain unlimited on paid plans and are not billed in AI credits</strong> — write code in your editor with completions on and never think about credits for that part of your flow</li>
-<li><strong>Chat, Edit mode, Agent mode, Copilot CLI, and Copilot cloud agent are all billed in AI credits</strong> — anything that involves a conversational or agentic request to a model draws from your credits</li>
+<li><strong>Chat, Edit mode, Agent mode, Copilot CLI, Copilot cloud agent, Copilot Spaces, GitHub Spark, and third-party coding agents are all billed in AI credits</strong> — anything that involves a conversational or agentic request to a model draws from your credits</li>
 <li>Every billed interaction is priced from <strong>token categories</strong>, not a flat per-request fee:<ul>
 <li><strong>Input tokens</strong> — your prompt plus whatever context is attached (files, terminal output, prior turns)</li>
 <li><strong>Cached input tokens</strong> — context reused from earlier in an active session, priced lower than fresh input</li>
@@ -154,7 +159,22 @@
 <td><strong>Copilot cloud agent</strong></td>
 <td>Yes</td>
 </tr>
+<tr>
+<td><strong>Copilot Spaces</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>GitHub Spark</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Third-party coding agents</strong></td>
+<td>Yes</td>
+</tr>
 </tbody></table>
+<blockquote>
+<p><strong>Note — surfaces developers often forget</strong>: <a href="https://docs.github.com/en/copilot/concepts/context/spaces">Copilot Spaces</a> is a billed surface, not free context storage; <strong>GitHub Spark</strong> is also included in GitHub&#39;s billed AI-credit feature list. <a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents">Third-party coding agents</a> are in <strong>public preview</strong>, must be enabled by policy, and consume <strong>AI credits plus GitHub Actions minutes</strong> for the agent session. Module 1 covers the same billed-surface list from the admin side; see <a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">Usage-based billing for organizations and enterprises</a>.</p>
+</blockquote>
 <h3 id="replace-the-premium-request-mental-model">Replace the Premium-Request Mental Model</h3>
 <table>
 <thead>
@@ -186,6 +206,16 @@
 <blockquote>
 <p><strong>Note</strong>: For the full budget, pooling, and policy mechanics behind AI credits, see Module 1 — Admin Guardrails. This module assumes credits exist and focuses only on what you, as a developer, control.</p>
 </blockquote>
+<h3 id="one-minute-paired-check">One-Minute Paired Check</h3>
+<p>With a partner, classify each activity as <strong>billed</strong> or <strong>unbilled</strong>:</p>
+<ol>
+<li>Accept an inline code completion in the IDE</li>
+<li>Ask Copilot Chat to explain a test failure</li>
+<li>Accept a next edit suggestion (NES)</li>
+<li>Start a Copilot CLI session that sends a prompt to a model</li>
+<li>Ask GitHub Spark to generate or update an application</li>
+</ol>
+<p><strong>Answer</strong>: 1 and 3 are unbilled; 2, 4, and 5 are billed. Opening an interface or configuring a control is not itself the billing event — a request sent to the model is.</p>
 <h3 id="discussion-points">Discussion Points</h3>
 <ul>
 <li>Before today, did you know completions/NES were unbilled while Chat/Agent/CLI usage was billed?</li>
@@ -193,7 +223,7 @@
 <li>What&#39;s one habit you already suspect is burning more tokens than it needs to?</li>
 </ul>
 <hr>
-<h2 id="1-right-interface-for-the-task-hands-on-20-min">1. Right Interface for the Task (Hands-On) (20 min)</h2>
+<h2 id="1-right-interface-for-the-task-hands-on-15-min">1. Right Interface for the Task (Hands-On) (15 min)</h2>
 <h3 id="key-points">Key Points</h3>
 <ul>
 <li><strong>Use the right interface for the task.</strong> Completions/NES are unlimited — reserve billed interfaces (Chat/Edit/Agent/CLI/cloud agent) for work that actually needs reasoning, multi-file coordination, or terminal-native automation</li>
@@ -240,16 +270,17 @@
 </tbody></table>
 <ul>
 <li>Interface choice is not just about cost — it&#39;s about giving the model the right amount of autonomy and tooling for the job. An Agent-mode task given to Ask mode will stall; a one-line rename given to Agent mode wastes a turn deciding it doesn&#39;t need to explore</li>
+<li>Copilot Spaces, GitHub Spark, and third-party coding agents are billed surfaces too, but they are shared-context, application-building, and task-delegation surfaces rather than day-to-day coding interfaces — the same &quot;smallest sufficient interface&quot; rule applies to them</li>
 </ul>
 <details>
-<summary><h3 id="-hands-on-interface-scenario-matching-8-min">🧪 Hands-On: Interface Scenario Matching (8 min)</h3></summary>
+<summary><h3 id="-hands-on-interface-scenario-matching-6-min">🧪 Hands-On: Interface Scenario Matching (6 min)</h3></summary>
 
 <p><strong>Roles</strong>: Work individually, then compare with a neighbor.</p>
 <p>For each scenario, decide the single best-fit interface and explain why in one sentence:</p>
 <ol>
 <li>Renaming a local variable and its five usages within one file</li>
 <li>Investigating why a production incident started after last night&#39;s deploy, across three services</li>
-<li>Writing unit tests for a function you just finished, using the existing test file as a pattern</li>
+<li>Adding unit tests directly to an existing test file for a function you just finished, using its current tests as the pattern</li>
 <li>Asking what a regular expression in a legacy file does, with no intention of changing it</li>
 <li>Running a long, multi-step refactor of a legacy module from your terminal</li>
 </ol>
@@ -257,6 +288,7 @@
 <ul>
 <li>✅ You chose code completions/NES (not Chat) for Scenario 1</li>
 <li>✅ You chose Agent mode or Copilot CLI with cross-service scope for Scenario 2</li>
+<li>✅ You chose Edit mode for Scenario 3 (a bounded change in a named file)</li>
 <li>✅ You chose Ask mode for Scenario 4 (a question, not a change)</li>
 <li>✅ You chose Copilot CLI for Scenario 5 and can name why a terminal-native agentic interface fits better than Chat</li>
 </ul>
@@ -269,7 +301,7 @@
 <li>What would it take to make &quot;smallest sufficient interface&quot; a habit rather than an afterthought?</li>
 </ul>
 <hr>
-<h2 id="2-context--instruction-efficiency-hands-on-25-min">2. Context &amp; Instruction Efficiency (Hands-On) (25 min)</h2>
+<h2 id="2-context-customization--instruction-efficiency-hands-on-35-min">2. Context, Customization &amp; Instruction Efficiency (Hands-On) (35 min)</h2>
 <h3 id="key-points">Key Points</h3>
 <ul>
 <li><strong>Smallest authoritative context</strong>: attach only the file(s), snippet, or documentation actually needed for the task — not the whole repository &quot;just in case.&quot; Extra context becomes extra input tokens on every turn</li>
@@ -279,7 +311,7 @@
 <li><strong>Stop condition</strong>: tell the agent what &quot;done&quot; looks like, so it doesn&#39;t keep iterating, refactoring unrelated code, or adding extra commits past the point of value</li>
 </ul>
 </li>
-<li><strong>Concise, grounded custom instructions</strong>: keep repository-wide instructions (for example, <code>copilot-instructions.md</code> or <code>AGENTS.md</code>) short and specific — they are sent with every single interaction, so noise there is a recurring tax</li>
+<li><strong>Concise, grounded custom instructions</strong>: keep repository-wide instructions (for example, <code>copilot-instructions.md</code> or <code>AGENTS.md</code>) short and specific — they apply automatically to every interaction in their scope, so noise there is a recurring cost (see the always-on versus on-demand table below)</li>
 <li><strong>Scoped/path-specific instructions</strong>: put detail that only applies to part of the repo (a language, a service, a folder) into scoped instructions that load only when relevant, instead of bloating the repo-wide file</li>
 <li><strong>Use only relevant MCP/tool sets</strong>: a large MCP server&#39;s full tool catalog adds tool definitions to every request; enable only the toolsets the task actually needs</li>
 <li><strong>Start in the narrowest correct working directory</strong>: Copilot CLI limits file access to the current working directory and its subdirectories by default. Use <code>/cwd</code> to inspect or change that root and <code>/add-dir</code> only when the task genuinely requires another directory</li>
@@ -320,27 +352,131 @@
 <blockquote>
 <p><strong>Important — a prompt that&#39;s too short is not the goal.</strong> A prompt that omits the context the model actually needs produces a wrong or incomplete answer, which triggers follow-up prompts that cost more in total than one well-scoped prompt would have. The goal is the <strong>smallest sufficient</strong> prompt and context — not the shortest possible one.</p>
 </blockquote>
+<h3 id="always-on-vs-on-demand-customization">Always-On vs. On-Demand Customization</h3>
+<p>Not every customization contributes its full body to every turn. Some are <strong>recurring context</strong>; others load their full instructions or content <strong>on demand</strong> when invoked, selected, or chosen as relevant. Knowing which is which tells you where trimming actually pays.</p>
+<table>
+<thead>
+<tr>
+<th>Customization</th>
+<th>How it enters context</th>
+<th>Cost pattern</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Repo-wide, path-scoped, and personal custom instructions / <code>AGENTS.md</code></strong></td>
+<td>Automatically, on every interaction within its defined scope</td>
+<td><strong>Recurring</strong> — every in-scope turn carries it</td>
+</tr>
+<tr>
+<td><strong>Enabled built-in and MCP tool schemas</strong></td>
+<td>Automatically — every enabled tool&#39;s definition is advertised to the model</td>
+<td><strong>Recurring</strong> — grows with the number of enabled tools</td>
+</tr>
+<tr>
+<td><strong>Prompt files (<code>*.prompt.md</code>)</strong></td>
+<td>Manually — referenced in chat or picked from the prompt picker</td>
+<td><strong>On demand</strong> — only the run you invoke</td>
+</tr>
+<tr>
+<td><strong>Custom agents (<code>.github/agents/*.md</code>)</strong></td>
+<td>Manually selected from the agent picker, or delegated to</td>
+<td><strong>Scoped</strong> — its instructions and tool restrictions apply inside that agent&#39;s own context, not your main thread</td>
+</tr>
+<tr>
+<td><strong>Agent skills (<code>SKILL.md</code>)</strong></td>
+<td>Loaded when the skill is chosen as relevant to the prompt</td>
+<td><strong>On demand</strong> — the skill body enters context only when the skill is used</td>
+</tr>
+<tr>
+<td><strong>Subagents</strong></td>
+<td>Spawned by the main agent for delegated work</td>
+<td><strong>Isolated</strong> — runs in its own context instead of enlarging the parent thread</td>
+</tr>
+</tbody></table>
+<p><em>Trigger behavior source: <a href="https://docs.github.com/en/copilot/reference/customization-cheat-sheet">Copilot customization cheat sheet</a> and <a href="https://docs.github.com/en/copilot/concepts/agents/about-agent-skills">About agent skills</a>.</em></p>
+<blockquote>
+<p><strong>Important</strong>: &quot;More customization&quot; is not automatically &quot;more cost per turn.&quot; The recurring cost concentrates in <strong>always-on instruction scope</strong> and <strong>enabled tool schemas</strong>. Moving detail out of always-on instructions and into a prompt file, custom agent, or skill keeps the capability while removing it from every turn. Use <code>/context</code> in Copilot CLI to see the actual split between instructions, tool definitions, and message history before you trim anything.</p>
+</blockquote>
+<h3 id="copilot-memory-hygiene">Copilot Memory Hygiene</h3>
+<p><strong>Copilot Memory</strong> is in <strong>public preview</strong> and is subject to change. It lets Copilot store and reuse what it learns instead of re-reading the same conventions every time.</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>What developers need to know</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Scopes</strong></td>
+<td><strong>Repository-level facts</strong> (conventions, architectural decisions, build commands, project rules) and <strong>user-level preferences</strong> (how you personally like to work with Copilot). There is no team- or org-scoped memory store — organization and enterprise administrators manage the policy and can export or delete user-level preferences</td>
+</tr>
+<tr>
+<td><strong>Where it applies</strong></td>
+<td>Copilot cloud agent, Copilot code review, and Copilot CLI. Copilot code review uses repository-level facts only</td>
+</tr>
+<tr>
+<td><strong>Enablement</strong></td>
+<td>Per user, not per repository. On by default for individual plans; for organization- and enterprise-managed plans an administrator enables the policy first, then individual users can opt out</td>
+</tr>
+<tr>
+<td><strong>Retention</strong></td>
+<td>A stored fact or preference that goes unused is deleted automatically after 28 days; the timer can reset when Copilot validates and uses the entry</td>
+</tr>
+<tr>
+<td><strong>Validation</strong></td>
+<td>Repository-level facts are stored with citations and re-checked against the current branch before use, so an outdated fact is skipped rather than trusted blindly</td>
+</tr>
+</tbody></table>
+<p><em>Source: <a href="https://docs.github.com/en/copilot/concepts/agents/copilot-memory">About GitHub Copilot Memory</a>.</em></p>
+<p><strong>Hygiene practices</strong>:</p>
+<ul>
+<li><strong>Review your stored memories on a schedule</strong> — at minimum when a convention changes, when a project is archived, or when Copilot repeats advice that no longer matches the codebase. Users can view and delete their own preferences; repository owners can review and delete repository-level facts (<a href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/copilot-memory/manage-for-yourself">Managing Copilot Memory for your personal account</a>)</li>
+<li><strong>Delete incorrect memories immediately</strong> — repository-level facts are re-checked against the current branch and skipped when they fail validation, but obsolete entries should still be removed; user-level preferences rely on Copilot&#39;s judgment that they still apply</li>
+<li><strong>Never persist secrets, credentials, tokens, customer-sensitive data, or personal data</strong> in memory or in any instruction file. Secrets belong in a secret store; sensitive data belongs out of prompts entirely</li>
+<li><strong>Never persist one-time task detail</strong> — ticket numbers, temporary branch names, or &quot;for this sprint only&quot; context are prompt content, not durable facts</li>
+<li><strong>Keep the boundary clear</strong>: durable, reviewable, team-owned rules belong in custom instructions where they are versioned and code-reviewed; memory is Copilot&#39;s own learned layer on top, and it needs periodic human review</li>
+<li>Memory changes <em>what context gets assembled</em>, so treat it as a <strong>correctness and consistency control that you audit</strong> — not as a guaranteed credit reduction</li>
+</ul>
+<blockquote>
+<p><strong>Note — consistency with Optional Module 4</strong>: In Copilot CLI <strong>prompt mode</strong> (<code>-p</code>), memory is <strong>off by default</strong> and must be opted into with <code>--enable-memory</code>. Unattended automation should make that an explicit, recorded lane decision rather than an accident — see <a href="../../github-copilot-token-platform-automation/workshop/">Optional Module 4</a>.</p>
+</blockquote>
 <details>
-<summary><h3 id="-hands-on-beforeafter-prompt--instruction-trimming-exercise-12-min">🧪 Hands-On: Before/After Prompt & Instruction-Trimming Exercise (12 min)</h3></summary>
+<summary><h3 id="-hands-on-prompt-customization-inventory-tool-pruning--memory-triage-20-min">🧪 Hands-On: Prompt, Customization Inventory, Tool Pruning & Memory Triage (20 min)</h3></summary>
 
 <p><strong>Roles</strong>: Work individually, then discuss as a table.</p>
-<p><strong>Part A — Before/After Prompt</strong>: Rewrite the vague prompt below so it has a clear task, named context, and an explicit stop condition.</p>
+<p><strong>Part A — Before/After Prompt (4 min)</strong>: Rewrite the vague prompt below so it has a clear task, named context, and an explicit stop condition.</p>
 <blockquote>
 <p><strong>Before</strong>: <em>&quot;Fix the bug in the payment code.&quot;</em></p>
 </blockquote>
 <p>Use the LAB guide worksheet to draft your <strong>After</strong> version, then compare with the supplied model answer.</p>
-<p><strong>Part B — Instruction Trimming</strong>: You&#39;re given a sample <code>copilot-instructions.md</code> excerpt (see LAB guide) that runs long and repeats generic advice. Identify:</p>
+<p><strong>Part B — Customization Inventory: Keep / Scope / Retire (8 min)</strong>: You&#39;re given a sample <code>copilot-instructions.md</code> excerpt plus a short customization inventory (see LAB guide). For each item, decide:</p>
 <ol>
-<li>Which lines are specific and grounded (keep)</li>
-<li>Which lines are generic or one-off (cut or move to scoped instructions)</li>
-<li>Which cuts, if any, would remove information the agent genuinely needs (do not cut these)</li>
+<li><strong>Keep</strong> — specific, grounded, and worth carrying on every in-scope turn</li>
+<li><strong>Scope</strong> — still valuable, but it belongs in path-scoped instructions, a prompt file, a custom agent, or a skill so it loads only when relevant</li>
+<li><strong>Retire</strong> — generic filler, duplicated, or obsolete; delete it</li>
 </ol>
+<p>Do not cut information the agent genuinely needs; moving it is not the same as deleting it.</p>
+<p><strong>Part C — Task-Based MCP and Tool Pruning (6 min)</strong>: Using the LAB guide tool inventory, start from one concrete task (&quot;triage and fix a failing CI check on an open PR&quot;) and classify every enabled tool as <strong>Required</strong>, <strong>Optional</strong>, or <strong>Remove</strong> for that task. Then mark the <strong>read/write boundary</strong>: which of the surviving tools only read, and which can write, comment, merge, deploy, or spend.</p>
+<p><strong>Part D — Copilot Memory Triage: Keep / Delete / Never Store (2 min)</strong>: This is a paper exercise — nobody edits a live memory store. The LAB guide supplies four candidate memory entries: a stable repository build command, a stale architectural decision, a one-time sprint/ticket detail, and an API token pasted into a session while debugging. Classify each one:</p>
+<ol>
+<li><strong>Keep</strong> — durable, still accurate, and safe to persist</li>
+<li><strong>Delete</strong> — was reasonable to store, but is now stale, wrong, or obsolete; current-branch validation should prevent a contradicted repository fact from being used, but it should still be removed</li>
+<li><strong>Never store</strong> — must not enter memory at all: secrets, credentials, tokens, customer-sensitive or personal data, and one-time task detail</li>
+</ol>
+<p>Then write the action you would take for each. For the credential, deletion is not the whole answer — rotating or revoking the exposed credential comes first. Do not treat the 28-day expiry as a hygiene control; it is a retention default, not a review process.</p>
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
 <li>✅ Your &quot;After&quot; prompt names a specific file/area, describes the expected behavior, and states a stop condition</li>
-<li>✅ You identified at least two lines in the sample instructions file that are generic filler</li>
+<li>✅ You identified at least two lines in the sample instructions file that are generic filler to retire</li>
+<li>✅ You identified at least one item to <strong>scope</strong> rather than delete, and named the surface you would move it to</li>
 <li>✅ You identified at least one line that must stay because it reflects real, specific system behavior</li>
-<li>✅ You did not cut instruction content that the agent would need to complete the task correctly</li>
+<li>✅ Your tool inventory keeps every tool the named task actually requires and removes the rest</li>
+<li>✅ You can state which surviving tools can write or spend, and why each write-capable tool is justified for this task</li>
+<li>✅ You can name where you would look (<code>/context</code>) to confirm how much of the window instructions and tool definitions actually consume</li>
+<li>✅ You kept only the memory entry that is durable and still true, and deleted the stale architectural decision</li>
+<li>✅ You marked both the one-time sprint/ticket detail and the credential <strong>Never store</strong></li>
+<li>✅ Your action for the credential starts with rotating or revoking it, not with deleting the memory entry</li>
+<li>✅ You can state the difference between <strong>Delete</strong> (was valid, now stale) and <strong>Never store</strong> (must never be persisted)</li>
 </ul>
 </details>
 
@@ -348,26 +484,28 @@
 <ul>
 <li>What&#39;s the difference between trimming a prompt for efficiency and trimming away information the model actually needs?</li>
 <li>Does your team&#39;s current <code>copilot-instructions.md</code> (or equivalent) read as specific and grounded, or generic?</li>
-<li>How would you decide what belongs in repo-wide instructions versus scoped/path instructions?</li>
+<li>Which of your team&#39;s customizations are genuinely always-on, and which are on-demand and therefore cheap to keep?</li>
+<li>Which review trigger belongs in your team&#39;s workflow: an architecture change, repository archival, or Copilot repeating stale advice?</li>
 <li>Where does your team currently skip deterministic checks (tests/linters/security scans) in a way that likely costs more tokens later through rework?</li>
 </ul>
 <hr>
 <h2 id="-break-10-min">☕ Break (10 min)</h2>
 <hr>
-<h2 id="3-session-lifecycle-cache--session-limits-hands-on-25-min">3. Session Lifecycle, Cache &amp; Session Limits (Hands-On) (25 min)</h2>
+<h2 id="3-session-lifecycle-handoff-cache--session-limits-hands-on-25-min">3. Session Lifecycle, Handoff, Cache &amp; Session Limits (Hands-On) (25 min)</h2>
 <h3 id="key-points">Key Points</h3>
 <ul>
 <li><strong>Start a new session when you switch to an unrelated problem.</strong> A long thread carries its entire history into every new request — an unrelated question doesn&#39;t need yesterday&#39;s debugging context</li>
 <li><strong>Start a new session between research, planning, and implementation phases.</strong> Research explores the codebase; planning produces a structured spec (often with a stronger reasoning model); implementation executes against that plan (often with a cheaper, execution-focused model). Carrying all three phases in one thread accumulates context none of the later phases need</li>
 <li><strong>For a long, still-relevant Copilot CLI thread, don&#39;t restart — manage it instead</strong> with the session-control toolkit below</li>
-<li><strong>Cache awareness</strong>: within one active, on-topic session, reusing a stable session lets the model reuse cached context, and cached tokens are typically billed well below the fresh-input rate — but the exact discount can vary by model and is not a fixed ratio you should promise stakeholders. Confirm current rates on the official pricing page before quoting a number</li>
+<li><strong>Cache awareness</strong>: within one active, on-topic session, reusing a stable session lets the model reuse cached context. <strong>Cached input is typically billed at about 10% of that model&#39;s fresh-input price — roughly 10x cheaper — but this is not universal.</strong> Some models price cached input higher than that, so check the selected model&#39;s row on the official pricing page before quoting a figure or encoding a ratio in a team policy (<a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing for GitHub Copilot</a>)</li>
 <li><strong>What invalidates the cache</strong> (forces the full context to be re-sent and billed as fresh input):<ul>
 <li><strong>Switching models mid-session</strong> — a different model can&#39;t reuse another model&#39;s cache</li>
 <li><strong>Changing reasoning effort, context size, or the set of enabled tools/MCP servers mid-session</strong></li>
-<li><strong>Coming back to an old, expired session</strong> — caches expire after a period of inactivity (commonly cited as around 24 hours for some model families and around 1 hour for most others; confirm current behavior in the official docs). Returning to a stale session rebuilds the cache from scratch</li>
+<li><strong>Coming back to an old, expired session</strong> — caches currently expire after 24 hours of inactivity for OpenAI models and after 1 hour for most others. Returning after the applicable window rebuilds the cache from scratch; re-verify these windows before delivery (<a href="https://docs.github.com/en/copilot/tutorials/optimize-ai-usage#4-preserve-the-cache">Optimizing your AI usage</a>)</li>
 </ul>
 </li>
-<li><strong>Set an AI-credit session limit for agentic work</strong>: Copilot CLI and the Copilot SDK support soft session limits — when reached, the agent stops cleanly, tells you, and asks whether to continue or raise the limit. This is most useful for capping a single task&#39;s cost and for tuning the minimum credits that still produce a good result</li>
+<li><strong>Set an AI-credit session limit for agentic work</strong>: this capability is in <strong>public preview</strong>. In interactive Copilot CLI, use <code>/limits set max-ai-credits NUMBER</code>; use <code>/limits unset</code> to remove it. In non-interactive mode, pass <code>--max-ai-credits NUMBER</code>. The Copilot SDK equivalent is <code>sessionLimits.maxAiCredits</code> when creating or resuming a session (<a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/set-session-limit">CLI session limits</a>, <a href="https://github.com/github/copilot-sdk/blob/main/docs/features/session-limits.md">SDK session limits</a>)</li>
+<li>Session limits are <strong>soft</strong>: an in-progress response completes, so actual use can exceed the configured number slightly. Interactive CLI prompts you to reset or raise the limit; non-interactive CLI ends; SDK applications handle the exhausted-limit event</li>
 <li>Session limits are <strong>soft, per-task controls that complement — not replace — monthly user-level budgets and spending limits</strong>, which are set by admins and cover total consumption (see Module 1)</li>
 </ul>
 <h3 id="copilot-cli-session-control-toolkit">Copilot CLI Session-Control Toolkit</h3>
@@ -415,13 +553,76 @@
 <li>Compact a long, still-relevant thread before its next phase — do not compact after every turn or use it to preserve an unrelated conversation that should simply start fresh</li>
 </ul>
 <blockquote>
-<p><strong>Important — three things this section does not claim</strong>: (1) it does not promise one universal cached-token discount ratio across all models, (2) it does not say you should never start a new session, and (3) it does not treat compaction as free or lossless. Restart when the problem or phase changes; compact when the task remains relevant and the smaller summary is worth the summarization step and possible loss of detail.</p>
+<p><strong>Important — three things this section does not claim</strong>: (1) it does not promise one universal cached-input discount ratio across all models, (2) it does not say you should never start a new session, and (3) it does not treat compaction as free or lossless. Restart when the problem or phase changes; compact when the task remains relevant and the smaller summary is worth the summarization step and possible loss of detail.</p>
 </blockquote>
+<h3 id="clean-session-handoff-template">Clean-Session Handoff Template</h3>
+<p>When you <em>do</em> start a clean session, the cost you want to avoid is re-deriving what the last session already figured out. Write these six fields — in the last session or from your notes — and paste them as the first message of the new one.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What to write</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. Task and outcome</strong></td>
+<td>The one task in scope and what &quot;done&quot; produces</td>
+</tr>
+<tr>
+<td><strong>2. Current state</strong></td>
+<td>What is already implemented, verified, or ruled out</td>
+</tr>
+<tr>
+<td><strong>3. Important files</strong></td>
+<td>The specific paths that matter, and nothing else</td>
+</tr>
+<tr>
+<td><strong>4. Decisions</strong></td>
+<td>Choices already made that must not be relitigated, with a one-line reason each</td>
+</tr>
+<tr>
+<td><strong>5. Constraints</strong></td>
+<td>Rules the work must respect — APIs, versions, patterns, security, out-of-scope areas</td>
+</tr>
+<tr>
+<td><strong>6. Next action and stop condition</strong></td>
+<td>The single next step, and what &quot;stop&quot; looks like</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Keep it to roughly a screen of text. A handoff longer than the history it replaces defeats the purpose</li>
+<li>Write it in the <em>outgoing</em> session while the detail is fresh; asking the outgoing session to draft it is a legitimate, cheap use of a turn</li>
+<li>A handoff <strong>complements — it does not replace — the built-in continuity controls</strong>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What it does</th>
+<th>When the handoff is the better tool</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/compact</code></td>
+<td>Summarizes and replaces the current thread&#39;s history in place</td>
+<td>You are deliberately leaving this thread, or you want to control exactly what carries over</td>
+</tr>
+<tr>
+<td><code>/resume</code></td>
+<td>Reopens a saved session with its history intact</td>
+<td>The old thread carries context the new task doesn&#39;t need</td>
+</tr>
+<tr>
+<td>VS Code <code>/fork</code></td>
+<td>Branches a session into a new one that inherits the full conversation history and preserves the prompt cache for the next request (<a href="https://code.visualstudio.com/docs/agents/run/sessions/manage-sessions#_fork-a-chat-session">VS Code chat sessions</a>)</td>
+<td>You want a clean context on purpose, not an inherited one</td>
+</tr>
+</tbody></table>
 <details>
-<summary><h3 id="-hands-on-session-design-exercise--session-limit-worksheet-12-min">🧪 Hands-On: Session Design Exercise & Session Limit Worksheet (12 min)</h3></summary>
+<summary><h3 id="-hands-on-session-design-session-limit--clean-session-handoff-12-min">🧪 Hands-On: Session Design, Session Limit & Clean-Session Handoff (12 min)</h3></summary>
 
 <p><strong>Roles</strong>: Work individually, then discuss as a table.</p>
-<p><strong>Part A — Session Design</strong>: For each scenario, decide whether to continue the current session, start a new one, run <code>/compact</code>, or use another command from the toolkit:</p>
+<p><strong>Part A — Session Design &amp; Cache Check (5 min)</strong>: For each scenario, decide whether to continue the current session, start a new one, run <code>/compact</code>, or use another command from the toolkit. For Scenario 4, also state which cache-expiration window applies and name one change that would invalidate reusable cached context:</p>
 <ol>
 <li>You just finished debugging an auth issue and now want to ask an unrelated question about a CSS layout bug</li>
 <li>Your Copilot CLI thread has been open for two hours on the same refactor and is starting to feel sluggish</li>
@@ -430,15 +631,19 @@
 <li>You want to confirm whether tool definitions or message history are consuming most of a long CLI session</li>
 <li>A task in the current repository needs one sibling directory, but not access to the rest of the parent directory</li>
 </ol>
-<p><strong>Part B — Session Limit Worksheet</strong>: Using the LAB guide worksheet, define a soft AI-credit session limit for a Copilot CLI task you run regularly (or a hypothetical one), and state what you&#39;ll do if the agent stops at the limit.</p>
+<p><strong>Part B — Session Limit Worksheet (3 min)</strong>: Using the LAB guide worksheet, define a soft AI-credit session limit for a Copilot CLI task you run regularly (or a hypothetical one), write the exact <code>/limits set</code> command, and state what you&#39;ll do if the agent stops at the limit. If Copilot CLI is available, set and immediately unset the limit without submitting a model prompt; otherwise use the supplied command-review fallback.</p>
+<p><strong>Part C — Clean-Session Handoff (4 min)</strong>: Using the six-field template above and the supplied scenario in the LAB guide, write the handoff message you would paste into the fresh session at the research → implementation boundary.</p>
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
 <li>✅ You correctly chose &quot;new session&quot; for Scenario 1 (unrelated problem)</li>
 <li>✅ You correctly chose &quot;<code>/context</code>, then <code>/compact</code> if warranted&quot; for Scenario 2 (long but still-relevant thread)</li>
 <li>✅ You correctly chose &quot;new session&quot; for Scenario 3 (phase change: plan → implement)</li>
-<li>✅ You correctly reasoned about Scenario 4, considering the cache-expiration guidance above</li>
+<li>✅ For Scenario 4, you checked the applicable cache-expiration window and named at least one cache invalidator: a model switch; a reasoning, context-size, or tool-set change; or inactivity expiry</li>
 <li>✅ You chose <code>/context</code> for Scenario 5 and <code>/add-dir</code> for Scenario 6</li>
-<li>✅ Your session limit worksheet names a specific credit amount and a concrete next step if the limit is hit</li>
+<li>✅ Your session limit worksheet names a specific credit amount, includes a valid <code>/limits set max-ai-credits NUMBER</code> command, and states a concrete next step if the limit is hit</li>
+<li>✅ You identified <code>sessionLimits.maxAiCredits</code> as the equivalent Copilot SDK setting</li>
+<li>✅ Your handoff fills all six fields, names specific paths rather than &quot;the repo,&quot; and ends with one next action plus a stop condition</li>
+<li>✅ You can explain why a handoff is not a replacement for <code>/compact</code>, <code>/resume</code>, or VS Code <code>/fork</code></li>
 </ul>
 </details>
 
@@ -448,9 +653,10 @@
 <li>Where does your team keep one sprawling session going long after the topic has changed?</li>
 <li>Would a default AI-credit session limit help or hinder your team&#39;s typical agentic workflows?</li>
 <li>How would you explain &quot;cache invalidation&quot; to a teammate who just wants to know &quot;why did this turn suddenly cost more&quot;?</li>
+<li>Which of the six handoff fields does your team most often lose when work moves between sessions, days, or people?</li>
 </ul>
 <hr>
-<h2 id="4-model-strategy--quality-first-verification-hands-on-25-min">4. Model Strategy &amp; Quality-First Verification (Hands-On) (25 min)</h2>
+<h2 id="4-model-strategy-verification--beforeafter-evaluation-hands-on-25-min">4. Model Strategy, Verification &amp; Before/After Evaluation (Hands-On) (25 min)</h2>
 <h3 id="key-points">Key Points</h3>
 <ul>
 <li><strong>Auto model selection is the default choice for most work.</strong> It routes each task to a model matched to its complexity along cache-friendly boundaries (never switching mid-task) and applies a <strong>10% discount</strong> on the model-cost portion of the bill for paid plans</li>
@@ -492,8 +698,8 @@
 <td>Completions and next-edit suggestions are unlimited on paid plans and do not consume AI credits; Chat/Edit/Agent/CLI/cloud-agent usage does</td>
 </tr>
 <tr>
-<td>&quot;Cached tokens are always exactly 10x cheaper&quot;</td>
-<td>Cached tokens are typically priced well below fresh input, but the exact discount can vary by model — verify current pricing rather than quoting one fixed ratio</td>
+<td>&quot;Cached input is always exactly 10x cheaper&quot;</td>
+<td>Cached input is typically billed at about <strong>10% of that model&#39;s fresh-input price</strong> (roughly 10x cheaper), but it is not universal — verify the selected model on the pricing page before quoting or encoding a ratio</td>
 </tr>
 </tbody></table>
 <h3 id="full-cost-model-decision">Full-Cost Model Decision</h3>
@@ -522,11 +728,79 @@
 <blockquote>
 <p><strong>Note</strong>: The powerful model costs more per attempt but less per durable accepted outcome. This is a decision framework, not a universal model ranking; use measured acceptance and full-cost data for the task category.</p>
 </blockquote>
+<h3 id="beforeafter-evaluation-loop-fixed-task-set">Before/After Evaluation Loop (Fixed Task Set)</h3>
+<p>Every change in this workshop — a trimmed instructions file, a pruned tool set, a new session boundary, a different model — is a <strong>hypothesis</strong>. The loop below is how you turn it into evidence instead of an opinion. It is tool-neutral: no product, extension, or vendor beyond Copilot itself is required.</p>
+<table>
+<thead>
+<tr>
+<th align="right">Step</th>
+<th>What you do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right"><strong>1. Freeze the task set</strong></td>
+<td>Pick <strong>5–10 representative tasks</strong> you actually do. Write a one-line acceptance rule for each <em>before</em> running anything</td>
+</tr>
+<tr>
+<td align="right"><strong>2. Hold everything constant</strong></td>
+<td>Same model, same tools/MCP set, same instructions, same session strategy — except the <strong>one variable</strong> you are testing</td>
+</tr>
+<tr>
+<td align="right"><strong>3. Run the &quot;before&quot; arm</strong></td>
+<td>Run the frozen task set as-is and record every task&#39;s result</td>
+</tr>
+<tr>
+<td align="right"><strong>4. Change one variable</strong></td>
+<td>Change exactly one thing, then rerun the same frozen task set as the &quot;after&quot; arm</td>
+</tr>
+<tr>
+<td align="right"><strong>5. Compare and decide</strong></td>
+<td>Compare <strong>full cost per durable accepted outcome</strong>, not credits per attempt, then decide: keep, revert, or retest</td>
+</tr>
+</tbody></table>
+<p><strong>Record these fields per task, per arm</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>AI credits consumed</strong></td>
+<td>The spend side of the comparison</td>
+</tr>
+<tr>
+<td><strong>Context consumed</strong></td>
+<td>Shows whether the change actually reduced carried context or just moved it</td>
+</tr>
+<tr>
+<td><strong>Pass / fail against the written acceptance rule</strong></td>
+<td>Prevents &quot;cheaper but worse&quot; from looking like a win</td>
+</tr>
+<tr>
+<td><strong>Durable acceptance</strong></td>
+<td>Did the result survive review and its stabilization period without material correction?</td>
+</tr>
+<tr>
+<td><strong>Rework</strong></td>
+<td>Human correction and follow-up turns — the cost that cheap-looking options hide</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>Decision rule</strong>: adopt the change only when full cost per durable accepted outcome improves <strong>and</strong> durable acceptance does not get worse. A cheaper arm with lower acceptance is a regression</li>
+<li><strong>One variable at a time.</strong> If you change the model <em>and</em> the instructions file, you cannot attribute the result to either</li>
+<li><strong>Small sets are fine.</strong> Five to ten representative tasks give a directional answer for a team habit decision; they do not give a statistically robust org-wide claim, so label the result accordingly</li>
+<li><strong>No paid call is required to learn this.</strong> The LAB supplies a completed before/after dataset — you do the arithmetic and make the decision on paper</li>
+</ul>
+<blockquote>
+<p><strong>Optional — live instrumentation (spends AI credits)</strong>: If your team wants real numbers instead of the supplied dataset, capture them with <code>/usage</code> and <code>/context</code> in Copilot CLI, the CLI Chronicle session data and its cost tips, and the cost/session signals your IDE exposes. This is <strong>optional</strong>, it consumes credits, and it should run on a task set you already intended to complete.</p>
+</blockquote>
 <details>
-<summary><h3 id="-hands-on-model--interface-scenario-practice-12-min">🧪 Hands-On: Model & Interface Scenario Practice (12 min)</h3></summary>
+<summary><h3 id="-hands-on-model-scenarios--beforeafter-evaluation-12-min">🧪 Hands-On: Model Scenarios & Before/After Evaluation (12 min)</h3></summary>
 
 <p><strong>Roles</strong>: Work individually, then discuss as a table.</p>
-<p>For each scenario, decide <strong>(a)</strong> Auto or a manual model choice, and if manual, lightweight or powerful, and <strong>(b)</strong> one quality-first verification step you&#39;d pair with it:</p>
+<p><strong>Part A — Model, Verification &amp; False-Economy Scenarios (7 min)</strong>: For each scenario, decide <strong>(a)</strong> Auto or a manual model choice, and if manual, lightweight or powerful, and <strong>(b)</strong> one quality-first verification step you&#39;d pair with it. For Scenarios 4 and 5, also name the false-economy mistake that a token-only decision would make:</p>
 <ol>
 <li>Formatting and updating documentation comments across a handful of files</li>
 <li>Designing the approach for a cross-service architecture change before any code is written</li>
@@ -534,6 +808,7 @@
 <li>A developer who insists on manually forcing the most powerful model for every single Chat question, &quot;to be safe&quot;</li>
 <li>The lightweight-versus-powerful model comparison above: which option is economically better, and what additional evidence would you require before making it the team default?</li>
 </ol>
+<p><strong>Part B — Before/After Evaluation Worksheet (5 min)</strong>: Using the supplied before/after dataset in the LAB guide, complete the comparison and make the call: keep, revert, or retest. Then design your own loop — name the one variable you would change, the 5–10 tasks you would freeze, and the acceptance rule for one of them.</p>
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
 <li>✅ You chose a lightweight model (or Auto) for Scenario 1 and named linting/formatting checks as the verification step</li>
@@ -541,6 +816,9 @@
 <li>✅ You chose a cheaper, scoped model for the subagent in Scenario 3</li>
 <li>✅ You correctly identified Scenario 4 as the &quot;cheaper models are always safe&quot; myth in reverse — over-provisioning power without justification — and can explain why Auto would be the more efficient default</li>
 <li>✅ You chose the powerful model for Scenario 5 based on <strong>$17.50 versus $20.00 per durable accepted outcome</strong>, while requiring representative samples and a defined stabilization period before standardizing the choice</li>
+<li>✅ You explained why Scenarios 4 and 5 cannot be decided from per-attempt token cost alone</li>
+<li>✅ Your before/after decision is based on full cost per durable accepted outcome, not credits per attempt</li>
+<li>✅ Your own loop names exactly one changed variable, a frozen task set of 5–10 tasks, and a written acceptance rule</li>
 </ul>
 </details>
 
@@ -550,32 +828,33 @@
 <li>What&#39;s one deterministic check (test, linter, security scan) your team could add tomorrow that would reduce rework?</li>
 <li>Have you seen a case where a cheap or fast answer actually cost more time and credits once rework is counted?</li>
 <li>Should model selection be a personal habit, a team default, or something enforced by policy?</li>
+<li>Which optimization on your team is currently believed rather than measured, and what fixed task set would settle it?</li>
 </ul>
 <hr>
-<h2 id="5-hands-on-optimization-capstone--close-15-min">5. Hands-On Optimization Capstone &amp; Close (15 min)</h2>
+<h2 id="5-hands-on-optimization-capstone--close-10-min">5. Hands-On Optimization Capstone &amp; Close (10 min)</h2>
 <h3 id="key-points">Key Points</h3>
 <ul>
-<li>Every practice in this workshop — interface choice, context and instructions, session lifecycle, and model strategy — compounds. None of them is a silver bullet on its own</li>
+<li>Every practice in this workshop — interface choice, context and customization, session lifecycle and handoff, and model strategy — compounds. None of them is a silver bullet on its own</li>
 <li>The most durable outcome of this workshop is a <strong>written personal or team habit plan</strong> you actually revisit, not just a good feeling for one afternoon</li>
 <li>Small, consistent habit changes (trimming one instructions file, adopting one session-boundary rule) tend to outperform an ambitious plan nobody follows</li>
 </ul>
 <details>
-<summary><h3 id="-hands-on-capstone-30-day-personalteam-habit-plan-10-min">🧪 Hands-On Capstone: 30-Day Personal/Team Habit Plan (10 min)</h3></summary>
+<summary><h3 id="-hands-on-capstone-30-day-personalteam-habit-plan-8-min">🧪 Hands-On Capstone: 30-Day Personal/Team Habit Plan (8 min)</h3></summary>
 
 <p><strong>Roles</strong>: Work individually or in pairs.</p>
 <p>Using everything from Sections 1–4, draft a one-page <strong>30-Day Habit Plan</strong> covering:</p>
 <ol>
 <li><strong>Week 1 — Interface habit</strong>: One task type you&#39;ll redirect from a billed interface to completions/NES, or vice versa if you&#39;re currently under-using Agent/CLI where it&#39;s warranted</li>
-<li><strong>Week 2 — Context &amp; instructions habit</strong>: One trim you&#39;ll make to your own prompting habits or to a shared <code>copilot-instructions.md</code>/scoped instructions file</li>
-<li><strong>Week 3 — Session habit</strong>: One session-boundary rule you&#39;ll adopt (for example, &quot;new session when I switch tickets&quot; or &quot;<code>/compact</code> after 45 minutes on the same CLI thread&quot;)</li>
-<li><strong>Week 4 — Model &amp; verification habit</strong>: One task type where you&#39;ll let Auto decide, one where you&#39;ll deliberately choose a lightweight model, and one deterministic check you&#39;ll add or enforce</li>
+<li><strong>Week 2 — Context &amp; customization habit</strong>: One trim you&#39;ll make to your own prompting habits, to a shared <code>copilot-instructions.md</code>/scoped instructions file, or to your enabled tool set — plus one Copilot Memory review</li>
+<li><strong>Week 3 — Session habit</strong>: One session-boundary rule you&#39;ll adopt (for example, &quot;new session when I switch tickets&quot; or &quot;<code>/compact</code> after 45 minutes on the same CLI thread&quot;), and where you&#39;ll use the six-field handoff</li>
+<li><strong>Week 4 — Model, verification &amp; evidence habit</strong>: One task type where you&#39;ll let Auto decide, one where you&#39;ll deliberately choose a lightweight model, one deterministic check you&#39;ll add or enforce, and one change you&#39;ll put through the before/after evaluation loop</li>
 </ol>
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
 <li>✅ Your plan names one specific interface change for Week 1</li>
-<li>✅ Your plan names one specific instructions/context trim for Week 2</li>
+<li>✅ Your plan names one specific instructions/customization trim and one memory review for Week 2</li>
 <li>✅ Your plan names one specific, testable session-boundary rule for Week 3</li>
-<li>✅ Your plan names a model choice and a deterministic verification step for Week 4</li>
+<li>✅ Your plan names a model choice, a deterministic verification step, and one change you will evaluate with a fixed task set for Week 4</li>
 </ul>
 </details>
 
@@ -588,14 +867,18 @@
 <hr>
 <h2 id="recap">Recap</h2>
 <ul>
-<li>Right interface first: completions/NES for small local edits; Chat/Edit/Agent/CLI/cloud agent for work that needs reasoning or coordination</li>
+<li>Right interface first: completions/NES for small local edits; Chat/Edit/Agent/CLI/cloud agent for work that needs reasoning or coordination — and remember Copilot Spaces, GitHub Spark, and third-party coding agents are billed surfaces too</li>
 <li>Smallest authoritative context and clear task/context/stop conditions beat &quot;shorter prompts&quot; as a rule of thumb</li>
-<li>Concise, grounded instructions and scoped tool sets keep every request lean</li>
+<li>Concise, grounded instructions and scoped tool sets keep every request lean; always-on instructions and enabled tool schemas are the recurring cost, while prompt files, custom agents, and skills load on demand</li>
+<li>Review Copilot Memory (public preview) like any other stored state: delete stale or wrong entries, and never persist secrets or one-time task detail</li>
 <li>Session boundaries and cache awareness matter — new session for a new problem or phase, <code>/context</code>/<code>/compact</code> for a long relevant CLI thread, and awareness of what invalidates the cache</li>
+<li>Cached input is typically about 10% of a model&#39;s fresh-input price, but verify the model before quoting or encoding a ratio</li>
+<li>Use the six-field clean-session handoff when you deliberately leave a thread; it complements <code>/compact</code>, <code>/resume</code>, and VS Code <code>/fork</code></li>
 <li>Use <code>/usage</code>, <code>/resume</code>, <code>/cwd</code>, and <code>/add-dir</code> intentionally; keep file and tool scope no broader than the task requires</li>
 <li>Auto model selection is the default; manual choice (lightweight or powerful) is the justified exception</li>
 <li>Judge cost per completed, verified task — never per turn — and don&#39;t fall for false-economy myths</li>
 <li>Compare model and workflow choices by full cost per durable accepted outcome; keep multi-stage chains short or recoverable</li>
+<li>Settle disagreements with a before/after loop on a frozen 5–10 task set, changing one variable at a time</li>
 </ul>
 <blockquote>
 <p><strong>Note — where this goes next</strong>: These habits are individual and interactive. When the same work runs <strong>unattended</strong> — Copilot CLI in a script, scheduler, or CI job, or a Copilot SDK service — nobody reviews the cost of each call, so the habits have to become enforced configuration. That is the subject of <a href="../../github-copilot-token-platform-automation/workshop/">Optional Module 4: Agent Fleet Efficiency and Cost Governance</a>, an optional add-on outside the core curriculum duration.</p>
@@ -615,8 +898,44 @@
 <td><a href="https://docs.github.com/en/copilot/tutorials/optimize-ai-usage">https://docs.github.com/en/copilot/tutorials/optimize-ai-usage</a></td>
 </tr>
 <tr>
+<td>Optimizing Copilot Chat context to reduce AI credit usage</td>
+<td><a href="https://docs.github.com/en/copilot/tutorials/optimize-chat-usage">https://docs.github.com/en/copilot/tutorials/optimize-chat-usage</a></td>
+</tr>
+<tr>
+<td>Usage-based billing for organizations and enterprises (billed surfaces)</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises</a></td>
+</tr>
+<tr>
+<td>About GitHub Copilot Spaces</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/context/spaces">https://docs.github.com/en/copilot/concepts/context/spaces</a></td>
+</tr>
+<tr>
+<td>About third-party coding agents (public preview)</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents">https://docs.github.com/en/copilot/concepts/agents/about-third-party-coding-agents</a></td>
+</tr>
+<tr>
 <td>Models and pricing for GitHub Copilot</td>
 <td><a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing</a></td>
+</tr>
+<tr>
+<td>Copilot customization cheat sheet</td>
+<td><a href="https://docs.github.com/en/copilot/reference/customization-cheat-sheet">https://docs.github.com/en/copilot/reference/customization-cheat-sheet</a></td>
+</tr>
+<tr>
+<td>About agent skills</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/agents/about-agent-skills">https://docs.github.com/en/copilot/concepts/agents/about-agent-skills</a></td>
+</tr>
+<tr>
+<td>About GitHub Copilot Memory (public preview)</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/agents/copilot-memory">https://docs.github.com/en/copilot/concepts/agents/copilot-memory</a></td>
+</tr>
+<tr>
+<td>Managing Copilot Memory for your personal account</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/use-copilot-agents/copilot-memory/manage-for-yourself">https://docs.github.com/en/copilot/how-tos/use-copilot-agents/copilot-memory/manage-for-yourself</a></td>
+</tr>
+<tr>
+<td>Chat sessions in VS Code (compact, fork, resume)</td>
+<td><a href="https://code.visualstudio.com/docs/agents/run/sessions/manage-sessions">https://code.visualstudio.com/docs/agents/run/sessions/manage-sessions</a></td>
 </tr>
 <tr>
 <td>About Copilot auto model selection</td>
@@ -641,6 +960,10 @@
 <tr>
 <td>Setting an AI credit session limit in Copilot CLI</td>
 <td><a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/set-session-limit">https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/set-session-limit</a></td>
+</tr>
+<tr>
+<td>Setting a Copilot SDK session limit</td>
+<td><a href="https://github.com/github/copilot-sdk/blob/main/docs/features/session-limits.md">https://github.com/github/copilot-sdk/blob/main/docs/features/session-limits.md</a></td>
 </tr>
 <tr>
 <td>Adding repository custom instructions</td>
@@ -672,22 +995,26 @@
 </tr>
 </tbody></table>
 <blockquote>
-<p><strong>Note</strong>: All dated facts (the 10% Auto discount, cache-expiration windows, and pricing) reflect the docs as verified on <strong>2026-08-08</strong>. Re-verify against these live URLs before every delivery of this workshop.</p>
+<p><strong>Note</strong>: Dated facts carry multiple verification dates. The 10% Auto discount and pricing snapshots reflect the docs as verified on <strong>2026-08-08</strong>; cache-expiration windows, the customization trigger model, Copilot Memory behavior and preview status, and the cached-input formulation were re-verified on <strong>2026-08-30</strong>; the billed-surface list and third-party-agent preview status were re-verified on <strong>2026-09-01</strong>. Re-verify against these live URLs before every delivery of this workshop.</p>
 </blockquote>
 <h3 id="instructor-preflight-checklist">Instructor Preflight Checklist</h3>
 <ul>
 <li><input disabled="" type="checkbox"> Re-verify the Auto model selection discount rate against the live <a href="https://docs.github.com/en/copilot/concepts/models/auto-model-selection">About Copilot auto model selection</a> page</li>
-<li><input disabled="" type="checkbox"> Re-verify cache-expiration windows and cached-token pricing against the live <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing</a> page before stating any specific figure</li>
-<li><input disabled="" type="checkbox"> Confirm Copilot CLI is installed and that <code>/usage</code>, <code>/context</code>, <code>/compact</code>, <code>/cwd</code>, and <code>/add-dir</code> match the current command reference; have a recorded/screenshot fallback ready</li>
-<li><input disabled="" type="checkbox"> Bring a real (or de-identified sample) <code>copilot-instructions.md</code> excerpt for the instruction-trimming exercise</li>
-<li><input disabled="" type="checkbox"> Print or share the LAB guide worksheets (before/after prompt, session limit worksheet, 30-day habit plan) for attendees without laptops</li>
+<li><input disabled="" type="checkbox"> Re-verify cache-expiration windows against <a href="https://docs.github.com/en/copilot/tutorials/optimize-ai-usage#4-preserve-the-cache">Optimizing your AI usage</a>, then check cached-input pricing against <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing</a> and spot-check that cached input is still roughly 10% of fresh input for the models your team uses</li>
+<li><input disabled="" type="checkbox"> Re-verify that Copilot Memory is still in public preview, and that its scopes are still repository-level facts and user-level preferences (<a href="https://docs.github.com/en/copilot/concepts/agents/copilot-memory">About GitHub Copilot Memory</a>)</li>
+<li><input disabled="" type="checkbox"> Re-verify the billed-surface list, including Copilot Spaces, GitHub Spark, and third-party coding agents, and the preview status of third-party coding agents</li>
+<li><input disabled="" type="checkbox"> Re-verify the customization trigger column against the live <a href="https://docs.github.com/en/copilot/reference/customization-cheat-sheet">Copilot customization cheat sheet</a></li>
+<li><input disabled="" type="checkbox"> Confirm Copilot CLI is installed and that <code>/usage</code>, <code>/context</code>, <code>/compact</code>, <code>/cwd</code>, <code>/add-dir</code>, <code>/session checkpoints</code>, <code>/limits set</code>, <code>/limits unset</code>, and <code>--enable-memory</code> match the current command reference; have a recorded/screenshot fallback ready</li>
+<li><input disabled="" type="checkbox"> Re-verify session-limit preview status and stop behavior, VS Code <code>/fork</code> cache preservation for the next request, Auto routing and availability, and subagent context isolation against their linked primary sources</li>
+<li><input disabled="" type="checkbox"> Bring a real (or de-identified sample) <code>copilot-instructions.md</code> excerpt for the customization inventory exercise</li>
+<li><input disabled="" type="checkbox"> Print or share the LAB guide worksheets (before/after prompt, customization inventory, tool inventory, memory triage, session limit, clean-session handoff, before/after evaluation, 30-day habit plan) for attendees without laptops</li>
 <li><input disabled="" type="checkbox"> Confirm this module is running standalone or as part of the full curriculum, and mention Module 1/Module 3 accordingly during the welcome</li>
 </ul>
 <h3 id="backup-plan">Backup Plan</h3>
 <p>If a live CLI or Chat demo is unavailable (no license, connectivity issue, or UI change):</p>
 <ol>
 <li>Walk through the <strong>Interface Comparison</strong> and <strong>Billed vs. Unbilled at a Glance</strong> tables as a slide-only discussion</li>
-<li>Use the supplied <strong>before/after prompt</strong> and <strong>sample instructions excerpt</strong> from the LAB guide instead of live editing</li>
+<li>Use the supplied <strong>before/after prompt</strong>, <strong>sample instructions excerpt</strong>, <strong>tool inventory</strong>, and <strong>before/after evaluation dataset</strong> from the LAB guide instead of live editing or live instrumentation</li>
 <li>Reference the official docs URLs above and screen-share the documentation pages as a substitute for the live product UI</li>
 <li>Keep the hands-on worksheets (LAB guide) as the primary artifact attendees leave with, regardless of demo availability</li>
 </ol>

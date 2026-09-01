@@ -177,7 +177,7 @@
 <li>Credits are <strong>pooled at the billing entity level</strong> — a heavy user in one team can draw on a lighter user&#39;s unused share</li>
 <li>The pool <strong>resets at 00:00:00 UTC on the first day of each month</strong>; unused credits do <strong>not</strong> roll over</li>
 <li><strong>Code completions and next-edit suggestions (NES) remain unlimited</strong> on paid plans and are <strong>not</strong> billed in AI credits</li>
-<li>AI-credit-billed features include: <strong>Copilot Chat, Copilot CLI, Copilot cloud agent, Copilot Spaces, and third-party coding agents</strong></li>
+<li>AI-credit-billed features include: <strong>Copilot Chat, Copilot CLI, Copilot cloud agent, Copilot Spaces, GitHub Spark, and third-party coding agents</strong></li>
 <li><strong>Additional usage (paid overage/metered billing) is enabled by default</strong> for organizations and enterprises — an admin must explicitly disable the <strong>AI credits paid usage</strong> policy to prevent any spend beyond included credits</li>
 </ul>
 <blockquote>
@@ -229,6 +229,10 @@
 </tr>
 <tr>
 <td>Copilot Spaces</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GitHub Spark</td>
 <td>Yes</td>
 </tr>
 <tr>
@@ -450,7 +454,7 @@
 <h3 id="key-points">Key Points</h3>
 <ul>
 <li><strong>Getting-started recommendation</strong> for a first budget rollout:<ol>
-<li><strong>Set a universal ULB above the per-license value</strong> — $19 for Business, $39 for Enterprise. Setting it above the license value lets pooling work as intended: heavier users draw from lighter users&#39; unused share instead of being capped at exactly their own license cost.</li>
+<li><strong>Set a universal ULB above the standard per-seat included-credit equivalent</strong> — $19 for Business (1,900 credits) and $39 for Enterprise (3,900 credits), using the fixed $0.01-per-credit conversion. These are included-credit values, not license prices; <a href="https://docs.github.com/en/billing/concepts/product-billing/github-copilot-licenses">Copilot Enterprise license pricing varies</a>. Setting the ULB above the included-credit equivalent lets pooling work as intended: heavier users draw from lighter users&#39; unused share instead of being capped at exactly their own included amount.</li>
 <li><strong>Identify power users and set individual ULB overrides</strong> — after your first billing cycle, review the AI usage dashboard for users who are consistently blocked, and raise their individual budget.</li>
 <li><strong>Set an enterprise spending limit</strong> to cap total metered charges once the shared pool is exhausted.</li>
 <li><strong>Enable &quot;Stop usage when budget limit is reached&quot;</strong> on every spending limit you create — without it, the limit only sends alerts and never actually stops spend.</li>
@@ -465,7 +469,7 @@
 <li>Under <strong>Resources</strong>, select the enterprise team that should fund and track the group&#39;s usage</li>
 <li>Confirm the team is not already assigned to another cost center; reassignment moves the resource</li>
 <li>Open <strong>Budgets and alerts</strong>, then create the appropriate cost-center ULB and metered spending budget</li>
-<li>Set the <strong>amount</strong> — for a universal ULB, set it above the per-license value ($19 Business / $39 Enterprise)</li>
+<li>Set the <strong>amount</strong> — for a universal ULB, set it above the standard per-seat included-credit equivalent ($19 for 1,900 Business credits / $39 for 3,900 Enterprise credits); these are not license prices</li>
 <li>Configure <strong>alerts</strong>: included-usage alerts fire at 90% and 100%; budget alerts fire at 75%, 90%, and 100%</li>
 <li>Where available, enable <strong>Stop usage when budget limit is reached</strong> to convert the budget into a hard stop</li>
 </ol>
@@ -495,7 +499,7 @@
 <ul>
 <li>✅ You can state the precedence order of the three ULB types from memory</li>
 <li>✅ You can explain why a $0 ULB blocks a user immediately, while an unconfigured enterprise budget does not</li>
-<li>✅ Your worksheet&#39;s universal ULB is set above the per-license value</li>
+<li>✅ Your worksheet&#39;s universal ULB is set above the standard per-seat included-credit equivalent, not an assumed license price</li>
 <li>✅ You can explain the difference between a cost center&#39;s included-usage allocation and its spending budget</li>
 <li>✅ You can explain how enterprise-team membership automates cost-center membership without automatically sizing the budgets</li>
 <li>✅ (Admin path only) You have located the Budgets and alerts screen and can name all five fields in the &quot;New budget&quot; flow, without saving a production change</li>
@@ -774,6 +778,7 @@
 <h3 id="instructor-preflight-checklist">Instructor Preflight Checklist</h3>
 <ul>
 <li><input disabled="" type="checkbox"> Re-verify the included-credit amounts and promotional-window dates (Section 1) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">Usage-based billing</a> page</li>
+<li><input disabled="" type="checkbox"> Re-verify the billed-feature list, including Copilot Spaces, GitHub Spark, and third-party coding agents, against the same usage-based billing page</li>
 <li><input disabled="" type="checkbox"> Re-verify ULB precedence, hard-stop behavior, and alert thresholds (Section 2) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/budgets-for-usage-based-billing">Budgets for usage-based billing</a> page</li>
 <li><input disabled="" type="checkbox"> Confirm the current enterprise-team licensing and cost-center resource behavior against the live <a href="https://docs.github.com/en/enterprise-cloud@latest/admin/managing-accounts-and-repositories/managing-users-in-your-enterprise/create-enterprise-teams">Creating enterprise teams</a> and <a href="https://docs.github.com/en/billing/how-tos/products/use-cost-centers">Using cost centers</a> pages</li>
 <li><input disabled="" type="checkbox"> Re-verify content-exclusion scope and unsupported surfaces against the live <a href="https://docs.github.com/en/copilot/how-tos/configure-content-exclusion/exclude-content-from-copilot">Excluding content from GitHub Copilot</a> page</li>

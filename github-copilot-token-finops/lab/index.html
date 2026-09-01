@@ -2,18 +2,80 @@
 <link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
 <style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
 </style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization--module-3-measurement--optimization-at-scale--hands-on-lab-guide">GitHub Copilot AI Credits Optimization — Module 3: Measurement &amp; Optimization at Scale — Hands-On Lab Guide</h1>
-<p><strong>Duration</strong>: ~85 minutes of hands-on exercises (across the ~180-minute module)<br><strong>Format</strong>: Step-by-step lab exercises with worksheets and answer keys<br><strong>Audience</strong>: FinOps practitioners, platform/DevEx engineers, engineering managers, Copilot program owners, advanced admins<br><strong>Roles used throughout</strong>: <strong>FinOps</strong> (cost/budget ownership), <strong>Platform/DevEx</strong> (drives reporting and tooling), <strong>Eng. Manager</strong> (team-level context), <strong>Program Owner</strong> (accountable for the operating model)</p>
+<p><strong>Duration</strong>: ~77 minutes of hands-on exercises (across the ~180-minute module)
+<strong>Format</strong>: Step-by-step lab exercises with worksheets and answer keys<br><strong>Audience</strong>: FinOps practitioners, platform/DevEx engineers, engineering managers, Copilot program owners, advanced admins<br><strong>Roles used throughout</strong>: <strong>FinOps</strong> (cost/budget ownership), <strong>Platform/DevEx</strong> (drives reporting and tooling), <strong>Eng. Manager</strong> (team-level context), <strong>Program Owner</strong> (accountable for the operating model)</p>
 <hr>
 <h2 id="lab-overview">Lab Overview</h2>
 <p>This lab guide contains all the hands-on exercises from <strong>Module 3: Measurement &amp; Optimization at Scale</strong>, part of the standalone-capable <strong>GitHub Copilot AI Credits Optimization</strong> workshop series. Each lab maps to a workshop section and builds on the previous one. Complete them in order.</p>
 <blockquote>
-<p><strong>Important</strong>: No lab in this guide requires making a live paid AI request or changing a production budget. All calculations can be completed with the worked formulas and the supplied sample dataset. If you use a live AI usage export in Lab 1, treat it as read-only reporting for this session.</p>
+<p><strong>Important</strong>: No lab in this guide requires making a live paid AI request or changing a production budget. All calculations can be completed with the worked formulas and the supplied sample dataset. If you use a live AI usage export in Lab 1, treat it as read-only reporting for this session and delete it after the workshop or store it in an approved secured location.</p>
 </blockquote>
 <h3 id="choosing-your-path">Choosing Your Path</h3>
 <ul>
 <li><strong>Live data path</strong>: If you have AI usage dashboard access, use your own exported data wherever a lab offers it as an option.</li>
 <li><strong>Sample dataset path</strong>: If you do not have access, use the supplied dataset in each lab — every lab has a complete answer key either way.</li>
 </ul>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Before the timed labs begin:</p>
+<ul>
+<li>Open this lab guide, a calculator or spreadsheet, and a place to record decisions</li>
+<li>Select the sample dataset path unless you have approved AI usage dashboard access and an export suitable for workshop use</li>
+<li>If using a live export, remove or mask personal identifiers and confirm that the file includes the fields required by the selected lab</li>
+<li>Decide before the timed labs whether any live export will be deleted after the workshop or retained in an approved secured location</li>
+<li>Keep the supplied datasets available as the fallback if dashboard access, export timing, or permissions fail</li>
+<li>Confirm standard included-credit amounts against the current <a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">usage-based billing documentation</a> before facilitated delivery</li>
+</ul>
+<p><strong>Setup checkpoint</strong>:</p>
+<ul>
+<li>✅ Every group can open a calculator or spreadsheet and record answers</li>
+<li>✅ Every group has either the supplied dataset or an approved, de-identified live export</li>
+<li>✅ Learners know to switch to the supplied data instead of troubleshooting access during a timed exercise</li>
+</ul>
+<h3 id="lab-summary">Lab Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Focus</th>
+<th align="center">Duration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Dashboard Filter Practice</td>
+<td align="center">6 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Model-Mix Cost Comparison</td>
+<td align="center">12 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Baseline &amp; Anomaly Analysis</td>
+<td align="center">15 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Outcome Economics Comparison</td>
+<td align="center">22 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Budget Tuning Exercise</td>
+<td align="center">14 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td>30-Day Optimization Backlog Capstone</td>
+<td align="center">8 min</td>
+</tr>
+<tr>
+<td><strong>Total hands-on</strong></td>
+<td></td>
+<td align="center"><strong>77 min</strong></td>
+</tr>
+</tbody></table>
 <hr>
 <details>
 <summary><h2 id="lab-1-dashboard-filter-practice-6-min">Lab 1: Dashboard Filter Practice (6 min)</h2></summary>
@@ -217,7 +279,7 @@ AI credits (USD × 100)              = 9.16 credits
 </code></pre>
 <ol>
 <li><strong>Ratio</strong>: $0.0916 ÷ $0.01445 ≈ <strong>6.34x</strong> — Claude Sonnet 5 costs roughly 6.3 times more than GPT-5 mini for the identical token counts on this task.</li>
-<li><strong>Monthly difference at 1,000 interactions</strong>: (9.16 − 1.445) credits × 1,000 = <strong>7,715 credits/month</strong> — more than 3.5x the standard 1,900-credit monthly allotment of one full Business license, just from the model-choice difference on this one recurring task.</li>
+<li><strong>Monthly difference at 1,000 interactions</strong>: (9.16 − 1.445) credits × 1,000 = <strong>7,715 credits/month</strong> — approximately <strong>4.1x</strong> the standard 1,900-credit monthly allotment of one full Business license, just from the model-choice difference on this one recurring task.</li>
 </ol>
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
@@ -271,6 +333,9 @@ AI credits (USD × 100)              = 9.16 credits
 </tbody></table>
 <h3 id="sample-dataset--growth-platform-cost-center">Sample Dataset — &quot;Growth Platform&quot; Cost Center</h3>
 <p>60 licensed Copilot Business users. <strong>Included-usage cap = 60 × 1,900 = 114,000 AI credits</strong> for the 30-day cycle.</p>
+<blockquote>
+<p><strong>Allotment note</strong>: This dataset uses the standard 1,900-credit Business allotment. Historical exports from the June 1–September 1, 2026 promotional period may show 3,000 credits per Business user; normalize the pool before comparing those exports with this answer key.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -641,7 +706,7 @@ estimated value of durable accepted outcomes − total assisted-delivery cost
 
 <hr>
 <details>
-<summary><h2 id="lab-5-budget-tuning-exercise-18-min">Lab 5: Budget Tuning Exercise (18 min)</h2></summary>
+<summary><h2 id="lab-5-budget-tuning-exercise-14-min">Lab 5: Budget Tuning Exercise (14 min)</h2></summary>
 
 <blockquote>
 <p><strong>Workshop Section</strong>: 5 — Budget Tuning &amp; Operating Model Capstone</p>
@@ -652,12 +717,19 @@ estimated value of durable accepted outcomes − total assisted-delivery cost
 </ul>
 <h3 id="reference--sizing-check-formula">Reference — Sizing Check Formula</h3>
 <pre><code>1. Max ULB consumption = Σ (users at each ULB tier × that tier&#39;s ULB amount)
-2. Pool value          = (Business seats × $19) + (Enterprise seats × $39)
+2. Included-credit pool value =
+   [(Business seats × 1,900) + (Enterprise seats × 3,900)] × $0.01/credit
 3. Gap to cover         = Max ULB consumption − Pool value
    → Your cost-center + organization + enterprise budgets must cover this gap,
      or users will be blocked by a spending budget before reaching their own ULB.
 </code></pre>
+<p>The $19 Business and $39 Enterprise per-seat equivalents represent 1,900 and
+3,900 included AI credits at $0.01 per credit. They are not license prices;
+<a href="https://docs.github.com/en/billing/concepts/product-billing/github-copilot-licenses">Copilot Enterprise license pricing varies</a>.</p>
 <h3 id="scenario--contoso-platform-org">Scenario — &quot;Contoso Platform Org&quot;</h3>
+<blockquote>
+<p><strong>Allotment note</strong>: This scenario uses the standard 1,900 Business / 3,900 Enterprise monthly allotments. Historical June 1–September 1, 2026 promotional-period exports may show 3,000 / 7,000 instead.</p>
+</blockquote>
 <ul>
 <li>300 Copilot Business users, 50 Copilot Enterprise users (350 licensed users total)</li>
 <li>80 of the Business users are in the <strong>Data Science</strong> cost center, with a <strong>cost-center ULB of $45</strong></li>
@@ -666,6 +738,7 @@ estimated value of durable accepted outcomes − total assisted-delivery cost
 <li>The current <strong>enterprise spending budget is $2,000</strong>, with &quot;Stop usage when budget limit is reached&quot; <strong>enabled</strong></li>
 </ul>
 <h3 id="steps">Steps</h3>
+<p><strong>Timebox</strong>: Use 8 minutes for the three calculations, 3 minutes for the enterprise-budget and included-usage-control decisions, and 3 minutes to compare one recommendation with another group.</p>
 <ol>
 <li>Calculate the <strong>universal-tier population</strong>: 350 total − 80 (Data Science) − 5 (power users) = ______</li>
 <li>Calculate <strong>max ULB consumption</strong> (three tiers)</li>
@@ -684,11 +757,11 @@ Max ULB consumption:
   --------------------------------------------------
   Total max ULB consumption               = $________
 
-Pool value:
-  Business: 300 × $19  = $________
-  Enterprise: 50 × $39 = $________
-  --------------------------------
-  Total pool value                = $________
+Included-credit pool value:
+  Business: 300 × 1,900 credits × $0.01  = $________
+  Enterprise: 50 × 3,900 credits × $0.01 = $________
+  ---------------------------------------------------
+  Total included-credit pool value         = $________
 
 Gap to cover = Max ULB consumption − Pool value = $________
 </code></pre>
@@ -702,11 +775,11 @@ Max ULB consumption:
   ------------------------------
   Total max ULB consumption = $10,975
 
-Pool value:
-  Business: 300 × $19  = $5,700
-  Enterprise: 50 × $39 = $1,950
-  --------------------------------
-  Total pool value = $7,650
+Included-credit pool value:
+  Business: 570,000 credits × $0.01   = $5,700
+  Enterprise: 195,000 credits × $0.01 = $1,950
+  --------------------------------------------
+  Total included-credit pool value = $7,650
 
 Gap to cover = $10,975 − $7,650 = $3,325
 </code></pre>
@@ -717,7 +790,7 @@ Gap to cover = $10,975 − $7,650 = $3,325
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
 <li>✅ You correctly calculated the universal-tier population (265 users)</li>
-<li>✅ You correctly calculated max ULB consumption ($10,975) and pool value ($7,650)</li>
+<li>✅ You correctly calculated max ULB consumption ($10,975) and included-credit pool value ($7,650)</li>
 <li>✅ You correctly calculated the gap ($3,325) and identified that the current $2,000 enterprise budget is undersized</li>
 <li>✅ You recommended raising the enterprise budget to at least the gap amount, with a stated buffer rationale</li>
 <li>✅ You made and justified a block-vs-allow-overage decision for the Data Science included usage control</li>
@@ -726,7 +799,7 @@ Gap to cover = $10,975 − $7,650 = $3,325
 
 <hr>
 <details>
-<summary><h2 id="lab-6-30-day-optimization-backlog-capstone-12-min">Lab 6: 30-Day Optimization Backlog Capstone (12 min)</h2></summary>
+<summary><h2 id="lab-6-30-day-optimization-backlog-capstone-8-min">Lab 6: 30-Day Optimization Backlog Capstone (8 min)</h2></summary>
 
 <blockquote>
 <p><strong>Workshop Section</strong>: 5 — Budget Tuning &amp; Operating Model Capstone</p>
@@ -805,6 +878,7 @@ Gap to cover = $10,975 − $7,650 = $3,325
 </tbody></table>
 <p><em>R = Responsible, A = Accountable, C = Consulted, I = Informed.</em></p>
 <h3 id="steps">Steps</h3>
+<p><strong>Timebox</strong>: Draft for 6 minutes, then use 2 minutes to share one P0 item and owner.</p>
 <p>Draft a prioritized <strong>30-Day Optimization Backlog</strong> worksheet:</p>
 <table>
 <thead>
@@ -852,7 +926,7 @@ Gap to cover = $10,975 − $7,650 = $3,325
 <td align="center"></td>
 </tr>
 </tbody></table>
-<p>Your backlog must include, at minimum: one item closing the ULB/spending-budget gap from Lab 5, one item establishing or refining an anomaly-response threshold, one item defining a pilot outcome/stabilization rule and economic scorecard owner, one item naming your showback-vs-chargeback decision, and one item scheduling your first monthly KPI review ahead of September 1, 2026.</p>
+<p>Your backlog must include, at minimum: one item closing the ULB/spending-budget gap from Lab 5, one item establishing or refining an anomaly-response threshold, one item defining a pilot outcome/stabilization rule and economic scorecard owner, one item naming your showback-vs-chargeback decision, and one item scheduling your next monthly KPI review and confirming the standard allotments are reflected in the baseline.</p>
 <h3 id="example-answer-contoso-scenario">Example Answer (Contoso scenario)</h3>
 <table>
 <thead>
@@ -895,7 +969,7 @@ Gap to cover = $10,975 − $7,650 = $3,325
 </tr>
 <tr>
 <td align="center">P2</td>
-<td>Schedule recurring monthly KPI review, with an added mid-cycle check the week of September 1, 2026 for the promotional-pool transition</td>
+<td>Schedule recurring monthly KPI review and confirm the baseline uses the current standard allotments rather than promotional-period values</td>
 <td>Platform/DevEx (R), Program Owner (A)</td>
 <td align="center">Week 4</td>
 </tr>
@@ -906,7 +980,7 @@ Gap to cover = $10,975 − $7,650 = $3,325
 <li>✅ Your backlog names at least three KPIs from Lab 3 with a defined review cadence</li>
 <li>✅ Your backlog states an explicit anomaly-response trigger and an owner from the RACI table</li>
 <li>✅ Your backlog names a pilot outcome, stabilization rule, and owner for the first full-cost-per-durable-outcome baseline</li>
-<li>✅ Your backlog states a showback-vs-chargeback decision and a target week for your next KPI review ahead of September 1, 2026</li>
+<li>✅ Your backlog states a showback-vs-chargeback decision, a target week for the next KPI review, and an owner for confirming that the baseline reflects standard allotments</li>
 </ul>
 </details>
 
@@ -990,11 +1064,20 @@ Gap to cover = $10,975 − $7,650 = $3,325
 <p><em>All prices are USD per 1 million tokens. Source: <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing for GitHub Copilot</a>.</em></p>
 <h3 id="sizing-check-formula">Sizing Check Formula</h3>
 <pre><code>1. Max ULB consumption = Σ (users at each ULB tier × that tier&#39;s ULB amount)
-2. Pool value          = (Business seats × $19) + (Enterprise seats × $39)
+2. Included-credit pool value =
+   [(Business seats × 1,900) + (Enterprise seats × 3,900)] × $0.01/credit
 3. Gap to cover         = Max ULB consumption − Pool value
    → Your cost-center + organization + enterprise budgets must cover this gap,
      or users will be blocked by a spending budget before reaching their own ULB.
 </code></pre>
+<p>Use the standard included-credit amounts and the $0.01-per-credit conversion for
+this calculation. Use contracted seat rates only for separate license-cost analysis.</p>
+<hr>
+<h2 id="cleanup">Cleanup</h2>
+<ul>
+<li>Delete any live AI usage export downloaded for the workshop, or move it to the approved secured location identified during setup</li>
+<li>Supplied datasets and paper-only calculations require no cleanup</li>
+</ul>
 <hr>
 <h2 id="related-modules">Related Modules</h2>
 <ul>

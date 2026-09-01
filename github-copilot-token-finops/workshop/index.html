@@ -10,7 +10,7 @@
 <p><strong>Note</strong>: This module is <strong>standalone</strong>. You do not need to have attended Module 1 or Module 2 to complete it — the Welcome &amp; Budget Refresher section below re-establishes the budget vocabulary and mechanics this module builds on. If your team has already run Module 1 (admin guardrails) and Module 2 (developer optimization), this module is the natural third session.</p>
 </blockquote>
 <blockquote>
-<p><strong>Important</strong>: All facts, pricing, and dated figures referenced in this module reflect GitHub documentation as of <strong>2026-08-08</strong>. Pricing, included-credit amounts, and the promotional window change over time — always verify against the live docs linked in the Appendix before delivering this module.</p>
+<p><strong>Important</strong>: Pricing and most dated figures in this module reflect GitHub documentation as of <strong>2026-08-08</strong>; the standard included-credit amounts and historical promotional window were re-verified on <strong>2026-09-01</strong>. These details change over time — always verify against the live docs linked in the Appendix before delivering this module.</p>
 </blockquote>
 <h3 id="related-modules">Related Modules</h3>
 <table>
@@ -116,14 +116,14 @@
 <td>25 min</td>
 </tr>
 <tr>
-<td>☕</td>
-<td>Break</td>
-<td>10 min</td>
-</tr>
-<tr>
 <td>3</td>
 <td><a href="#3-kpi-baselines--anomaly-analysis-hands-on-30-min">KPI Baselines &amp; Anomaly Analysis (Hands-On)</a></td>
 <td>30 min</td>
+</tr>
+<tr>
+<td>☕</td>
+<td>Break</td>
+<td>10 min</td>
 </tr>
 <tr>
 <td>4</td>
@@ -182,7 +182,7 @@
 </tr>
 </tbody></table>
 <blockquote>
-<p><strong>Important — Promotional period ends 2026-09-01</strong>: Existing Business/Enterprise customers receive a higher promotional allotment from <strong>June 1 – September 1, 2026</strong>: <strong>3,000 credits/user/month (Business)</strong> and <strong>7,000 credits/user/month (Enterprise)</strong>. Starting <strong>September 1, 2026</strong>, allotments return to the <strong>standard 1,900 / 3,900</strong> amounts. Baseline your KPIs now, during the promotional window, so tuning decisions aren&#39;t based on numbers that shrink on September 1.</p>
+<p><strong>Historical allotment note</strong>: The temporary June 1–September 1, 2026 promotional allotment was <strong>3,000 credits/user/month (Business)</strong> and <strong>7,000 credits/user/month (Enterprise)</strong>. The durable examples in this module use the standard <strong>1,900 / 3,900</strong> amounts. Historical exports from the promotional period may therefore show a larger included-credit pool. Re-verify live amounts before delivery.</p>
 </blockquote>
 <ul>
 <li>A <strong>$0 or exhausted ULB always blocks</strong> a user immediately — there is no fallback to a cheaper model</li>
@@ -193,7 +193,7 @@
 <li>If your organization already ran Module 1 or 2, what changed in your budget configuration since then?</li>
 <li>Who in this room owns the monthly review of these numbers today — is that ownership clear?</li>
 <li>What&#39;s the one measurement question you most want answered by the end of this session?</li>
-<li>How is your organization planning for the September 1, 2026 promotional pool reduction?</li>
+<li>Do your current baselines reflect the standard allotments, or are they still influenced by promotional-period data?</li>
 </ul>
 <hr>
 <h2 id="1-reporting--data-sources-20-min">1. Reporting &amp; Data Sources (20 min)</h2>
@@ -290,7 +290,7 @@
 <ul>
 <li>Every Copilot interaction consumes <strong>tokens</strong>, and each token category is priced independently per model:<ul>
 <li><strong>Input tokens</strong> — what you send to the model (your prompt + context)</li>
-<li><strong>Cached input tokens</strong> — context the model reuses from a previous turn, usually priced far lower than fresh input</li>
+<li><strong>Cached input tokens</strong> — context the model reuses from a previous turn, typically billed at about <strong>10% of that model&#39;s fresh-input price</strong> (roughly 10x cheaper). This is the common pattern, not a universal rule — verify the selected model&#39;s row before quoting or encoding a ratio</li>
 <li><strong>Cache write tokens</strong> — the cost of writing context into the cache so it can be reused later (not all models charge this)</li>
 <li><strong>Output tokens</strong> — what the model generates back to you, typically the most expensive category per token</li>
 </ul>
@@ -392,7 +392,7 @@ AI credits (USD × 100)                   = 41.8 credits
 <h3 id="discussion-points">Discussion Points</h3>
 <ul>
 <li>Why does model choice, not just prompt length, dominate cost at scale?</li>
-<li>If cached input is 10x cheaper than fresh input, what does that imply about session continuity policies your team might set?</li>
+<li>Cached input is typically about <strong>10% of a model&#39;s fresh-input price</strong>, but not for every model. What does that imply about session-continuity policies your team might set, and how would you verify the ratio before encoding it in a policy or a cost model?</li>
 <li>How would you use the &quot;monthly credit difference&quot; calculation from the exercise to justify a model-selection policy to engineering leadership?</li>
 <li>Would you expect a quick Ask-mode question or a long cloud-agent session to consume more credits, and by roughly what order of magnitude?</li>
 </ul>
@@ -631,6 +631,9 @@ AI credits (USD × 100)                   = 41.8 credits
 <li>Who should receive an anomaly alert when blocked users or burn rate spike mid-cycle, and how quickly should they be expected to respond?</li>
 </ul>
 <hr>
+<h2 id="-break-10-min">☕ Break (10 min)</h2>
+<p>Use the break to reset before the module&#39;s conceptually heavier outcome-economics and operating-model sections.</p>
+<hr>
 <h2 id="4-economics-of-accepted-outcomes-hands-on-45-min">4. Economics of Accepted Outcomes (Hands-On) (45 min)</h2>
 <h3 id="key-points">Key Points</h3>
 <ul>
@@ -766,6 +769,13 @@ sampled hours × approved loaded labor rate
 <blockquote>
 <p><strong>Important</strong>: If payroll and headcount did not change, multiplying &quot;hours saved&quot; by a labor rate does not automatically produce cash savings. It usually represents capacity released or cost avoidance until an actual expense or measurable output changes.</p>
 </blockquote>
+<h3 id="one-minute-paired-benefit-check">One-Minute Paired Benefit Check</h3>
+<p>Classify each outcome before assigning a dollar value:</p>
+<ol>
+<li>A team delivers the same backlog with unchanged payroll and no headcount reduction.</li>
+<li>The organization cancels an external code-review service after an accepted pilot.</li>
+</ol>
+<p><strong>Answer</strong>: Scenario 1 is <strong>capacity released</strong>; Scenario 2 is <strong>realized cash savings</strong>. Both can support an investment decision, but they belong in separate scorecard rows.</p>
 <h3 id="advanced-economics-multi-stage-yield--enablement">Advanced Economics: Multi-Stage Yield &amp; Enablement</h3>
 <p>When every workflow stage must succeed:</p>
 <pre><code>End-to-end durable acceptance =
@@ -866,6 +876,46 @@ $30,000 ÷ 3,000 durable outcomes = $10 per outcome
 </ul>
 <hr>
 <h2 id="5-budget-tuning--operating-model-capstone-hands-on-35-min">5. Budget Tuning &amp; Operating Model Capstone (Hands-On) (35 min)</h2>
+<h3 id="live-run-of-show">Live Run of Show</h3>
+<table>
+<thead>
+<tr>
+<th>Segment</th>
+<th align="center">Live Time</th>
+<th>Delivery Guidance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Two tuning dimensions</td>
+<td align="center">4 min</td>
+<td>Explain policy vs. dollar-cap decisions</td>
+</tr>
+<tr>
+<td>Sizing check</td>
+<td align="center">3 min</td>
+<td>Model the shared-pool and gap calculation</td>
+</tr>
+<tr>
+<td>Budget tuning exercise</td>
+<td align="center">14 min</td>
+<td>Teams calculate, decide, and prepare one recommendation</td>
+</tr>
+<tr>
+<td>Operating model and RACI orientation</td>
+<td align="center">6 min</td>
+<td>Point to the reference tables; do not teach every row</td>
+</tr>
+<tr>
+<td>30-day backlog capstone and close</td>
+<td align="center">8 min</td>
+<td>Teams draft priorities and share one P0 item</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td align="center"><strong>35 min</strong></td>
+<td></td>
+</tr>
+</tbody></table>
 <h3 id="key-points">Key Points</h3>
 <ul>
 <li>Budget tuning spans two independent dimensions that must both be sized correctly:<ul>
@@ -885,16 +935,26 @@ $30,000 ÷ 3,000 durable outcomes = $10 per outcome
 </ul>
 <h3 id="sizing-check-the-calculation-every-tuning-exercise-should-run">Sizing Check (the calculation every tuning exercise should run)</h3>
 <pre><code>1. Max ULB consumption = Σ (users at each ULB tier × that tier&#39;s ULB amount)
-2. Pool value          = (Business seats × $19) + (Enterprise seats × $39)
+2. Included-credit pool value =
+   [(Business seats × 1,900) + (Enterprise seats × 3,900)] × $0.01/credit
 3. Gap to cover         = Max ULB consumption − Pool value
    → Your cost-center + organization + enterprise budgets must cover this gap,
      or users will be blocked by a spending budget before reaching their own ULB.
 </code></pre>
+<p>Use included-credit amounts—not license prices—to value the pool. At the standard
+monthly amounts, 1,900 Business credits equal $19 and 3,900 Enterprise credits
+equal $39 at the fixed $0.01-per-credit conversion. Those equivalents do not
+state the license price: GitHub lists <a href="https://docs.github.com/en/billing/concepts/product-billing/github-copilot-licenses">Copilot Business at $19 per user per month
+and Copilot Enterprise pricing as variable</a>.
+Use your contracted seat rates separately when analyzing total license economics.</p>
 <details>
-<summary><h3 id="-hands-on-budget-tuning-exercise-18-min">🧪 Hands-On: Budget Tuning Exercise (18 min)</h3></summary>
+<summary><h3 id="-hands-on-budget-tuning-exercise-14-min">🧪 Hands-On: Budget Tuning Exercise (14 min)</h3></summary>
 
 <p><strong>Roles</strong>: Form groups of 3–4 with a mix of roles if possible (FinOps, platform/DevEx, engineering manager).</p>
 <p><strong>Scenario — &quot;Contoso Platform Org&quot;</strong>:</p>
+<blockquote>
+<p><strong>Dataset note</strong>: This exercise uses the standard 1,900 Business / 3,900 Enterprise monthly allotments. Historical exports from the June 1–September 1, 2026 promotional period may show 3,000 / 7,000 instead.</p>
+</blockquote>
 <ul>
 <li>300 Copilot Business users, 50 Copilot Enterprise users (350 licensed users total)</li>
 <li>80 of the Business users are in the <strong>Data Science</strong> cost center, with a <strong>cost-center ULB of $45</strong></li>
@@ -903,10 +963,11 @@ $30,000 ÷ 3,000 durable outcomes = $10 per outcome
 <li>The current <strong>enterprise spending budget is $2,000</strong>, with &quot;Stop usage when budget limit is reached&quot; <strong>enabled</strong></li>
 </ul>
 <p><strong>Steps</strong>:</p>
+<p><strong>Timebox</strong>: Use the first 8 minutes for the three calculations, 3 minutes for the enterprise-budget and included-usage-control decisions, and the final 3 minutes to compare one recommendation with another group.</p>
 <ol>
 <li>Calculate the <strong>universal-tier population</strong>: 350 total − 80 (Data Science) − 5 (power users) = ______ users</li>
 <li>Calculate <strong>max ULB consumption</strong> using the Sizing Check formula above (three tiers: universal, Data Science cost-center, power-user individual)</li>
-<li>Calculate the <strong>pool value</strong>: (300 × $19) + (50 × $39)</li>
+<li>Calculate the <strong>included-credit pool value</strong>: [(300 × 1,900) + (50 × 3,900)] × $0.01</li>
 <li>Calculate the <strong>gap to cover</strong>: max ULB consumption − pool value</li>
 <li>Compare the gap to the current $2,000 enterprise budget. Is it sufficient? If not, what&#39;s the minimum enterprise budget you&#39;d recommend, and why include a buffer above the bare minimum?</li>
 <li>Separately, the Data Science cost center&#39;s <strong>included usage control</strong> cap is 80 × 1,900 = 152,000 AI credits. If Data Science is a genuinely heavy, high-value team, would you configure their included usage control to <strong>block</strong> or to <strong>allow continued paid overage</strong> once that cap is reached — and why?</li>
@@ -915,14 +976,15 @@ $30,000 ÷ 3,000 durable outcomes = $10 per outcome
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
 <li>✅ You correctly calculated the universal-tier population (265 users)</li>
-<li>✅ You correctly calculated max ULB consumption ($10,975) and pool value ($7,650)</li>
+<li>✅ You correctly calculated max ULB consumption ($10,975) and included-credit pool value ($7,650)</li>
 <li>✅ You correctly calculated the gap ($3,325) and identified that the current $2,000 enterprise budget is <strong>undersized</strong></li>
 <li>✅ You recommended raising the enterprise budget to at least the gap amount, with a stated buffer rationale</li>
 <li>✅ You made and justified a block-vs-allow-overage decision for the Data Science included usage control</li>
 </ul>
 </details>
 
-<h3 id="operating-model-building-blocks">Operating Model Building Blocks</h3>
+<h3 id="post-session-reference--operating-model-building-blocks">Post-Session Reference — Operating Model Building Blocks</h3>
+<p>Use this table to support the capstone and later implementation planning. During the live session, orient learners to the building blocks rather than teaching every row.</p>
 <table>
 <thead>
 <tr>
@@ -936,7 +998,7 @@ $30,000 ÷ 3,000 durable outcomes = $10 per outcome
 </tr>
 <tr>
 <td><strong>Review cadence</strong></td>
-<td>Fixed schedule (recommended: monthly, with a lightweight weekly check during the September 1, 2026 promo-to-standard transition) to review the KPIs from Section 3</td>
+<td>Fixed schedule (recommended: monthly, with a lightweight weekly check after any material included-credit or pricing change) to review the KPIs from Section 3</td>
 </tr>
 <tr>
 <td><strong>Anomaly response</strong></td>
@@ -959,7 +1021,8 @@ $30,000 ÷ 3,000 durable outcomes = $10 per outcome
 <td>Report cost to a business unit (showback) or charge it back to their budget (chargeback) via cost centers — many organizations start with showback and move to chargeback once baselines are trusted</td>
 </tr>
 </tbody></table>
-<h3 id="raci--who-owns-what">RACI — Who Owns What</h3>
+<h3 id="post-session-reference--raci-who-owns-what">Post-Session Reference — RACI: Who Owns What</h3>
+<p>Use this table to assign the capstone owners. Resolve organization-specific role changes after the workshop instead of debating every row live.</p>
 <table>
 <thead>
 <tr>
@@ -1029,9 +1092,10 @@ $30,000 ÷ 3,000 durable outcomes = $10 per outcome
 </tbody></table>
 <p><em>R = Responsible, A = Accountable, C = Consulted, I = Informed.</em></p>
 <details>
-<summary><h3 id="-hands-on-capstone-30-day-optimization-backlog-12-min">🧪 Hands-On Capstone: 30-Day Optimization Backlog (12 min)</h3></summary>
+<summary><h3 id="-hands-on-capstone-30-day-optimization-backlog-8-min">🧪 Hands-On Capstone: 30-Day Optimization Backlog (8 min)</h3></summary>
 
 <p><strong>Roles</strong>: Same groups of 3–4 from the budget tuning exercise.</p>
+<p><strong>Timebox</strong>: Draft for 6 minutes, then use 2 minutes to share one P0 item and owner.</p>
 <p>Using everything from Sections 1–5, draft a prioritized <strong>30-Day Optimization Backlog</strong> for your organization (or for the Contoso scenario above):</p>
 <table>
 <thead>
@@ -1079,14 +1143,14 @@ $30,000 ÷ 3,000 durable outcomes = $10 per outcome
 <td align="center">______</td>
 </tr>
 </tbody></table>
-<p>At minimum, your backlog must include: one item that closes the ULB/spending-budget gap identified in the tuning exercise, one item that establishes or refines an anomaly-response threshold, one item that defines a pilot outcome/stabilization rule and economic scorecard owner, one item that names your showback-vs-chargeback decision, and one item that schedules your first monthly KPI review before September 1, 2026.</p>
+<p>At minimum, your backlog must include: one item that closes the ULB/spending-budget gap identified in the tuning exercise, one item that establishes or refines an anomaly-response threshold, one item that defines a pilot outcome/stabilization rule and economic scorecard owner, one item that names your showback-vs-chargeback decision, and one item that schedules your next monthly KPI review and confirms the standard allotments are reflected in the baseline.</p>
 <h4 id="success-criteria">Success Criteria</h4>
 <ul>
 <li>✅ Your backlog includes a P0 item that directly resolves the budget-tuning gap from the hands-on exercise</li>
 <li>✅ Your backlog names at least three KPIs from Section 3 with a defined review cadence</li>
 <li>✅ Your backlog states an explicit anomaly-response trigger and an owner from the RACI table</li>
 <li>✅ Your backlog names a pilot outcome, stabilization rule, and owner for the first full-cost-per-durable-outcome baseline</li>
-<li>✅ Your backlog states a showback-vs-chargeback decision and a target week for your next KPI review ahead of the September 1, 2026 promotional pool change</li>
+<li>✅ Your backlog states a showback-vs-chargeback decision, a target week for the next KPI review, and an owner for confirming that the baseline reflects standard allotments</li>
 </ul>
 </details>
 
@@ -1095,7 +1159,7 @@ $30,000 ÷ 3,000 durable outcomes = $10 per outcome
 <li>What&#39;s the single biggest blocker to executing your 30-day optimization backlog as written?</li>
 <li>Who owns anomaly response after today — is it the same person who owns monthly KPI review, or should it be different given how quickly anomalies need triage?</li>
 <li>How will you know, one cycle from now, whether your budget tuning changes worked?</li>
-<li>What would make you revisit your enterprise spending budget sooner than one cycle — before or after September 1, 2026?</li>
+<li>What material change in allotments, pricing, or usage would make you revisit your enterprise spending budget sooner than one cycle?</li>
 </ul>
 <hr>
 <h2 id="recap">Recap</h2>
@@ -1116,7 +1180,7 @@ $30,000 ÷ 3,000 durable outcomes = $10 per outcome
 <ul>
 <li>&quot;Can we see cost by repository or team, not just by user or cost center?&quot;</li>
 <li>&quot;How do we handle third-party coding agents in our KPI and budget math?&quot;</li>
-<li>&quot;What specifically changes for us on September 1, 2026?&quot;</li>
+<li>&quot;How should we normalize baselines that include promotional-period data?&quot;</li>
 <li>&quot;If overage and a quality dip happen together again, how fast can we tell whether they&#39;re actually related?&quot;</li>
 <li>&quot;Can we count developer time saved as cash savings, or is it capacity released?&quot;</li>
 <li>&quot;How long should our stabilization period be before an outcome counts as durable?&quot;</li>
@@ -1185,16 +1249,18 @@ $30,000 ÷ 3,000 durable outcomes = $10 per outcome
 </tr>
 </tbody></table>
 <blockquote>
-<p><strong>Note</strong>: All dated facts (pricing snapshot, promotional-window dates, included-credit amounts) reflect the docs as verified on <strong>2026-08-08</strong>. Re-verify against these live URLs before every delivery of this module.</p>
+<p><strong>Note</strong>: The pricing snapshot reflects the docs as verified on <strong>2026-08-08</strong>. Standard included-credit amounts and the historical promotional-window dates were re-verified on <strong>2026-09-01</strong>. Re-verify against these live URLs before every delivery of this module.</p>
 </blockquote>
 <h3 id="instructor-preflight-checklist">Instructor Preflight Checklist</h3>
 <ul>
 <li><input disabled="" type="checkbox"> Re-verify the pricing snapshot table (Section 2) against the live <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing">Models and pricing</a> page</li>
 <li><input disabled="" type="checkbox"> Re-verify the promotional-window dates and standard credit amounts (Welcome section) against the live <a href="https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises">Usage-based billing</a> page</li>
 <li><input disabled="" type="checkbox"> Confirm which attendees have AI usage dashboard access ahead of time so you can plan the Section 1 live demo versus a screenshot walkthrough</li>
+<li><input disabled="" type="checkbox"> Click through <strong>Billing &amp; Licensing → AI usage</strong> and <strong>Usage → Metered usage</strong> in the delivery tenant; verify the current labels, CSV export flow, and <code>product:copilot</code> / <code>cost_center:&lt;name&gt;</code> query syntax</li>
 <li><input disabled="" type="checkbox"> If discussing OTel, run <code>copilot help monitoring</code> on the installed CLI version and review the organization&#39;s telemetry privacy, retention, and access requirements; do not enable prompt/response capture for the workshop</li>
 <li><input disabled="" type="checkbox"> Print or share the Sample Dataset and Answer Key (LAB guide) in case attendees lack access to a real AI usage export</li>
 <li><input disabled="" type="checkbox"> Confirm the outcome-economics exercise assumptions are presented as illustrative, not GitHub product benchmarks or universal accounting rules</li>
+<li><input disabled="" type="checkbox"> For remote delivery, pre-assign breakout groups of 3–4 and name the FinOps, Platform/DevEx, Engineering Manager, and Program Owner roles before Labs 4–6</li>
 <li><input disabled="" type="checkbox"> Bookmark all Key URLs above in a dedicated browser folder for quick reference during Q&amp;A</li>
 <li><input disabled="" type="checkbox"> If your organization has already run Module 1 and/or Module 2, review those decisions (budget amounts, developer optimization habits already adopted) so this module&#39;s tuning exercise reflects real numbers where possible</li>
 </ul>
