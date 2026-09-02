@@ -2,13 +2,16 @@
 <link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
 <style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
 </style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-ai-credits-optimization--module-1-hands-on-lab-guide">GitHub Copilot AI Credits Optimization — Module 1 Hands-On Lab Guide</h1>
-<p><strong>Duration</strong>: ~43 minutes of hands-on exercises (across a ~115-minute module)<br><strong>Format</strong>: Step-by-step lab exercises with worksheets<br><strong>Audience</strong>: Enterprise/org owners, billing managers, FinOps leaders, platform admins, engineering leaders<br><strong>Roles used throughout</strong>: <strong>Admin</strong> (drives live UI where available, sandbox/test scope only), <strong>Observer</strong> (completes worksheets, asks questions, compares results)</p>
+<p><strong>Duration</strong>: ~43 minutes of hands-on exercises (across a ~115-minute module)<br><strong>Format</strong>: Step-by-step lab exercises with worksheets<br><strong>Audience</strong>: Enterprise/org owners, billing managers, FinOps leaders, platform admins, engineering leaders<br><strong>Roles used throughout</strong>: <strong>Admin</strong> (drives read-only inspection of pre-existing sanitized sandbox objects), <strong>Observer</strong> (completes worksheets, asks questions, compares results)</p>
 <hr>
 <h2 id="lab-overview">Lab Overview</h2>
 <p>This lab guide contains all the hands-on exercises from <strong>Module 1: Administration &amp; Budget Guardrails</strong>, part of the <strong>GitHub Copilot AI Credits Optimization</strong> curriculum. Each lab maps to a workshop section and builds on the previous one. Complete them in order.</p>
 <p>This module — and this lab guide — can be delivered <strong>standalone</strong>. It does not depend on the labs for Module 2 (Developer Token Optimization Patterns, see the <a href="../../github-copilot-token-developer/workshop/">Module 2 workshop</a>) or Module 3 (FinOps Reporting &amp; Chargeback/Showback, see the <a href="../../github-copilot-token-finops/workshop/">Module 3 workshop</a>). For the complete learning path, see the <a href="../../github-copilot-token/">full curriculum overview</a>.</p>
 <blockquote>
-<p><strong>Important</strong>: No lab in this guide requires making a live paid AI request, and <strong>none require saving a production configuration change</strong>. Every calculation and configuration can be completed with the worked examples and the supplied worksheets. If you do configure a real budget during Lab 3, use only a sandbox/test scope, enable <strong>Stop usage when budget limit is reached</strong> only there, and delete or disable the test configuration before the session ends. A live hard-stop budget can immediately block production users.</p>
+<p><strong>Important</strong>: No lab in this guide requires making a live paid AI request or saving a configuration change. The Lab 3 Admin path is strictly read-only: participants may inspect pre-existing sanitized sandbox objects and form labels, but must not change selectors, type values, create or assign resources, toggle controls, save, or download. All design decisions are recorded in the worksheet. A live hard-stop budget can immediately block production users.</p>
+</blockquote>
+<blockquote>
+<p><strong>Sandbox recovery rule</strong>: Before participant access, confirm the staged sandbox contains <strong>no production users</strong>, record the staged baseline for every object participants will inspect, and name an authorized recovery owner. If any UI state changes unexpectedly, stop the Admin path, do not self-repair, notify that owner, and switch participants to the Simulation path. Only the authorized owner restores and verifies the recorded baseline.</p>
 </blockquote>
 <h3 id="prerequisites">Prerequisites</h3>
 <table>
@@ -28,7 +31,7 @@
 </tr>
 <tr>
 <td><strong>Admin access (recommended, not required)</strong></td>
-<td>Organization owner, enterprise owner, or billing manager role unlocks the live budget exercise in Section 3</td>
+<td>Organization owner, enterprise owner, or billing manager role unlocks the read-only sandbox inspection in Section 3</td>
 </tr>
 <tr>
 <td><strong>Web browser</strong></td>
@@ -36,17 +39,19 @@
 </tr>
 </tbody></table>
 <h3 id="choosing-your-path">Choosing Your Path</h3>
-<p>Every lab in this guide has an <strong>Admin path</strong> (live UI, sandbox/test scope only, never saved to production) and a <strong>Simulation path</strong> (paper worksheet, driven by the <strong>Observer</strong> role). If you do not have organization/enterprise billing access, use the Simulation path. You will still produce a complete worksheet artifact either way, and the two roles are designed to compare notes at the end of each lab.</p>
+<p>Every lab in this guide has an <strong>Admin path</strong> (read-only inspection of facilitator-designated sanitized sandbox objects) and a <strong>Simulation path</strong> (paper worksheet, driven by the <strong>Observer</strong> role). If you do not have organization/enterprise billing access, use the Simulation path. You will still produce a complete worksheet artifact either way, and the two roles are designed to compare notes at the end of each lab.</p>
 <h3 id="setup">Setup</h3>
 <ol>
-<li>Choose the <strong>Admin path</strong> only if you can open the sandbox/test enterprise or organization used for the workshop; otherwise choose the <strong>Simulation path</strong>.</li>
-<li>Admin-path participants should confirm they can open <strong>Billing &amp; Licensing</strong> and that the designated sandbox cost center and eligible enterprise team are available. Do not create or reassign production resources for this lab.</li>
+<li>Confirm with the facilitator that the staged sandbox contains no production users, the baseline is recorded, and an authorized recovery owner is named.</li>
+<li>Choose the <strong>Admin path</strong> only if you can open that sandbox/test enterprise or organization; otherwise choose the <strong>Simulation path</strong>.</li>
+<li>Admin-path participants should confirm they can open <strong>Billing &amp; Licensing</strong> and the facilitator-designated pre-existing sanitized cost-center and budget objects. Do not change selectors, type, create, assign, toggle, save, or download.</li>
 <li>Simulation-path participants should open this guide and prepare a copy of the Budget Design Worksheet in Lab 3.</li>
+<li>If any UI state changes unexpectedly, stop, do not self-repair, notify the authorized recovery owner, and switch to Simulation while that owner restores and verifies the recorded baseline.</li>
 </ol>
 <p><strong>Setup checkpoint</strong>:</p>
 <ul>
 <li>✅ Every participant has selected the Admin or Simulation path</li>
-<li>✅ Admin-path participants can open the sandbox/test Billing &amp; Licensing settings and have confirmed the prerequisite resources</li>
+<li>✅ Admin-path participants can open the sandbox/test Billing &amp; Licensing settings and have confirmed there are no production users, the staged baseline is recorded, and the authorized recovery owner is known</li>
 <li>✅ Simulation-path participants can edit or print the worksheet</li>
 </ul>
 <hr>
@@ -81,18 +86,26 @@
 </tr>
 </tbody></table>
 <h3 id="steps">Steps</h3>
+<blockquote>
+<p><strong>Participant instruction</strong>: Complete the exercise, then stop before the <strong>Answer Key</strong> heading. Do not open it until the facilitator begins the debrief.</p>
+</blockquote>
 <p>Using the table above, calculate the <strong>total monthly pooled credits</strong> for a fictional <strong>500-user Copilot Business organization</strong>, once during the standard period and once during the promotional period:</p>
 <ol>
 <li>Standard period total pool: 500 × ______ = ______</li>
 <li>Promotional period total pool: 500 × ______ = ______</li>
 <li>Difference between the two totals (in credits, and in USD at $0.01/credit)</li>
 </ol>
+<details>
+<summary>Answer Key — open only when the facilitator begins the debrief</summary>
+
 <h3 id="answer-key">Answer Key</h3>
 <ol>
 <li>Standard period total pool: 500 × 1,900 = <strong>950,000 credits</strong></li>
 <li>Promotional period total pool: 500 × 3,000 = <strong>1,500,000 credits</strong></li>
 <li>Difference: 1,500,000 − 950,000 = <strong>550,000 credits</strong> = 550,000 × $0.01 = <strong>$5,500</strong></li>
 </ol>
+</details>
+
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
 <li>✅ You calculated the standard-period pool as 950,000 credits</li>
@@ -113,32 +126,41 @@
 <li><strong>Admin</strong> and <strong>Observer</strong> work together; either role can lead the trace out loud</li>
 </ul>
 <h3 id="reference-diagram">Reference Diagram</h3>
-<pre><code>┌────────────────┐ ┌────────────────┐ ┌────────────────┐ ┌────────────────┐ ┌────────────────┐
-│      User      │ │  User budget   │ │     Shared     │ │   Paid usage   │ │Spending budget │
-│    request     │►│     check      │►│      pool      │►│     policy     │►│  / hard stop   │
-└────────────────┘ └────────────────┘ └────────────────┘ └────────────────┘ └────────────────┘
+<pre><code>┌──────────────┐ ┌──────────────┐ ┌────────────────────────┐ ┌──────────────┐ ┌────────────────────────┐
+│ User request │►│  ULB check   │►│ Included credits check │►│ Paid-usage   │►│ All applicable spending│
+│              │ │              │ │ Enterprise pool or     │ │ policy       │ │ budgets / hard stops   │
+│              │ │              │ │ enabled cost-center cap│ │              │ │                        │
+└──────────────┘ └──────────────┘ └────────────────────────┘ └──────────────┘ └────────────────────────┘
 </code></pre>
 <ol>
-<li><strong>User budget check</strong> — most specific active ULB (individual &gt; cost-center &gt; universal). A $0 or exhausted ULB always blocks — no fallback.</li>
-<li><strong>Shared pool</strong> — served with no additional metered charge beyond the license fee while the pool (org/enterprise, resets monthly at 00:00 UTC, no rollover) has credits.</li>
-<li><strong>Paid usage policy</strong> — once the pool is exhausted, the &quot;AI credits paid usage&quot; policy (default: enabled) decides whether metered usage begins.</li>
-<li><strong>Spending budget / hard stop</strong> — cost-center/org/enterprise budget hard-stops only if &quot;Stop usage when budget limit is reached&quot; is enabled (off by default); otherwise it&#39;s alert-only. By default, cost-center metered usage also counts against the enterprise budget; an excluded cost center is governed only by its own budget.</li>
+<li><strong>ULB check</strong> — most specific active ULB (individual &gt; cost-center &gt; universal). A $0 or exhausted ULB always blocks—no fallback.</li>
+<li><strong>Included credits check</strong> — with the cost center&#39;s included usage control disabled, the user draws from the shared enterprise pool; with it enabled, the user draws only from that cost center&#39;s automatically calculated cap.</li>
+<li><strong>Paid-usage policy</strong> — when the applicable included capacity is unavailable, configured paid-usage behavior determines whether the request is blocked or may proceed to metered usage.</li>
+<li><strong>All applicable spending budgets / hard stops</strong> — metered usage can count toward multiple cost-center, organization, and enterprise budgets. Any exhausted applicable budget with hard stop enabled blocks; otherwise its charges continue and alerts fire. For an excluded cost center, the enterprise budget neither counts nor blocks its metered charges; only that cost center&#39;s own spending budget caps them.</li>
 </ol>
 <h3 id="steps">Steps</h3>
+<blockquote>
+<p><strong>Participant instruction</strong>: Complete the exercise, then stop before the <strong>Answer Key</strong> heading. Do not open it until the facilitator begins the debrief.</p>
+</blockquote>
 <p>For each scenario, write down <strong>where</strong> the request is blocked (if at all) and <strong>why</strong>:</p>
 <ol>
 <li>A user with a $0 individual ULB sends a Chat prompt. The org pool still has 40% of its credits remaining.</li>
-<li>A user with no individual override sends a prompt. The shared pool is fully exhausted, and the enterprise has disabled the &quot;AI credits paid usage&quot; policy.</li>
-<li>A user with no individual override sends a prompt. The shared pool is exhausted, paid usage is enabled, and the enterprise budget has hit 100% with hard stop <strong>not</strong> enabled.</li>
+<li>A user with no individual override sends a prompt. Their applicable included capacity is fully exhausted, and the enterprise has disabled the &quot;AI credits paid usage&quot; policy.</li>
+<li>A user with no individual override sends a prompt. Their applicable included capacity is exhausted, paid usage is enabled, and the applicable enterprise budget has hit 100% with hard stop <strong>not</strong> enabled.</li>
 <li>Same as #3, but hard stop <strong>is</strong> enabled on the enterprise budget.</li>
 </ol>
+<details>
+<summary>Answer Key — open only when the facilitator begins the debrief</summary>
+
 <h3 id="answer-key">Answer Key</h3>
 <ol>
 <li><strong>Blocked at Step 1 (user-level budget check)</strong> — a $0 ULB always hard-stops the user regardless of pool state; there is no fallback.</li>
-<li><strong>Blocked at the paid usage policy check</strong> — once the pool is exhausted, a disabled &quot;AI credits paid usage&quot; policy blocks all further usage until the next billing cycle.</li>
+<li><strong>Blocked at the paid-usage policy check</strong> — once the applicable included capacity is exhausted, disabled paid usage blocks further usage until the next billing cycle.</li>
 <li><strong>Allowed (metered charge applied)</strong> — the enterprise budget is at 100% but has no hard stop enabled, so it functions as an alert only; usage continues and is billed as overage.</li>
-<li><strong>Blocked at Step 4 (applicable spending budget)</strong> — with hard stop enabled, reaching 100% of the enterprise budget blocks further metered usage.</li>
+<li><strong>Blocked at Step 4 (applicable spending budgets)</strong> — assuming the user&#39;s metered usage participates in the enterprise budget, its enabled hard stop blocks further metered usage. Any other exhausted applicable hard-stop budget could also block.</li>
 </ol>
+</details>
+
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
 <li>✅ You correctly identified Scenario 1 as blocked at the user-level budget step, regardless of pool state</li>
@@ -157,7 +179,7 @@
 </blockquote>
 <h3 id="roles">Roles</h3>
 <ul>
-<li><strong>Admin</strong>: Drives the live Billing &amp; Licensing UI (sandbox/test scope only — never saved to production)</li>
+<li><strong>Admin</strong>: Drives read-only inspection of facilitator-designated pre-existing sanitized objects in Billing &amp; Licensing</li>
 <li><strong>Observer</strong>: Completes the Budget Design Worksheet in parallel</li>
 </ul>
 <blockquote>
@@ -188,15 +210,16 @@
 <td>An organization, repository, user, or enterprise team can belong to only one cost center; assigning it elsewhere moves it to the new cost center</td>
 </tr>
 </tbody></table>
+<p>If the optional <strong>included usage control</strong> is enabled, GitHub automatically calculates its cap from AI credits funded by licenses assigned to cost-center members. Administrators do not enter or manually resize it. Licensed additions or upgrades increase the cap immediately; removals or downgrades normally reduce it at the next billing cycle, and moves between controlled cost centers recalculate next cycle.</p>
 <h3 id="steps">Steps</h3>
 <p><strong>Step 1 — Choose your path</strong>:</p>
 <ul>
-<li><strong>Admin path</strong>: Confirm the designated sandbox cost center and enterprise team under <strong>Enterprise → Billing &amp; Licensing → Cost centers</strong>, then open <strong>Budgets and alerts</strong> and click <strong>New budget</strong>. Walk through the fields (Budget Type → Bundled AI credits budget → scope → amount → alerts → stop option) <strong>without saving a production change</strong> — use a designated sandbox/test scope only.</li>
+<li><strong>Admin path</strong>: Open the facilitator-designated pre-existing sanitized cost center under <strong>Enterprise → Billing &amp; Licensing → Cost centers</strong>. Inspect its resources, licensed membership, included usage control state, and automatically calculated cap. Then open <strong>Budgets and alerts</strong> and inspect existing budget objects and form labels. Do not change selectors, type, create, assign, toggle, save, or download. Record every design choice in the worksheet.</li>
 <li><strong>Simulation path</strong>: Skip directly to Step 2 and fill in the worksheet as if you were configuring the UI.</li>
 </ul>
 <p>If the Admin path is unavailable because access, navigation, plan features, or prerequisite resources differ, switch immediately to the Simulation path.</p>
 <p><strong>Step 2 — Complete the Budget Design Worksheet</strong>:</p>
-<p>Design a budget configuration for a fictional <strong>500-user Copilot Business organization</strong>. Fill in every field:</p>
+<p>Design a budget configuration for a fictional <strong>500-user Copilot Business organization</strong>. Its designated cost center contains <strong>100 Copilot Business licensed members</strong>. If the included usage control is enabled, expect GitHub to calculate a <strong>190,000-credit cap</strong> from those licenses (<strong>100 × 1,900 credits</strong>). Verify that expected basis; do not treat the cap as a manually entered or manually sized input. Fill in every field:</p>
 <table>
 <thead>
 <tr>
@@ -225,8 +248,24 @@
 <td>_______</td>
 </tr>
 <tr>
-<td>Cost-center included-usage allocation (headcount × per-license credits)</td>
+<td>Cost-center included usage control enabled? (Y/N)</td>
 <td>_______</td>
+</tr>
+<tr>
+<td>Fictional cost-center licensed membership input</td>
+<td>100 Copilot Business licensed members</td>
+</tr>
+<tr>
+<td>Expected automatically calculated cap (not manually sized)</td>
+<td>190,000 credits (100 × 1,900)</td>
+</tr>
+<tr>
+<td>Automatically calculated cap observed or verified against expected basis</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Cap recalculation timing for the planned membership/license change</td>
+<td>Immediate increase / next-cycle decrease or controlled-cost-center move</td>
 </tr>
 <tr>
 <td>Cost-center spending budget amount (metered phase only)</td>
@@ -281,17 +320,17 @@
 <td>_______</td>
 </tr>
 </tbody></table>
-<p><strong>Step 3 — Compare</strong>: Admin and Observer compare worksheet answers. Discuss any difference in the universal ULB amount each chose, and whether the cost-center included-usage allocation vs. spending budget distinction was filled in correctly.</p>
-<p><strong>Step 4 — Clean up</strong>: If you saved any sandbox/test budget or cost-center configuration, delete or disable it before ending the exercise. Confirm that no test hard stop remains active. If you only viewed the UI or completed the Simulation path, no cleanup is required.</p>
+<p><strong>Step 3 — Compare</strong>: Admin and Observer compare worksheet answers. Discuss any difference in the universal ULB amount each chose, and whether the included usage control, automatically calculated cap, and spending-budget distinction was filled in correctly.</p>
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
 <li>✅ You can state the precedence order of the three ULB types (individual &gt; cost-center &gt; universal) from memory</li>
 <li>✅ You can explain why a $0 ULB blocks a user immediately, while an unconfigured enterprise budget does not</li>
 <li>✅ Your worksheet&#39;s universal ULB is set above the standard per-seat included-credit equivalent ($19 for 1,900 Business credits / $39 for 3,900 Enterprise credits), not an assumed license price</li>
-<li>✅ You can explain the difference between a cost center&#39;s included-usage allocation and its spending budget</li>
-<li>✅ You can explain when cost-center usage counts against the enterprise budget and what changes when cost center exclusion is enabled</li>
-<li>✅ You can explain how enterprise-team membership automates cost-center membership without automatically sizing the budgets</li>
-<li>✅ (Admin path only) You have located the Budgets and alerts screen and can name all five fields in the &quot;New budget&quot; flow, without saving a production change</li>
+<li>✅ You can explain the difference between a cost center&#39;s optional included usage control, its automatically calculated cap, and its spending budget</li>
+<li>✅ For the 100-member cost center, you recorded the expected automatically calculated cap as 190,000 credits (100 × 1,900), without treating it as a manually sized input</li>
+<li>✅ You can explain that an excluded cost center&#39;s metered charges neither count against nor are blocked by the enterprise budget and are capped only by its own cost-center spending budget</li>
+<li>✅ You can explain how enterprise-team membership automates cost-center membership, how license assignments affect GitHub&#39;s automatic included-usage-cap recalculation, and why administrators do not manually resize that cap</li>
+<li>✅ (Admin path only) You have located the pre-existing cost-center and budget objects and can identify the relevant form labels without interacting with a control or saving a change</li>
 </ul>
 </details>
 
@@ -317,22 +356,22 @@
 </thead>
 <tbody><tr>
 <td>1</td>
-<td>Review AI-credit pool usage in the dashboard/export and dollar spending-budget alerts (75%/90%/100%); review user-level alert history where available, but do not use it as the only signal</td>
+<td>Review applicable included-credit usage in the AI usage dashboard/export and dollar spending-budget alerts (75%/90%/100%); review user-level alert history where available, but do not use it as the only signal</td>
 <td>Billing Manager</td>
 </tr>
 <tr>
 <td>2</td>
-<td>Pull the AI usage dashboard/export; identify blocked users and which ULB blocked them</td>
+<td>Use the AI usage dashboard/export for consumption evidence, use the dashboard to spot blocked-user patterns, and determine the effective blocking ULB from the configured individual, cost-center, and universal budgets. Optionally use the <a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/download-activity-report">Copilot activity report</a> as supplemental evidence for license, seat, and activity administration; it does not replace AI usage evidence or budget configuration review</td>
 <td>Platform Admin</td>
 </tr>
 <tr>
 <td>3</td>
-<td>Reconcile cost-center membership against enterprise teams or IdP groups; confirm headcount and re-validate the included-usage allocation</td>
+<td>Reconcile cost-center membership against enterprise teams or IdP groups; verify license assignments and the included usage control state, then confirm GitHub&#39;s automatically calculated cap reflects the documented immediate-increase/next-cycle-decrease behavior</td>
 <td>FinOps Lead</td>
 </tr>
 <tr>
 <td>4</td>
-<td>Review metered overage against the enterprise/org spending budget; confirm hard-stop and cost-center-exclusion choices still match approved spending authority</td>
+<td>Review metered overage against all applicable cost-center, organization, and enterprise spending budgets; confirm hard-stop and cost-center-exclusion choices still match approved spending authority</td>
 <td>Enterprise/Org Owner</td>
 </tr>
 <tr>
@@ -352,103 +391,139 @@
 </tr>
 </tbody></table>
 <h3 id="steps">Steps</h3>
-<p>For each request below, decide: <strong>(a)</strong> who should approve it, <strong>(b)</strong> which budget control or governance action applies, and <strong>(c)</strong> what you would document as the reason:</p>
-<ol>
-<li>A single power user is blocked by their individual ULB three times in one week, but their manager confirms the work is legitimate and time-sensitive.</li>
-<li>An IdP-synced enterprise team adds 15 engineers mid-month; the cost center updates automatically but exhausts its included-usage allocation on day 10.</li>
-<li>An enterprise-wide spending budget is projected to hit 100% five days before the monthly reset, with hard stop <strong>not</strong> enabled.</li>
-<li>A team requests that their cost center&#39;s spending budget hard stop be <strong>disabled</strong> because a legitimate multi-day agent task keeps getting blocked.</li>
-<li>A security team asks for one content-exclusion rule to reduce context in Copilot CLI and Agent mode across every repository.</li>
-</ol>
-<p>Fill in your worksheet:</p>
+<blockquote>
+<p><strong>Participant instruction</strong>: Complete the exercise, then stop before the <strong>Answer Key</strong> heading. Do not open it until the facilitator begins the debrief.</p>
+</blockquote>
+<p><strong>Runbook draft — about 3 minutes</strong>: Complete this concise operating artifact:</p>
 <table>
 <thead>
 <tr>
-<th align="right">Request</th>
-<th>Approver</th>
-<th>Control Changed</th>
-<th>Documented Reason</th>
+<th>Runbook Field</th>
+<th>Your Draft</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="right">1</td>
-<td></td>
-<td></td>
-<td></td>
+<td>Monthly meeting or cadence</td>
+<td>_______</td>
 </tr>
 <tr>
-<td align="right">2</td>
-<td></td>
-<td></td>
-<td></td>
+<td>Coordinator</td>
+<td>_______</td>
 </tr>
 <tr>
-<td align="right">3</td>
-<td></td>
-<td></td>
-<td></td>
+<td>Evidence sources reviewed</td>
+<td>_______</td>
 </tr>
 <tr>
-<td align="right">4</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td align="right">5</td>
-<td></td>
-<td></td>
-<td></td>
+<td>Escalation channel</td>
+<td>_______</td>
 </tr>
 </tbody></table>
+<p><strong>Assigned exception scenarios — about 5 minutes</strong>: The facilitator assigns one or two scenarios to each group rather than requiring every group to complete all five.</p>
+<ol>
+<li>A single power user is blocked by their individual ULB three times in one week, but their manager confirms the work is legitimate and time-sensitive.</li>
+<li>An IdP-synced enterprise team adds 15 licensed engineers mid-month; cost-center membership updates automatically, but the enabled included usage control reaches its automatically calculated cap on day 10.</li>
+<li>An enterprise-wide spending budget is projected to hit 100% five days before the monthly reset, with hard stop <strong>not</strong> enabled.</li>
+<li>A team with an <strong>excluded cost center</strong> requests that its own spending-budget hard stop be <strong>disabled</strong> because a legitimate multi-day agent task keeps getting blocked.</li>
+<li>A security team asks for one content-exclusion rule to reduce context in Copilot CLI and Agent mode across every repository.</li>
+</ol>
+<p>For each assigned scenario, complete one copy of this exception record:</p>
+<table>
+<thead>
+<tr>
+<th>Exception Record Field</th>
+<th>Your Decision</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Assigned scenario number</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Approver</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Control or action</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Reason</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Narrow scope</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Supporting evidence</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Expiry or review date</td>
+<td>_______</td>
+</tr>
+<tr>
+<td>Audit record location</td>
+<td>_______</td>
+</tr>
+</tbody></table>
+<p><strong>Debrief — about 2 minutes</strong>: Each group shares its runbook draft and one assigned exception decision.</p>
+<details>
+<summary>Answer Key — open only when the facilitator begins the debrief</summary>
+
 <h3 id="answer-key">Answer Key</h3>
 <table>
 <thead>
 <tr>
 <th align="right">Request</th>
 <th>Approver</th>
-<th>Control Changed</th>
-<th>Documented Reason</th>
+<th>Control or Action</th>
+<th>Reason and Record Boundaries</th>
 </tr>
 </thead>
 <tbody><tr>
 <td align="right">1</td>
 <td>Billing Manager (or per your escalation policy, the user&#39;s manager co-signs)</td>
 <td>Individual ULB increase</td>
-<td>Legitimate, time-sensitive work confirmed by the user&#39;s manager; raise the individual override above the universal ULB</td>
+<td>Scope the increase to the named user and time-sensitive work; attach manager confirmation and blocked-user evidence; set a review/expiry date; record the decision in the approved ticket or change log</td>
 </tr>
 <tr>
 <td align="right">2</td>
 <td>FinOps Lead</td>
-<td>Cost-center included-usage allocation (not the spending budget)</td>
-<td>Enterprise-team membership automation worked, but headcount grew mid-cycle; re-baseline the allocation rather than changing the spending budget</td>
+<td>Verify licensed membership, license assignments, and included usage control state—not spending-budget size</td>
+<td>Membership automation worked. Attach membership/license evidence, confirm GitHub applied the immediate cap increase, set a follow-up review, and record verification; administrators do not manually resize the cap</td>
 </tr>
 <tr>
 <td align="right">3</td>
 <td>Enterprise/Org Owner</td>
-<td>No control change yet — this is an alert-only condition since hard stop is not enabled</td>
-<td>Team must decide manually whether to raise the enterprise budget or accept the projected overage before reset, since the system will not stop it automatically</td>
+<td>Decide whether to raise the enterprise budget or accept projected overage before reset</td>
+<td>Scope the decision to the current cycle; attach forecast and alert evidence; review at reset; record the approved action because alert-only behavior will not stop usage automatically</td>
 </tr>
 <tr>
 <td align="right">4</td>
 <td>Enterprise/Org Owner or Billing Manager, with documented risk acceptance</td>
-<td>Cost-center budget hard-stop toggle</td>
-<td>Balance the legitimate multi-day task against the risk of uncapped overage; consider raising the budget amount instead of disabling hard stop outright</td>
+<td>Prefer a scoped increase to the excluded cost center&#39;s own spending budget over disabling its hard stop outright</td>
+<td>Its own cost-center budget is the only budget cap on its metered charges; attach task and forecast evidence, set an expiry/review date, and record the risk decision</td>
 </tr>
 <tr>
 <td align="right">5</td>
 <td>Platform Admin / Security</td>
 <td>Content exclusion on supported surfaces, plus developer scope/tool guidance</td>
-<td>Reject the universal claim: current content exclusions do not apply to Copilot CLI or Agent mode in IDEs; use narrow working directories, explicit file scope, tool controls, and <code>.gitignore</code>/ignore hygiene there</td>
+<td>Reject the universal claim; scope supported exclusions precisely, document unsupported CLI/Agent-mode surfaces and compensating controls, set a policy review date, and retain the decision in the governance record</td>
 </tr>
 </tbody></table>
+</details>
+
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
-<li>✅ You correctly routed Scenario 1 to an individual ULB increase, approved per your escalation policy</li>
-<li>✅ You correctly identified Scenario 2 as successful membership automation followed by a cost-center included-usage allocation problem, not a spending-budget problem</li>
-<li>✅ You correctly identified Scenario 3 as a case where alert-only behavior means the team must act manually before the reset</li>
-<li>✅ You articulated at least one risk of approving Scenario 4 outright versus raising the budget amount instead</li>
-<li>✅ You identified the current content-exclusion limitation in Scenario 5 and paired the governance control with developer scoping practices</li>
+<li>✅ Your runbook draft names the monthly meeting or cadence, coordinator, evidence sources, and escalation channel</li>
+<li>✅ Every assigned exception record includes an approver, action, reason, narrow scope, supporting evidence, expiry or review date, and audit record location</li>
+<li>✅ During the group debrief, Scenario 1 is correctly routed to an individual ULB increase approved per your escalation policy</li>
+<li>✅ During the group debrief, Scenario 2 is identified as successful membership automation followed by an included usage control event, not a spending-budget-sizing problem, with GitHub&#39;s automatic cap recalculation verified rather than manually resized</li>
+<li>✅ During the group debrief, Scenario 3 is identified as alert-only behavior that requires manual action before reset</li>
+<li>✅ During the group debrief, Scenario 4 is identified as removing the only budget cap on an excluded cost center&#39;s metered charges if its own hard stop is disabled; raising its own budget amount may be safer</li>
+<li>✅ During the group debrief, Scenario 5&#39;s content-exclusion limitation is paired with developer scoping practices</li>
 </ul>
 </details>
 
@@ -487,29 +562,38 @@
 <td>Always</td>
 </tr>
 <tr>
-<td><strong>Cost-center budget</strong></td>
-<td>A team&#39;s metered charges after its included-usage allocation is exhausted</td>
+<td><strong>Cost-center included usage control</strong></td>
+<td>Members&#39; included-credit source; when enabled, an automatically calculated cost-center cap replaces shared-enterprise-pool access</td>
+<td>Included phase</td>
+<td>Per cost center</td>
+<td>At the cap, configured paid-usage behavior determines block vs. metered usage</td>
+</tr>
+<tr>
+<td><strong>Cost-center spending budget</strong></td>
+<td>A team&#39;s metered charges after applicable included capacity is unavailable</td>
 <td>Metered phase only</td>
 <td>Per cost center</td>
 <td>Only if hard stop enabled</td>
 </tr>
 <tr>
-<td><strong>Organization budget</strong></td>
-<td>An org&#39;s metered charges after pool exhaustion</td>
+<td><strong>Organization spending budget</strong></td>
+<td>An org&#39;s applicable metered charges</td>
 <td>Metered phase only</td>
 <td>Per organization</td>
 <td>Only if hard stop enabled</td>
 </tr>
 <tr>
-<td><strong>Enterprise budget</strong></td>
-<td>Total enterprise metered charges after pool exhaustion</td>
+<td><strong>Enterprise spending budget</strong></td>
+<td>Applicable enterprise metered charges, excluding opted-out cost centers</td>
 <td>Metered phase only</td>
 <td>Enterprise-wide</td>
 <td>Only if hard stop enabled</td>
 </tr>
 </tbody></table>
 <h3 id="cost-center-exclusion">Cost Center Exclusion</h3>
-<p>By default, cost-center metered usage also counts against the enterprise budget. Enable <strong>cost center exclusion</strong> only when the team has independent spending authority. Once excluded, that team&#39;s metered charges do not count against, and are not blocked by, the enterprise budget; its own cost-center budget becomes the spending cap.</p>
+<p>By default, cost-center metered usage also counts against the enterprise budget. Enable <strong>cost center exclusion</strong> only when the team has independent spending authority. Once excluded, that team&#39;s metered charges do not count against, and are not blocked by, the enterprise budget. Those charges are capped only by that cost center&#39;s own spending budget.</p>
+<h3 id="conditional-enterprise-ceiling-example">Conditional Enterprise Ceiling Example</h3>
+<p><strong>License fees + enterprise budget</strong> is an enforced monthly ceiling only when the enterprise budget&#39;s hard stop is enabled and all relevant metered usage participates in that budget. Under those conditions, 400 Copilot Business licenses at $19/month ($7,600) plus a $5,000 enterprise budget yields a <strong>$12,600 ceiling</strong>. Without hard stop, charges can continue; metered usage from excluded cost centers sits outside that enterprise cap.</p>
 <h3 id="included-credits-at-a-glance">Included Credits at a Glance</h3>
 <table>
 <thead>
