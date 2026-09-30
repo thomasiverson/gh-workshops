@@ -1,0 +1,67 @@
+trigger: none
+pr: none
+
+parameters:
+  - name: dotnetSdkVersion
+    type: string
+    default: '<YOUR-DOTNET-SDK-VERSION>'
+  - name: solutionOrProject
+    type: string
+    default: '<YOUR-SOLUTION-OR-PROJECT>'
+  - name: configuration
+    type: string
+    default: Release
+
+pool:
+  vmImage: ubuntu-24.04
+
+steps:
+  - checkout: self
+
+  - bash: |
+      set -euo pipefail
+      if [[ -z "$SDK_VERSION" || -z "$SOLUTION_PATH" || "$SDK_VERSION" == *'<'* || "$SOLUTION_PATH" == *'<'* ]]; then
+        echo "Set dotnetSdkVersion and solutionOrProject for this repository before running." >&2
+        exit 1
+      fi
+      if [[ ! -f "$SOLUTION_PATH" ]]; then
+        echo "The selected solution or project file does not exist." >&2
+        exit 1
+      fi
+    displayName: Validate the repository-specific SDK and build path
+    env:
+      SDK_VERSION: ${{ parameters.dotnetSdkVersion }}
+      SOLUTION_PATH: ${{ parameters.solutionOrProject }}
+
+  - task: UseDotNet@2
+    displayName: Select the repository's .NET SDK
+    inputs:
+      packageType: sdk
+      useGlobalJson: false
+      version: ${{ parameters.dotnetSdkVersion }}
+      includePreviewVersions: false
+
+  - task: AdvancedSecurity-Codeql-Init@1
+    displayName: Initialize CodeQL for C#
+    inputs:
+      languages: csharp
+      buildtype: 'Manual'
+      querysuite: security-extended
+      enableAutomaticCodeQLInstall: true
+
+  - bash: |
+      set -euo pipefail
+      dotnet clean "$SOLUTION_PATH" --configuration "$BUILD_CONFIGURATION"
+      dotnet restore "$SOLUTION_PATH"
+      dotnet build "$SOLUTION_PATH" --configuration "$BUILD_CONFIGURATION" --no-restore --no-incremental -m:1 -p:UseSharedCompilation=false -nodeReuse:false
+    displayName: Clean, restore, and build without deployment
+    env:
+      SOLUTION_PATH: ${{ parameters.solutionOrProject }}
+      BUILD_CONFIGURATION: ${{ parameters.configuration }}
+      DOTNET_CLI_USE_MSBUILD_SERVER: '0'
+
+  - task: AdvancedSecurity-Dependency-Scanning@1
+    displayName: Scan dependencies
+
+  - task: AdvancedSecurity-Codeql-Analyze@1
+    displayName: Analyze code with CodeQL

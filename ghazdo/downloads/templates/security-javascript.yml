@@ -1,0 +1,49 @@
+trigger: none
+pr: none
+
+parameters:
+  - name: nodeVersion
+    type: string
+    default: '22.x'
+  - name: workingDirectory
+    type: string
+    default: '.'
+
+pool:
+  vmImage: ubuntu-24.04
+
+steps:
+  - checkout: self
+
+  - task: UseNode@1
+    displayName: Select the repository's Node.js version
+    inputs:
+      versionSource: spec
+      version: ${{ parameters.nodeVersion }}
+      checkLatest: false
+
+  - task: AdvancedSecurity-Codeql-Init@1
+    displayName: Initialize CodeQL for JavaScript and TypeScript
+    inputs:
+      languages: javascript
+      buildtype: 'None'
+      querysuite: security-extended
+      enableAutomaticCodeQLInstall: true
+
+  - bash: |
+      set -euo pipefail
+      cd -- "$PACKAGE_DIRECTORY"
+      if [[ ! -f package.json || ! -f package-lock.json ]]; then
+        echo "This npm example requires package.json and package-lock.json in the selected directory." >&2
+        exit 1
+      fi
+      npm ci --ignore-scripts
+    displayName: Restore dependencies using the repository's npm configuration
+    env:
+      PACKAGE_DIRECTORY: ${{ parameters.workingDirectory }}
+
+  - task: AdvancedSecurity-Dependency-Scanning@1
+    displayName: Scan dependencies
+
+  - task: AdvancedSecurity-Codeql-Analyze@1
+    displayName: Analyze code with CodeQL

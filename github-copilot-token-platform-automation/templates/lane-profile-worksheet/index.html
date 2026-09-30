@@ -1,0 +1,387 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Lane Profile Worksheet</title><link rel="stylesheet" href="/gh-workshops/_astro/_document_.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/_document_.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.document-copy{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);font-size:12px;cursor:pointer;opacity:0}pre:hover .document-copy{opacity:1}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="lane-profile-worksheet">Lane Profile Worksheet</h1>
+<p><strong>Optional Module 4 — Agent Fleet Efficiency and Cost Governance</strong></p>
+<blockquote>
+<p>This file is the editable source. An identical printable copy is inlined in <strong>Appendix B of the lab guide</strong> for participants reading the published site. Change both in the same edit.</p>
+</blockquote>
+<p>Complete one worksheet per lane. Write <code>UNKNOWN — measure</code> rather than guessing. Every restriction must be enforced by a flag or harness control, never by prompt wording alone.</p>
+<hr>
+<p><strong>Lane name</strong>: ___________________________________</p>
+<p><strong>Owner</strong>: ___________________________________  <strong>Review date</strong>: _______________</p>
+<p><strong>Verified against Copilot CLI docs on</strong>: _______________</p>
+<hr>
+<h2 id="1-purpose">1. Purpose</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Task shape (one shape per lane)</td>
+<td></td>
+</tr>
+<tr>
+<td>Definition of done (stop condition)</td>
+<td></td>
+</tr>
+<tr>
+<td>Deterministic check that proves success</td>
+<td></td>
+</tr>
+<tr>
+<td>Invocation volume per window</td>
+<td></td>
+</tr>
+<tr>
+<td>Blast radius if this lane misbehaves</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-model-and-reasoning">2. Model and Reasoning</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Control</th>
+<th>Value</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Model</td>
+<td><code>--model</code> / <code>COPILOT_MODEL</code> (<code>auto</code> carries a documented 10% model-cost discount on paid plans)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Reasoning effort</td>
+<td><code>--effort</code> / <code>--reasoning-effort</code> (<code>none</code>, <code>minimal</code>, <code>low</code>, <code>medium</code>, <code>high</code>, <code>xhigh</code>, <code>max</code> in CLI v1.0.79)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Context window tier</td>
+<td><code>--context</code> (<code>default</code> | <code>long_context</code>)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Escalation rule (in code, on a measured signal)</td>
+<td>Harness</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Escalation ceiling (steps per fingerprint) and where it is recorded</td>
+<td>Harness ledger</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-tools-and-permissions">3. Tools and Permissions</h2>
+<blockquote>
+<p>Visibility (<code>--available-tools</code> / <code>--excluded-tools</code>) controls what the model can choose from, and its values are <strong>version- and configuration-specific</strong> — verify the tool names in your own environment.
+Permission (<code>--allow-tool</code> / <code>--deny-tool</code>) controls what may run. <strong>Deny always wins</strong>, and it is the enforcement layer for any &quot;must not modify&quot; rule.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Control</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tools visible to the model (names verified in this CLI version ☐)</td>
+<td><code>--available-tools</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Tools excluded</td>
+<td><code>--excluded-tools</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Tools permitted without prompting</td>
+<td><code>--allow-tool</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Tools denied outright</td>
+<td><code>--deny-tool</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Directory scope</td>
+<td><code>-C</code>, <code>--add-dir</code></td>
+<td></td>
+</tr>
+<tr>
+<td>URL scope</td>
+<td><code>--allow-url</code>, <code>--deny-url</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Temp directory</td>
+<td><code>--disallow-temp-dir</code></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Read-only claim check</strong>: Is every &quot;must not modify&quot; statement enforced by a flag? ☐ Yes ☐ No</p>
+<hr>
+<h2 id="4-context-sources">4. Context Sources</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Control</th>
+<th>Value</th>
+<th>Evidence it is needed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MCP servers enabled</td>
+<td><code>--disable-builtin-mcps</code>, <code>--disable-mcp-server</code>, <code>--additional-mcp-config</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GitHub MCP tool scope</td>
+<td><code>--add-github-mcp-toolset</code>, <code>--add-github-mcp-tool</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Custom instructions</td>
+<td><code>--no-custom-instructions</code>, <code>COPILOT_CUSTOM_INSTRUCTIONS_DIRS</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Memory</td>
+<td><code>--enable-memory</code> (off by default in prompt mode)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Discovered inventory verified from the harness working directory</td>
+<td><code>copilot plugins list</code></td>
+<td>☐ Yes ☐ No</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-spend-and-fan-out-controls">5. Spend and Fan-Out Controls</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Control</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Per-run credit cap (soft limit, public preview; minimum 30 in CLI v1.0.79)</td>
+<td><code>--max-ai-credits</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Subagent concurrency cap</td>
+<td><strong>Harness scheduler</strong> (no supported CLI environment variable listed in v1.0.79 help)</td>
+<td></td>
+</tr>
+<tr>
+<td>Subagent depth cap</td>
+<td><strong>Harness scheduler</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Run wait timeout / watchdog</td>
+<td><strong>Harness</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Parallel workers per lane</td>
+<td>Harness</td>
+<td></td>
+</tr>
+<tr>
+<td>Attempts per fingerprint</td>
+<td>Harness attempt ledger</td>
+<td></td>
+</tr>
+<tr>
+<td>Behavior when a run exhausts its cap (<code>run_cap_exhausted</code>)</td>
+<td>Harness — record spend, increment attempt, require decomposition or a reviewed cap change</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="6-isolation">6. Isolation</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Control</th>
+<th>Value</th>
+<th>Status note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Working directory</td>
+<td><code>-C</code></td>
+<td></td>
+<td>Documented</td>
+</tr>
+<tr>
+<td>Configuration/state directory</td>
+<td><code>COPILOT_HOME</code></td>
+<td></td>
+<td>Documented variable; per-lane use is a harness pattern</td>
+</tr>
+<tr>
+<td>Worktree isolation</td>
+<td><code>--worktree</code></td>
+<td></td>
+<td><strong>Experimental</strong> (not listed in v1.0.79 top-level help) — fallback:</td>
+</tr>
+<tr>
+<td>Shell sandbox</td>
+<td><code>--sandbox</code></td>
+<td></td>
+<td><strong>Experimental</strong> — fallback (generic engineering practice, not a Copilot control):</td>
+</tr>
+<tr>
+<td>Secret redaction</td>
+<td><code>--secret-env-vars</code></td>
+<td></td>
+<td>Documented</td>
+</tr>
+<tr>
+<td>Cleanup rule and owner</td>
+<td>Harness</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Stray-worktree recovery step (<code>git worktree list</code> → <code>remove</code> → <code>prune</code>)</td>
+<td>Runbook</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="7-output-and-interaction-contract">7. Output and Interaction Contract</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Control</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Output format</td>
+<td><code>--output-format=json</code> (<code>-s</code> suppresses stats — keep it off measurement runs)</td>
+<td></td>
+</tr>
+<tr>
+<td>Transcript capture and retention</td>
+<td><code>--share=PATH</code></td>
+<td></td>
+</tr>
+<tr>
+<td>External sharing (default: none)</td>
+<td><code>--share-gist</code> — avoid; unavailable to EMU and <code>*.ghe.com</code></td>
+<td></td>
+</tr>
+<tr>
+<td>No clarifying questions</td>
+<td><code>--no-ask-user</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Exit-status contract (success / no-op / failure)</td>
+<td>Harness</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-reduction-log">8. Reduction Log</h2>
+<p>Record every reduction from the current profile and the evidence required before adoption.</p>
+<table>
+<thead>
+<tr>
+<th>Reduction</th>
+<th>Expected saving</th>
+<th>Evidence required</th>
+<th>Canary lane</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-sign-off">9. Sign-Off</h2>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Every field completed or marked <code>UNKNOWN — measure</code></td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Every restriction enforced by a control, not prompt text</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Flag <strong>values</strong> (tool names, patterns, server names) verified in this environment, not copied</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Preview/experimental controls have a stated fallback</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Permission changes reviewed as security changes</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Profile committed with the code that references it</td>
+<td>☐</td>
+</tr>
+</tbody></table>
+<p><strong>Reviewer</strong>: ___________________________________ <strong>Date</strong>: _______________</p>
+<hr>
+<p><em>Template for Optional Module 4 — GitHub Copilot AI Credits Optimization</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/_...document_.astro_astro_type_script_index_0_lang.OBuYvQ_z.js"></script>

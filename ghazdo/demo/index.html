@@ -1,0 +1,389 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Advanced Security for Azure DevOps Demo Scripts</title><link rel="stylesheet" href="/gh-workshops/_astro/_document_.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/_document_.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.document-copy{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);font-size:12px;cursor:pointer;opacity:0}pre:hover .document-copy{opacity:1}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-advanced-security-for-azure-devops-demo-scripts">GitHub Advanced Security for Azure DevOps Demo Scripts</h1>
+<p><strong>Duration</strong>: Five demos, 30 minutes within the 90-minute workshop<br><strong>Format</strong>: Demo-led presentation; authorized read-only walkthroughs or clearly labeled official examples<br><strong>Audience</strong>: Azure DevOps administrators, developers, security engineers, and engineering leads<br><strong>Target</strong>: An existing Azure DevOps Services organization/project/Azure Repos Git repository selected and authorized by its owner<br><strong>Execution status</strong>: Generic procedures; not executed in a target environment during authoring<br><strong>Notes status</strong>: Independently reviewed teaching guidance with documented pacing recommendations; delivery rehearsal still required</p>
+<h2 id="runbook-contract">Runbook Contract</h2>
+<p>The <a href="/gh-workshops/ghazdo/workshop/">workshop guide</a> is canonical. Participants need no accounts, setup, credentials, or repository access. Optional setup belongs in the separate <a href="/gh-workshops/ghazdo/setup/">portal-first guide</a>, outside attendee time.</p>
+<p>Use completed, authorized evidence instead of waiting for scans. Do not create projects/apps, insert vulnerable code, add fake secrets, generate credentials, deploy an application, or reuse private screenshots. Prefer read-only presentation. Activation requires owner approval and can itself start scanning: Secret Protection starts historical scans automatically, and default setups have automatic execution behavior. Only this guide&#39;s separate advanced pipeline is queued manually after approval.</p>
+<p><strong>Fallback introduction</strong>: “This is an official documentation example. It illustrates the workflow; it is not a result from the selected repository.” Say this before opening an illustration. If no findings exist, demonstrate successful task completion and result review rather than inventing findings.</p>
+<h2 id="workshop-agenda">Workshop Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Features and benefits</td>
+<td>8 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Pricing and licensing</td>
+<td>12 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Setup and permissions</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Secret scanning and push protection</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Dependency scanning</td>
+<td>12 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Code scanning with CodeQL</td>
+<td>18 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Rollout and Q&amp;A</td>
+<td>10 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total</strong>: 90 minutes including exercises and Q&A; no scheduled break. Exercise durations are 3, 2, 2, and 3 minutes in sections 2, 3, 4, and 6.</p>
+<h3 id="demo-budget">Demo Budget</h3>
+<table>
+<thead>
+<tr>
+<th>Demo</th>
+<th>Workshop section</th>
+<th>Duration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. Enable security for a repository</td>
+<td>3. Setup and permissions</td>
+<td>6 min</td>
+</tr>
+<tr>
+<td>2. See secret protection in action</td>
+<td>4. Secret scanning and push protection</td>
+<td>7 min</td>
+</tr>
+<tr>
+<td>3. Review and fix a dependency alert</td>
+<td>5. Dependency scanning</td>
+<td>6 min</td>
+</tr>
+<tr>
+<td>4. Review and fix a CodeQL alert</td>
+<td>6. Code scanning with CodeQL</td>
+<td>8 min</td>
+</tr>
+<tr>
+<td>5. See security across your organization</td>
+<td>7. Rollout and Q&amp;A</td>
+<td>3 min</td>
+</tr>
+</tbody></table>
+<p><strong>Demo total</strong>: 30 minutes already included in section budgets. End sections at minutes 8, 20, 35, 50, 62, 80, and 90.</p>
+<h2 id="shared-preparation">Shared Preparation</h2>
+<ol>
+<li><strong>Confirm authorized scope</strong>: one existing repository, selected products, product/budget owners, settings owner, pipeline owner, response owners, and intended retained state. Do not treat this runbook as approval.</li>
+<li><strong>Check platform and access</strong>: Azure DevOps Services/Azure Repos Git only. Verify effective <strong>Advanced Security: Read alerts</strong>, <strong>Manage and dismiss alerts</strong>, and <strong>Manage settings</strong> as appropriate. Check repository and pipeline rights separately.</li>
+<li><strong>Check cost</strong>: linked Azure subscription; Secret Protection $19 and Code Security $30 per active committer/month at USD list prices. The same 25 developers using both costs $1,225/month; the exercise&#39;s same 20 costs $980. Recheck official pricing and the customer&#39;s agreement.</li>
+<li><strong>Check billing counts</strong>: commits present in pushes during the last 90 days; count separately per product within one Azure subscription, including linked organizations. Charges are calculated daily and billed monthly; settings show the previous day&#39;s count. Track compute and AI usage separately.</li>
+<li><strong>Check language/build readiness</strong>: inspect current manifests/lockfiles, approved feeds/authentication, SDK/JDK/Node versions, working directory, task policies, and agent capacity. Select the <a href="/gh-workshops/ghazdo/templates/">language-specific example</a>; do not assume universal support. Do not run lifecycle or build scripts without repository-owner approval.</li>
+<li><strong>Prepare completed evidence</strong>: if the owner separately approves preparation, follow the portal setup and manual-run steps. Confirm execution status, branch, configuration, and results. Prepare reviewed fix/test/follow-up evidence only if it already exists or the repository owner approves normal remediation.</li>
+<li><strong>Prepare a safe shared view</strong>: do not store private names, URLs, identifiers, credentials, or captured customer results in this generic package. Do not reuse private screenshots. If sharing the live environment is not appropriate, use official examples.</li>
+<li><strong>Open all fallback links</strong> before delivery. Official illustrations are examples, not proof of target execution. If offline delivery is required, arrange permitted public documentation illustrations or a text-only explanation; no local screenshot asset is assumed.</li>
+<li><strong>Plan recovery and cleanup</strong>: know who owns failed setup, unexpected exposure, feed issues, pipeline costs, and retained product state. Do not weaken policies or queue repeated runs to rescue a demo.</li>
+</ol>
+<h3 id="optional-local-preparation">Optional Local Preparation</h3>
+<p>Follow the setup guide&#39;s TEMP scratch-folder commands. The helper requires all target/output parameters and an already-existing directory <strong>outside any Git checkout</strong>; it atomically refuses to overwrite output. Normal mode checks only the local <code>azure-devops</code> extension and explicit existing project/repository through read-only GET/show operations using cached sign-in. It does not inspect product settings, effective permissions, or capacity.</p>
+<p>Offline mode warns and returns <code>Verification=NotPerformed</code>. Output action fields set to <code>false</code> mean the helper did not act, <strong>not</strong> that products are disabled or billing is off. It only prepares a local file: no sign-in, Azure writes, Git operations, activation, pipeline creation, or scans. Review/adapt the file, then use the owner-approved manual portal workflow.</p>
+<h3 id="readiness-record">Readiness Record</h3>
+<p>Keep environment-specific records in the owner&#39;s approved system, not in generic workshop files.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Required checkpoint</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Approval and scope</td>
+<td>Existing repository, intended products, activation/run approvals, cleanup owner</td>
+</tr>
+<tr>
+<td>Access and build</td>
+<td>Effective rights, stack/paths/versions, feeds, agent/task/capacity readiness</td>
+</tr>
+<tr>
+<td>Secret workflow</td>
+<td>Suitable existing evidence or official examples; no credential creation</td>
+</tr>
+<tr>
+<td>Dependency workflow</td>
+<td>Completed scan; advisory/path if present; reviewed update/test/rescan if available</td>
+</tr>
+<tr>
+<td>CodeQL workflow</td>
+<td>Setup choice, completed tasks, code-flow example, fix/test/rescan if available</td>
+</tr>
+<tr>
+<td>Overview</td>
+<td>Authorized views paired with scan evidence or official illustrations</td>
+</tr>
+</tbody></table>
+<h2 id="1-enable-security-for-a-repository-6-min">1. Enable Security for a Repository (6 min)</h2>
+<p><strong>Purpose / section</strong>: Section 3, Setup and permissions; identify scope, billable approval, permissions, and completed-scan checkpoints.<br><strong>Prerequisites</strong>: Existing authorized repository; linked subscription; approved product scope; appropriate effective rights; agent/language readiness or official configuration examples.<br><strong>Status</strong>: Target-environment walkthrough requires rehearsal.</p>
+<h3 id="pre-demo-setup">Pre-Demo Setup</h3>
+<ul>
+<li>Prefer an already configured repository and read-only presentation.</li>
+<li>Open repository settings, the selected manual pipeline, and completed task evidence if available.</li>
+<li>Prepare the approval explanation without displaying private approval records.</li>
+<li>Open <a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/configure-github-advanced-security-features?view=azure-devops">official configuration guidance</a> for fallback.</li>
+</ul>
+<h3 id="ordered-actions-and-visible-checkpoints">Ordered Actions and Visible Checkpoints</h3>
+<ol>
+<li><strong>0:00–1:00</strong>: Open <strong>Project settings &gt; Repos &gt; Repositories &gt; selected repository</strong>. State that this is one existing user-selected repository, not an all-repository change.</li>
+<li><strong>1:00–2:30</strong>: Show the intended product choices and cost estimate. Explain <strong>Begin billing</strong> as an owner-approved billable confirmation. Do not click without explicit approval; no activation is needed during delivery. An existing bundled UI may use <strong>Enable</strong>.</li>
+<li><strong>2:30–4:00</strong>: Explain <strong>Read alerts</strong>, <strong>Manage and dismiss alerts</strong>, and <strong>Manage settings</strong>. Checkpoint: the audience separates investigation, response, and configuration authority.</li>
+<li><strong>4:00–5:00</strong>: Show how the separate manual pipeline fits the existing repository. Explain language/build, feed, task-policy, and agent prerequisites. A new YAML commit can still trigger existing CI under normal policies; leave those policies unchanged.</li>
+<li><strong>5:00–6:00</strong>: Contrast configuration with successful execution. Checkpoint: product scope, approver, pipeline/branch, completed tasks, and result location. Preparing a local YAML file does not activate products, create pipelines, or execute scans.</li>
+</ol>
+<h3 id="talk-track">Talk Track</h3>
+<p>“Choose one repository and the products it needs. Review the estimate and approval before activation, then confirm that the required scans actually completed.”</p>
+<h3 id="likely-failures-and-recovery">Likely Failures and Recovery</h3>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Safe recovery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Approval or settings permission missing</td>
+<td>Stop before activation; use official configuration and permission guidance.</td>
+</tr>
+<tr>
+<td>UI differs</td>
+<td>Explain the documented scope; verify current labels and agreement after delivery.</td>
+</tr>
+<tr>
+<td>Agent/task/capacity unsupported</td>
+<td>Record the gap and use official examples; do not bypass restrictions.</td>
+</tr>
+<tr>
+<td>Empty alerts view</td>
+<td>Inspect scan completion and scope; an empty view alone proves neither scanning nor absence of risk.</td>
+</tr>
+</tbody></table>
+<h3 id="backup">Backup</h3>
+<p>Use official configuration and <a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-permissions?view=azure-devops">permission definitions</a>. Introduce them with the fallback wording.</p>
+<h3 id="reset--cleanup">Reset / Cleanup</h3>
+<p>No live changes are required. If setup occurred before the session, confirm the owner-approved retained product/pipeline state. Do not disable other repositories or promise immediate zero charges.</p>
+<p><strong>Transition</strong>: Exercise 2 asks which prerequisites are missing from an incomplete request.</p>
+<h2 id="2-see-secret-protection-in-action-7-min">2. See Secret Protection in Action (7 min)</h2>
+<p><strong>Purpose / section</strong>: Section 4, Secret scanning and push protection; distinguish history detection from new-push prevention and explain real-leak response.<br><strong>Prerequisites</strong>: Suitable authorized existing evidence with no credential content exposed, or official secret-scanning illustrations. No live credential or fixture is required.<br><strong>Status</strong>: No detection or revocation outcome is established by this draft.</p>
+<h3 id="pre-demo-setup">Pre-Demo Setup</h3>
+<ul>
+<li>Decide before presentation whether a live view is safe. Do not expose credential values or create a new example in the repository.</li>
+<li>Open <a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-secret-scanning?view=azure-devops">official secret-scanning and push-protection guidance</a>.</li>
+<li>Know the credential/incident owner for unexpected real exposure.</li>
+</ul>
+<h3 id="ordered-actions-and-visible-checkpoints">Ordered Actions and Visible Checkpoints</h3>
+<ol>
+<li><strong>0:00–1:30</strong>: Introduce historical secret scanning using an authorized view or a labeled official example. Show the type of finding and location without displaying the secret.</li>
+<li><strong>1:30–3:00</strong>: Compare with the official blocked-push behavior. Checkpoint: participants explain that an alert does not itself prove a blocked push.</li>
+<li><strong>3:00–5:00</strong>: Explain real-leak response: coordinate revoke/replace, remove exposed values through the approved process, confirm resolution, then close the alert.</li>
+<li><strong>5:00–6:00</strong>: Explain supported-pattern/validation limits. Do not create fake secrets or stronger credential-like strings to force detection.</li>
+<li><strong>6:00–7:00</strong>: Ask why deleting the current value or closing an alert cannot invalidate a credential. Checkpoint: the audience names the credential owner and verification requirement.</li>
+</ol>
+<h3 id="talk-track">Talk Track</h3>
+<p>“Repository scanning finds existing exposures. Push protection helps prevent new ones. If a real credential leaked, work with its owner to revoke or replace it before treating the incident as resolved.”</p>
+<h3 id="likely-failures-and-recovery">Likely Failures and Recovery</h3>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Safe recovery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>No suitable alert or blocking evidence</td>
+<td>Use official examples; do not manufacture a finding.</td>
+</tr>
+<tr>
+<td>Sensitive value appears</td>
+<td>Stop sharing, notify the incident owner, and follow revoke/replace procedures as appropriate.</td>
+</tr>
+<tr>
+<td>Audience asks for bypass commands</td>
+<td>Explain approved owner-led cleanup; do not demonstrate bypass or history rewrites.</td>
+</tr>
+<tr>
+<td>Expected pattern is not detected</td>
+<td>Explain coverage limits; no credential generation or push experiment.</td>
+</tr>
+</tbody></table>
+<h3 id="backup">Backup</h3>
+<p>Use the official secret-scanning documentation and describe detection versus prevention explicitly. Never describe the illustration as a successful push-protection test in the chosen repository.</p>
+<h3 id="reset--cleanup">Reset / Cleanup</h3>
+<p>Do not push, authenticate, change credentials, or dismiss alerts during delivery. For unexpected real exposure, coordinate the incident response; do not silently close the alert.</p>
+<p><strong>Transition</strong>: Exercise 3 orders the response to an already exposed credential.</p>
+<h2 id="3-review-and-fix-a-dependency-alert-6-min">3. Review and Fix a Dependency Alert (6 min)</h2>
+<p><strong>Purpose / section</strong>: Section 5, Dependency scanning; connect scan execution, dependency ownership, and remediation verification.<br><strong>Prerequisites</strong>: Code Security configuration, completed authorized scan and suitable existing findings if available, or official dependency examples. Reviewed update/tests/rescan are optional evidence, not assumed.<br><strong>Status</strong>: Target restore/scanning and follow-up outcomes require verification.</p>
+<h3 id="pre-demo-setup">Pre-Demo Setup</h3>
+<ul>
+<li>Open the chosen default or explicit-task configuration and completed scan evidence.</li>
+<li>If findings exist, prepare advisory, direct/transitive path, root manifest/lockfile, and owner.</li>
+<li>Open <a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-dependency-scanning?view=azure-devops">official dependency-scanning guidance</a> for a labeled fallback.</li>
+</ul>
+<h3 id="ordered-actions-and-visible-checkpoints">Ordered Actions and Visible Checkpoints</h3>
+<ol>
+<li><strong>0:00–1:00</strong>: Show setup choice. Default injection still needs a pipeline run. Explicit tasks support selected pipelines/branches; the optional setup uses a separate manual pipeline.</li>
+<li><strong>1:00–2:00</strong>: Show completed dependency task status and applicable branch. Checkpoint: execution is distinguished from enablement.</li>
+<li><strong>2:00–3:30</strong>: Review an existing finding&#39;s advisory and dependency path, or the official example. Identify the root manifest/lockfile and remediation owner.</li>
+<li><strong>3:30–5:00</strong>: Show reviewed update, tests, and comparable follow-up scan if available; otherwise explain these as required next steps without claiming completion.</li>
+<li><strong>5:00–6:00</strong>: Show the PR branch picker in <strong>Repos &gt; Advanced Security</strong> for dependency findings when relevant. Explain that applicable new findings may also appear as PR Overview annotations. Confirm execution through pipeline logs; an absent annotation does not establish an absent scan.</li>
+</ol>
+<h3 id="talk-track">Talk Track</h3>
+<p>“Find the affected dependency and its owner, review a suitable update, test the application, and confirm the outcome with a completed follow-up scan.”</p>
+<h3 id="likely-failures-and-recovery">Likely Failures and Recovery</h3>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Safe recovery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>No findings</td>
+<td>Show successful task completion and result review; do not insert vulnerable dependencies.</td>
+</tr>
+<tr>
+<td>Task, lockfile, or feed failure</td>
+<td>Use official examples; resolve with the owner outside session time. Preserve customer feeds/authentication.</td>
+</tr>
+<tr>
+<td>PR finding or annotation absent</td>
+<td>Select the PR branch in the repository hub and confirm successful task/result submission in pipeline logs before claiming missing coverage.</td>
+</tr>
+<tr>
+<td>No completed follow-up</td>
+<td>Describe remediation as unconfirmed; do not infer resolution from an update PR.</td>
+</tr>
+</tbody></table>
+<h3 id="backup">Backup</h3>
+<p>Label the official dependency illustrations as examples. Scanning does not promise automatic dependency-update PRs or automatic build/merge blocking.</p>
+<h3 id="reset--cleanup">Reset / Cleanup</h3>
+<p>No update or scan is required during presentation. Any normal remediation belongs to the repository owner&#39;s reviewed workflow. Leave manifests, lockfiles, feeds, and policies unchanged during delivery.</p>
+<p><strong>Transition</strong>: Use two minutes for dependency discussion, then introduce CodeQL.</p>
+<h2 id="4-review-and-fix-a-codeql-alert-8-min">4. Review and Fix a CodeQL Alert (8 min)</h2>
+<p><strong>Purpose / section</strong>: Section 6, Code scanning with CodeQL; choose setup, explain task order, and trace fix evidence.<br><strong>Prerequisites</strong>: Supported language/build choices, appropriate configuration and completed authorized scan, or official CodeQL examples. Agent capacity and feed access must be confirmed before any separate preparation run.<br><strong>Status</strong>: Templates and target execution are not approved by this narrative.</p>
+<h3 id="pre-demo-setup">Pre-Demo Setup</h3>
+<ul>
+<li>Open current default/advanced setup guidance and the <a href="/gh-workshops/ghazdo/templates/">template selector</a>.</li>
+<li>Choose the stack matching the existing repository, not a generated sample application.</li>
+<li>Prepare completed task evidence and a suitable alert if available; do not run vulnerable code.</li>
+<li>Open <a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-code-scanning?view=azure-devops">official code-scanning guidance</a> and the <a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/advanced-security-codeql-init-v1?view=azure-pipelines">Init task reference</a>.</li>
+</ul>
+<h3 id="ordered-actions-and-visible-checkpoints">Ordered Actions and Visible Checkpoints</h3>
+<ol>
+<li><strong>0:00–1:30</strong>: Compare scheduled default-branch default setup with advanced setup for custom builds/additional branches. Confirm current language support rather than assuming universal eligibility.</li>
+<li><strong>1:30–3:00</strong>: Inspect example order: <strong>Init -&gt; restore/build -&gt; Dependency Scanning -&gt; Analyze</strong>. All examples are manual with <code>trigger: none</code>, <code>pr: none</code>, and hosted <code>ubuntu-24.04</code>. No deployment.</li>
+<li><strong>3:00–4:00</strong>: Show completed task checkpoints or explain them using official references. JavaScript uses <code>None</code>, <code>nodeVersion: 22.x</code>, <code>workingDirectory: &#39;.&#39;</code>, and an npm lockfile guard before restore. .NET requires both <code>dotnetSdkVersion</code> and <code>solutionOrProject</code> placeholders replaced to match the repository/<code>global.json</code> and Linux build; <code>configuration: Release</code>, Init <code>Manual</code>, clean/restore/no-incremental build with shared compiler/MSBuild server off. Java requires <code>pomPath</code> replaced; <code>javaVersion: 21</code> must already be installed in the image, with PreInstalled selection before Init <code>Manual</code> and Maven clean compile <code>-DskipTests</code>. Confirm customer-owned feeds and owner-approved build execution.</li>
+<li><strong>4:00–5:30</strong>: Trace a suitable finding&#39;s code location/data flow and impact, or use the labeled official example. If no findings exist, show result review without inventing vulnerable code.</li>
+<li><strong>5:30–7:00</strong>: Show reviewed fix, relevant tests, and a completed same-branch rescan with comparable configuration if available. Otherwise identify them as uncompleted next steps.</li>
+<li><strong>7:00–8:00</strong>: Ask what a proposed pull request alone fails to prove. Checkpoint: participants require review, tests, execution, and result confirmation.</li>
+</ol>
+<h3 id="talk-track">Talk Track</h3>
+<p>“Choose setup for your branch and build needs. Review the code change, test it, then scan the same branch again with comparable configuration to confirm resolution.”</p>
+<h3 id="likely-failures-and-recovery">Likely Failures and Recovery</h3>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Safe recovery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Default setup not eligible</td>
+<td>Consult current support and review advanced setup; do not activate an alternative live.</td>
+</tr>
+<tr>
+<td>Tool/input/policy failure</td>
+<td>Recheck task refs and owner-approved tooling outside session time; do not weaken restrictions.</td>
+</tr>
+<tr>
+<td>No completed scan</td>
+<td>Use official examples and state execution is unverified.</td>
+</tr>
+<tr>
+<td>Follow-up is a different branch/configuration</td>
+<td>Do not use absence there as proof the original finding was fixed.</td>
+</tr>
+</tbody></table>
+<h3 id="backup">Backup</h3>
+<p>Use official CodeQL illustrations and task documentation. State what is an example and what, if anything, is actual completed evidence.</p>
+<h3 id="reset--cleanup">Reset / Cleanup</h3>
+<p>No live pipeline run, PR merge, application startup, or deployment is required. Retain the owner-approved pipeline/product state and record unresolved evidence outside this generic package.</p>
+<p><strong>Transition</strong>: Exercise 4 takes three minutes; then use two minutes to explain optional Autofix and one minute for discussion.</p>
+<h3 id="optional-autofix-explanation">Optional Autofix Explanation</h3>
+<p>Copilot Autofix is a <strong>limited public preview</strong> with restricted access and separately billed <strong>GitHub AI credits</strong>. No preview access or paid generation is required. Recheck <a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-code-scanning-autofix?view=azure-devops">current availability</a> and <a href="https://azure.microsoft.com/en-us/pricing/details/devops/azure-devops-services/">pricing</a> before any separately approved use. Suggested changes still need human review, tests, and a rescan.</p>
+<h2 id="5-see-security-across-your-organization-3-min">5. See Security Across Your Organization (3 min)</h2>
+<p><strong>Purpose / section</strong>: Section 7, Rollout and Q&A; connect organizational coverage with scans, ownership, and costs.<br><strong>Prerequisites</strong>: Effective access to the overview and safe shared information, or official overview examples; <a href="/gh-workshops/ghazdo/templates/pilot-checklist/">pilot checklist</a>.<br><strong>Status</strong>: Actual view availability and scope require rehearsal.</p>
+<h3 id="pre-demo-setup">Pre-Demo Setup</h3>
+<ul>
+<li>Open <strong>Organization settings &gt; Security overview</strong> if authorized.</li>
+<li>Prepare <strong>Risk</strong>, <strong>Coverage</strong>, and <strong>Alerts</strong>, plus completed scan evidence for the chosen repository.</li>
+<li>Open <a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-security-overview?view=azure-devops">official security overview guidance</a>. No private-preview views are required.</li>
+</ul>
+<h3 id="ordered-actions-and-visible-checkpoints">Ordered Actions and Visible Checkpoints</h3>
+<ol>
+<li><strong>0:00–1:00</strong>: Show Risk/Coverage/Alerts within effective access, or introduce the official illustration.</li>
+<li><strong>1:00–2:00</strong>: Pair one repository&#39;s enablement coverage with completed scan evidence. Checkpoint: coverage is not treated as proof of recent execution.</li>
+<li><strong>2:00–3:00</strong>: Connect findings to response owners and the pilot checklist. Review measured per-product counts and separate compute/AI costs before expanding.</li>
+</ol>
+<h3 id="talk-track">Talk Track</h3>
+<p>“Start with one repository, assign people to act on findings, and review both scan results and costs before adding more repositories.”</p>
+<h3 id="likely-failures-and-recovery">Likely Failures and Recovery</h3>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Safe recovery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>View inaccessible or changed</td>
+<td>Use official overview guidance; verify access afterward without broad grants.</td>
+</tr>
+<tr>
+<td>Coverage but no completed scan</td>
+<td>Say scanning is unverified and return to execution checkpoints.</td>
+</tr>
+<tr>
+<td>No alerts or filtered scope</td>
+<td>Review effective scope and scan evidence; do not conclude no risk.</td>
+</tr>
+</tbody></table>
+<h3 id="backup">Backup</h3>
+<p>Label official overview illustrations as examples, not a customer organization&#39;s coverage results.</p>
+<h3 id="reset--cleanup">Reset / Cleanup</h3>
+<p>Only harmless view filters may need restoration. Do not change organizational settings or assignments.</p>
+<p><strong>Transition</strong>: Two minutes for the pilot checklist, one minute for a first-repository/owner/budget response, four minutes for Q&amp;A.</p>
+<h2 id="end-of-session-cleanup-and-delivery-limits">End-of-Session Cleanup and Delivery Limits</h2>
+<ol>
+<li>Confirm no unapproved activation, scan execution, permission change, or CI/policy change occurred.</li>
+<li>If optional setup was separately performed, review retained manual pipeline and selected product states with the owner. Product charges may continue while enabled; do not promise an immediate billing reset.</li>
+<li>Do not remove security configuration, alerts, or normal remediation work without owner approval. Use the <a href="/gh-workshops/ghazdo/setup/#8-cleanup-and-recovery">setup guide&#39;s recovery and cleanup</a>.</li>
+<li>Record actual rehearsal/execution gaps in the owner&#39;s approved system. Do not add private identities, URLs, identifiers, or screenshots to the generic package.</li>
+<li>Retain the independent review results and rehearse the full delivery. Section 6&#39;s multi-stack detail is reference material; inspect the selected stack during the live demonstration. This runbook is not evidence of customer cloud execution.</li>
+</ol>
+<p><em>Demo scripts for GitHub Advanced Security for Azure DevOps Workshop</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/_...document_.astro_astro_type_script_index_0_lang.OBuYvQ_z.js"></script>

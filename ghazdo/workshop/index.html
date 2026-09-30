@@ -1,0 +1,523 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Advanced Security for Azure DevOps Workshop</title><link rel="stylesheet" href="/gh-workshops/_astro/_document_.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/_document_.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-advanced-security-for-azure-devops-workshop">GitHub Advanced Security for Azure DevOps Workshop</h1>
+<p><strong>Duration</strong>: 90 minutes, including 10 minutes of exercises and Q&A; no scheduled break<br><strong>Format</strong>: Demo-led customer presentation with four short, no-login paper exercises<br><strong>Audience</strong>: Azure DevOps administrators, developers, security engineers, and engineering leads<br><strong>Focus</strong>: GitHub Secret Protection and GitHub Code Security for Azure DevOps Services, Azure Repos Git<br><strong>Package context</strong>: Standalone workshop; not a curriculum module<br><strong>Status</strong>: Reviewed for publication with documented warnings; customer-environment validation and delivery rehearsal remain required</p>
+<h2 id="workshop-overview">Workshop Overview</h2>
+<p>Show how to protect credentials, third-party dependencies, and application code without moving repositories out of Azure DevOps. Participants observe demonstrations, estimate product costs, and make setup and rollout decisions. They do not need accounts, licenses, installations, or access to a repository.</p>
+<p>The optional <a href="/gh-workshops/ghazdo/setup/">setup guide</a> is for before or after the presentation. It targets an <strong>existing organization, project, and Azure Repos Git repository chosen by the user</strong>, not a generated project or application. It creates a separate manual security pipeline through reviewed, owner-approved steps, leaving existing CI configuration unchanged.</p>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<table>
+<thead>
+<tr>
+<th>Objective</th>
+<th>Instruction</th>
+<th>Evidence of learning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. Match secret exposure, vulnerable dependencies, and code vulnerabilities to the appropriate product.</td>
+<td>Section 1 product matrix and classification discussion</td>
+<td>Correctly classify three risk scenarios.</td>
+</tr>
+<tr>
+<td>2. Estimate monthly product costs using active committers.</td>
+<td>Section 2 billing rules and worked example</td>
+<td>Exercise 1: the same 20 developers using both products costs $980/month at USD list prices.</td>
+</tr>
+<tr>
+<td>3. Identify approval, permissions, agents, and language/build prerequisites.</td>
+<td>Section 3 setup demonstration</td>
+<td>Exercise 2: identify cost approval, settings permission, and pipeline readiness as missing prerequisites.</td>
+</tr>
+<tr>
+<td>4. Distinguish secret discovery from push prevention and explain the response to a real leak.</td>
+<td>Section 4 comparison and demonstration</td>
+<td>Exercise 3: revoke or replace, remove the exposed value, confirm resolution, then close the alert.</td>
+</tr>
+<tr>
+<td>5. Explain dependency scanning setup and verified remediation.</td>
+<td>Section 5 configuration and alert walkthrough</td>
+<td>Explain why a pipeline must execute and why an update needs review, tests, and a follow-up scan.</td>
+</tr>
+<tr>
+<td>6. Choose CodeQL default or advanced setup and order a manual security pipeline.</td>
+<td>Section 6 setup comparison, language examples, and alert walkthrough</td>
+<td>Exercise 4: choose advanced setup for release branches/custom builds and confirm a fix through review, tests, and a same-branch rescan.</td>
+</tr>
+<tr>
+<td>7. Plan a repository-level rollout with clear responsibilities and cost review.</td>
+<td>Section 7 security overview and pilot checklist</td>
+<td>Closing response identifies a first repository, setup and response owners, and a budget decision.</td>
+</tr>
+</tbody></table>
+<h3 id="prerequisites">Prerequisites</h3>
+<p><strong>Participants</strong>: Basic familiarity with Git, pull requests, and Azure DevOps projects; shared-screen access; paper or a local note-taking tool. No participant login or setup.</p>
+<p><strong>Facilitator</strong>:</p>
+<ul>
+<li>Select an existing, authorized Azure DevOps Services organization/project/Azure Repos Git repository, or use clearly labeled official documentation examples. Azure DevOps Server and TFVC are outside scope.</li>
+<li>Obtain product-owner and budget-owner approval before activation or pipeline execution. Use one repository; do not change organization-wide or future-repository defaults.</li>
+<li>Check effective Advanced Security permissions separately from repository contribution and pipeline permissions.</li>
+<li>Verify language/build support, agent compatibility, task policies, available capacity, and the repository&#39;s own package feeds and authentication.</li>
+<li>Prefer completed, authorized scans for live walkthroughs. Do not wait for scans during delivery or promise findings.</li>
+<li>Do not create an application, insert vulnerable code, add fake secrets, or generate credentials for a demonstration. Do not reuse private screenshots.</li>
+<li>Use official documentation illustrations when live evidence is unavailable. Introduce them as <strong>official examples</strong>, not executed results.</li>
+</ul>
+<p>No customer cloud action or target-environment execution is established by these generic materials. Follow the <a href="/gh-workshops/ghazdo/demo/">demo runbook</a> for preparation, checkpoints, recovery, and cleanup. Independent technical, learning/facilitation, and execution-safety reviews are complete; full delivery rehearsal remains required.</p>
+<h3 id="agenda">Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Features and benefits</td>
+<td>8 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Pricing and licensing</td>
+<td>12 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Setup and permissions</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Secret scanning and push protection</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Dependency scanning</td>
+<td>12 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Code scanning with CodeQL</td>
+<td>18 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Rollout and Q&amp;A</td>
+<td>10 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total</strong>: 90 minutes. The four exercises take 3, 2, 2, and 3 minutes within sections 2, 3, 4, and 6. Setup and facilitator preparation are outside session time.</p>
+<h2 id="1-features-and-benefits-8-min">1. Features and benefits (8 min)</h2>
+<p><strong>Pacing</strong>: Opening and agenda 2 min; product boundaries 3 min; risk classification and discussion 3 min.</p>
+<h3 id="key-points">Key Points</h3>
+<p>The core products are generally available and independently purchasable. Choose Secret Protection, Code Security, or both according to the risks to address. Existing bundled agreements must be checked separately; today&#39;s standalone list prices do not establish a customer&#39;s contract rate.</p>
+<p>Core scanning operates in <strong>Azure DevOps Services and Azure Repos Git</strong>. Code stays in Azure DevOps; this workshop does not require migration to GitHub.com or a GitHub Enterprise/Copilot seat for core scanning. Do not assume feature parity with GitHub.com.</p>
+<h3 id="product-matrix">Product Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>GitHub Secret Protection</th>
+<th>GitHub Code Security</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Scan existing code for secrets</strong></td>
+<td>Included</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>Block secrets in new pushes</strong></td>
+<td>Included</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>Find vulnerable dependencies</strong></td>
+<td>-</td>
+<td>Included</td>
+</tr>
+<tr>
+<td><strong>Find code vulnerabilities with CodeQL</strong></td>
+<td>-</td>
+<td>Included</td>
+</tr>
+<tr>
+<td><strong>Security overview</strong></td>
+<td>Included</td>
+<td>Included</td>
+</tr>
+</tbody></table>
+<p><strong>Classification discussion</strong>: Ask which product addresses an exposed credential, a vulnerable third-party package, and an unsafe application data flow. Expected answers: Secret Protection, Code Security/dependency scanning, and Code Security/CodeQL. This is an oral check, not an additional exercise.</p>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which risk would you address first, and who could act on a finding?</li>
+<li>Which existing repository would provide a useful first pilot?</li>
+</ul>
+<h2 id="2-pricing-and-licensing-12-min">2. Pricing and licensing (12 min)</h2>
+<p><strong>Pacing</strong>: Billing rules 4 min; worked example and questions 5 min; Exercise 1 with answer comparison 3 min.</p>
+<h3 id="key-points">Key Points</h3>
+<p>Current USD list prices are <strong>Secret Protection $19</strong> and <strong>Code Security $30 per active committer/month</strong>. The pricing and billing sources were checked by the parent near this rewrite; recheck them before customer delivery. These are planning estimates, not quotes.</p>
+<ul>
+<li>An <strong>active committer</strong> is a developer whose commits are present in a push made in the last <strong>90 days</strong>; the original commit may be older.</li>
+<li>Within the <strong>same Azure subscription</strong>, count each developer once per product, even across multiple protected repositories or linked organizations.</li>
+<li>Count Secret Protection and Code Security separately if their developer groups differ.</li>
+<li>Charges are calculated daily and billed monthly. Billing settings show the previous day&#39;s measured count.</li>
+<li>Pipeline usage and AI features are separate costs. Agreements, currency, and taxes can change the actual price.</li>
+</ul>
+<h3 id="planning-example">Planning Example</h3>
+<p>The <strong>same 25 active committers use both products</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Developers</th>
+<th>Price per developer/month</th>
+<th>Monthly cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Secret Protection</strong></td>
+<td>25</td>
+<td>$19</td>
+<td>$475</td>
+</tr>
+<tr>
+<td><strong>Code Security</strong></td>
+<td>25</td>
+<td>$30</td>
+<td>$750</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td>Same 25 developers</td>
+<td>$49 combined</td>
+<td><strong>$1,225</strong></td>
+</tr>
+</tbody></table>
+<p>The combined $49 is the sum of today&#39;s standalone list prices, not a legacy contract claim. Pipeline usage and AI features are excluded.</p>
+<h3 id="exercise-connection">Exercise Connection</h3>
+<p>Run <a href="/gh-workshops/ghazdo/lab/#1-estimate-the-monthly-cost-3-min">Exercise 1: Estimate the monthly cost</a>. The same 20 active committers using both products costs <strong>$380 + $600 = $980/month</strong> at USD list prices. Allow two minutes to calculate and one to compare answers.</p>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Why can an old commit in a recent push still affect the estimate?</li>
+<li>Who will compare the planning estimate with measured per-product counts and the invoice?</li>
+</ul>
+<h2 id="3-setup-and-permissions-15-min">3. Setup and permissions (15 min)</h2>
+<p><strong>Pacing</strong>: Prerequisites 4 min; permissions 3 min; Demo 1 6 min; Exercise 2 with answer comparison 2 min.</p>
+<h3 id="key-points">Key Points</h3>
+<p>Use an existing user-selected repository. Confirm its language, build process, manifests/lockfiles, package feeds, and agent needs before selecting a template. The language examples are not universal ready-to-run pipelines.</p>
+<p>Use <strong>Project settings &gt; Repos &gt; Repositories &gt; selected repository</strong> to select the intended product. Review the estimate and <strong>Begin billing</strong> confirmation. Product activation is a manual, owner-approved billable action; preparing a YAML file does not activate anything. An existing bundled interface may use <strong>Enable</strong>; inspect the current UI and agreement rather than forcing a change.</p>
+<p>Activating <strong>Secret Protection starts historical repository scanning automatically</strong> and enables push protection. Default scanning setups also have automatic execution behavior; organization/project CodeQL default-setup enablement queues initial scans. The separate advanced CodeQL/dependency pipeline in this guide is queued manually after approval. Do not assume that avoiding the manual Run button prevents all scanning after activation.</p>
+<table>
+<thead>
+<tr>
+<th>Permission</th>
+<th>What it allows</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Advanced Security: Read alerts</strong></td>
+<td>View security findings.</td>
+</tr>
+<tr>
+<td><strong>Advanced Security: Manage and dismiss alerts</strong></td>
+<td>Update or close alerts.</td>
+</tr>
+<tr>
+<td><strong>Advanced Security: Manage settings</strong></td>
+<td>Enable products and change configuration.</td>
+</tr>
+</tbody></table>
+<p>Effective permissions can differ through delegation, inheritance, and denies. Verify them rather than assuming a role is sufficient. Repository contribution, pipeline creation/queueing, feed access, and capacity are separate checks. Do not distribute settings authority merely to enable investigation.</p>
+<h3 id="separate-manual-security-pipeline">Separate Manual Security Pipeline</h3>
+<p>The <a href="/gh-workshops/ghazdo/setup/">portal-first setup guide</a> covers product selection, language/build adaptation, a reviewed branch, and explicit manual pipeline creation and execution after budget approval.</p>
+<ul>
+<li>Leave current CI files and settings unchanged.</li>
+<li>Adding a YAML commit can still trigger existing CI under its normal policies, even when the new security YAML uses <code>trigger: none</code> and <code>pr: none</code>.</li>
+<li>Do not bypass or disable existing policies to avoid those runs.</li>
+<li>The optional helper requires all target/output parameters and an already-existing output directory <strong>outside any Git checkout</strong>. Prepare a scratch folder under <code>$env:TEMP</code> as shown in the setup guide; confirm it is not inside a checkout.</li>
+<li>Normal mode checks the local Azure CLI <code>azure-devops</code> extension and verifies only the explicit existing project/repository through read-only GET/show operations using cached sign-in. It does not inspect product settings, effective permissions, or capacity.</li>
+<li>Offline mode warns that verification was not performed and returns <code>Verification=NotPerformed</code>. Action fields reported as <code>false</code> mean the helper did not act, not that existing products are disabled.</li>
+<li>The helper only prepares local YAML, atomically refuses to overwrite an existing output file, and performs no sign-in, Azure writes, Git operations, activation, pipeline creation, or scan execution.</li>
+<li>File preparation does not guarantee product permissions, agent capacity, language support, scan completion, or findings.</li>
+</ul>
+<h3 id="demo-and-exercise-connection">Demo and Exercise Connection</h3>
+<p>Demo 1 shows repository selection, the billing gate, permissions, a separate manual pipeline, and completed scan evidence. Prefer a read-only walkthrough of previously approved setup. Without approval, stop before activation or execution.</p>
+<p>Run <a href="/gh-workshops/ghazdo/lab/#2-before-you-enable-security-2-min">Exercise 2: Before you enable security</a>. Expected decision: wait until cost approval, <strong>Advanced Security: Manage settings</strong>, and pipeline readiness are confirmed.</p>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How can an analyst investigate alerts without gaining billable settings authority?</li>
+<li>What distinguishes prepared configuration, enabled protection, and a completed scan?</li>
+</ul>
+<h2 id="4-secret-scanning-and-push-protection-15-min">4. Secret scanning and push protection (15 min)</h2>
+<p><strong>Pacing</strong>: Concepts 4 min; Demo 2 7 min; Exercise 3 with answer comparison 2 min; discussion 2 min.</p>
+<h3 id="key-points">Key Points</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Secret scanning</strong></td>
+<td>Finds exposed credentials in repository history.</td>
+</tr>
+<tr>
+<td><strong>Push protection</strong></td>
+<td>Blocks supported secrets before they reach the repository.</td>
+</tr>
+</tbody></table>
+<p>Secret Protection repository scanning and push protection are distinct behaviors. Review both settings and evidence; an alert does not establish that a push was blocked. Supported patterns and validation limit detection; neither mechanism finds every credential.</p>
+<p>Do not create live credentials, fake secrets, or new repository fixtures for this workshop. Use existing authorized evidence only when suitable for sharing; otherwise use an official example. A blocked push does not undo an exposure that already happened.</p>
+<p>For a <strong>real unexpected leak</strong>, coordinate with the credential owner and incident process:</p>
+<ol>
+<li><strong>Revoke or replace the credential</strong> to contain exposure.</li>
+<li><strong>Remove the exposed value</strong> through the approved repository cleanup process.</li>
+<li><strong>Confirm the credential no longer works and cleanup is complete</strong>.</li>
+<li><strong>Close the alert after confirming resolution</strong>. Closing it does not revoke the credential.</li>
+</ol>
+<p>For an unpushed secret, deleting it only from the latest file may leave it in outgoing commits. Coordinate approved cleanup of all affected unpushed commits; do not demonstrate bypass or history-rewrite recipes.</p>
+<h3 id="demo-and-exercise-connection">Demo and Exercise Connection</h3>
+<p>Demo 2 compares a historical alert with push-protection behavior. When using documentation, label it <strong>Official example</strong> and describe what it illustrates, not what happened in a customer repository. Explain the response to a real leak without attempting authentication or changing credentials live.</p>
+<p>Run <a href="/gh-workshops/ghazdo/lab/#3-respond-to-an-exposed-secret-2-min">Exercise 3: Respond to an exposed secret</a>. Expected order: <strong>C, A, D, B</strong>.</p>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Why is deleting a credential and closing the alert insufficient after exposure?</li>
+<li>Which owner can confirm that the credential has been revoked or replaced?</li>
+</ul>
+<h2 id="5-dependency-scanning-12-min">5. Dependency scanning (12 min)</h2>
+<p><strong>Pacing</strong>: Setup choice 4 min; Demo 3 6 min; discussion and checkpoint 2 min.</p>
+<h3 id="key-points-and-decision-criteria">Key Points and Decision Criteria</h3>
+<p>Dependency scanning identifies vulnerable third-party libraries used directly by the application and transitively through other packages.</p>
+<table>
+<thead>
+<tr>
+<th>Setup</th>
+<th>When to use it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Default setup</strong></td>
+<td>Add scanning to pipelines for the default branch.</td>
+</tr>
+<tr>
+<td><strong>Pipeline task</strong></td>
+<td>Choose the pipelines and branches to scan.</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Default setup injects dependency scanning into relevant default-branch pipelines and PR builds targeting that branch. <strong>A pipeline must run</strong>; enabling injection is not a completed scan.</li>
+<li>Explicit <code>AdvancedSecurity-Dependency-Scanning@1</code> tasks support selected pipelines/branches and deliberate placement after dependency restore/build.</li>
+<li>For this optional setup, use explicit tasks in a separate manual security pipeline rather than changing existing CI.</li>
+<li>Review dependency findings for a pull-request branch in <strong>Repos &gt; Advanced Security</strong> by selecting that PR branch in the branch picker. Applicable new findings may also appear as PR Overview annotations. Use pipeline logs to confirm execution and supplement result review; missing annotations do not necessarily mean missing scan results.</li>
+<li>Do not promise native automatic dependency-update PRs. Review a suitable update, preserve manifest/lockfile consistency, test, and scan again.</li>
+<li>Findings do not automatically imply build failure or merge blocking. Any enforcement needs separately designed, reviewed, and verified policies.</li>
+</ul>
+<h3 id="demo-connection">Demo Connection</h3>
+<p>Demo 3 connects a completed scan to an advisory, dependency path, owning manifest/lockfile, and remediation plan. Use comparable follow-up execution to confirm a reviewed update. If there are no findings, show task completion and the applicable results view; do not fabricate a vulnerability or conclude that all risk is absent.</p>
+<p><strong>Checkpoint</strong>: Ask whether enabled injection with no pipeline execution means the repository was scanned. Expected answer: no.</p>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How would you distinguish no findings from no successful scan?</li>
+<li>Who owns an update when the vulnerable library is a transitive dependency?</li>
+</ul>
+<h2 id="6-code-scanning-with-codeql-18-min">6. Code scanning with CodeQL (18 min)</h2>
+<p><strong>Pacing</strong>: Setup and language choices 4 min; Demo 4 8 min; Exercise 4 with answer comparison 3 min; optional-feature explanation 2 min; discussion 1 min.</p>
+<h3 id="key-points-and-decision-criteria">Key Points and Decision Criteria</h3>
+<p>CodeQL analyzes source code for security vulnerabilities. Check current language support and build requirements for the chosen setup.</p>
+<table>
+<thead>
+<tr>
+<th>Setup</th>
+<th>When to use it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Default setup</strong></td>
+<td>Scheduled scans of your default branch, without maintaining a custom scanning pipeline.</td>
+</tr>
+<tr>
+<td><strong>Advanced setup</strong></td>
+<td>Custom builds, additional branches, or specific pipeline requirements.</td>
+</tr>
+</tbody></table>
+<p>Default setup provides a scheduled default-branch baseline for supported languages using managed execution. Do not imply that every CodeQL language or custom build works with it.</p>
+<p>Advanced setup supports control over branches, builds, agents, queries, and task placement. For the setup guide, the advanced security pipeline is a <strong>separate, manually triggered example</strong>, not a replacement for existing CI.</p>
+<h3 id="manual-pipeline-and-language-selection">Manual Pipeline and Language Selection</h3>
+<p>All three language examples use <code>trigger: none</code>, <code>pr: none</code>, and hosted <code>ubuntu-24.04</code>, with explicit order:</p>
+<p><strong>Init -&gt; restore/build -&gt; Dependency Scanning -&gt; Analyze</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Stack</th>
+<th>Example</th>
+<th>Required adaptation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JavaScript/TypeScript</td>
+<td><code>security-javascript.yml</code>: <code>UseNode@1</code>, Node <code>22.x</code>, CodeQL <code>javascript</code>, buildtype <code>None</code></td>
+<td>Confirm <code>nodeVersion</code> and <code>workingDirectory</code>; require an existing matching lockfile for <code>npm ci --ignore-scripts</code>.</td>
+</tr>
+<tr>
+<td>.NET/C#</td>
+<td><code>security-dotnet.yml</code>: <code>UseDotNet@2</code>, CodeQL <code>csharp</code>, buildtype <code>Manual</code></td>
+<td>Set <code>dotnetSdkVersion</code> and <code>solutionOrProject</code>; review Linux-capable clean restore/build and feeds.</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><code>security-java.yml</code>: <code>JavaToolInstaller@0</code>, preinstalled x64 JDK <code>21</code>, CodeQL <code>java</code>, buildtype <code>Manual</code></td>
+<td>Set <code>pomPath</code>, confirm <code>javaVersion</code> is installed in the image, and review Maven clean compile. Adapt Gradle/Kotlin separately.</td>
+</tr>
+</tbody></table>
+<p>See the <a href="/gh-workshops/ghazdo/templates/">template selector</a> for the parent-provided YAML examples. <code>Manual</code> and <code>None</code> are capitalized Init task values.</p>
+<p>JavaScript parameters default to <code>nodeVersion: 22.x</code> and <code>workingDirectory: &#39;.&#39;</code>. <code>UseNode@1</code> requires <code>versionSource: spec</code> and <code>version</code>. The example checks for an existing npm lockfile before <code>npm ci --ignore-scripts</code>. No lifecycle scripts or application build run by default; do not add or run them without repository-owner approval. Suppressing lifecycle scripts is not a sandbox.</p>
+<p>.NET requires replacing <strong>both</strong> <code>dotnetSdkVersion: &#39;&lt;YOUR-DOTNET-SDK-VERSION&gt;&#39;</code> and <code>solutionOrProject: &#39;&lt;YOUR-SOLUTION-OR-PROJECT&gt;&#39;</code>. Match the repository and <code>global.json</code>, and confirm a Linux-capable build. <code>configuration</code> defaults to <code>Release</code>. <code>UseDotNet@2</code> selects <code>packageType: sdk</code> and the explicit version. After Init <code>Manual</code>, the example uses clean/restore/no-incremental build with the shared compiler and MSBuild server disabled; no deployment.</p>
+<p>Java defaults to <code>javaVersion: 21</code>; <strong>replace</strong> <code>pomPath: &#39;&lt;YOUR-POM-PATH&gt;&#39;</code> with the existing POM path. The selected JDK must already be installed in the hosted image. The <code>PreInstalled</code> x64 tool-selection task precedes CodeQL Init <code>Manual</code>, followed by Maven clean compile with <code>-DskipTests</code>; no deployment. Scan preparation is not remediation testing: code fixes still require appropriate tests.</p>
+<p>Preserve the customer&#39;s own feeds, <code>.npmrc</code>, authentication, SDK choices, and policies. Do not copy the workshop content repository&#39;s Microsoft feed into a customer repository or put credentials in YAML.</p>
+<h3 id="demo-and-exercise-connection">Demo and Exercise Connection</h3>
+<p>Demo 4 shows setup choices, the language-specific example, completed scan tasks, and an alert&#39;s code location/data flow. Confirm remediation through a reviewed fix, tests, and a completed <strong>same-branch, comparable-configuration rescan</strong>. If no finding exists, demonstrate scan completion and result review instead.</p>
+<p>Run <a href="/gh-workshops/ghazdo/lab/#4-choose-your-codeql-setup-3-min">Exercise 4: Choose your CodeQL setup</a>. Advanced setup fits release branches and a custom build. A proposed pull request alone does not prove the issue is resolved.</p>
+<h3 id="optional-copilot-autofix-explanation">Optional Copilot Autofix Explanation</h3>
+<p>Copilot Autofix for Azure DevOps is a <strong>limited public preview</strong> with restricted access. It uses separately billed <strong>GitHub AI credits</strong>, excluded from product estimates. Explain the capability only; no preview access or paid generation is required. Recheck availability and credit pricing before any separately approved use. Generated changes still need human review, tests, and a rescan.</p>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which branch and completed execution would confirm that your fix resolved the alert?</li>
+<li>Which build customization would require review before adopting an example pipeline?</li>
+</ul>
+<h2 id="7-rollout-and-qa-10-min">7. Rollout and Q&amp;A (10 min)</h2>
+<p><strong>Pacing</strong>: Demo 5 3 min; pilot checklist 2 min; closing response 1 min; Q&amp;A 4 min.</p>
+<h3 id="key-points">Key Points</h3>
+<p>Use <strong>Organization settings &gt; Security overview</strong> to inspect <strong>Risk</strong>, <strong>Coverage</strong>, and <strong>Alerts</strong> within effective access. Pair enablement coverage with completed scans and response ownership; coverage alone does not prove a recent successful scan. No private-preview view is required.</p>
+<h3 id="start-with-a-focused-pilot">Start with a Focused Pilot</h3>
+<p>Use the <a href="/gh-workshops/ghazdo/templates/pilot-checklist/">pilot checklist</a>:</p>
+<ol>
+<li>Choose one existing repository and the products it needs.</li>
+<li>Agree on the budget, settings owner, pipeline owner, alert responders, and credential owner.</li>
+<li>Review language/build choices and a separate manual pipeline before activation and execution.</li>
+<li>Confirm completed scans, assign findings, review fixes, test, and scan again.</li>
+<li>Review measured per-product counts, pipeline costs, and results before expanding.</li>
+</ol>
+<p>Demo 5 connects organizational views to the chosen repository&#39;s actual scan evidence. The closing response asks participants to name a first repository, responsible people, and an approval decision.</p>
+<p>End with customer takeaways and Q&amp;A: protect secrets, dependencies, and application code; plan costs using active committers; start with one repository and expand after reviewing results.</p>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What would demonstrate enough value to expand beyond the first repository?</li>
+<li>Which unresolved ownership or budget issue would prevent starting today?</li>
+</ul>
+<h2 id="appendix">Appendix</h2>
+<h3 id="delivery-artifacts">Delivery Artifacts</h3>
+<ul>
+<li><a href="/gh-workshops/ghazdo/slides/">Slidev deck</a>: 25 slides with draft teaching notes.</li>
+<li><a href="/gh-workshops/ghazdo/lab/">No-login lab guide</a>: four independent paper/notes exercises.</li>
+<li><a href="/gh-workshops/ghazdo/demo/">Demo runbook</a>: five walkthroughs with official-example fallbacks.</li>
+<li><a href="/gh-workshops/ghazdo/setup/">Portal-first setup</a>: optional existing-repository setup outside session time.</li>
+<li><a href="/gh-workshops/ghazdo/templates/">Template selector</a> and <a href="/gh-workshops/ghazdo/templates/pilot-checklist/">pilot checklist</a>.</li>
+</ul>
+<p>The helper and language YAML passed local parsing, mocked/offline regression tests, and publication checks. These results do not replace repository-specific permissions, feeds, builds, or scan validation. Independent reviews support publication with documented warnings, not a claim that every customer environment has been tested.</p>
+<h3 id="primary-sources">Primary Sources</h3>
+<p>The parent checked current configuration, billing, pricing, and tool-task references near this rewrite. The following official references support the generic narrative; no customer-environment execution is claimed.</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/configure-github-advanced-security-features?view=azure-devops">Configure Advanced Security</a></td>
+<td>Services/Git scope, product activation, billing gate, setup choices</td>
+</tr>
+<tr>
+<td><a href="https://azure.microsoft.com/en-us/pricing/details/devops/azure-devops-services/">Current Azure DevOps pricing</a></td>
+<td>$19/$30 USD list prices and separate usage charges</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-billing?view=azure-devops">Advanced Security billing</a></td>
+<td>90-day pushes, separate per-product counts within one Azure subscription</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-permissions?view=azure-devops">Advanced Security permissions</a></td>
+<td>Effective permission checks and permission names</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-secret-scanning?view=azure-devops">Secret scanning</a></td>
+<td>Repository scanning, push protection, detection boundaries</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-dependency-scanning?view=azure-devops">Dependency scanning</a></td>
+<td>Injection/task execution, result review, PR boundary</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-code-scanning?view=azure-devops">Code scanning</a></td>
+<td>Default versus advanced setup and result review</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/advanced-security-codeql-init-v1?view=azure-pipelines">CodeQL Init task</a></td>
+<td>Languages, <code>Manual</code>/<code>None</code>, initialization inputs</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/use-node-v1?view=azure-pipelines">UseNode@1</a></td>
+<td><code>versionSource: spec</code>, <code>version</code></td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/use-dotnet-v2?view=azure-pipelines">UseDotNet@2</a></td>
+<td><code>packageType: sdk</code>, explicit SDK <code>version</code></td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/java-tool-installer-v0?view=azure-pipelines">JavaToolInstaller@0</a></td>
+<td><code>versionSpec</code>, <code>PreInstalled</code>, x64</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-security-overview?view=azure-devops">Security overview</a></td>
+<td>Risk, Coverage, Alerts</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-code-scanning-autofix?view=azure-devops">Copilot Autofix</a></td>
+<td>Limited public preview, access restrictions, human review</td>
+</tr>
+</tbody></table>
+<h3 id="accuracy-and-facilitation-handoffs">Accuracy and Facilitation Handoffs</h3>
+<table>
+<thead>
+<tr>
+<th>Review item</th>
+<th>Boundary to confirm</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pricing and billing</td>
+<td>Current list prices, active-committer definition, subscription counting, measured-count timing, actual customer agreement</td>
+</tr>
+<tr>
+<td>Portal and permissions</td>
+<td>Current labels, repository-level scope, effective access, no broad default changes</td>
+</tr>
+<tr>
+<td>Scanning and templates</td>
+<td>Default-setup support, PR result locations, task input casing, language/build modes, hosted tool availability</td>
+</tr>
+<tr>
+<td>Optional Autofix</td>
+<td>Current limited-preview availability and separate AI-credit terms; no required demo</td>
+</tr>
+<tr>
+<td>Target execution</td>
+<td>Product approvals, pipeline rights/capacity, feeds/authentication, successful scans, no-findings path, cleanup</td>
+</tr>
+<tr>
+<td>Facilitation</td>
+<td>Draft notes, exercise accessibility, transitions, 90-minute rehearsal, five official-example fallback paths</td>
+</tr>
+<tr>
+<td>Parent validation</td>
+<td>Helper/YAML tests, links, agenda/table synchronization, affected-deck build and every-slide rendering</td>
+</tr>
+</tbody></table>
+<p>Unsupported promises are excluded: guaranteed findings, automatic dependency-update PRs, automatic merge/build blocking, universal template compatibility, free preview usage, or scan completion from activation alone.</p>
+<p><em>Workshop guide for GitHub Advanced Security for Azure DevOps Workshop</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/workshop.astro_astro_type_script_index_0_lang.CNkWxYwE.js"></script>

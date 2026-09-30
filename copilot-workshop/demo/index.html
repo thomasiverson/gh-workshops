@@ -1,0 +1,1294 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot: Zero to Agents — Demo Scripts</title><link rel="stylesheet" href="/gh-workshops/_astro/_document_.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/_document_.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.document-copy{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);font-size:12px;cursor:pointer;opacity:0}pre:hover .document-copy{opacity:1}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-zero-to-agents--demo-scripts">GitHub Copilot: Zero to Agents — Demo Scripts</h1>
+<h2 id="instructor-reference">Instructor Reference</h2>
+<p><strong>Duration</strong>: ~4 hours (core workshop ~232 min)<br><strong>Total Demo Time</strong>: ~137 min core (including hands-on)<br><strong>Environment</strong>: VS Code + GitHub Browser + Terminal<br><strong>Repo</strong>: <a href="https://github.com/microsoft/GitHubCopilot_Customized">microsoft/GitHubCopilot_Customized</a></p>
+<hr>
+<blockquote>
+<p><strong>Important</strong>: Copilot is non-deterministic. Outputs will vary between runs. Practice these demos beforehand and be comfortable pivoting if responses differ from what&#39;s documented here.</p>
+</blockquote>
+<hr>
+<h2 id="pre-demo-checklist">Pre-Demo Checklist</h2>
+<p>Run through this <strong>the day before</strong> and again <strong>30 minutes before</strong> the workshop:</p>
+<h3 id="environment">Environment</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Repo forked to your account and cloned locally</li>
+<li><input disabled="" type="checkbox"> <code>npm install</code> completed successfully</li>
+<li><input disabled="" type="checkbox"> <code>npm run dev</code> starts both API (:3000) and Frontend (:5137)</li>
+<li><input disabled="" type="checkbox"> API Swagger docs accessible at <code>http://localhost:3000/api-docs</code></li>
+<li><input disabled="" type="checkbox"> Frontend loads and Products page displays items</li>
+<li><input disabled="" type="checkbox"> VS Code is using latest stable (or Insiders for preview features)</li>
+<li><input disabled="" type="checkbox"> VS Code font size increased for projection (Settings → Editor → Font Size → 16-18)</li>
+</ul>
+<h3 id="copilot">Copilot</h3>
+<ul>
+<li><input disabled="" type="checkbox"> GitHub Copilot extension installed and up to date</li>
+<li><input disabled="" type="checkbox"> GitHub Copilot Chat extension installed and up to date</li>
+<li><input disabled="" type="checkbox"> Signed in to Copilot (check: <code>Cmd/Ctrl + Shift + P</code> → &quot;Copilot: Sign In&quot;)</li>
+<li><input disabled="" type="checkbox"> Agent mode is available in chat mode picker</li>
+<li><input disabled="" type="checkbox"> Multiple models available (Claude Sonnet 4, GPT-4o, etc.)</li>
+</ul>
+<h3 id="cli">CLI</h3>
+<ul>
+<li><input disabled="" type="checkbox"> GitHub Copilot CLI installed (<code>copilot --version</code> returns a version number)</li>
+<li><input disabled="" type="checkbox"> If not installed: follow <a href="https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli">docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli</a></li>
+<li><input disabled="" type="checkbox"> <code>copilot</code> interactive mode launches from project root (trust the directory when prompted)</li>
+</ul>
+<h3 id="mcp-servers">MCP Servers</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <code>.vscode/mcp.json</code> exists with github + playwright servers</li>
+<li><input disabled="" type="checkbox"> VS Code setting <code>chat.mcp.discovery.enabled</code> is <code>true</code> (Settings → search &quot;MCP&quot;)</li>
+<li><input disabled="" type="checkbox"> Playwright MCP auto-starts when needed: verify by running a Playwright prompt in Agent mode</li>
+<li><input disabled="" type="checkbox"> GitHub MCP auto-starts when needed: verify by asking Copilot to list issues</li>
+<li><input disabled="" type="checkbox"> OAuth flow completes for GitHub MCP (first time: browser opens for auth)</li>
+</ul>
+<h3 id="github-repo">GitHub Repo</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Actions enabled on the fork</li>
+<li><input disabled="" type="checkbox"> Branch protection rule on <code>main</code> (require PR, 1 reviewer)</li>
+<li><input disabled="" type="checkbox"> Copilot Coding Agent enabled in repo settings</li>
+<li><input disabled="" type="checkbox"> <code>.github/agents/OctoCATEngineer.agent.md</code> exists (pre-built agent for Section 6)</li>
+<li><input disabled="" type="checkbox"> At least one open Issue exists (or pre-create Issue #1 for test coverage)</li>
+<li><input disabled="" type="checkbox"> A PR exists or is ready to create (for PR Review Agent demo)</li>
+<li><input disabled="" type="checkbox"> Fine-grained PAT ready (if using local Docker-based GitHub MCP)</li>
+</ul>
+<h3 id="browser">Browser</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Bookmarks folder with: GitHub repo, API Swagger, Frontend, GitHub Copilot Docs</li>
+<li><input disabled="" type="checkbox"> Logged in to GitHub as the demo account</li>
+<li><input disabled="" type="checkbox"> Incognito/private window ready as backup</li>
+</ul>
+<h3 id="backup-materials">Backup Materials</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Screenshots of each demo step in a local folder</li>
+<li><input disabled="" type="checkbox"> Pre-recorded GIFs for critical demos (MCP browser)</li>
+<li><input disabled="" type="checkbox"> GitHub Docs tabs open for each feature as fallback</li>
+</ul>
+<hr>
+<h2 id="demo-1-copilot-chat-modes-section-2">Demo 1: Copilot Chat Modes (Section 2)</h2>
+<p><strong>Objective</strong>: Show the three chat modes and when to use each<br><strong>Duration</strong>: 5 min demo + 8 min hands-on = 13 min<br><strong>After Slide</strong>: 10</p>
+<h3 id="setup-before-demo">Setup Before Demo</h3>
+<ul>
+<li>App running (<code>npm run dev</code>)</li>
+<li>VS Code open with the project</li>
+<li>Copilot Chat panel open (sidebar)</li>
+<li>No prior chat history (start fresh: click &quot;+&quot; for new chat)</li>
+</ul>
+<h3 id="step-by-step-script">Step-by-Step Script</h3>
+<h4 id="part-a-ask-mode-2-min">Part A: Ask Mode (2 min)</h4>
+<ol>
+<li><p><strong>Open Copilot Chat</strong> → Click the mode dropdown → Select <strong>Ask</strong></p>
+</li>
+<li><p><strong>Enter prompt</strong>:</p>
+<pre><code>Please give me details about the API of this project.
+</code></pre>
+</li>
+<li><p><strong>Show the response</strong>: Point out how Copilot references:</p>
+<ul>
+<li>The Express.js architecture</li>
+<li>Specific route files (<code>product.ts</code>, <code>supplier.ts</code>, <code>branch.ts</code>)</li>
+<li>The Swagger/OpenAPI documentation</li>
+<li>Entity models and relationships</li>
+</ul>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Ask mode read your entire codebase and gave you an architectural overview. It didn&#39;t change any files — it&#39;s read-only intelligence.&quot;</p>
+</li>
+<li><p><strong>Follow-up prompt</strong>:</p>
+<pre><code>Are there any core features missing in my project?
+</code></pre>
+</li>
+<li><p><strong>Show response</strong>: Copilot typically identifies missing features like authentication, proper error handling, or input validation</p>
+</li>
+</ol>
+<h4 id="part-b-plan-mode-15-min">Part B: Plan Mode (1.5 min)</h4>
+<ol>
+<li><p><strong>Open Copilot Chat</strong> → switch to <strong>Plan</strong> mode from the mode dropdown</p>
+</li>
+<li><p><strong>Enter prompt</strong>:</p>
+<pre><code>I want to add input validation to the Product API POST endpoint. What&#39;s the best approach?
+</code></pre>
+</li>
+<li><p><strong>Show</strong> Copilot analyzing the codebase and proposing a structured implementation plan</p>
+</li>
+<li><p><strong>Point out</strong>: The plan lists which files need to change, what approach to take, step-by-step instructions</p>
+</li>
+<li><p><strong>Highlight</strong>: Plan mode does NOT create or modify any files — it only proposes</p>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Plan mode is your architect. It reads your codebase, analyzes the problem, and proposes a plan — without touching any code. You review the plan, then switch to Agent mode to implement.&quot;</p>
+</li>
+</ol>
+<h4 id="part-c-agent-mode-15-min">Part C: Agent Mode (1.5 min)</h4>
+<ol>
+<li><p><strong>Switch</strong> to <strong>Agent</strong> mode</p>
+</li>
+<li><p><strong>Enter prompt</strong>:</p>
+<pre><code>Please build and run my project so that I can see its existing state.
+</code></pre>
+</li>
+<li><p><strong>Show Copilot</strong>:</p>
+<ul>
+<li>Reading <code>package.json</code></li>
+<li>Running terminal commands (<code>npm install</code>, <code>npm run dev</code>)</li>
+<li>Verifying the build succeeded</li>
+<li>(If app is already running, it may detect that and skip build)</li>
+</ul>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Agent mode just built and launched your app from a natural language prompt. It read config files, ran terminal commands, and verified success. This is your pair programmer.&quot;</p>
+</li>
+</ol>
+<h3 id="hands-on-instructions-8-min">Hands-On Instructions (8 min)</h3>
+<p>Tell attendees:</p>
+<blockquote>
+<p>&quot;Try all three modes. Here are prompts to start with:&quot;</p>
+</blockquote>
+<p><strong>Ask</strong>:</p>
+<pre><code>What testing framework does this project use and what&#39;s the current test coverage?
+</code></pre>
+<p><strong>Plan</strong> (note it doesn&#39;t change any files):</p>
+<pre><code>How should I add comprehensive error handling to the API routes?
+</code></pre>
+<p><strong>Agent</strong> (if not already running):</p>
+<pre><code>Build and run the project
+</code></pre>
+<blockquote>
+<p>&quot;You have 8 minutes. I&#39;ll walk around to help.&quot;</p>
+</blockquote>
+<h3 id="key-points-to-emphasize">Key Points to Emphasize</h3>
+<ul>
+<li>Ask = read-only intelligence (safe for production exploration)</li>
+<li>Plan = architectural planning without code changes (think before you build)</li>
+<li>Agent = full codebase access + terminal + file editing (the power mode)</li>
+<li>Mode selection matters more than prompt quality</li>
+</ul>
+<h3 id="backup-plan">Backup Plan</h3>
+<p>If Copilot is slow/unresponsive:</p>
+<ol>
+<li>Show the mode picker UI and explain what each does</li>
+<li>Reference the comparison table from the slides</li>
+</ol>
+<hr>
+<h2 id="demo-2-custom-instructions-section-3">Demo 2: Custom Instructions (Section 3)</h2>
+<p><strong>Objective</strong>: Show how custom instructions change Copilot&#39;s behavior, including internal frameworks<br><strong>Duration</strong>: 5 min demo + 12 min hands-on = 17 min<br><strong>After Slide</strong>: 15</p>
+<h3 id="setup-before-demo">Setup Before Demo</h3>
+<ul>
+<li>Ensure <code>.github/copilot-instructions.md</code> does NOT exist yet (this is the exercise)</li>
+<li>Have <code>docs/tao.md</code> ready to reference</li>
+<li>New chat session (clear context from previous demo)</li>
+</ul>
+<h3 id="step-by-step-script">Step-by-Step Script</h3>
+<h4 id="part-a-generate-instructions-15-min">Part A: Generate Instructions (1.5 min)</h4>
+<ol>
+<li><strong>Open Copilot Chat</strong> → Click the <strong>Gear icon</strong> (⚙️)</li>
+<li><strong>Select</strong>: &quot;Generate Agent Instructions&quot;</li>
+<li><strong>Show Copilot analyzing the repo</strong> — it reads package.json, architecture, routes, etc.</li>
+<li><strong>Review the generated file</strong>: Should include references to:<ul>
+<li>TypeScript, Express.js, React</li>
+<li>Project structure (api/, frontend/)</li>
+<li>Build commands (<code>npm install &amp;&amp; npm run build</code>)</li>
+<li>Testing framework (Vitest)</li>
+</ul>
+</li>
+<li><strong>Save</strong> to <code>.github/copilot-instructions.md</code></li>
+<li><strong>Talking point</strong>: &quot;Copilot just wrote its own instruction manual by reading your entire repo. This file is now loaded into every interaction.&quot;</li>
+</ol>
+<h4 id="part-b-scoped-instructions-1-min">Part B: Scoped Instructions (1 min)</h4>
+<ol>
+<li><p><strong>Create</strong> <code>.github/instructions/API.instructions.md</code>:</p>
+<pre><code class="language-markdown">---
+applyTo: &quot;api/**&quot;
+---
+# API Development Instructions
+
+For REST APIs in this project:
+- Use descriptive endpoint naming following REST conventions
+- Add Swagger/OpenAPI docs for all API methods
+- Implement proper error handling with appropriate HTTP status codes
+- Follow the entity pattern established in existing routes
+- Include input validation for all POST/PUT endpoints
+</code></pre>
+</li>
+<li><p><strong>Talking point</strong>: &quot;These instructions only activate when you&#39;re working in the <code>api/</code> directory. Different teams, different rules.&quot;</p>
+</li>
+</ol>
+<h4 id="part-c-tao-internal-framework-demo-25-min">Part C: TAO Internal Framework Demo (2.5 min)</h4>
+<ol>
+<li><p><strong>Show</strong> <code>docs/tao.md</code> briefly — &quot;This is a fictional internal observability framework&quot;</p>
+</li>
+<li><p><strong>Add to</strong> <code>.github/copilot-instructions.md</code>:</p>
+<pre><code class="language-markdown">## Observability Requirements
+- Implement logging and monitoring using TAO (TypeScript API Observability)
+- Reference: docs/tao.md
+- Assume TAO is installed — never add the package
+- Use @Measure, @Trace, and @Log decorators for all service methods
+</code></pre>
+</li>
+<li><p><strong>Switch to Agent mode</strong></p>
+</li>
+<li><p><strong>Enter prompt</strong>:</p>
+<pre><code>Add observability to the Supplier route using our internal standards
+</code></pre>
+</li>
+<li><p><strong>Show Copilot generating TAO code</strong>:</p>
+<pre><code class="language-typescript">import { initTAO, observe } from &#39;@tao/core&#39;;
+import { Measure, Trace, Log } from &#39;@tao/core&#39;;
+</code></pre>
+</li>
+<li><p><strong>Talking point</strong>: &quot;TAO doesn&#39;t exist anywhere on the internet. Copilot has never seen it in training data. But because we told it about TAO in our instructions, it generates perfect TAO code. Imagine this for YOUR company&#39;s internal frameworks.&quot;</p>
+</li>
+<li><p><strong>Acknowledge</strong>: &quot;This code won&#39;t compile — that&#39;s the point. It shows instructions override training data.&quot;</p>
+</li>
+</ol>
+<h4 id="part-d-cleanup--revert-tao-with-copilot-1-min">Part D: Cleanup — Revert TAO with Copilot (1 min)</h4>
+<ol>
+<li><p><strong>Stay in Agent mode</strong> and enter:</p>
+<pre><code>Revert the TAO observability changes you just made to the Supplier route, and remove the &quot;Observability Requirements&quot; section from .github/copilot-instructions.md. The TAO framework is fictional and the code won&#39;t compile.
+</code></pre>
+</li>
+<li><p><strong>Show Copilot</strong> removing the TAO imports, decorators, and the instructions block</p>
+</li>
+<li><p><strong>Verify</strong> the app compiles (check terminal or <code>npm run build</code>)</p>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Copilot can undo its own work just as easily. In real projects, this is how you course-correct — tell it what&#39;s wrong and let it fix it. Now we&#39;re back to a clean codebase for the next section.&quot;</p>
+</li>
+</ol>
+<h3 id="hands-on-instructions-12-min">Hands-On Instructions (12 min)</h3>
+<blockquote>
+<p>&quot;Five steps — take your time:&quot;</p>
+</blockquote>
+<ol>
+<li><strong>Baseline</strong>: Ask Copilot in Ask mode — note the response:</li>
+</ol>
+<pre><code>How should I add a new API endpoint to this project?
+</code></pre>
+<ol start="2">
+<li>Use the Gear icon → &#39;Generate Agent Instructions&#39; to create your <code>.github/copilot-instructions.md</code></li>
+<li>Create <code>.github/instructions/API.instructions.md</code> with the <code>applyTo: &#39;api/**&#39;</code> frontmatter</li>
+<li><strong>Compare</strong>: Open a file in <code>api/src/routes/</code> and re-ask the same question — notice how the response is now more specific</li>
+<li><strong>Bonus</strong>: Create a Frontend scoped instruction for <code>src/**</code> with Tailwind and React conventions</li>
+</ol>
+<blockquote>
+<p>&quot;You have 12 minutes. I&#39;ll walk around to help.&quot;</p>
+</blockquote>
+<h3 id="key-points-to-emphasize">Key Points to Emphasize</h3>
+<ul>
+<li>Instructions are invisible to developers — they just make Copilot better</li>
+<li>Keep them concise (they consume context window on every interaction)</li>
+<li>The TAO example proves you can teach Copilot about anything</li>
+<li>Scoped instructions use glob patterns in YAML frontmatter</li>
+</ul>
+<h3 id="backup-plan">Backup Plan</h3>
+<p>If the Gear icon → &quot;Generate Agent Instructions&quot; isn&#39;t available:</p>
+<ol>
+<li><p>Create <code>.github/copilot-instructions.md</code> manually in Agent mode:</p>
+<pre><code>Analyze this repository and create a comprehensive copilot-instructions.md file that describes our tech stack, architecture, coding standards, and build process.
+</code></pre>
+</li>
+<li><p>If Agent mode is slow, paste a pre-written template</p>
+</li>
+</ol>
+<hr>
+<h2 id="demo-3-custom-prompt-files-section-4">Demo 3: Custom Prompt Files (Section 4)</h2>
+<p><strong>Objective</strong>: Walk through existing prompts and run the unit test prompt live<br><strong>Duration</strong>: 6 min demo + 12 min hands-on = 18 min<br><strong>After Slide</strong>: 20</p>
+<h3 id="setup-before-demo">Setup Before Demo</h3>
+<ul>
+<li>Ensure existing test coverage is minimal (only <code>branch.test.ts</code> exists)</li>
+<li>App running (tests need the API)</li>
+<li>New chat session</li>
+</ul>
+<h3 id="step-by-step-script">Step-by-Step Script</h3>
+<h4 id="part-a-walk-through-prompts-25-min">Part A: Walk Through Prompts (2.5 min)</h4>
+<ol>
+<li><p><strong>Open</strong> <code>.github/prompts/Unit-Test-Coverage.prompt.md</code></p>
+</li>
+<li><p><strong>Walk through structure</strong>:</p>
+<ul>
+<li><strong>YAML frontmatter</strong>: <code>mode: &#39;agent&#39;</code>, tool list (point out <code>runCommands</code>, <code>testFailure</code>)</li>
+<li><strong>Current state</strong>: &quot;Only 1 test file exists: <code>branch.test.ts</code>&quot;</li>
+<li><strong>Requirements</strong>: CRUD operations + error scenarios as checkboxes</li>
+<li><strong>Guidelines</strong>: &quot;Follow the pattern in <code>branch.test.ts</code>&quot; with code template</li>
+<li><strong>Running tests</strong>: Copy-paste <code>npm run test:api</code> commands</li>
+<li><strong>Success criteria</strong>: All tests passing</li>
+</ul>
+</li>
+<li><p><strong>Talking point</strong>: &quot;This prompt file is a complete runbook. A junior developer can run it and get senior-quality test coverage. That&#39;s consistency.&quot;</p>
+</li>
+<li><p><strong>Briefly show</strong> <code>.github/prompts/plan.prompt.md</code>:</p>
+<ul>
+<li>&quot;Notice: &#39;DO NOT SHOW CODE CHANGES — only the overview.&#39; Not every prompt should generate code.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Briefly show</strong> <code>.github/prompts/model.prompt.md</code>:</p>
+<ul>
+<li>&quot;This one fetches live GitHub docs to compare AI models. Prompts can reference external URLs.&quot;</li>
+</ul>
+</li>
+</ol>
+<h4 id="part-b-run-the-unit-test-prompt-35-min">Part B: Run the Unit Test Prompt (3.5 min)</h4>
+<ol>
+<li><strong>Open</strong> <code>Unit-Test-Coverage.prompt.md</code></li>
+<li><strong>Click the Run button</strong> at the top of the file (or <code>Cmd/Ctrl + Shift + P</code> → &quot;Prompts: Run Prompt&quot;)</li>
+<li><strong>Show</strong> Agent mode activating automatically (from <code>mode: &#39;agent&#39;</code> in frontmatter)</li>
+<li><strong>Watch Copilot</strong>:<ul>
+<li>Reading <code>branch.test.ts</code> for the pattern</li>
+<li>Creating <code>product.test.ts</code> with CRUD + error tests</li>
+<li>Creating <code>supplier.test.ts</code> with CRUD + error tests</li>
+<li>Running <code>npm run test:api</code></li>
+<li>(If tests fail) Reading errors and fixing them → re-running (self-healing!)</li>
+</ul>
+</li>
+<li><strong>Show the test results</strong> — all passing</li>
+<li><strong>Talking point</strong>: &quot;One click. The prompt told Copilot exactly what to do, what pattern to follow, and how to verify. If tests failed, it read the errors and fixed them. That&#39;s the self-healing loop.&quot;</li>
+</ol>
+<h3 id="hands-on-instructions-12-min">Hands-On Instructions (12 min)</h3>
+<blockquote>
+<p>&quot;Four exercises:</p>
+<ol>
+<li><strong>Explore</strong>: Look at the existing prompts in <code>.github/prompts/</code> — read the frontmatter and instructions</li>
+<li><strong>Run</strong>: Open <code>Unit-Test-Coverage.prompt.md</code> and click the Run button — watch the self-healing loop</li>
+<li><strong>Create</strong>: Build your own <code>.github/prompts/security-review.prompt.md</code> with:<ul>
+<li><code>mode: &#39;agent&#39;</code></li>
+<li>Tools: <code>codebase</code>, <code>search</code>, <code>editFiles</code>, <code>changes</code></li>
+<li>Instructions to check for XSS, injection, CORS, and hardcoded credentials</li>
+<li>Run it and see what Copilot finds</li>
+</ul>
+</li>
+<li><strong>Bonus</strong>: Design a prompt for documentation, refactoring, or API design — anything that encodes a repeatable workflow.</li>
+</ol>
+<p>You have 12 minutes. Start with exploring, then create your own.&quot;</p>
+</blockquote>
+<h3 id="key-points-to-emphasize">Key Points to Emphasize</h3>
+<ul>
+<li>The Run button auto-switches to the correct mode — no manual selection needed</li>
+<li>Self-healing: Agent reads test failures and iterates until they pass</li>
+<li>Prompts are shareable — commit them and your whole team gets them</li>
+<li>The tools list is critical — <code>runCommands</code> lets Agent execute terminal commands</li>
+</ul>
+<h3 id="backup-plan">Backup Plan</h3>
+<p>If the Unit Test prompt takes too long:</p>
+<ol>
+<li>Stop it after the first test file is created</li>
+<li>Show the generated code quality</li>
+<li>Run <code>npm run test:api</code> manually in the terminal</li>
+<li>If blocked entirely, show the existing <code>branch.test.ts</code> as the pattern and explain what the prompt would generate</li>
+</ol>
+<hr>
+<h2 id="demo-4-agent-skills-section-5">Demo 4: Agent Skills (Section 5)</h2>
+<p><strong>Objective</strong>: Create a skill from scratch and show auto-selection<br><strong>Duration</strong>: 5 min demo + 12 min hands-on = 17 min<br><strong>After Slide</strong>: 25</p>
+<h3 id="setup-before-demo">Setup Before Demo</h3>
+<ul>
+<li>No <code>.github/skills/</code> directory exists (verify: <code>ls .github/skills/</code> should fail)</li>
+<li>New chat session</li>
+</ul>
+<h3 id="step-by-step-script">Step-by-Step Script</h3>
+<h4 id="part-a-create-a-skill-25-min">Part A: Create a Skill (2.5 min)</h4>
+<ol>
+<li><p><strong>Create directory</strong>:</p>
+<pre><code class="language-bash">mkdir -p .github/skills/code-review-checklist
+</code></pre>
+</li>
+<li><p><strong>Create</strong> <code>.github/skills/code-review-checklist/SKILL.md</code>:</p>
+<pre><code class="language-yaml">---
+name: code-review-checklist
+description: Checklist for reviewing TypeScript and Express.js code.
+  Use this when asked to review code, audit code quality, or check
+  for security and performance issues.
+---
+
+When reviewing TypeScript or Express.js code, follow this checklist:
+
+1. **Security**
+   - Check for unsanitized user input in route handlers
+   - Verify no hardcoded secrets, API keys, or credentials
+   - Ensure proper auth checks on protected routes
+   - Look for SQL/NoSQL injection risks in database queries
+
+2. **Input Validation**
+   - Confirm all POST/PUT endpoints validate request body fields
+   - Check for missing type guards on `req.params` and `req.query`
+   - Verify appropriate HTTP status codes for validation failures
+
+3. **Error Handling**
+   - Ensure every route has try/catch with meaningful error responses
+   - Check that sensitive details are not leaked to clients
+   - Verify async errors are properly caught
+
+4. **Performance**
+   - Identify N+1 query patterns or unnecessary database calls
+   - Check for missing pagination on list endpoints
+   - Look for blocking synchronous operations in async handlers
+
+5. **Maintainability**
+   - Verify consistent naming conventions
+   - Check for DRY violations — duplicated logic to extract
+   - Ensure Swagger/OpenAPI annotations are present and accurate
+</code></pre>
+</li>
+<li><p><strong>Explain key fields</strong>:</p>
+<ul>
+<li><code>name</code>: Lowercase, hyphens for spaces — the skill&#39;s identifier</li>
+<li><code>description</code>: <strong>Critical</strong> — this is how Copilot decides when to load the skill</li>
+</ul>
+</li>
+<li><p><strong>Talking point</strong>: &quot;The description is the trigger. When you ask about reviewing code, Copilot reads this description and says &#39;I have a skill for that.&#39;&quot;</p>
+</li>
+</ol>
+<h4 id="part-b-show-auto-selection-15-min">Part B: Show Auto-Selection (1.5 min)</h4>
+<ol>
+<li><p><strong>Open Agent mode</strong> (new chat)</p>
+</li>
+<li><p><strong>Enter prompt</strong>:</p>
+<pre><code>Review the product route handler for security and performance issues
+</code></pre>
+</li>
+<li><p><strong>Show</strong> Copilot loading the skill (it should reference the checklist steps)</p>
+</li>
+<li><p><strong>Contrast</strong>: Ask something unrelated to show the skill is NOT loaded:</p>
+<pre><code>What entities does this API manage?
+</code></pre>
+</li>
+<li><p><strong>Talking point</strong>: &quot;You didn&#39;t invoke the skill. Copilot matched your prompt to the skill&#39;s description and loaded it automatically. This is the key difference from prompt files.&quot;</p>
+</li>
+</ol>
+<h4 id="part-c-community-skills-reference-1-min">Part C: Community Skills Reference (1 min)</h4>
+<ol>
+<li><strong>Open browser</strong> to <a href="https://github.com/github/awesome-copilot">github/awesome-copilot</a> (or mention it)</li>
+<li><strong>Mention</strong> <a href="https://github.com/anthropics/skills">anthropics/skills</a></li>
+<li><strong>Talking point</strong>: &quot;Skills are an open standard. You can use community skills or write your own. Check these repos for inspiration.&quot;</li>
+</ol>
+<h3 id="hands-on-instructions-12-min">Hands-On Instructions (12 min)</h3>
+<blockquote>
+<p>&quot;Three exercises:&quot;</p>
+</blockquote>
+<ol>
+<li><strong>Create an <code>api-route-creation</code> skill</strong>:</li>
+</ol>
+<pre><code class="language-bash">mkdir -p .github/skills/api-route-creation
+</code></pre>
+<p>   Create a SKILL.md that teaches Copilot how to create new API routes following the project&#39;s Express patterns (model, route, register, Swagger, tests).</p>
+<ol start="2">
+<li><strong>Test it</strong>: Ask Copilot to add a new &#39;Warehouse&#39; entity with name, address, city, state, zipCode, and capacity — watch the skill activate</li>
+<li><strong>Bonus</strong>: Create a <code>react-component-creation</code> skill for frontend components (functional components, Tailwind CSS, TypeScript)</li>
+</ol>
+<blockquote>
+<p>&quot;You have 12 minutes. Focus on getting the first skill created and tested.&quot;</p>
+</blockquote>
+<h3 id="key-points-to-emphasize">Key Points to Emphasize</h3>
+<ul>
+<li>Skills are auto-loaded — Copilot decides, not you</li>
+<li>The <code>description</code> field is the matching key — be specific about WHEN to use the skill</li>
+<li>Skills can include scripts and resource files alongside SKILL.md</li>
+<li>Project skills (<code>.github/skills/</code>) are shared via git; personal skills (<code>~/.copilot/skills/</code>) are local — <code>~</code> is your OS home directory (e.g., <code>C:\Users\&lt;username&gt;</code> on Windows, <code>/Users/&lt;username&gt;</code> on macOS)</li>
+<li>Skills vs Instructions: instructions = always-on rules, skills = conditional procedures</li>
+</ul>
+<h3 id="backup-plan">Backup Plan</h3>
+<p>If auto-selection doesn&#39;t visibly work:</p>
+<ol>
+<li>Explain that skill loading is invisible to the user — it happens in the background</li>
+<li>Show a before/after: ask about reviewing code without the skill, then with the skill</li>
+<li>Compare the quality and specificity of responses</li>
+</ol>
+<hr>
+<h2 id="demo-5-custom-agents-chat-modes-section-6">Demo 5: Custom Agents (Chat Modes) (Section 6)</h2>
+<p><strong>Objective</strong>: Show agents as persistent personas — from simple local workers to advanced delegation<br><strong>Duration</strong>: 5 min demo + 10 min hands-on = 15 min<br><strong>After Slide</strong>: 30</p>
+<h3 id="setup-before-demo">Setup Before Demo</h3>
+<ul>
+<li>GitHub MCP server configured in <code>.vscode/mcp.json</code> (auto-starts when needed)</li>
+<li>OctoCATEngineer agent file pre-exists in <code>.github/agents/</code></li>
+<li>New chat session</li>
+</ul>
+<h3 id="step-by-step-script">Step-by-Step Script</h3>
+<h4 id="part-a-use-the-octocatengineer-agent-2-min">Part A: Use the OctoCATEngineer Agent (2 min)</h4>
+<ol>
+<li><p><strong>Open</strong> <code>.github/agents/OctoCATEngineer.agent.md</code></p>
+</li>
+<li><p><strong>Walk through</strong>:</p>
+<ul>
+<li><strong>Tools</strong>: <code>codebase</code>, <code>search</code>, <code>editFiles</code>, <code>runCommands</code>, <code>problems</code> — &quot;All local tools. No MCP, no cloud.&quot;</li>
+<li><strong>No custom model</strong> — &quot;Uses whatever model you have selected&quot;</li>
+<li><strong>Description</strong>: &quot;Full-stack engineer for the OctoCAT Supply app&quot;</li>
+<li><strong>Persona</strong>: Follows project patterns, writes TypeScript, uses existing conventions</li>
+</ul>
+</li>
+<li><p><strong>Show the mode picker</strong>: Click the mode dropdown in Copilot Chat</p>
+</li>
+<li><p><strong>Select</strong> &quot;OctoCATEngineer&quot;</p>
+</li>
+<li><p><strong>Enter prompt</strong>:</p>
+<pre><code>Add a GET /api/products/search endpoint that accepts a &quot;name&quot; query parameter and returns matching products
+</code></pre>
+</li>
+<li><p><strong>Show the agent working</strong>:</p>
+<ul>
+<li>Reading existing route patterns</li>
+<li>Creating/editing the route file</li>
+<li>Running commands to verify</li>
+</ul>
+</li>
+<li><p><strong>Talking point</strong>: &quot;This is the simplest kind of agent — a persona with local tools. It can read, write, and run commands. No MCP, no custom model, no cloud delegation. Just a specialized pair programmer that stays in character.&quot;</p>
+</li>
+</ol>
+<h4 id="part-b-create-a-codereviewer-agent-live-15-min">Part B: Create a CodeReviewer Agent Live (1.5 min)</h4>
+<ol>
+<li><p><strong>Create</strong> <code>.github/agents/CodeReviewer.agent.md</code>:</p>
+<pre><code class="language-yaml">---
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;usages&#39;, &#39;problems&#39;]
+description: Review code for security, performance, and best practices
+model: Claude Sonnet 4
+---
+
+You are an expert code reviewer specializing in TypeScript and React applications.
+
+When reviewing code:
+
+1. **Security**: Check for XSS, injection, insecure data handling
+2. **Performance**: Identify N+1 queries, unnecessary re-renders, memory leaks
+3. **Best Practices**: Verify error handling, input validation, type safety
+4. **Maintainability**: Check naming, code organization, DRY violations
+
+Always provide:
+- Severity level (Critical / Warning / Suggestion)
+- Specific file and line references
+- Concrete fix recommendations with code examples
+
+Be direct and opinionated. Don&#39;t say &quot;consider&quot; — say &quot;change this to...&quot;
+</code></pre>
+</li>
+<li><p><strong>Show</strong> the new agent appearing in the mode picker immediately (no restart needed)</p>
+</li>
+<li><p><strong>Point out the contrast</strong> with OctoCATEngineer:</p>
+<ul>
+<li>&quot;Read-only tools — <code>codebase</code>, <code>search</code>, <code>usages</code>, <code>problems</code>. No <code>editFiles</code>, no <code>runCommands</code>.&quot;</li>
+<li>&quot;Custom model — Claude Sonnet 4. OctoCATEngineer uses whatever you have selected.&quot;</li>
+<li>&quot;Different persona — reviewer, not builder.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Same file format, completely different behavior. The tool list controls what an agent can do.&quot;</p>
+</li>
+</ol>
+<h4 id="part-c-review-the-implementationideas-agent--advanced-pattern-15-min">Part C: Review the ImplementationIdeas Agent — Advanced Pattern (1.5 min)</h4>
+<ol>
+<li><p><strong>Open</strong> <code>.github/agents/ImplementationIdeas.agent.md</code></p>
+</li>
+<li><p><strong>Walk through what makes this different</strong>:</p>
+<ul>
+<li><strong>Tools</strong>: <code>search</code>, <code>github/*</code> (wildcard = all GitHub MCP tools), <code>playwright/*</code>, <code>githubRepo</code>, <code>todos</code></li>
+<li><strong>Model</strong>: <code>Claude Sonnet 4.5</code> — &quot;This agent chose its own model&quot;</li>
+<li><strong>Key line</strong>: &quot;call GitHub&#39;s <code>create_pull_request_with_copilot</code>&quot; — &quot;This agent delegates to an autonomous cloud agent&quot;</li>
+</ul>
+</li>
+<li><p><strong>Show the progression</strong>: &quot;We went from simple local agent → read-only agent → agent that delegates to the cloud.&quot;</p>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Agents are personas, not tasks. The OctoCATEngineer is your builder, CodeReviewer is your reviewer, and ImplementationIdeas is your strategist that delegates to the Coding Agent. We&#39;ll see the Coding Agent in detail in Section 9.&quot;</p>
+</li>
+<li><p><strong>(Optional)</strong> Select the agent and show the wishlist prompt briefly:</p>
+<pre><code>Explore adding a wishlist feature where users can save products for later
+</code></pre>
+<p>If the Coding Agent tip appears (<em>&quot;You can make Copilot smarter by setting up custom instructions...&quot;</em>), note: &quot;We&#39;ll cover how to configure the Coding Agent environment in Section 9.&quot;</p>
+</li>
+</ol>
+<h3 id="hands-on-instructions-10-min">Hands-On Instructions (10 min)</h3>
+<p>Tell attendees:</p>
+<blockquote>
+<p>&quot;Five exercises:</p>
+<ol>
+<li><strong>Use</strong>: Select OctoCATEngineer from the mode picker, give it a task (add a health check endpoint), watch it work</li>
+<li><strong>Build</strong>: Create <code>.github/agents/CodeReviewer.agent.md</code> with the template from the demo</li>
+<li><strong>Test</strong>: Select CodeReviewer in the mode picker and ask it to review a route handler</li>
+<li><strong>Explore</strong>: Read the ImplementationIdeas agent file — notice the MCP wildcards, custom model, and delegation to Coding Agent</li>
+<li><strong>Create your own</strong>: Build an APIDesigner, TestEngineer, or DocWriter agent (bonus)</li>
+</ol>
+<p>Use the frontmatter: <code>tools</code>, <code>description</code>, <code>model</code>. Write 5-10 lines of persona instructions.
+You have 10 minutes. Start with using OctoCATEngineer — experience what it&#39;s like to SELECT an agent before building one. I&#39;ll walk around to help.&quot;</p>
+</blockquote>
+<h3 id="key-points-to-emphasize">Key Points to Emphasize</h3>
+<ul>
+<li>The 3-agent progression: simple worker → read-only reviewer → advanced delegator</li>
+<li>Agents are persistent — they change Copilot&#39;s behavior for the whole session</li>
+<li>Agent tool lists control capabilities (read/write vs read-only)</li>
+<li>Agents can specify their own model — match model to workflow</li>
+<li>Agents can use wildcards for tools (<code>github/*</code> = all GitHub MCP tools)</li>
+<li>The ImplementationIdeas agent demonstrates agents calling agents (delegation to Coding Agent, covered in Section 9)</li>
+</ul>
+<h3 id="backup-plan">Backup Plan</h3>
+<p>If the mode picker doesn&#39;t show the new agent:</p>
+<ol>
+<li>Reload the VS Code window (<code>Cmd/Ctrl + Shift + P</code> → &quot;Reload Window&quot;)</li>
+<li>If still missing, show the file content and explain that it would appear after reload</li>
+<li>Focus on the OctoCATEngineer and the agent progression concept</li>
+</ol>
+<hr>
+<h2 id="demo-6-playwright-mcp-server-section-7-part-a">Demo 6: Playwright MCP Server (Section 7, Part A)</h2>
+<p><strong>Objective</strong>: Show browser-based testing from natural language prompts<br><strong>Duration</strong>: 5 min demo + 15 min hands-on = 20 min<br><strong>After Slide</strong>: 36 (combined with Demo 7)</p>
+<h3 id="setup-before-demo">Setup Before Demo</h3>
+<ul>
+<li>App running locally (<code>npm run dev</code>) — <strong>required</strong></li>
+<li>Frontend accessible at <code>http://localhost:5137</code></li>
+<li>VS Code setting <code>chat.mcp.discovery.enabled</code> is <code>true</code></li>
+<li>Playwright MCP server will auto-start when Copilot sends a browser command</li>
+<li><input disabled="" type="checkbox"> Know the MCP tool approval dialog — when Copilot first calls an MCP tool, VS Code prompts you to &quot;Allow&quot; it. Click the <strong>dropdown arrow (▼)</strong> and select <strong>&quot;Allow Tools from Playwright Without Review in this Session&quot;</strong> before the demo to avoid repeated approval prompts. Do the same for GitHub MCP in Demo 7.</li>
+</ul>
+<blockquote>
+<p>⚠️ <strong>Critical</strong>: Playwright MCP does NOT work in Codespaces. Must be local VS Code.</p>
+</blockquote>
+<h3 id="step-by-step-script">Step-by-Step Script</h3>
+<h4 id="part-a-verify-mcp-configuration-30-sec">Part A: Verify MCP Configuration (30 sec)</h4>
+<ol>
+<li><strong>Open</strong> <code>.vscode/mcp.json</code> in the editor — show the <code>playwright</code> and <code>github</code> entries</li>
+<li><strong>Command Palette</strong>: <code>Cmd/Ctrl + Shift + P</code> → type <code>MCP: List servers</code> → show both servers listed</li>
+<li><strong>Talking point</strong>: &quot;MCP servers auto-start when Copilot needs them. You don&#39;t need to manually launch them — just make sure they&#39;re defined in your <code>.vscode/mcp.json</code>.&quot;</li>
+</ol>
+<h4 id="part-b-browse-the-app-2-min">Part B: Browse the App (2 min)</h4>
+<ol>
+<li><p><strong>Switch to Agent mode</strong></p>
+</li>
+<li><p><strong>Enter prompt</strong>:</p>
+<pre><code>Browse to http://localhost:5137 and navigate to the Products page. Describe what you see.
+</code></pre>
+</li>
+<li><p><strong>Show</strong>:</p>
+<ul>
+<li>Playwright MCP launching a browser</li>
+<li>Copilot navigating to the URL</li>
+<li>A description of the page elements (products grid, images, prices, &quot;Add to Cart&quot; buttons)</li>
+</ul>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Copilot is driving a real browser right now. It&#39;s not guessing what the UI looks like — it&#39;s looking at it.&quot;</p>
+</li>
+<li><p><strong>Follow-up prompt</strong>:</p>
+<pre><code>Click on the first product and check if the product details are displayed correctly
+</code></pre>
+</li>
+<li><p><strong>Show</strong> Copilot interacting with the page and reporting results</p>
+</li>
+</ol>
+<h4 id="part-c-run-bdd-style-test-scenarios-2-min">Part C: Run BDD-Style Test Scenarios (2 min)</h4>
+<ol>
+<li><p><strong>Start a new chat</strong> — click the <strong>+</strong> button in Copilot Chat (clean context makes for a cleaner saved prompt)</p>
+</li>
+<li><p><strong>Enter prompt</strong>:</p>
+<pre><code>Run the following BDD test scenarios against http://localhost:5137 using Playwright:
+
+1. Given I navigate to the Products page, Then I should see a list of products with names, images, and prices
+2. When I click on a product, Then I should see the product details
+3. When I click &quot;Add to Cart&quot; on a product, Then I should see a confirmation
+Report pass/fail for each scenario.
+</code></pre>
+</li>
+<li><p><strong>Show Copilot executing each scenario</strong>:</p>
+<ul>
+<li>Navigating to the Products page and checking product cards</li>
+<li>Clicking a product and verifying details appear</li>
+<li>Clicking &quot;Add to Cart&quot; and confirming the response</li>
+<li>Reporting pass/fail for each scenario</li>
+</ul>
+</li>
+<li><p><strong>Talking point</strong>: &quot;From natural language test scenarios to live execution. Copilot understood the BDD structure, drove a real browser through each scenario, and reported results — no test framework setup, no step definitions, no cucumber. Just describe what to test and watch it happen.&quot;</p>
+</li>
+<li><p><strong>Save as a prompt file</strong>:</p>
+<ul>
+<li>Click the <strong>Gear icon</strong> (⚙️) at the top of the Copilot Chat panel → <strong>&quot;Save Prompt&quot;</strong></li>
+<li>Name it <code>bdd-playwright-tests</code> — VS Code saves it as <code>.github/prompts/bdd-playwright-tests.prompt.md</code></li>
+<li>Open the saved file briefly — show the YAML frontmatter with <code>mode: &#39;agent&#39;</code> and <code>tools: [&#39;playwright/*&#39;]</code></li>
+</ul>
+</li>
+<li><p><strong>Callback to Section 4</strong>: &quot;We just turned a one-off chat into a reusable prompt file — two clicks. That&#39;s Section 4 and Section 7 coming together. Anyone on the team can now run the same BDD scenarios.&quot;</p>
+</li>
+</ol>
+<h3 id="hands-on-instructions-15-min">Hands-On Instructions (15 min)</h3>
+<blockquote>
+<p>&quot;Six exercises covering both MCP servers:</p>
+<ol>
+<li><strong>Verify</strong> MCP configuration in <code>.vscode/mcp.json</code> and check <code>chat.mcp.discovery.enabled</code> in VS Code settings</li>
+<li><strong>Browse</strong>: Ask Copilot to navigate to <code>http://localhost:5137</code> and describe what it sees</li>
+<li><strong>Test</strong>: Ask Copilot to verify all products have images and prices displayed</li>
+<li><strong>BDD</strong>: Run BDD-style test scenarios against the Products page via Playwright</li>
+<li><strong>GitHub MCP</strong>: Use GitHub MCP to list or create issues from Copilot Chat</li>
+<li><strong>Bonus</strong>: Combine both — use Playwright to find bugs and GitHub MCP to file issues</li>
+</ol>
+<p>You have 15 minutes. Start with Playwright, then try GitHub MCP.&quot;</p>
+</blockquote>
+<h3 id="key-points-to-emphasize">Key Points to Emphasize</h3>
+<ul>
+<li>Playwright MCP bridges the gap between AI and real browsers</li>
+<li>Works for testing, QA, accessibility auditing, screenshot capture</li>
+<li>Must run locally (not Codespaces) — browser needs a display</li>
+<li>BDD-style test scenarios can be described in natural language and executed live via Playwright MCP</li>
+</ul>
+<h3 id="backup-plan">Backup Plan</h3>
+<p>If Playwright MCP fails to start:</p>
+<ol>
+<li>Check Node.js version (18+ required)</li>
+<li>If blocked, show screenshots of previous Playwright sessions</li>
+<li>Explain the concept and move to GitHub MCP demo</li>
+</ol>
+<hr>
+<h2 id="demo-7-github-mcp-server-section-7-part-b">Demo 7: GitHub MCP Server (Section 7, Part B)</h2>
+<p><strong>Objective</strong>: Show GitHub interactions from Copilot Chat<br><strong>Duration</strong>: 4 min demo (combined with Demo 6 hands-on)<br><strong>After Slide</strong>: 36 (part of combined MCP demo)</p>
+<h3 id="setup-before-demo">Setup Before Demo</h3>
+<ul>
+<li>GitHub MCP server will auto-start (or verify via <code>MCP: List servers</code>)</li>
+<li>Logged in to GitHub with repo access</li>
+</ul>
+<h3 id="step-by-step-script">Step-by-Step Script</h3>
+<h4 id="part-a-verify-server-30-sec">Part A: Verify Server (30 sec)</h4>
+<ol>
+<li><strong>Command Palette</strong> → <code>MCP: List servers</code> → confirm <code>github</code> is listed</li>
+<li><strong>(First time)</strong> When Copilot calls a GitHub MCP tool, the OAuth flow opens in browser — authenticate</li>
+<li><strong>Show</strong> server status in the list</li>
+</ol>
+<h4 id="part-b-query-issues-15-min">Part B: Query Issues (1.5 min)</h4>
+<ol>
+<li><p><strong>Switch to Agent mode</strong> (if not already)</p>
+</li>
+<li><p><strong>Enter prompt</strong>:</p>
+<pre><code>Check which issues are assigned to me in this repo
+</code></pre>
+</li>
+<li><p><strong>Show</strong> Copilot calling the GitHub MCP server tools</p>
+</li>
+<li><p><strong>Show</strong> the results (issues list, or &quot;no issues assigned&quot;)</p>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Copilot just queried the GitHub API without you leaving VS Code.&quot;</p>
+</li>
+</ol>
+<h4 id="part-c-create-an-issue-2-min">Part C: Create an Issue (2 min)</h4>
+<ol>
+<li><p><strong>Enter prompt</strong>:</p>
+<pre><code>Create an Issue for enhancing test coverage in the API project and assign it to me
+</code></pre>
+</li>
+<li><p><strong>Show Copilot</strong>:</p>
+<ul>
+<li>Crafting a meaningful issue title and description</li>
+<li>Adding appropriate labels</li>
+<li>Setting the assignee</li>
+<li>You&#39;ll see the tool approval dialog — if you haven&#39;t already, select <strong>&quot;Allow Tools from GitHub Without Review in this Session&quot;</strong> from the dropdown to avoid repeated prompts</li>
+</ul>
+</li>
+<li><p><strong>Open the repo in browser</strong> → Show the new issue exists</p>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Project management from your IDE. And here&#39;s the key: we&#39;ll use this pattern in the Cloud Agents section to assign an issue to the Coding Agent.&quot;</p>
+</li>
+</ol>
+<h3 id="key-points-to-emphasize">Key Points to Emphasize</h3>
+<ul>
+<li>GitHub MCP uses OAuth — no PAT management needed (remote server)</li>
+<li>The same tools the GitHub MCP exposes (create issue, etc.) are available to custom agents</li>
+<li>This is the bridge to Coding Agent: create issue → assign to Copilot → autonomous coding</li>
+</ul>
+<h3 id="backup-plan">Backup Plan</h3>
+<p>If GitHub MCP fails:</p>
+<ol>
+<li>Check OAuth status — re-authenticate if needed</li>
+<li>If blocked, create the issue manually in the browser</li>
+<li>Explain the concept and reference the <code>.vscode/mcp.json</code> config</li>
+</ol>
+<hr>
+<h2 id="demo-8-github-copilot-cli--the-agentic-terminal-section-8">Demo 8: GitHub Copilot CLI — The Agentic Terminal (Section 8)</h2>
+<p><strong>Objective</strong>: Show the standalone <code>copilot</code> CLI as a full agentic terminal experience — interactive TUI, plan mode, file context, tool approvals, /review, and /delegate<br><strong>Duration</strong>: 12 min demo + 15 min hands-on = 27 min<br><strong>After Slide</strong>: 41</p>
+<h3 id="setup-before-demo">Setup Before Demo</h3>
+<ul>
+<li><strong>Standalone terminal open</strong> (Windows Terminal, PowerShell, Terminal.app, or iTerm2 — <strong>not</strong> the VS Code integrated terminal — to emphasize the CLI is IDE-independent)</li>
+<li>Standalone <code>copilot</code> CLI installed and authenticated (<code>copilot --version</code> shows version)</li>
+<li>Current directory is the project root with real source files to reference</li>
+<li>A file with a known small issue to fix (e.g., missing input validation in an API route)</li>
+</ul>
+<h3 id="step-by-step-script">Step-by-Step Script</h3>
+<h4 id="part-a-launch--explore-the-tui-2-min">Part A: Launch &amp; Explore the TUI (2 min)</h4>
+<ol>
+<li><p><strong>Minimize or close VS Code</strong> — switch to a standalone terminal:</p>
+<ul>
+<li><strong>Windows</strong>: Open <strong>Windows Terminal</strong> (<code>Win+X</code> → Terminal) or <strong>PowerShell</strong></li>
+<li><strong>macOS</strong>: Open <strong>Terminal.app</strong> (<code>Cmd+Space</code> → &quot;Terminal&quot;) or <strong>iTerm2</strong></li>
+</ul>
+</li>
+<li><p><strong>Navigate</strong> to the project root:</p>
+<pre><code class="language-bash">cd path/to/GitHubCopilot_Customized
+</code></pre>
+</li>
+<li><p><strong>Run</strong>:</p>
+<pre><code class="language-bash">copilot
+</code></pre>
+</li>
+<li><p><strong>Show</strong>: The interactive TUI launches — full-screen agentic terminal</p>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Notice we left VS Code. This isn&#39;t a VS Code extension — it&#39;s a standalone terminal agent. It works in Windows Terminal, iTerm2, a remote SSH session, even a CI pipeline. This is the same AI, no editor required. And it isn&#39;t the old <code>gh copilot suggest</code> anymore — this is a full interactive session where the AI can read your files, run commands, and build multi-step plans.&quot;</p>
+</li>
+<li><p><strong>Type a simple prompt</strong>:</p>
+<pre><code>What files are in this project and what does it do?
+</code></pre>
+</li>
+<li><p><strong>Show</strong>: Copilot reads the directory, examines key files, and provides a project summary</p>
+</li>
+<li><p><strong>Point out</strong>: The tool calls appearing (list_directory, read_file) — each one shows what the agent is doing</p>
+</li>
+<li><p><strong>Show the tool approval prompt</strong>: Explain the options — <code>(Y)es</code> / <code>(N)o</code> / <code>Yes for this (S)ession</code> / <code>Yes (A)lways</code></p>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Notice the tool approval system. You see every action before it happens. You&#39;re in control — approve one at a time, for the session, or allow all. This is the safety model for agentic AI.&quot;</p>
+</li>
+</ol>
+<h4 id="part-b-build-a-feature-with-plan-mode-4-min">Part B: Build a Feature with Plan Mode (4 min)</h4>
+<ol>
+<li><p><strong>Type a prompt using <code>@</code> file reference</strong>:</p>
+<pre><code>@src/api/routes.ts add input validation to the POST /orders endpoint using zod schemas
+</code></pre>
+</li>
+<li><p><strong>Press <code>Shift+Tab</code></strong> to toggle plan mode</p>
+</li>
+<li><p><strong>Show</strong>: The plan appears — numbered steps the agent will take</p>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Shift+Tab toggles plan mode. Before the agent writes a single line of code, you see exactly what it plans to do. Review it, adjust if needed, then let it execute.&quot;</p>
+</li>
+<li><p><strong>Press Enter</strong> to execute the plan</p>
+</li>
+<li><p><strong>Walk through the tool approvals</strong> as they appear:</p>
+<ul>
+<li><code>read_file</code> → approve</li>
+<li><code>edit_file</code> → approve (show the diff preview)</li>
+<li><code>run_command</code> → approve (running tests or linting)</li>
+</ul>
+</li>
+<li><p><strong>Show</strong>: The completed changes — the agent wrote real validation code</p>
+</li>
+<li><p><strong>Run a shell command inline</strong>:</p>
+<pre><code>!git diff
+</code></pre>
+</li>
+<li><p><strong>Show</strong>: The diff of what the agent just changed — without leaving the session</p>
+</li>
+<li><p><strong>Talking point</strong>: &quot;The <code>!</code> prefix lets you run any shell command inline. Check diffs, run tests, inspect files — all without leaving the Copilot session.&quot;</p>
+</li>
+</ol>
+<h4 id="part-c-review-and-delegate-3-min">Part C: /review and /delegate (3 min)</h4>
+<ol>
+<li><p><strong>Type</strong>:</p>
+<pre><code>/review
+</code></pre>
+</li>
+<li><p><strong>Show</strong>: Copilot reviews the changes just made — identifies potential issues, suggests improvements</p>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Before you commit, <code>/review</code> gives you an AI code review right in the terminal. It catches things you might miss.&quot;</p>
+</li>
+<li><p><strong>Type</strong>:</p>
+<pre><code>/delegate Create an issue for adding rate limiting to the API endpoints, then implement it
+</code></pre>
+</li>
+<li><p><strong>Show</strong>: Copilot hands the task to Coding Agent — the terminal confirms the handoff</p>
+</li>
+<li><p><strong>Talking point</strong>: &quot;This is the bridge to Section 9. <code>/delegate</code> takes your prompt and context, sends it to Coding Agent in the cloud, which creates a branch, writes the code, runs tests, and opens a PR. One command — terminal to autonomous cloud agent.&quot;</p>
+</li>
+<li><p><strong>Open GitHub in browser</strong> → Show the Coding Agent session starting (if time permits)</p>
+</li>
+</ol>
+<h4 id="part-d-bonus-quick-fire-commands-1-min">Part D: Bonus Quick-Fire Commands (1 min)</h4>
+<ol>
+<li><p><strong>Show session resume</strong> (if time permits):</p>
+<pre><code class="language-bash">copilot --resume
+</code></pre>
+</li>
+<li><p><strong>Show</strong>: Previous session context is restored</p>
+</li>
+<li><p><strong>Type a few slash commands quickly</strong>:</p>
+<pre><code>/context
+/usage
+</code></pre>
+</li>
+<li><p><strong>Talking point</strong>: &quot;There&#39;s a whole ecosystem of commands: <code>/context</code> to see what files are loaded, <code>/usage</code> to check your token consumption, <code>--resume</code> to pick up where you left off. Explore these in the hands-on.&quot;</p>
+</li>
+</ol>
+<h3 id="hands-on-instructions-15-min">Hands-On Instructions (15 min)</h3>
+<blockquote>
+<p>&quot;Your turn! Launch the GitHub Copilot CLI and explore the agentic terminal:&quot;</p>
+</blockquote>
+<ol>
+<li>Launch the CLI and ask about your project:</li>
+</ol>
+<pre><code class="language-bash">copilot
+</code></pre>
+<p>Then type:</p>
+<pre><code>What does this project do? Summarize the architecture.
+</code></pre>
+<ol start="2">
+<li>Use <code>@</code> to ask about a specific file:</li>
+</ol>
+<pre><code>@src/api/routes.ts What endpoints does this file define?
+</code></pre>
+<ol start="3">
+<li>Toggle plan mode and build a feature:</li>
+</ol>
+<p>Press <code>Shift+Tab</code> to enable plan mode, then:</p>
+<pre><code>Add a health check endpoint at GET /api/health that returns { status: &quot;ok&quot;, timestamp: ... }
+</code></pre>
+<ol start="4">
+<li>Review what was built:</li>
+</ol>
+<pre><code>/review
+</code></pre>
+<ol start="5">
+<li>Run a shell command inline:</li>
+</ol>
+<pre><code>!git diff
+</code></pre>
+<ol start="6">
+<li>Check your usage and context:</li>
+</ol>
+<pre><code>/usage
+/context
+</code></pre>
+<blockquote>
+<p><strong>Bonus</strong>: Try <code>/delegate</code> to hand a task to Coding Agent (requires <code>gh</code> CLI installed and authenticated), or start a new session with <code>copilot --resume</code> to pick up where you left off.</p>
+</blockquote>
+<h3 id="key-points-to-emphasize">Key Points to Emphasize</h3>
+<ul>
+<li>The standalone <code>copilot</code> CLI is a full agentic terminal — not just a command suggester</li>
+<li><code>Shift+Tab</code> plan mode lets you preview before the agent acts</li>
+<li><code>@filename</code> attaches file context directly to your prompt</li>
+<li>Tool approvals give you control over every action the agent takes</li>
+<li><code>/review</code> provides instant AI code review in the terminal</li>
+<li><code>/delegate</code> bridges the CLI to Coding Agent (Section 9) — local → cloud in one command</li>
+<li><code>!command</code> runs shell commands inline without leaving the session</li>
+<li><code>--resume</code> / <code>--continue</code> restores previous session context</li>
+</ul>
+<h3 id="backup-plan">Backup Plan</h3>
+<p>If <code>copilot</code> CLI is not installed:</p>
+<ol>
+<li><p>Show <code>npm install -g @githubnext/github-copilot-cli</code> or the latest install method from <code>docs.github.com/copilot/github-copilot-in-the-cli</code></p>
+</li>
+<li><p>If install is blocked by corporate policy, fall back to the legacy CLI:</p>
+<pre><code class="language-bash">gh copilot suggest &quot;show the most recent commits with a graph&quot;
+gh copilot explain &quot;git log --oneline --graph --all&quot;
+</code></pre>
+</li>
+<li><p>Show the docs page as reference: <code>docs.github.com/copilot/github-copilot-in-the-cli</code></p>
+</li>
+</ol>
+<p>If <code>copilot</code> launches but tool calls are blocked:</p>
+<ol>
+<li>Use <code>--allow-all-tools</code> flag to bypass approval prompts</li>
+<li>If still blocked, demonstrate in read-only mode (ask questions about the codebase without editing)</li>
+<li>Show the TUI and plan mode even if edits can&#39;t be executed</li>
+</ol>
+<p>If network issues prevent authentication:</p>
+<ol>
+<li>Show the demo from the slides — the TUI diagram on Slide 33 illustrates the experience</li>
+<li>Explain the concept using the Slide 34 <code>/delegate</code> diagram</li>
+<li>Move on to Section 9 and have attendees install during the break</li>
+</ol>
+<hr>
+<h2 id="demo-9-cloud-agents-coding-agent--pr-review-agent-section-9">Demo 9: Cloud Agents: Coding Agent + PR Review Agent (Section 9)</h2>
+<p><strong>Objective</strong>: Show the autonomous development loop: Issue → Coding Agent → PR → Code Review<br><strong>Duration</strong>: 15 min demo (no hands-on — observe only)<br><strong>After Slide</strong>: 48</p>
+<h3 id="setup-before-demo">Setup Before Demo</h3>
+<ul>
+<li>Branch protection rule configured on <code>main</code> (PR required, 1 reviewer)</li>
+<li>Copilot Coding Agent enabled in repo settings</li>
+<li>At least one open Issue exists (or create one during the demo)</li>
+<li>A pre-existing PR available for the Code Review demo (or use one created by Coding Agent earlier)</li>
+<li>Browser open to GitHub repo</li>
+</ul>
+<blockquote>
+<p><strong>Timing Note</strong>: Coding Agent takes 5-30 minutes to complete. You have two options:</p>
+<ol>
+<li><strong>Pre-assign an issue before the workshop</strong> so the PR is ready by this section</li>
+<li><strong>Assign live and show the session starting</strong>, then switch to a pre-prepared PR for the Review demo</li>
+</ol>
+</blockquote>
+<h3 id="step-by-step-script">Step-by-Step Script</h3>
+<h4 id="part-a-copilot-coding-agent-7-min">Part A: Copilot Coding Agent (7 min)</h4>
+<ol>
+<li><strong>Open GitHub repo</strong> in browser</li>
+<li><strong>Navigate</strong> to Issues</li>
+</ol>
+<p><strong>Option 1 — Use existing Issue:</strong></p>
+<ol start="3">
+<li><strong>Find</strong> Issue #1 (test coverage improvement) or a pre-created issue</li>
+<li><strong>Show</strong> the issue content — explain what it asks for</li>
+</ol>
+<p><strong>Option 2 — Create a new Issue live:</strong></p>
+<ol start="3">
+<li><p><strong>Create new Issue</strong>:</p>
+<ul>
+<li><p>Title: <code>Add input validation to the Product API POST endpoint</code></p>
+</li>
+<li><p>Description:</p>
+<pre><code>The POST /api/products endpoint accepts any payload without validation.
+
+Add Zod schema validation for required fields:
+- name (string, required)
+- price (number, required, positive)
+- supplierId (number, required)
+
+Return 400 with validation errors for invalid payloads.
+Include unit tests for the validation.
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p><strong>Assign to Copilot</strong>:</p>
+<ul>
+<li>Click <strong>Assignees</strong> → type &quot;copilot&quot; → select <strong>Copilot</strong></li>
+</ul>
+</li>
+<li><p><strong>Show the Coding Agent session starting</strong>:</p>
+<ul>
+<li>Navigate to Actions tab (or Copilot indicator)</li>
+<li>Show the session being created</li>
+<li>Point out the log: &quot;Copilot is working on this issue...&quot;</li>
+</ul>
+</li>
+<li><p><strong>Explain what happens next</strong>:</p>
+<ul>
+<li>&quot;Copilot creates a feature branch&quot;</li>
+<li>&quot;It reads our custom instructions, skills, and the entire codebase&quot;</li>
+<li>&quot;It implements the solution — in this case, adding Zod validation&quot;</li>
+<li>&quot;It runs tests if configured&quot;</li>
+<li>&quot;When done, it opens a PR with a full description of changes&quot;</li>
+</ul>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Everything we built today — instructions, skills, prompt patterns — Coding Agent uses all of it. It follows your team&#39;s standards even when coding autonomously.&quot;</p>
+</li>
+<li><p><strong>Show the delegation pattern</strong>:</p>
+<ul>
+<li>Open <code>.github/agents/ImplementationIdeas.agent.md</code></li>
+<li>Point out <code>create_pull_request_with_copilot</code></li>
+<li>&quot;Custom agents in your IDE can delegate to the Coding Agent. Your IDE agent researches and plans, the Coding Agent implements. Agents calling agents.&quot;</li>
+</ul>
+</li>
+</ol>
+<h4 id="part-b-copilot-code-review--pr-review-agent-8-min">Part B: Copilot Code Review / PR Review Agent (8 min)</h4>
+<blockquote>
+<p>If the Coding Agent PR isn&#39;t ready yet, use a pre-prepared PR.</p>
+</blockquote>
+<ol>
+<li><p><strong>Open a Pull Request</strong> in the browser</p>
+<ul>
+<li>Use a Coding Agent PR (ideal) or any PR with code changes</li>
+</ul>
+</li>
+<li><p><strong>Click Reviewers</strong> → Add <strong>Copilot</strong> as a reviewer</p>
+</li>
+<li><p><strong>Wait</strong> for the review (1-3 minutes typically)</p>
+<ul>
+<li>While waiting, explain: &quot;Copilot is analyzing every file change in this PR. It checks correctness, security, performance, and style.&quot;</li>
+</ul>
+</li>
+<li><p><strong>Show the review comments</strong>:</p>
+<ul>
+<li><strong>Inline comments</strong>: Point out specific code suggestions with diffs</li>
+<li><strong>Severity levels</strong>: Show how some are suggestions, others are more critical</li>
+<li><strong>Suggested fixes</strong>: Click &quot;Apply suggestion&quot; to show it creates a commit</li>
+<li><strong>Dismiss/resolve</strong>: Show how to dismiss individual comments</li>
+</ul>
+</li>
+<li><p><strong>Walk through 2-3 specific comments</strong>:</p>
+<ul>
+<li>A security-related comment (e.g., missing input validation)</li>
+<li>A performance suggestion (e.g., unnecessary allocation)</li>
+<li>A style recommendation (e.g., naming convention)</li>
+</ul>
+</li>
+<li><p><strong>Talking point</strong>: &quot;Copilot caught issues that would take a human reviewer significant time to find. But it doesn&#39;t question business decisions — that&#39;s still your job. The best setup is Copilot + human review together.&quot;</p>
+</li>
+<li><p><strong>Show the full loop narrative</strong>:</p>
+<ul>
+<li>&quot;Issue was created → Coding Agent wrote the code → PR was opened → Copilot reviewed the PR → Now a human approves and merges. Every step AI-assisted.&quot;</li>
+</ul>
+</li>
+</ol>
+<h3 id="key-points-to-emphasize">Key Points to Emphasize</h3>
+<ul>
+<li>Coding Agent is async — assign and do other work</li>
+<li>It respects branch protection (won&#39;t merge without review)</li>
+<li>It reads all customization files (instructions, skills, etc.)</li>
+<li>PR Review is complementary to human review, not a replacement</li>
+<li>The full loop: Issue → Code → PR → Review → Merge is all AI-assisted</li>
+</ul>
+<h3 id="backup-plan">Backup Plan</h3>
+<p>If Coding Agent isn&#39;t available or takes too long:</p>
+<ol>
+<li>Show the Actions tab and explain the session concept</li>
+<li>Use a pre-prepared PR that was created by Coding Agent earlier</li>
+<li>If Code Review isn&#39;t available, show screenshots of review comments</li>
+<li>Explain the concepts using the slides and the ImplementationIdeas agent file as evidence of the delegation pattern</li>
+</ol>
+<hr>
+<h2 id="timing-summary">Timing Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Demo</th>
+<th>Section</th>
+<th>Demo Time</th>
+<th>Hands-On</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Chat Modes</td>
+<td>5 min</td>
+<td>8 min</td>
+<td>13 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Custom Instructions</td>
+<td>5 min</td>
+<td>12 min</td>
+<td>17 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Custom Prompt Files</td>
+<td>6 min</td>
+<td>12 min</td>
+<td>18 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Agent Skills</td>
+<td>5 min</td>
+<td>12 min</td>
+<td>17 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Custom Agents</td>
+<td>5 min</td>
+<td>10 min</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Playwright MCP</td>
+<td>5 min</td>
+<td>15 min</td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td>GitHub MCP</td>
+<td>4 min</td>
+<td>—</td>
+<td>4 min</td>
+</tr>
+<tr>
+<td>8</td>
+<td>GitHub Copilot CLI — Agentic Terminal</td>
+<td>12 min</td>
+<td>15 min</td>
+<td>27 min</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Cloud Agents</td>
+<td>15 min</td>
+<td>—</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>67 min</strong></td>
+<td><strong>84 min</strong></td>
+<td><strong>151 min</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Core time budget</strong>:</p>
+<ul>
+<li>Slide presentation: ~82 min</li>
+<li>Demo + hands-on: ~151 min</li>
+<li>Wrap-up/Q&amp;A: 10 min</li>
+<li>Buffer: ~3 min</li>
+</ul>
+<p><strong>Core total</strong>: ~246 min (~4h 6min)</p>
+<hr>
+<h2 id="general-backup-plan">General Backup Plan</h2>
+<p>If a demo is completely blocked:</p>
+<ol>
+<li><strong>Show pre-captured screenshots</strong> from a previous run</li>
+<li><strong>Switch to GitHub Docs</strong> walkthrough for that feature:<ul>
+<li>Custom Instructions: <code>docs.github.com/en/copilot/how-tos/configure-custom-instructions</code></li>
+<li>Prompt Files: <code>docs.github.com/en/copilot/how-tos/copilot-prompts</code></li>
+<li>Agent Skills: <code>docs.github.com/en/copilot/concepts/agents/about-agent-skills</code></li>
+<li>MCP: <code>docs.github.com/en/copilot/how-tos/using-extensions/using-mcp-in-copilot</code></li>
+<li>Coding Agent: <code>docs.github.com/en/copilot/using-github-copilot/using-copilot-coding-agent</code></li>
+<li>GitHub Copilot CLI: <code>docs.github.com/en/copilot/github-copilot-in-the-cli</code></li>
+</ul>
+</li>
+<li><strong>Engage the audience</strong> with Q&amp;A while troubleshooting</li>
+<li><strong>Skip to the next section</strong> and come back if time permits</li>
+</ol>
+<h3 id="common-issues--quick-fixes">Common Issues &amp; Quick Fixes</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Quick Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Copilot not responding</td>
+<td>Check internet connection, verify sign-in status</td>
+</tr>
+<tr>
+<td>Agent mode unavailable</td>
+<td>Update VS Code + Copilot extensions to latest</td>
+</tr>
+<tr>
+<td>MCP server won&#39;t start</td>
+<td><code>MCP: List servers</code> → check status, verify <code>chat.mcp.discovery.enabled</code> is <code>true</code> in VS Code settings</td>
+</tr>
+<tr>
+<td>Playwright browser doesn&#39;t appear</td>
+<td>Verify running locally (not Codespaces)</td>
+</tr>
+<tr>
+<td>GitHub MCP auth fails</td>
+<td>Re-authenticate: <code>MCP: List servers</code> → <code>github</code> → check status, re-trigger OAuth by sending a GitHub-related prompt</td>
+</tr>
+<tr>
+<td>App not running</td>
+<td><code>npm run dev</code> in terminal, check ports 3000/5137</td>
+</tr>
+<tr>
+<td>CORS errors (Codespaces)</td>
+<td>Set port 3000 visibility to <code>public</code></td>
+</tr>
+<tr>
+<td>Tests timeout</td>
+<td><code>npm run test:api -- --timeout 30000</code></td>
+</tr>
+<tr>
+<td>Hot reload not working</td>
+<td>Stop + restart <code>npm run dev</code>, hard refresh browser</td>
+</tr>
+<tr>
+<td>Coding Agent not starting</td>
+<td>Check: Actions enabled, branch protection set, Coding Agent enabled in settings</td>
+</tr>
+<tr>
+<td><code>copilot</code> CLI not available</td>
+<td>Install the standalone GitHub Copilot CLI — see <code>docs.github.com/copilot/github-copilot-in-the-cli</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="post-demo-cleanup">Post-Demo Cleanup</h2>
+<p>After each run-through or the actual workshop:</p>
+<pre><code class="language-bash"># Reset all changes (keep only original repo state)
+git checkout -- .
+git clean -fd
+
+# Remove created files (keep OctoCATEngineer — it&#39;s pre-built in the repo)
+rm -rf .github/copilot-instructions.md
+rm -rf .github/instructions/
+rm -rf .github/skills/
+rm -rf .github/agents/CodeReviewer.agent.md
+
+# Restart the app
+npm run dev
+</code></pre>
+<hr>
+<p><em>Demo scripts for GitHub Copilot: Zero to Agents workshop</em>
+<em>Demo repo: <a href="https://github.com/microsoft/GitHubCopilot_Customized">microsoft/GitHubCopilot_Customized</a></em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/_...document_.astro_astro_type_script_index_0_lang.OBuYvQ_z.js"></script>

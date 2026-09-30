@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Cache-Key Review Worksheet</title><link rel="stylesheet" href="/gh-workshops/_astro/_document_.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/_document_.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.document-copy{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);font-size:12px;cursor:pointer;opacity:0}pre:hover .document-copy{opacity:1}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="cache-key-review-worksheet">Cache-Key Review Worksheet</h1>
+<p><strong>Optional Module 4 — Agent Fleet Efficiency and Cost Governance</strong></p>
+<blockquote>
+<p>This file is the editable source. An identical printable copy is inlined in <strong>Appendix B of the lab guide</strong> for participants reading the published site. Change both in the same edit.</p>
+</blockquote>
+<p>A cache that omits an input which can change the answer will confidently serve a <strong>wrong</strong> result, and the failure looks like a saving in cost reporting. Review every cache in front of a paid call with this worksheet.</p>
+<hr>
+<p><strong>Cache name</strong>: ___________________________________</p>
+<p><strong>Lane(s) served</strong>: ___________________________________</p>
+<p><strong>Reviewer</strong>: ___________________________________  <strong>Date</strong>: _______________</p>
+<hr>
+<h2 id="1-key-completeness">1. Key Completeness</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Included?</th>
+<th>If missing, the specific wrong result it can produce</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Fully rendered prompt (template, rubric, and instruction text)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Instruction / rubric version</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Model identifier</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Reasoning effort</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Context window tier (<code>default</code> / <code>long_context</code>)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Tool visibility set</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Tool permission set</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>MCP server configuration</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Relevant repository/input state (commit SHA or content hash)</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Harness version</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Copilot CLI version</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Other lane-specific inputs: ____________________</td>
+<td>☐</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Highest-severity omission found</strong>: ___________________________________</p>
+<hr>
+<h2 id="2-value-and-provenance">2. Value and Provenance</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Present?</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Value schema version</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Result payload fully specified</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Produced-at timestamp</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Run ID</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Lane and profile hash</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td>Later accepted / rejected flag</td>
+<td>☐</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-lifecycle-policy">3. Lifecycle Policy</h2>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TTL</td>
+<td></td>
+</tr>
+<tr>
+<td>Invalidation triggers (profile change, rubric change, version bump)</td>
+<td></td>
+</tr>
+<tr>
+<td>Behavior when a key component is missing from an old entry</td>
+<td>Must be <strong>cache miss</strong> — confirm ☐</td>
+</tr>
+<tr>
+<td>Behavior when the value schema version is unknown</td>
+<td>Must be <strong>cache miss</strong> — confirm ☐</td>
+</tr>
+<tr>
+<td>Negative-result policy: deterministic refusals</td>
+<td></td>
+</tr>
+<tr>
+<td>Negative-result policy: transient failures (must not be cached)</td>
+<td>Confirm ☐</td>
+</tr>
+<tr>
+<td>Documented bypass flag (implemented in <strong>your harness</strong>, not a Copilot CLI option)</td>
+<td></td>
+</tr>
+<tr>
+<td>Bypass usage logged every time</td>
+<td>Confirm ☐</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-gate-ladder-placement">4. Gate Ladder Placement</h2>
+<p>Where does this cache sit relative to the other pre-spend gates?</p>
+<table>
+<thead>
+<tr>
+<th align="right">Order</th>
+<th>Gate</th>
+<th>Present in this lane?</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>Configuration validation</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>Ownership lease</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>Skip-if-done</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>Baseline probe</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>Attempt ledger</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>Result cache</td>
+<td>☐</td>
+<td></td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>Budget check (<strong>pre-spend</strong> — refusal is <code>budget_refused</code>, no credits spent)</td>
+<td>☐</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Is any gate optimistic (assumes done when uncertain)?</strong> ☐ Yes ☐ No — if yes, fix it to fail toward spending.</p>
+<hr>
+<h2 id="5-prompt-budget-review-same-input-path">5. Prompt Budget Review (same input path)</h2>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Every growing field has a hard cap</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Truncation is visible in the prompt (<code>...[truncated]</code>)</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Trim-to-budget drops sections in a defined priority order</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Oversized input produces a distinct <code>context_too_large</code> outcome instead of a call</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Files are referenced by path rather than inlined where the lane can read them</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Tool-output size behavior reviewed (documented default: output over 20 KiB is written to a file and previewed)</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Harness-level input caps defined, independent of any CLI threshold variable</td>
+<td>☐</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="6-corrected-design">6. Corrected Design</h2>
+<pre><code class="language-text">CACHE DESIGN v__
+  key         =
+  value       =
+  provenance  =
+  ttl         =
+  negative    =
+  bypass      =
+  migration   =
+</code></pre>
+<hr>
+<h2 id="7-sign-off">7. Sign-Off</h2>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Every key component reviewed with a stated failure mode</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Missing or unknown components treated as a miss</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Transient failures excluded from negative caching</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Bypass exists and is logged</td>
+<td>☐</td>
+</tr>
+<tr>
+<td>Change reviewed as a correctness change, not an optimization</td>
+<td>☐</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Template for Optional Module 4 — GitHub Copilot AI Credits Optimization</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/_...document_.astro_astro_type_script_index_0_lang.OBuYvQ_z.js"></script>

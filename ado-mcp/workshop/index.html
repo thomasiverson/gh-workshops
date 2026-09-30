@@ -1,12 +1,12 @@
-<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Azure DevOps MCP Server Workshop</title><link rel="stylesheet" href="/gh-workshops/_astro/index.Cb_k8sn1.css">
-<link rel="stylesheet" href="/gh-workshops/_astro/lab.CUTqQMLy.css">
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Azure DevOps MCP Server Workshop</title><link rel="stylesheet" href="/gh-workshops/_astro/_document_.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/_document_.CUTqQMLy.css">
 <style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
 </style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="azure-devops-mcp-server-workshop">Azure DevOps MCP Server Workshop</h1>
 <p><strong>Duration</strong>: 90 minutes
 <strong>Format</strong>: Presentation + Live Demo + Hands-on Lab
 <strong>Audience</strong>: Developers, platform &amp; DevOps engineers, Azure DevOps administrators
 <strong>Focus</strong>: Installing and using the Azure DevOps MCP Server with AI agents — and how it compares to the REST API
-<strong>Lab Guide</strong>: <a href="ado-mcp-LAB.md">ado-mcp-LAB.md</a> (5 hands-on exercises against a sandbox project)</p>
+<strong>Lab Guide</strong>: <a href="/gh-workshops/ado-mcp/lab/">ado-mcp-LAB.md</a> (5 hands-on exercises against a sandbox project)</p>
 <hr>
 <h2 id="workshop-overview">Workshop Overview</h2>
 <p>The <strong>Azure DevOps MCP Server</strong> brings Azure DevOps context — work items, repositories, pull requests, pipelines, wikis, and test plans — directly to AI agents such as GitHub Copilot. Instead of writing REST calls and parsing JSON, your team can ask in natural language: <em>&quot;List the bugs assigned to me in the current iteration&quot;</em> or <em>&quot;Summarise the failing tests in the last build of the Payments pipeline.&quot;</em></p>
@@ -361,7 +361,7 @@
 <hr>
 <h2 id="4-hands-on-driving-a-test-azure-devops-project-15-min">4. Hands-On: Driving a Test Azure DevOps Project (15 min)</h2>
 <h3 id="key-points">Key Points</h3>
-<p>This section is hands-on — attendees work through the lab against a <strong>sandbox project</strong> they provision and seed. The lab guide (<a href="ado-mcp-LAB.md">ado-mcp-LAB.md</a>) contains the full step-by-step exercises; this section frames what to practise and what &quot;good&quot; looks like.</p>
+<p>This section is hands-on — attendees work through the lab against a <strong>sandbox project</strong> they provision and seed. The lab guide (<a href="/gh-workshops/ado-mcp/lab/">ado-mcp-LAB.md</a>) contains the full step-by-step exercises; this section frames what to practise and what &quot;good&quot; looks like.</p>
 <h3 id="what-youll-do">What You&#39;ll Do</h3>
 <ol>
 <li><strong>Provision a sandbox</strong>: create a free Azure DevOps organisation (Entra-connected) and a project named <code>mcp-sandbox</code></li>
@@ -721,7 +721,7 @@
 <li>Add the recommended line to <code>.github/copilot-instructions.md</code></li>
 <li>Decide your team&#39;s default <strong>toolset scope</strong> and whether to start <strong>read-only</strong></li>
 <li>Identify one interactive workflow to move to MCP and one automation to keep on REST</li>
-<li>Complete the lab (<a href="ado-mcp-LAB.md">ado-mcp-LAB.md</a>) end-to-end</li>
+<li>Complete the lab (<a href="/gh-workshops/ado-mcp/lab/">ado-mcp-LAB.md</a>) end-to-end</li>
 </ol>
 <h3 id="discussion-points">Discussion Points</h3>
 <ul>
@@ -742,12 +742,12 @@
 </thead>
 <tbody><tr>
 <td><strong>Lab Guide</strong></td>
-<td><a href="ado-mcp-LAB.md">ado-mcp-LAB.md</a></td>
+<td><a href="/gh-workshops/ado-mcp/lab/">ado-mcp-LAB.md</a></td>
 <td>5 hands-on exercises against a sandbox project</td>
 </tr>
 <tr>
 <td><strong>Slide Deck</strong></td>
-<td><a href="ado-mcp.slidev.md">ado-mcp.slidev.md</a></td>
+<td><a href="/gh-workshops/ado-mcp/slides/">ado-mcp.slidev.md</a></td>
 <td>Presentation deck (GitHub dark theme)</td>
 </tr>
 </tbody></table>

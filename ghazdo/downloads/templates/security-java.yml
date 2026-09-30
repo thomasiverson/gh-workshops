@@ -1,0 +1,54 @@
+trigger: none
+pr: none
+
+parameters:
+  - name: javaVersion
+    type: string
+    default: '21'
+  - name: pomPath
+    type: string
+    default: '<YOUR-POM-PATH>'
+
+pool:
+  vmImage: ubuntu-24.04
+
+steps:
+  - checkout: self
+
+  - bash: |
+      set -euo pipefail
+      if [[ "$POM_PATH" == *'<'* || ! -f "$POM_PATH" ]]; then
+        echo "Set pomPath to this repository's Maven POM before running." >&2
+        exit 1
+      fi
+    displayName: Validate the repository-specific Maven path
+    env:
+      POM_PATH: ${{ parameters.pomPath }}
+
+  - task: JavaToolInstaller@0
+    displayName: Select an available JDK for this repository
+    inputs:
+      versionSpec: ${{ parameters.javaVersion }}
+      jdkArchitectureOption: x64
+      jdkSourceOption: PreInstalled
+
+  - task: AdvancedSecurity-Codeql-Init@1
+    displayName: Initialize CodeQL for Java
+    inputs:
+      languages: java
+      buildtype: 'Manual'
+      querysuite: security-extended
+      enableAutomaticCodeQLInstall: true
+
+  - bash: |
+      set -euo pipefail
+      mvn --batch-mode --file "$POM_PATH" clean compile -DskipTests
+    displayName: Restore and compile with the repository's Maven configuration
+    env:
+      POM_PATH: ${{ parameters.pomPath }}
+
+  - task: AdvancedSecurity-Dependency-Scanning@1
+    displayName: Scan dependencies
+
+  - task: AdvancedSecurity-Codeql-Analyze@1
+    displayName: Analyze code with CodeQL

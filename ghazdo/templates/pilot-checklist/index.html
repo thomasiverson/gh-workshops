@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Advanced Security for Azure DevOps Pilot Checklist</title><link rel="stylesheet" href="/gh-workshops/_astro/_document_.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/_document_.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.document-copy{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);font-size:12px;cursor:pointer;opacity:0}pre:hover .document-copy{opacity:1}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="advanced-security-for-azure-devops-pilot-checklist">Advanced Security for Azure DevOps Pilot Checklist</h1>
+<p><strong>Context</strong>: Follow-up to the standalone 90-minute demo-led workshop<br><strong>Status</strong>: Planning aid; not approval or evidence of execution<br><strong>Target</strong>: One existing, user-selected Azure DevOps Services project and Azure Repos Git repository</p>
+<h2 id="scope-and-approval">Scope and Approval</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Confirm the existing organization, project, repository, default branch, and review branch with its owner.</li>
+<li><input disabled="" type="checkbox"> Choose Secret Protection, Code Security, or both according to the risks to address.</li>
+<li><input disabled="" type="checkbox"> Obtain explicit product/budget-owner approval before <strong>Begin billing</strong>.</li>
+<li><input disabled="" type="checkbox"> Obtain separate approval for pipeline creation and manual execution, including compute.</li>
+<li><input disabled="" type="checkbox"> Keep organization-wide and future-repository defaults unchanged.</li>
+<li><input disabled="" type="checkbox"> Do not create a sample project/app, add vulnerable code, insert fake secrets, or generate credentials.</li>
+<li><input disabled="" type="checkbox"> Use the <a href="/gh-workshops/ghazdo/setup/">portal-first setup guide</a>; setup is outside workshop time.</li>
+</ul>
+<h2 id="planning-estimate">Planning Estimate</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Use commits present in pushes during the last <strong>90 days</strong>, not original commit dates.</li>
+<li><input disabled="" type="checkbox"> Count each developer once per product within the <strong>same Azure subscription</strong>, including protected repositories and linked organizations.</li>
+<li><input disabled="" type="checkbox"> Estimate Secret Protection: count ___ × <strong>$19/active committer/month</strong> = ___.</li>
+<li><input disabled="" type="checkbox"> Estimate Code Security: count ___ × <strong>$30/active committer/month</strong> = ___.</li>
+<li><input disabled="" type="checkbox"> Reference examples: same 25 developers using both = <strong>$1,225/month</strong>; same 20 using both = <strong>$980/month</strong>.</li>
+<li><input disabled="" type="checkbox"> Label this as a USD list-price estimate, not a quote; inspect the actual agreement, taxes, and currency.</li>
+<li><input disabled="" type="checkbox"> Budget pipeline usage and any AI features separately.</li>
+<li><input disabled="" type="checkbox"> Recheck <a href="https://azure.microsoft.com/en-us/pricing/details/devops/azure-devops-services/">current pricing</a> and <a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-billing?view=azure-devops">billing rules</a>.</li>
+</ul>
+<h2 id="ownership-and-least-privilege">Ownership and Least Privilege</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Settings owner ___: <strong>Advanced Security: Manage settings</strong>.</li>
+<li><input disabled="" type="checkbox"> Response owner ___: <strong>Advanced Security: Manage and dismiss alerts</strong>.</li>
+<li><input disabled="" type="checkbox"> Investigation owner ___: <strong>Advanced Security: Read alerts</strong>.</li>
+<li><input disabled="" type="checkbox"> Pipeline owner ___; code/dependency-fix owner ___; credential owner ___; cost owner ___.</li>
+<li><input disabled="" type="checkbox"> Verify effective access, repository contribution/review rights, and pipeline creation/queueing rights separately.</li>
+<li><input disabled="" type="checkbox"> Confirm supported language/build, task policy, hosted tool availability, agent capacity, feeds, and authentication.</li>
+</ul>
+<h2 id="reviewed-manual-pipeline">Reviewed Manual Pipeline</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Choose the <a href="/gh-workshops/ghazdo/templates/">language example</a> matching the existing repository; it is not universally ready to run.</li>
+<li><input disabled="" type="checkbox"> For JavaScript, confirm <code>nodeVersion: 22.x</code>, <code>workingDirectory: &#39;.&#39;</code>, and the existing matching lockfile checked by the guard.</li>
+<li><input disabled="" type="checkbox"> For .NET, replace both <code>dotnetSdkVersion</code> and <code>solutionOrProject</code> placeholders to match the repository/<code>global.json</code> and Linux-capable build; review <code>configuration: Release</code> and clean/restore/no-incremental build with shared compiler/MSBuild server off.</li>
+<li><input disabled="" type="checkbox"> For Java, replace <code>pomPath</code>, confirm <code>javaVersion: 21</code> is already installed in the image, and review PreInstalled selection before Init <code>Manual</code> and Maven clean compile <code>-DskipTests</code>.</li>
+<li><input disabled="" type="checkbox"> Obtain repository-owner approval before lifecycle or build scripts; scan-preparation tests being skipped does not verify remediation.</li>
+<li><input disabled="" type="checkbox"> Preserve the customer&#39;s <code>.npmrc</code> and other feeds/authentication; do not copy the content repository&#39;s Microsoft feed or embed credentials.</li>
+<li><input disabled="" type="checkbox"> Keep explicit <strong>Init -&gt; restore/build -&gt; Dependency Scanning -&gt; Analyze</strong> order.</li>
+<li><input disabled="" type="checkbox"> Check <code>trigger: none</code>, <code>pr: none</code>, hosted <code>ubuntu-24.04</code>, and no deploy/startup steps.</li>
+<li><input disabled="" type="checkbox"> Review new YAML in a separate branch under normal policies; leave existing CI files/settings unchanged.</li>
+<li><input disabled="" type="checkbox"> Recognize that committing YAML can still trigger existing CI; do not bypass or disable policy.</li>
+<li><input disabled="" type="checkbox"> Require all helper target/output parameters and an already-existing scratch directory outside any Git checkout; use the setup guide&#39;s TEMP example. Existing output must not be overwritten.</li>
+<li><input disabled="" type="checkbox"> Treat normal helper verification as extension/existing-project/repository verification only, not a check of product settings, permissions, or capacity.</li>
+<li><input disabled="" type="checkbox"> Offline mode warns and reports <code>Verification=NotPerformed</code>. Action fields set to <code>false</code> mean no action was taken, not that existing products or billing are off.</li>
+<li><input disabled="" type="checkbox"> Treat helper output as local preparation only; no sign-in, Git operation, activation, pipeline creation, or scan execution.</li>
+<li><input disabled="" type="checkbox"> Create the pipeline and run it manually only after approval.</li>
+</ul>
+<h2 id="scans-and-response">Scans and Response</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Review Secret Protection historical scanning and push protection separately; do not create credential tests.</li>
+<li><input disabled="" type="checkbox"> For a real leak, coordinate revoke/replace, approved cleanup, confirmation, then alert closure.</li>
+<li><input disabled="" type="checkbox"> Choose dependency injection or explicit tasks deliberately; verify a pipeline actually executed.</li>
+<li><input disabled="" type="checkbox"> Review dependency PR findings through the branch picker in <strong>Repos &gt; Advanced Security</strong>; use pipeline logs and applicable PR annotations as complementary evidence.</li>
+<li><input disabled="" type="checkbox"> Choose CodeQL scheduled default-branch default setup or advanced custom-build/additional-branch setup based on current support.</li>
+<li><input disabled="" type="checkbox"> Confirm intended tasks completed and results were published for the relevant branch/configuration.</li>
+<li><input disabled="" type="checkbox"> With no findings, confirm execution and result scope; do not equate emptiness with absence of all risk.</li>
+<li><input disabled="" type="checkbox"> For dependency/code findings, require owner assignment, reviewed fix/update, relevant tests, and a comparable completed rescan.</li>
+<li><input disabled="" type="checkbox"> Do not promise automatic update PRs or automatic finding-based build/merge blocking.</li>
+</ul>
+<h2 id="monitoring-cleanup-and-expansion">Monitoring, Cleanup, and Expansion</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Pair <strong>Organization settings &gt; Security overview</strong> coverage with completed scan evidence and response ownership.</li>
+<li><input disabled="" type="checkbox"> Review previous-day measured per-product counts and monthly invoice expectations; track compute separately.</li>
+<li><input disabled="" type="checkbox"> No required paid preview demo. Autofix is limited public preview with restricted access and separately billed AI credits.</li>
+<li><input disabled="" type="checkbox"> Agree success measure ___; review date ___; expansion gate ___.</li>
+<li><input disabled="" type="checkbox"> Agree retained pipeline/product state ___; cleanup owner/date ___.</li>
+<li><input disabled="" type="checkbox"> Remove only owner-approved example pipeline/YAML changes, using normal policies; leave existing CI and customer settings unchanged.</li>
+<li><input disabled="" type="checkbox"> Confirm any product disablement manually with the owner; do not promise immediate billing reset.</li>
+<li><input disabled="" type="checkbox"> Keep environment-specific evidence in the owner&#39;s approved system, not in generic workshop files.</li>
+</ul>
+<h2 id="review-record">Review Record</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Responsible owner</th>
+<th>Checkpoint</th>
+<th>Review date</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Product and compute approval</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Effective permissions and build readiness</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Reviewed manual security YAML</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Completed scans and result scope</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Fix/tests/rescan or credential replacement confirmation</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Measured counts and invoice review</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Cleanup and expansion decision</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Use the <a href="/gh-workshops/ghazdo/workshop/">canonical guide</a> and <a href="/gh-workshops/ghazdo/demo/">demo runbook</a> for learning and delivery context. Independent technical, facilitation, and release review remain separate.</p>
+<p><em>Pilot checklist for GitHub Advanced Security for Azure DevOps Workshop</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/_...document_.astro_astro_type_script_index_0_lang.OBuYvQ_z.js"></script>

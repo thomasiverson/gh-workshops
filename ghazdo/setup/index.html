@@ -1,0 +1,341 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Portal-First Setup for Advanced Security in Azure DevOps</title><link rel="stylesheet" href="/gh-workshops/_astro/_document_.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/_document_.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.document-copy{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);font-size:12px;cursor:pointer;opacity:0}pre:hover .document-copy{opacity:1}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="portal-first-setup-for-advanced-security-in-azure-devops">Portal-First Setup for Advanced Security in Azure DevOps</h1>
+<p><strong>Context</strong>: Optional preparation or follow-up for the standalone 90-minute workshop<br><strong>Format</strong>: Owner-led setup in an existing, user-selected repository<br><strong>Audience</strong>: Authorized Azure DevOps settings and pipeline owners<br><strong>Status</strong>: Independently reviewed generic procedure; customer-specific execution and approval remain required</p>
+<h2 id="scope-and-safety">Scope and Safety</h2>
+<p>The presentation is <strong>demo-led</strong>: participants need no accounts or setup. Follow this guide before or after it, only if you are authorized to configure the selected repository.</p>
+<p>Use an <strong>existing Azure DevOps Services organization, project, and Azure Repos Git repository that you choose</strong>. Azure DevOps Server and TFVC are outside scope. Do not create a sample project/application or insert vulnerable code, fake secrets, credentials, or test fixtures.</p>
+<p>The optional advanced setup adds a <strong>separate, manually triggered security pipeline</strong>. Leave existing CI files, settings, and policies unchanged. A commit adding YAML can still trigger existing CI under its normal policies, even when the new YAML has <code>trigger: none</code> and <code>pr: none</code>. Plan for those runs; do not bypass or disable policy.</p>
+<p><strong>Billable boundaries</strong>: Product activation is a manual, owner-approved action. Activating Secret Protection automatically starts repository scanning and enables push protection. Default setups can also start scans automatically. The separate advanced CodeQL/dependency pipeline described here is queued manually after execution approval. Neither this document nor a generated YAML file approves spending.</p>
+<h2 id="workshop-agenda">Workshop Agenda</h2>
+<p>This setup is outside the session time.</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Features and benefits</td>
+<td>8 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Pricing and licensing</td>
+<td>12 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Setup and permissions</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Secret scanning and push protection</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Dependency scanning</td>
+<td>12 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Code scanning with CodeQL</td>
+<td>18 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Rollout and Q&amp;A</td>
+<td>10 min</td>
+</tr>
+</tbody></table>
+<p><strong>Presentation total</strong>: 90 minutes, including four no-login exercises and Q&A; no scheduled break.</p>
+<h2 id="1-confirm-prerequisites-and-owner-approval">1. Confirm Prerequisites and Owner Approval</h2>
+<p>Before changing settings, confirm:</p>
+<ul>
+<li>An existing organization linked to the intended <strong>Azure subscription</strong>.</li>
+<li>The chosen project, repository, default branch, permitted review branch, and remediation owners.</li>
+<li>Product scope: <strong>Secret Protection</strong>, <strong>Code Security</strong>, or both.</li>
+<li>Written owner/budget approval for product activation and expected pipeline usage.</li>
+<li>Effective security permissions, checked separately from repository and pipeline permissions.</li>
+<li>Repository contribution/review rights and permission to create and manually run the security pipeline.</li>
+<li>Supported language/build mode, agent suitability, hosted parallel-job capacity, permitted tasks/tool downloads, network access, and package feed/authentication readiness.</li>
+<li>A known working build/dependency restore process and the repository&#39;s own manifests, lockfiles, versions, feeds, and policies.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Permission</th>
+<th>What it allows</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Advanced Security: Read alerts</strong></td>
+<td>View security findings.</td>
+</tr>
+<tr>
+<td><strong>Advanced Security: Manage and dismiss alerts</strong></td>
+<td>Update or close alerts.</td>
+</tr>
+<tr>
+<td><strong>Advanced Security: Manage settings</strong></td>
+<td>Enable products and change configuration.</td>
+</tr>
+</tbody></table>
+<p>Effective rights depend on delegation, inheritance, and denies. Do not assume a project role grants every required permission or broaden access just to make setup work.</p>
+<h3 id="estimate-product-costs">Estimate Product Costs</h3>
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Price per active committer/month</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Secret Protection</strong></td>
+<td><strong>$19</strong></td>
+</tr>
+<tr>
+<td><strong>Code Security</strong></td>
+<td><strong>$30</strong></td>
+</tr>
+</tbody></table>
+<p>An <strong>active committer</strong> has commits present in a push made in the last <strong>90 days</strong>. Count each developer once <strong>per product within the same Azure subscription</strong>, including protected repositories and linked organizations. The two product counts may differ.</p>
+<p>The same 25 developers using both products costs <strong>$1,225/month</strong>; the exercise&#39;s same 20 costs <strong>$980/month</strong> at USD list prices. These estimates exclude pipeline usage and AI features. Charges are calculated daily and billed monthly; settings show the previous day&#39;s count. Recheck <a href="https://azure.microsoft.com/en-us/pricing/details/devops/azure-devops-services/">current prices</a> and the actual customer agreement.</p>
+<p><strong>Checkpoint</strong>: An authorized owner has confirmed target scope, effective rights, costs, language/build requirements, feeds, and capacity. If anything is unknown, stop and resolve it before activation or execution.</p>
+<h2 id="2-select-and-inspect-the-existing-repository">2. Select and Inspect the Existing Repository</h2>
+<ol>
+<li>Open your chosen organization in the Azure DevOps portal.</li>
+<li>Select the existing project.</li>
+<li>In <strong>Repos &gt; Files</strong>, select the existing Azure Repos Git repository and confirm the intended default branch.</li>
+<li>Inspect manifests, lockfiles, solution/project or POM files, working directory, tool versions, feed settings, and existing build instructions.</li>
+<li>Inspect existing pipeline and branch policies with the owner so that adding a reviewed YAML commit is understood. Do not change those policies.</li>
+<li>Open <strong>Project settings &gt; Repos &gt; Repositories &gt; selected repository</strong> and verify the scope before touching security settings.</li>
+</ol>
+<p><strong>Checkpoint</strong>: You can identify the intended repository and supported build process without creating a new app or altering current CI.</p>
+<h2 id="3-activate-only-the-approved-products">3. Activate Only the Approved Products</h2>
+<ol>
+<li>In the selected repository&#39;s settings, inspect the available Secret Protection and Code Security controls.</li>
+<li>Select only the owner-approved products; avoid all-repository selections and defaults for future repositories/projects.</li>
+<li>Review the displayed estimate against the approved budget and linked subscription.</li>
+<li>The authorized settings owner manually confirms <strong>Begin billing</strong> only after approval. If an existing bundled interface uses <strong>Enable</strong>, verify the agreement and current configuration before proceeding.</li>
+<li>Record the intended retained product state in the owner&#39;s approved system.</li>
+</ol>
+<p><strong>Secret Protection</strong>: Activation starts historical repository scanning and enables push protection automatically. Review their configuration separately. Historical discovery and supported-pattern push blocking are different behaviors; neither guarantees detection of every credential. Do not generate a credential or add a fake secret to test them. For an unexpected real leak, coordinate revoke/replace with the credential owner.</p>
+<p><strong>Code Security</strong>: Choose scanning configuration deliberately. Product activation alone does not establish dependency or CodeQL scan completion.</p>
+<ul>
+<li>Dependency default setup injects scanning into relevant pipelines for the default branch and PR builds targeting that branch; a pipeline must execute.</li>
+<li>CodeQL default setup provides scheduled default-branch scans for supported languages. Organization/project-level default-setup enablement also queues initial scans automatically. It is an alternative to advanced custom setup, not a claim that every build is eligible.</li>
+<li>This guide&#39;s pipeline path uses explicit dependency tasks and advanced CodeQL in a separate manual pipeline. Avoid enabling duplicate default scanning unintentionally; agree on the intended scanning configuration with the owner.</li>
+</ul>
+<p><strong>Checkpoint</strong>: Only the chosen repository/products are activated, and any ongoing charges are understood. This checkpoint is <strong>enablement</strong>, not scan completion.</p>
+<h2 id="4-choose-and-adapt-the-language-example">4. Choose and Adapt the Language Example</h2>
+<p>Use the <a href="/gh-workshops/ghazdo/templates/">template selector</a>. These examples require repository-specific adaptation and review before use.</p>
+<table>
+<thead>
+<tr>
+<th>Stack</th>
+<th>Example</th>
+<th>Required adaptation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JavaScript/TypeScript</td>
+<td><a href="/gh-workshops/ghazdo/downloads/templates/security-javascript.yml" download>security-javascript.yml</a></td>
+<td>Confirm <code>nodeVersion</code>, <code>workingDirectory</code>, existing matching lockfile, feeds/authentication. No scripts/build by default.</td>
+</tr>
+<tr>
+<td>.NET/C#</td>
+<td><a href="/gh-workshops/ghazdo/downloads/templates/security-dotnet.yml" download>security-dotnet.yml</a></td>
+<td>Set both <code>dotnetSdkVersion</code> and <code>solutionOrProject</code>; review Linux-capable clean restore/build and feeds.</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a href="/gh-workshops/ghazdo/downloads/templates/security-java.yml" download>security-java.yml</a></td>
+<td>Set <code>pomPath</code>, confirm <code>javaVersion</code> is installed in the image, and review Maven clean compile. Adapt Gradle/Kotlin separately.</td>
+</tr>
+</tbody></table>
+<p>All examples use <code>trigger: none</code>, <code>pr: none</code>, hosted <code>ubuntu-24.04</code>, and explicit <strong>Init -&gt; restore/build -&gt; Dependency Scanning -&gt; Analyze</strong> order, with no deployment.</p>
+<ul>
+<li><strong>JavaScript/TypeScript</strong>: <code>nodeVersion</code> defaults to <code>22.x</code> and <code>workingDirectory</code> to <code>&#39;.&#39;</code>. <code>UseNode@1</code> requires <code>versionSource: spec</code> and <code>version</code>; CodeQL language <code>javascript</code>, buildtype <code>None</code>. The npm lockfile guard precedes <code>npm ci --ignore-scripts</code>; a matching existing lockfile is required. No scripts/build by default.</li>
+<li><strong>.NET/C#</strong>: Replace <strong>both</strong> <code>dotnetSdkVersion: &#39;&lt;YOUR-DOTNET-SDK-VERSION&gt;&#39;</code> and <code>solutionOrProject: &#39;&lt;YOUR-SOLUTION-OR-PROJECT&gt;&#39;</code> to match the repository and <code>global.json</code>; confirm a Linux-capable build. <code>configuration</code> defaults to <code>Release</code>. <code>UseDotNet@2</code> selects <code>packageType: sdk</code> and explicit <code>version</code>. After CodeQL <code>csharp</code> Init <code>Manual</code>, clean/restore/no-incremental build runs with the shared compiler and MSBuild server disabled; no deployment.</li>
+<li><strong>Java</strong>: <code>javaVersion</code> defaults to <code>21</code>; <strong>replace</strong> <code>pomPath: &#39;&lt;YOUR-POM-PATH&gt;&#39;</code>. <code>JavaToolInstaller@0</code> uses <code>versionSpec</code>, <code>jdkSourceOption: PreInstalled</code>, and <code>jdkArchitectureOption: x64</code>; the chosen JDK must already be installed in the image. The tool task precedes CodeQL <code>java</code> Init <code>Manual</code>, then Maven clean compile with <code>-DskipTests</code>; no deployment. Test remediation separately.</li>
+</ul>
+<p>These are <strong>examples, not universal ready-to-run pipelines</strong>. Multi-language repositories need reviewed adaptation. <code>Manual</code> and <code>None</code> are capitalized CodeQL Init task values.</p>
+<p>Preserve the customer&#39;s <code>.npmrc</code>, NuGet/Maven/Gradle feeds, approved authentication, and build settings. Do not copy the workshop content repository&#39;s Microsoft feed into the target repository. Never embed credentials in YAML or workaround logs. Do not run lifecycle or build scripts without repository-owner approval; <code>--ignore-scripts</code> is not a sandbox.</p>
+<p><strong>Checkpoint</strong>: Every required placeholder, version, path, build command, and feed dependency has been reviewed. Do not run with unresolved placeholders.</p>
+<h2 id="5-inspect-and-review-the-new-yaml">5. Inspect and Review the New YAML</h2>
+<ol>
+<li>Inspect the chosen example locally or in the portal before adding it.</li>
+<li>Adapt it to the selected repository. Use the optional local helper below only if useful; it does not replace review.</li>
+<li>Prepare a separate reviewed branch under the repository&#39;s normal workflow. In <strong>Repos &gt; Files</strong>, select that branch before adding <code>azure-pipelines-security.yml</code>.</li>
+<li>Inspect the complete file and diff. Keep existing CI files/settings unchanged; no deploy/startup steps, credential values, new vulnerable code, or secret fixtures.</li>
+<li>Save the change through normal review. A YAML commit can trigger existing CI under existing policies; coordinate with the pipeline owner rather than disabling or bypassing anything.</li>
+<li>Have the repository/pipeline owners review the language, tool versions, task inputs, working directory, restore/build, feeds, triggers, and costs. Merge only according to normal approved policies, if that is the intended setup.</li>
+</ol>
+<p><strong>Checkpoint</strong>: A reviewed security YAML exists on the explicitly selected branch. No pipeline or scan is created merely by preparing the local file.</p>
+<h2 id="6-manually-create-and-run-the-security-pipeline">6. Manually Create and Run the Security Pipeline</h2>
+<p><strong>Stop unless pipeline creation and execution have been approved</strong>, including capacity and budget.</p>
+<ol>
+<li>Open <strong>Pipelines &gt; New pipeline</strong> in the selected project.</li>
+<li>Choose <strong>Azure Repos Git</strong> and the exact existing repository.</li>
+<li>Choose <strong>Existing Azure Pipelines YAML file</strong>, then explicitly select the reviewed branch and <code>azure-pipelines-security.yml</code>.</li>
+<li>Review the complete YAML again. If the UI offers <strong>Save</strong> separately, save without queueing. If it offers <strong>Save and run</strong>, treat that control as a run action and do not confirm without explicit execution approval.</li>
+<li>Use the manual <strong>Run pipeline</strong> flow when approved. Confirm repository, branch, YAML, and language parameters. Avoid duplicate runs if one was already started by an approved Save and run action.</li>
+<li>Do not add schedules, CI/PR triggers, deployment stages, or changes to current CI as part of this example.</li>
+</ol>
+<p><strong>Checkpoint</strong>: The separate security pipeline uses the intended reviewed file/branch, and any execution was an explicit approved action. <code>trigger: none</code> and <code>pr: none</code> are not guarantees against all existing repository policies or other queueing mechanisms.</p>
+<h2 id="7-verify-execution-and-review-alerts">7. Verify Execution and Review Alerts</h2>
+<h3 id="successful-scan-checkpoints">Successful Scan Checkpoints</h3>
+<ol>
+<li>Confirm pipeline repository, branch, revision, and language/build parameters.</li>
+<li>Inspect task outcomes in order: <strong>CodeQL Init</strong>, tool/dependency restore or clean build, <strong>Dependency Scanning</strong>, and <strong>CodeQL Analyze</strong>.</li>
+<li>Resolve failed, skipped, or interrupted tasks before reporting scanning as complete. An overall green run is not a substitute for checking the intended tasks and coverage.</li>
+<li>Review task logs for successful analysis and result publication without copying sensitive log content into generic docs.</li>
+<li>Open the repository&#39;s <strong>Advanced Security</strong> results/alerts hub. Review the relevant secret, dependency, or code-scanning view and its scope. Allow normal result processing; do not immediately queue duplicate scans.</li>
+</ol>
+<h3 id="findings-and-no-findings">Findings and No Findings</h3>
+<ul>
+<li><strong>Secret alert</strong>: identify credential owner; coordinate revoke/replace, approved cleanup, confirmation, then closure.</li>
+<li><strong>Dependency alert</strong>: inspect advisory and direct/transitive path; identify root manifest/lockfile owner; review update, test, and complete a comparable follow-up scan.</li>
+<li><strong>CodeQL alert</strong>: inspect location/data flow and impact; review fix, test, and complete a same-branch rescan with comparable configuration.</li>
+<li><strong>No findings</strong>: confirm completed tasks, branch/configuration, and the applicable result view. Do not add vulnerable code or fake secrets, and do not describe the repository as free of all risk.</li>
+<li><strong>PR scanning</strong>: select the pull-request branch in <strong>Repos &gt; Advanced Security</strong> to review its dependency findings. Applicable new findings may also appear as PR Overview annotations. Confirm successful task/result submission in pipeline logs; missing annotations alone are not proof that scanning failed.</li>
+</ul>
+<p>Scanning does not automatically create dependency-update PRs or block every build/merge. Enforcement needs a separately designed, reviewed, and verified policy.</p>
+<p><strong>Checkpoint</strong>: The owner can distinguish enabled products, completed scans, findings/no findings, and confirmed remediation.</p>
+<h2 id="8-cleanup-and-recovery">8. Cleanup and Recovery</h2>
+<h3 id="owner-approved-cleanup">Owner-Approved Cleanup</h3>
+<ul>
+<li>Agree whether the separate manual pipeline and selected products remain enabled for the pilot.</li>
+<li>Retain normal remediation and evidence according to the owner&#39;s process. Do not dismiss alerts solely to make the view empty.</li>
+<li>If the owner decides to remove the example, delete only the agreed pipeline and review removal of its YAML through normal branch policies. Do not remove repository files or existing CI indiscriminately.</li>
+<li>Product disablement is a separate owner-approved portal action. Confirm repository/product scope and future monitoring needs first. Review measured counts and invoices; do not promise immediate zero cost or counter reset.</li>
+<li>Leave existing CI, branch policies, customer feeds/authentication, and other repositories unchanged.</li>
+</ul>
+<h3 id="non-destructive-recovery">Non-Destructive Recovery</h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Recovery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Wrong target selected</td>
+<td>Stop before activation/run; reselect the intended existing repository.</td>
+</tr>
+<tr>
+<td>Billing approval missing</td>
+<td>Do not confirm Begin billing or start scans; return to owners.</td>
+</tr>
+<tr>
+<td>Permission denied</td>
+<td>Verify effective rights with the authorized owner; no blanket admin grant.</td>
+</tr>
+<tr>
+<td>Placeholder/path/tool mismatch</td>
+<td>Review and correct the example in the reviewed branch; do not repeatedly queue it.</td>
+</tr>
+<tr>
+<td>Feed/restore/build failure</td>
+<td>Preserve customer settings; resolve authenticated feed access and build compatibility with owners.</td>
+</tr>
+<tr>
+<td>No hosted capacity or required tool</td>
+<td>Wait for approved capacity/tooling; do not weaken policy or assume the helper guarantees readiness.</td>
+</tr>
+<tr>
+<td>Task failed or result absent</td>
+<td>Inspect task completion, branch, language, and result scope; do not label it a clean scan.</td>
+</tr>
+<tr>
+<td>Unexpected credential exposure</td>
+<td>Stop sharing; coordinate revoke/replace and cleanup through the incident process.</td>
+</tr>
+<tr>
+<td>CI runs after adding YAML</td>
+<td>Follow normal CI policies and the owner&#39;s plan; no policy bypass or disablement.</td>
+</tr>
+</tbody></table>
+<h2 id="optional-helper-read-only-verification-and-local-preparation">Optional Helper: Read-Only Verification and Local Preparation</h2>
+<p><code>Prepare-GhazdoPipeline.ps1</code> only prepares a <strong>local</strong> <code>azure-pipelines-security.yml</code>. These instructions do not establish implementation-test or target-execution success.</p>
+<p>These command examples use <strong>Windows with PowerShell 7+ (<code>pwsh</code>)</strong>, not Windows PowerShell 5.1. Offline preparation needs only PowerShell 7+ and the downloaded helper/templates. Normal mode also requires an already-installed Azure CLI, its <code>azure-devops</code> extension, and cached authorized access; the helper does not install tools or sign in.</p>
+<h3 id="download-without-access-to-the-workshop-source-repository">Download Without Access to the Workshop Source Repository</h3>
+<p>Download the <a href="/gh-workshops/ghazdo/downloads/setup/Prepare-GhazdoPipeline.ps1" download>PowerShell helper</a> and the chosen example from the <a href="/gh-workshops/ghazdo/templates/">template selector</a>. Store them in this local layout outside a Git checkout; no access to a facilitator&#39;s source repository is required:</p>
+<pre><code class="language-text">security-setup/
+  setup/
+    Prepare-GhazdoPipeline.ps1
+  templates/
+    security-javascript.yml
+    security-dotnet.yml
+    security-java.yml
+</code></pre>
+<p>Only the selected stack&#39;s YAML is required. Keep its exact filename because the helper resolves it relative to its <code>setup</code> folder. Open PowerShell in <code>security-setup</code>. If you already have this workshop&#39;s source files, open <code>workshops\ghazdo</code> instead; the same relative commands apply.</p>
+<p><strong>Required parameters</strong>: organization URL, project, repository, stack (<code>javascript</code>, <code>dotnet</code>, or <code>java</code>), and an <strong>already-existing local output directory outside any Git checkout</strong>. Replace every target placeholder with the explicit organization/project/repository you chose; no target defaults are used.</p>
+<p>Prepare a real scratch folder under <code>$env:TEMP</code>, not in the workshop or target worktree. Its path must not traverse a junction or symbolic link. Use the same PowerShell session below. The helper rejects linked paths and output inside a checkout.</p>
+<pre><code class="language-powershell">$GhazdoOutputDirectory = Join-Path $env:TEMP (&quot;ghazdo-security-&quot; + [System.IO.Path]::GetRandomFileName())
+</code></pre>
+<p>Create that directory before invoking the helper:</p>
+<pre><code class="language-powershell">New-Item -ItemType Directory -Path $GhazdoOutputDirectory
+</code></pre>
+<p>Alternatively, choose another already-existing scratch directory outside any Git checkout. Do not point the helper at an existing file you expect it to replace.</p>
+<p>From the local folder containing <code>setup</code> and <code>templates</code>, normal mode checks the installed extension and uses <strong>cached sign-in only</strong> for read-only GET/show verification of the explicit existing project/repository:</p>
+<pre><code class="language-powershell">.\setup\Prepare-GhazdoPipeline.ps1 `
+  -Organization &quot;https://dev.azure.com/&lt;YOUR-ORG&gt;&quot; `
+  -Project &quot;&lt;YOUR-PROJECT&gt;&quot; `
+  -Repository &quot;&lt;YOUR-REPO&gt;&quot; `
+  -Stack javascript `
+  -OutputDirectory $GhazdoOutputDirectory
+</code></pre>
+<p>For local generation without target verification:</p>
+<pre><code class="language-powershell">.\setup\Prepare-GhazdoPipeline.ps1 `
+  -Organization &quot;https://dev.azure.com/&lt;YOUR-ORG&gt;&quot; `
+  -Project &quot;&lt;YOUR-PROJECT&gt;&quot; `
+  -Repository &quot;&lt;YOUR-REPO&gt;&quot; `
+  -Stack javascript `
+  -OutputDirectory $GhazdoOutputDirectory `
+  -Offline
+</code></pre>
+<p>Choose <strong>one mode</strong> for a given scratch directory; running the second example after the first would be refused because the output already exists. Use <code>-Stack dotnet</code> or <code>-Stack java</code> when appropriate. All five target/output parameters remain required in offline mode.</p>
+<h3 id="helper-boundaries">Helper Boundaries</h3>
+<ul>
+<li>Normal mode checks only the local <code>azure-devops</code> extension and specified existing project/repository through read-only GET/show operations using cached Azure CLI access. It does not sign in or inspect product settings, effective permissions, or capacity.</li>
+<li><strong>Offline mode emits an explicit warning and returns <code>Verification=NotPerformed</code></strong>. Successful generation does not establish target existence or access.</li>
+<li>No Azure writes, Git operations, product activation, pipeline creation, or scan execution.</li>
+<li>Requires an existing, unlinked output directory outside any Git checkout. Atomically refuses to overwrite existing YAML; prepare another scratch directory rather than deleting a file blindly.</li>
+<li>Output action fields set to <code>false</code> mean the script did not perform those actions. They do <strong>not</strong> mean that existing products are disabled, billing is off, or a pipeline does not exist.</li>
+<li>Does not guarantee product permissions, language support, agent capacity, feed access, successful scans, or findings.</li>
+<li>Review and adapt the generated YAML, then follow the portal/manual steps above.</li>
+</ul>
+<h3 id="local-scratch-cleanup-and-interrupted-writes">Local Scratch Cleanup and Interrupted Writes</h3>
+<p>Inspect the generated YAML before using it. If generation is interrupted or reports a write error, treat any remaining file as <strong>unverified</strong> and use a new empty scratch directory for the retry. Never assume a partial file is usable or overwrite unrelated output.</p>
+<p>After the reviewed YAML is retained where the owner intends, inspect the original scratch path and remove only the generated file if no longer needed:</p>
+<pre><code class="language-powershell">Get-ChildItem -LiteralPath $GhazdoOutputDirectory -Force
+</code></pre>
+<pre><code class="language-powershell">Remove-Item -LiteralPath (Join-Path $GhazdoOutputDirectory &quot;azure-pipelines-security.yml&quot;)
+</code></pre>
+<p>Only if the directory is empty, remove the directory itself without recursive deletion:</p>
+<pre><code class="language-powershell">if (@(Get-ChildItem -LiteralPath $GhazdoOutputDirectory -Force).Count -eq 0) {
+  Remove-Item -LiteralPath $GhazdoOutputDirectory
+}
+</code></pre>
+<h2 id="official-references">Official References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/configure-github-advanced-security-features?view=azure-devops">Configure Advanced Security</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-billing?view=azure-devops">Billing</a> and <a href="https://azure.microsoft.com/en-us/pricing/details/devops/azure-devops-services/">current pricing</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-permissions?view=azure-devops">Permissions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-secret-scanning?view=azure-devops">Secret scanning</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-dependency-scanning?view=azure-devops">Dependency scanning</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-code-scanning?view=azure-devops">Code scanning</a> and <a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/advanced-security-codeql-init-v1?view=azure-pipelines">CodeQL Init task</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/use-node-v1?view=azure-pipelines">UseNode@1</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/use-dotnet-v2?view=azure-pipelines">UseDotNet@2</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/java-tool-installer-v0?view=azure-pipelines">JavaToolInstaller@0</a></li>
+</ul>
+<p><em>Optional setup guide for GitHub Advanced Security for Azure DevOps Workshop</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/_...document_.astro_astro_type_script_index_0_lang.OBuYvQ_z.js"></script>

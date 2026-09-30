@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Security Pipeline Example Selector</title><link rel="stylesheet" href="/gh-workshops/_astro/_document_.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/_document_.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.document-copy{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);font-size:12px;cursor:pointer;opacity:0}pre:hover .document-copy{opacity:1}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="security-pipeline-example-selector">Security Pipeline Example Selector</h1>
+<p><strong>Context</strong>: Optional existing-repository setup for the 90-minute demo-led workshop<br><strong>Status</strong>: Examples require adaptation and owner review; no target-execution success is implied<br><strong>Target</strong>: An existing Azure DevOps Services project and Azure Repos Git repository chosen by the user</p>
+<h2 id="choose-an-example-not-a-new-application">Choose an Example, Not a New Application</h2>
+<p>The <a href="/gh-workshops/ghazdo/setup/">portal-first setup guide</a> controls approval, repository selection, product activation, reviewed YAML, manual pipeline creation/run, verification, and cleanup. These examples do not create a project/app or require participants to log in.</p>
+<p>Do not add vulnerable code, fake secrets, credentials, or demonstration fixtures. Use the repository&#39;s actual language/build requirements.</p>
+<table>
+<thead>
+<tr>
+<th>Stack</th>
+<th>Example</th>
+<th>Required adaptation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JavaScript/TypeScript</td>
+<td><a href="/gh-workshops/ghazdo/downloads/templates/security-javascript.yml" download>security-javascript.yml</a></td>
+<td>Confirm <code>nodeVersion</code>, <code>workingDirectory</code>, existing matching lockfile, feeds/authentication. No scripts/build by default.</td>
+</tr>
+<tr>
+<td>.NET/C#</td>
+<td><a href="/gh-workshops/ghazdo/downloads/templates/security-dotnet.yml" download>security-dotnet.yml</a></td>
+<td>Set both <code>dotnetSdkVersion</code> and <code>solutionOrProject</code>; review Linux-capable clean restore/build and feeds.</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a href="/gh-workshops/ghazdo/downloads/templates/security-java.yml" download>security-java.yml</a></td>
+<td>Set <code>pomPath</code>, confirm <code>javaVersion</code> is installed in the image, and review Maven clean compile. Adapt Gradle/Kotlin separately.</td>
+</tr>
+</tbody></table>
+<p>Selecting an example does not establish a tested or successful pipeline in your repository.</p>
+<h2 id="shared-pipeline-contract">Shared Pipeline Contract</h2>
+<ul>
+<li>Separate security pipeline, not a replacement for existing CI.</li>
+<li><code>trigger: none</code> and <code>pr: none</code>: manually queue only after owner/budget approval.</li>
+<li>Hosted <code>ubuntu-24.04</code>; confirm capacity, tool availability, download/network policies, and permissions.</li>
+<li>Explicit <strong>Init -&gt; restore/build -&gt; Dependency Scanning -&gt; Analyze</strong> order.</li>
+<li>No deployment, application startup, new sample app, or automatic product activation.</li>
+<li>Preserve the customer&#39;s own feeds/authentication and normal policies.</li>
+</ul>
+<p><strong>Important</strong>: Committing new YAML can still trigger existing CI under its normal policies. Leave current CI files/settings unchanged; do not bypass or disable policy.</p>
+<h2 id="javascript--typescript">JavaScript / TypeScript</h2>
+<ul>
+<li><code>nodeVersion</code> defaults to <code>22.x</code>; <code>workingDirectory</code> defaults to <code>&#39;.&#39;</code>.</li>
+<li>Use <code>UseNode@1</code> with required <code>versionSource: spec</code> and <code>version</code> from <code>nodeVersion</code>.</li>
+<li>Confirm that version is compatible with the repository, including package-manager expectations.</li>
+<li>CodeQL Init uses <code>languages: javascript</code> and <code>buildtype: None</code> for no-build analysis.</li>
+<li>The example&#39;s npm lockfile guard precedes <code>npm ci --ignore-scripts</code>; an existing matching npm lockfile and the correct working directory are required.</li>
+<li>Preserve the repository&#39;s <code>.npmrc</code> and approved feed/authentication mechanism. Do not copy this content repository&#39;s Microsoft feed into the target.</li>
+<li>No lifecycle scripts or application build by default. Suppressing scripts is not a sandbox.</li>
+<li>If an application build is needed, manually adapt and review the command, scripts, tools, permissions, and risks. Do not run lifecycle or build scripts without repository-owner approval. Yarn/pnpm/workspaces also require explicit adaptation; do not run npm commands against an incompatible repository.</li>
+</ul>
+<p><strong>Before running</strong>: confirmed Node/package-manager choice, matching lockfile, working directory, authenticated feeds, and no unresolved placeholder.</p>
+<h2 id="net--c">.NET / C#</h2>
+<ul>
+<li>Use <code>UseDotNet@2</code> with <code>packageType: sdk</code> and an explicit repository-approved SDK <code>version</code>.</li>
+<li>Replace <strong>both</strong> <code>dotnetSdkVersion: &#39;&lt;YOUR-DOTNET-SDK-VERSION&gt;&#39;</code> and <code>solutionOrProject: &#39;&lt;YOUR-SOLUTION-OR-PROJECT&gt;&#39;</code> before running. They are not runnable defaults. <code>configuration</code> defaults to <code>Release</code>.</li>
+<li>Confirm compatibility with <code>global.json</code>, target frameworks, selected solution/project, and hosted Linux tooling.</li>
+<li>CodeQL Init uses <code>languages: csharp</code> and <code>buildtype: Manual</code>.</li>
+<li>Keep initialization before clean/restore/no-incremental build so analysis observes the build. The example disables the shared compiler and MSBuild server.</li>
+<li>Preserve customer NuGet feeds, configuration, and approved authentication. Do not embed credentials.</li>
+<li>Review clean/restore/build commands and configuration with the repository owner before execution; no deployment. Appropriate tests remain part of remediation verification.</li>
+</ul>
+<p><strong>Before running</strong>: explicit SDK and solution/project values, supported Linux build, feed readiness, and reviewed clean build.</p>
+<h2 id="java">Java</h2>
+<ul>
+<li><code>javaVersion</code> defaults to <code>21</code>. Use <code>JavaToolInstaller@0</code> with <code>jdkSourceOption: PreInstalled</code>, <code>jdkArchitectureOption: x64</code>, and <code>versionSpec</code> from that parameter.</li>
+<li>Confirm that the chosen preinstalled JDK is available on <code>ubuntu-24.04</code> and matches the repository&#39;s build requirements.</li>
+<li><strong>Replace</strong> <code>pomPath: &#39;&lt;YOUR-POM-PATH&gt;&#39;</code> with the correct existing Maven POM before running. Review multi-module paths and build context.</li>
+<li>CodeQL Init uses <code>languages: java</code> and <code>buildtype: Manual</code>.</li>
+<li>The preinstalled JDK selection task precedes initialization, then Maven clean compile with <code>-DskipTests</code>. The example skips tests for scan preparation and does not deploy; obtain repository-owner approval before build execution.</li>
+<li>Preserve the customer&#39;s Maven settings, feeds, mirrors, and approved authentication.</li>
+<li><strong>Gradle/Kotlin</strong>: the Maven example is not drop-in. Review current CodeQL Java/Kotlin support, choose repository-approved Gradle/JDK versions, and adapt a clean manual build within the Init/Analyze boundary. Review dependency-scanning support for the actual ecosystem.</li>
+</ul>
+<p><strong>Before running</strong>: explicit POM path, supported JDK/build tool, authenticated feeds, and reviewed clean compilation. Test code fixes separately; skipped scan-preparation tests do not confirm remediation.</p>
+<h2 id="review-checklist">Review Checklist</h2>
+<ol>
+<li>Select the correct existing repository/branch and stack.</li>
+<li>Replace all required placeholders and check every parameter value.</li>
+<li>Confirm tool versions, hosted availability, working directory, manifests/lockfiles, and clean build.</li>
+<li>Preserve customer feeds/authentication and existing CI policies.</li>
+<li>Review the new YAML on a separate branch through normal repository policy.</li>
+<li>Confirm product activation and pipeline execution approvals separately.</li>
+<li>Manually create/run through the portal, then verify all intended tasks and result scope.</li>
+<li>With no findings, review successful execution and applicable results; do not insert a vulnerability.</li>
+<li>Use the <a href="/gh-workshops/ghazdo/templates/pilot-checklist/">pilot checklist</a> for ownership, cost review, and retained state.</li>
+</ol>
+<p>The optional helper requires all target/output parameters and an already-existing directory <strong>outside any Git checkout</strong>. Normal mode checks the local <code>azure-devops</code> extension and uses cached Azure CLI access only for read-only GET/show verification of the explicit existing project/repository; it does not inspect product settings, effective permissions, or capacity. Offline mode warns and returns <code>Verification=NotPerformed</code>. Action fields set to <code>false</code> mean the helper did not act, not that existing products are off. Local YAML preparation atomically refuses overwrites and does not create a pipeline; review the file and follow the manual portal steps. See its complete <a href="/gh-workshops/ghazdo/setup/#optional-helper-read-only-verification-and-local-preparation">contract and TEMP scratch-folder examples</a>.</p>
+<h2 id="current-official-task-references">Current Official Task References</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Inputs or behavior to check</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/use-node-v1?view=azure-pipelines">UseNode@1</a></td>
+<td><code>versionSource: spec</code>, <code>version</code></td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/use-dotnet-v2?view=azure-pipelines">UseDotNet@2</a></td>
+<td><code>packageType: sdk</code>, explicit SDK <code>version</code></td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/java-tool-installer-v0?view=azure-pipelines">JavaToolInstaller@0</a></td>
+<td><code>versionSpec</code>, <code>jdkSourceOption: PreInstalled</code>, <code>jdkArchitectureOption: x64</code></td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/advanced-security-codeql-init-v1?view=azure-pipelines">CodeQL Init</a></td>
+<td>Supported languages and capitalized <code>Manual</code> / <code>None</code></td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-dependency-scanning?view=azure-devops">Dependency scanning</a></td>
+<td>Restore/build placement, supported ecosystems, execution/result checks</td>
+</tr>
+<tr>
+<td><a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/github-advanced-security-code-scanning?view=azure-devops">Code scanning</a></td>
+<td>Default/advanced support, build requirements, result review</td>
+</tr>
+</tbody></table>
+<p>Templates do not guarantee permissions, capacity, compatibility, successful scans, or findings. They are not technical or release approval.</p>
+<p><em>Template selector for GitHub Advanced Security for Azure DevOps Workshop</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/_...document_.astro_astro_type_script_index_0_lang.OBuYvQ_z.js"></script>
