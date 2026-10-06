@@ -219,7 +219,7 @@ npm run build
 </tr>
 </tbody></table>
 <blockquote>
-<p><strong>Important</strong>: Local is a harness name, not an offline model. Background is session behavior, not a peer target. Other targets expose different roles, modes, permissions, and provider workflows.</p>
+<p><strong>Important</strong>: Local is a harness name, not an offline model. Background is session behavior, not a peer target. The selected harness determines supported project guidance, roles or modes, tools, permissions, and workflows; changing only the model does not change the harness.</p>
 </blockquote>
 <h3 id="target-reference">Target Reference</h3>
 <table>
@@ -238,17 +238,17 @@ npm run build
 <tr>
 <td><strong>Copilot</strong></td>
 <td>GitHub Copilot SDK harness in Agent Host</td>
-<td>Interactive, Plan, Autopilot and Copilot agents</td>
+<td>Interactive, Plan, Autopilot; <code>.github/</code> or <code>AGENTS.md</code> guidance</td>
 </tr>
 <tr>
 <td><strong>Claude</strong></td>
 <td>Anthropic Claude Agent SDK harness</td>
-<td>Claude-specific agents, models, commands, and permissions</td>
+<td>Claude controls; <code>CLAUDE.md</code> and <code>.claude/rules/</code> guidance</td>
 </tr>
 <tr>
 <td><strong>Codex</strong></td>
 <td>OpenAI Codex harness</td>
-<td>Codex-specific models, configuration, and approvals</td>
+<td>Codex controls and <code>AGENTS.md</code> guidance</td>
 </tr>
 <tr>
 <td><strong>Cloud</strong></td>
@@ -257,6 +257,9 @@ npm run build
 </tr>
 </tbody></table>
 <p>Before the first prompt, the Session Target control chooses the harness. In an active Local session, the same control becomes a <strong>handoff</strong> control. After a handoff to Copilot, Claude, Codex, or Cloud, that destination owns the session and the target dropdown is no longer shown. Start a new chat to return to Local.</p>
+<blockquote>
+<p><strong>From the facilitator demo</strong>: <code>CLAUDE.md</code> is Claude-native guidance, but Local can also discover it when <code>chat.useClaudeMdFile</code> is enabled. Instruction files guide behavior; tests, hooks, and platform controls enforce requirements.</p>
+</blockquote>
 <h3 id="steps">Steps</h3>
 <p><strong>Exercise 1 — Configure the Session and Ask a Question</strong>:</p>
 <ol>
@@ -308,6 +311,7 @@ npm run build
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
 <li>✅ You can distinguish Session Target, role or mode, model, permissions, and execution environment.</li>
+<li>✅ You can explain how harness choice affects supported project guidance, tools, approvals, and workflow.</li>
 <li>✅ You can identify the Local Ask, Agent, and Plan roles.</li>
 <li>✅ You&#39;ve received a codebase-aware answer in Ask without changing files.</li>
 <li>✅ You&#39;ve reviewed a Plan result before implementation.</li>

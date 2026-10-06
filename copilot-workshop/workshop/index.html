@@ -9,7 +9,7 @@
 <p>This session takes developers from casual Copilot usage to full agentic development. Starting with inline completions and inline chat, then progressing through Copilot Chat workflows and customization layers—memory, instructions, prompts, agents, skills, and MCP servers—attendees build a complete understanding of how to tailor Copilot to their teams and workflows. The session extends to the standalone GitHub Copilot CLI for a full agentic terminal experience and closes with fully autonomous cloud agents (Copilot cloud agent + PR Review Agent).</p>
 <h3 id="learning-objectives">Learning Objectives</h3>
 <ul>
-<li>Configure a VS Code agent session by choosing a Session Target, then use the Local Ask, Agent, and Plan roles</li>
+<li>Choose a VS Code Session Target by separating harness, model, role, permissions, and execution environment, then use the Local Ask, Agent, and Plan roles</li>
 <li>Use inline completions and inline chat for fast, focused code edits</li>
 <li>Use Copilot Memory to shape preferences while understanding scope and security boundaries</li>
 <li>Create custom instructions that encode team standards and internal frameworks</li>
@@ -330,6 +330,7 @@ npm run build
 <h2 id="2-vs-code-agent-sessions-targets-roles-and-modes-25-min">2. VS Code Agent Sessions: Targets, Roles, and Modes (25 min)</h2>
 <h3 id="key-points">Key Points</h3>
 <ul>
+<li>An <strong>agent harness</strong> turns model reasoning into a stateful workflow by preparing context, discovering supported project configuration, coordinating tools and approvals, and tracking the session</li>
 <li>The <strong>Session Target</strong> chooses the agent harness or the Cloud execution target before the first prompt</li>
 <li>For this workshop, always select <strong>Local</strong> unless an exercise explicitly says otherwise</li>
 <li>The Local target exposes the built-in <strong>Ask</strong>, <strong>Agent</strong>, and <strong>Plan</strong> roles</li>
@@ -361,19 +362,19 @@ npm run build
 <td><strong>Copilot</strong></td>
 <td>GitHub Copilot SDK harness in Agent Host</td>
 <td>Interactive, Plan, Autopilot; Copilot agents and commands</td>
-<td>Copilot-native workflows, background sessions, worktrees, and supported remote or container hosts</td>
+<td>Copilot-native workflows and supported <code>.github/</code> or <code>AGENTS.md</code> configuration</td>
 </tr>
 <tr>
 <td><strong>Claude</strong></td>
 <td>Anthropic Claude Agent SDK harness</td>
 <td>Claude agents, models, commands, and permission modes</td>
-<td>Claude-native project configuration and workflows</td>
+<td>Claude-native workflows and <code>CLAUDE.md</code> or <code>.claude/rules/</code> configuration</td>
 </tr>
 <tr>
 <td><strong>Codex</strong></td>
 <td>OpenAI Codex harness</td>
 <td>Codex models, configuration, and approval controls</td>
-<td>Codex-native project configuration and workflows</td>
+<td>Codex-native workflows and <code>AGENTS.md</code> configuration</td>
 </tr>
 <tr>
 <td><strong>Cloud</strong></td>
@@ -384,6 +385,39 @@ npm run build
 </tbody></table>
 <blockquote>
 <p><strong>Important</strong>: Copilot, Claude, and Codex can also execute workspace tools on your machine. Cloud is the remote execution target, not a single provider. Claude and Codex might require additional installation, authentication, entitlement, or administrator approval. Section 9 focuses on GitHub Copilot cloud agent.</p>
+</blockquote>
+<h3 id="harness-native-project-guidance">Harness-Native Project Guidance</h3>
+<table>
+<thead>
+<tr>
+<th>Harness</th>
+<th>Project-Wide Guidance</th>
+<th>Targeted Guidance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Copilot</strong></td>
+<td><code>.github/copilot-instructions.md</code> or <code>AGENTS.md</code></td>
+<td><code>.github/instructions/**/*.instructions.md</code></td>
+</tr>
+<tr>
+<td><strong>Claude</strong></td>
+<td><code>CLAUDE.md</code></td>
+<td>Markdown files under <code>.claude/rules/</code></td>
+</tr>
+<tr>
+<td><strong>Codex</strong></td>
+<td><code>AGENTS.md</code></td>
+<td>Nested <code>AGENTS.md</code> files</td>
+</tr>
+<tr>
+<td><strong>Local</strong></td>
+<td><code>.github/copilot-instructions.md</code>, <code>AGENTS.md</code>, or <code>CLAUDE.md</code></td>
+<td>Copilot or Claude targeted formats when their Local compatibility settings are enabled</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Configuration, not exclusivity</strong>: The Claude demo below shows Claude&#39;s native <code>CLAUDE.md</code> workflow. Local can also discover <code>CLAUDE.md</code> when <code>chat.useClaudeMdFile</code> is enabled. Instruction files shape agent behavior; they are not enforcement controls. Use hooks, tests, branch protection, secret scanning, and push protection for requirements that must be enforced.</p>
 </blockquote>
 <h3 id="what-the-target-picker-means">What the Target Picker Means</h3>
 <table>
@@ -462,7 +496,7 @@ npm run build
 <td><strong>Local + Plan</strong> or <code>/plan</code></td>
 </tr>
 <tr>
-<td>&quot;I want to try a provider-native workflow&quot;</td>
+<td>&quot;I need a provider-native workflow or project configuration&quot;</td>
 <td>Start a <strong>separate new chat</strong>, then choose an approved Copilot, Claude, or Codex target</td>
 </tr>
 <tr>
@@ -471,70 +505,41 @@ npm run build
 </tr>
 </tbody></table>
 <hr>
-<h3 id="-demo-choose-the-session-target-and-local-role">🖥️ DEMO: Choose the Session Target and Local Role</h3>
-<ol>
-<li>Open Copilot Chat and start a new chat</li>
-<li>Before entering a prompt, open the <strong>Session Target</strong> control and show Local, Copilot, Claude, Codex, and Cloud; explain that availability varies</li>
-<li>Briefly map each target to the comparison table, then select <strong>Local</strong></li>
-<li>Open the role picker and show <strong>Ask</strong>, <strong>Agent</strong>, and <strong>Plan</strong></li>
-<li>Keep the default/manual approval setting shown in your VS Code build; Local works directly in the active workspace</li>
-<li>After the first Local response, reopen the Session Target control and explain that it is now a handoff control; do not select a destination</li>
-</ol>
-<p><strong>Talking point</strong>: &quot;Target chooses the harness or remote destination. The next controls belong to that target. Local gives us Ask, Agent, and Plan; Copilot, Claude, and Codex can show different controls.&quot;</p>
-<h3 id="-demo-ask-role">🖥️ DEMO: Ask Role</h3>
-<ol>
-<li>Select <strong>Local</strong> and the <strong>Ask</strong> role</li>
-<li>Enter:</li>
-</ol>
-<pre><code>Please give me details about the API of this project.
+<h3 id="-demo-claude-harness--claudemd-discovery-5-min">🖥️ DEMO: Claude Harness + <code>CLAUDE.md</code> Discovery (5 min)</h3>
+<p>Use a disposable branch or worktree in the OctoCAT Supply repository. Before the demo, add this concise, task-relevant <code>CLAUDE.md</code> at the repository root:</p>
+<pre><code class="language-markdown"># OctoCAT Supply Agent Guidance
+
+- Follow the existing route and test patterns in the API.
+- Implement headquarters search by city or state with case-insensitive matching.
+- Add Swagger/OpenAPI documentation for new endpoints.
+- Add Vitest coverage for success, empty-result, and invalid-query behavior.
+- Run the focused tests and `npm run build` before finishing.
+- Update API documentation when endpoint behavior changes.
+- Never place credentials or secrets in source files.
 </code></pre>
-<ol start="3">
-<li>Show how Copilot references the architecture, Express routes, Swagger docs, and entity models</li>
-<li>Confirm that the workspace has no new changes</li>
-<li>Enter:</li>
-</ol>
-<pre><code>Are there any core features missing in my project?
-</code></pre>
-<ol start="6">
-<li>Show Copilot analyzing the codebase and identifying gaps</li>
-</ol>
-<p><strong>Talking point</strong>: &quot;Ask is the Local role for questions and guidance. If you switch to the Copilot target, there is no Ask mode; use Interactive and state a read-only boundary explicitly.&quot;</p>
-<hr>
-<h3 id="-demo-plan-role">🖥️ DEMO: Plan Role</h3>
 <ol>
-<li>Select <strong>Plan</strong> from the Local role picker, or type <code>/plan</code></li>
-<li>Enter:</li>
+<li>Start a new chat and show the <strong>Session Target</strong> choices. Explain that the target selects a harness or Cloud destination, while the model picker separately selects the reasoning model.</li>
+<li>Select <strong>Claude</strong>. Do not ask attendees to authenticate with an unapproved provider; target availability varies by installation, account, entitlement, and organization policy.</li>
+<li>Run <code>/context</code> and confirm that the root <code>CLAUDE.md</code> appears under the loaded project or memory instructions. If <code>/context</code> is unavailable in the current build, open <strong>Chat: Open Customizations</strong> or expand <strong>References</strong> in the first response.</li>
+<li>Enter only the outcome:</li>
 </ol>
-<pre><code>I want to add input validation to the Product API POST endpoint. What&#39;s the best approach?
+<pre><code>Add headquarters search capability to the API.
 </code></pre>
-<ol start="3">
-<li>Show Copilot analyzing the codebase and proposing a detailed implementation plan:<ul>
-<li>Which files need to change</li>
-<li>What validation library to use</li>
-<li>Step-by-step approach</li>
-</ul>
-</li>
-<li>Review the plan and do not approve implementation yet</li>
+<ol start="5">
+<li>Highlight the harness-driven workflow: Claude receives the project guidance, searches the codebase, identifies existing patterns, edits the appropriate route and tests, updates documentation, and runs validation.</li>
+<li>Ask:</li>
 </ol>
-<p><strong>Talking point</strong>: &quot;The Local Plan role separates research and review from implementation. Review the plan, then choose whether to start implementation with the Local Agent role or save it.&quot;</p>
-<hr>
-<h3 id="-demo-agent-role">🖥️ DEMO: Agent Role</h3>
-<ol>
-<li>Switch from <strong>Plan</strong> to <strong>Agent</strong></li>
-<li>Enter:</li>
-</ol>
-<pre><code>Please build and run my project so that I can see its existing state.
+<pre><code>Which repository instructions and existing implementation patterns influenced your changes? Cite the files you used.
 </code></pre>
-<ol start="3">
-<li>Show Copilot:<ul>
-<li>Reading <code>package.json</code> and build configuration</li>
-<li>Running <code>npm install</code> and <code>npm run dev</code> in the terminal</li>
-<li>Verifying the application is running</li>
-</ul>
-</li>
-<li>Show the running app in the browser</li>
+<ol start="7">
+<li>Verify the answer against References, tool activity, the actual diff, and test output. The agent&#39;s explanation is supporting evidence, not proof by itself.</li>
+<li>Discard the demo changes or delete the disposable worktree before the hands-on exercise.</li>
 </ol>
-<p><strong>Talking point</strong>: &quot;Agent is the default implementation role for this workshop. It can read files, edit code, run commands, and validate results while you steer and approve.&quot;</p>
+<blockquote>
+<p><strong>Facilitator note</strong>: A root <code>CLAUDE.md</code> is normally loaded when the Claude session starts, so there might not be a visible file-read tool call. Prove discovery with <code>/context</code>, Customizations, or References rather than narrating an unseen read. If Claude is unavailable, use prepared screenshots or a recording and continue the hands-on exercise with Local.</p>
+</blockquote>
+<p><strong>Talking point</strong>: &quot;The model is the reasoning engine. The harness turns that reasoning into a working agent by assembling context, discovering supported project configuration, coordinating tools and approvals, and maintaining the session. We are demonstrating Claude&#39;s native configuration workflow, not claiming that only Claude can discover instructions.&quot;</p>
+<p><strong>Workshop sound bite</strong>: &quot;Developers specify the outcome and constraints. The harness discovers applicable instructions, gathers context, and coordinates the implementation steps.&quot;</p>
 <details>
 <summary><h3 id="-hands-on-configure-a-local-session-8-min">🧪 Hands-On: Configure a Local Session (8 min)</h3></summary>
 
@@ -584,6 +589,7 @@ npm run build
 <h3 id="success-criteria">Success Criteria</h3>
 <ul>
 <li>✅ You can distinguish Session Target, role or mode, model, permissions, and execution environment</li>
+<li>✅ You can explain how a harness discovers supported project guidance and why that guidance is not a policy-enforcement boundary</li>
 <li>✅ You can identify Local Ask, Agent, and Plan roles</li>
 <li>✅ You&#39;ve received a codebase-aware answer in Ask without changing files</li>
 <li>✅ You&#39;ve reviewed a Plan result before implementation</li>

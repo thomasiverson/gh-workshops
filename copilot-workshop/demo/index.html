@@ -185,106 +185,102 @@
 </code></pre>
 <hr>
 <h2 id="demo-1-vs-code-agent-sessions--targets-roles-and-modes-section-2">Demo 1: VS Code Agent Sessions — Targets, Roles, and Modes (Section 2)</h2>
-<p><strong>Objective</strong>: Explain the Session Target picker, compare the available targets, and use Local Ask, Agent, and Plan roles
+<p><strong>Objective</strong>: Separate harness selection from model selection, then prove how the Claude harness discovers and applies native <code>CLAUDE.md</code> project guidance
 <strong>Duration</strong>: 5 min demo + 8 min hands-on = 13 min<br><strong>After Slide</strong>: 18</p>
 <h3 id="setup-before-demo">Setup Before Demo</h3>
 <ul>
 <li>App running (<code>npm run dev</code>)</li>
 <li>VS Code 1.140 or later open with the project</li>
-<li>Copilot Chat panel open (sidebar)</li>
-<li>No prior chat history (start fresh: click &quot;+&quot; for new chat)</li>
-<li>Git worktree clean so read-only behavior can be verified</li>
+<li>Claude target installed, authenticated, entitled, and approved by the organization</li>
+<li>A disposable branch, worktree, or facilitator-only clone of OctoCAT Supply open in VS Code</li>
+<li>A root <code>CLAUDE.md</code> prepared with the exact content below</li>
+<li>Copilot Chat panel open with no prior chat history (click &quot;+&quot; for a new chat)</li>
+<li>Git worktree clean except for the prepared <code>CLAUDE.md</code></li>
 <li>Default/manual approval behavior selected</li>
-<li>Backup screenshots of the empty target picker, Local roles, and an active Copilot session ready</li>
+<li>Backup screenshots or a recording showing the target picker, <code>/context</code> result, tool activity, diff, and passing validation</li>
 </ul>
+<p>Prepare this project guidance before the session:</p>
+<pre><code class="language-markdown"># OctoCAT Supply Agent Guidance
+
+- Follow the existing route and test patterns in the API.
+- Implement headquarters search by city or state with case-insensitive matching.
+- Add Swagger/OpenAPI documentation for new endpoints.
+- Add Vitest coverage for success, empty-result, and invalid-query behavior.
+- Run the focused tests and `npm run build` before finishing.
+- Update API documentation when endpoint behavior changes.
+- Never place credentials or secrets in source files.
+</code></pre>
 <h3 id="step-by-step-script">Step-by-Step Script</h3>
-<h4 id="part-a-choose-the-target-before-the-first-prompt-15-min">Part A: Choose the Target Before the First Prompt (1.5 min)</h4>
+<h4 id="part-a-separate-target-from-model-1-min">Part A: Separate Target from Model (1 min)</h4>
 <ol>
 <li>Start a new chat.</li>
 <li>Before entering a prompt, open the <strong>Session Target</strong> control and show the available entries: Local, Copilot, Claude, Codex, and Cloud. Explain that availability varies by account, installation, authentication, entitlement, and organization policy.</li>
 <li>Give the one-line map:<ul>
 <li><strong>Local</strong>: built-in VS Code harness; Ask, Agent, and Plan</li>
-<li><strong>Copilot</strong>: GitHub Copilot SDK harness; Interactive, Plan, and Autopilot</li>
-<li><strong>Claude</strong>: Anthropic Claude Agent SDK and Claude-native controls</li>
-<li><strong>Codex</strong>: OpenAI Codex harness and Codex-native controls</li>
+<li><strong>Copilot</strong>: GitHub Copilot SDK harness; Copilot-native controls and project guidance</li>
+<li><strong>Claude</strong>: Anthropic Claude Agent SDK; Claude-native controls and <code>CLAUDE.md</code></li>
+<li><strong>Codex</strong>: OpenAI Codex harness; Codex-native controls and <code>AGENTS.md</code></li>
 <li><strong>Cloud</strong>: remote provider agent that works against a GitHub repository and returns a pull request</li>
 </ul>
 </li>
-<li>Select <strong>Local</strong>.</li>
-<li>Open the role picker and show <strong>Ask</strong>, <strong>Agent</strong>, and <strong>Plan</strong>.</li>
-<li>Point out the model picker and explain that changing the model does not change the target.</li>
-<li><strong>Talking point</strong>: &quot;Target chooses the harness or remote destination. The roles, modes, tools, permissions, and models that follow belong to that target.&quot;</li>
-<li><strong>Clarify</strong>: &quot;Local is a harness name, not an offline model. Background is session behavior, not a target.&quot;</li>
+<li>Point out the separate model picker. Selecting a Claude model in Local changes the reasoning model; it does not select the Claude harness or convert project configuration formats.</li>
+<li>Select <strong>Claude</strong>.</li>
+<li><strong>Talking point</strong>: &quot;The model is the reasoning engine. The harness prepares context, discovers supported project configuration, coordinates tools and approvals, and tracks the session.&quot;</li>
 </ol>
-<p><strong>Visible checkpoint</strong>: Local is selected, Ask/Agent/Plan are visible, and the workshop workspace has no changes.</p>
-<h4 id="part-b-ask-role-1-min">Part B: Ask Role (1 min)</h4>
+<p><strong>Visible checkpoint</strong>: Claude is selected as the target, and the model remains a separate control.</p>
+<h4 id="part-b-prove-claudemd-discovery-1-min">Part B: Prove <code>CLAUDE.md</code> Discovery (1 min)</h4>
 <ol>
-<li><p>Select <strong>Local + Ask</strong>.</p>
-</li>
-<li><p>Enter:</p>
-<pre><code>Please give me details about the API of this project.
+<li><p>Run:</p>
+<pre><code class="language-text">/context
 </code></pre>
 </li>
-<li><p>Point out how Copilot references:</p>
+<li><p>Under the loaded project or memory instructions, locate the repository-root <code>CLAUDE.md</code>.</p>
+</li>
+<li><p>If <code>/context</code> is unavailable in the installed build, open <strong>Chat: Open Customizations</strong> after selecting Claude, or expand <strong>References</strong> in the first response.</p>
+</li>
+<li><p>Explain that root <code>CLAUDE.md</code> guidance is normally loaded at session start. The tool trace might not contain a visible file-read call.</p>
+</li>
+<li><p><strong>Talking point</strong>: &quot;We are proving configuration discovery through the loaded context, not asking the model to claim that it read a file.&quot;</p>
+</li>
+</ol>
+<p><strong>Visible checkpoint</strong>: The UI identifies the expected root <code>CLAUDE.md</code> as loaded project guidance.</p>
+<h4 id="part-c-give-an-outcome-not-an-implementation-script-2-min">Part C: Give an Outcome, Not an Implementation Script (2 min)</h4>
+<ol>
+<li><p>Enter:</p>
+<pre><code class="language-text">Add headquarters search capability to the API.
+</code></pre>
+</li>
+<li><p>Narrate only observable behavior. Point out when the agent:</p>
 <ul>
-<li>The Express.js architecture</li>
-<li>Specific route files (<code>product.ts</code>, <code>supplier.ts</code>, <code>branch.ts</code>)</li>
-<li>The Swagger/OpenAPI documentation</li>
-<li>Entity models and relationships</li>
+<li>Searches the codebase and reads an existing route and test as patterns</li>
+<li>Chooses the appropriate API route rather than inventing an unrelated structure</li>
+<li>Implements case-insensitive city or state filtering</li>
+<li>Adds Swagger/OpenAPI documentation and focused Vitest coverage</li>
+<li>Runs focused tests and <code>npm run build</code></li>
 </ul>
 </li>
-<li><p>Confirm that the worktree has not changed.</p>
+<li><p>If execution will exceed the demo window, stop after discovery and switch to prepared evidence from the completed run.</p>
 </li>
-<li><p>Enter:</p>
-<pre><code>Are there any core features missing in my project?
-</code></pre>
-</li>
-<li><p><strong>Talking point</strong>: &quot;Ask is the Local role for questions and guidance. If you choose the Copilot target, Ask disappears; use Copilot Interactive and state a read-only boundary explicitly.&quot;</p>
+<li><p><strong>Talking point</strong>: &quot;The prompt supplied the outcome. The repository supplied the team&#39;s constraints. The harness assembled both for the model and coordinated the work.&quot;</p>
 </li>
 </ol>
-<h4 id="part-c-plan-role-1-min">Part C: Plan Role (1 min)</h4>
+<p><strong>Visible checkpoint</strong>: The tool activity and resulting changes align with the concrete <code>CLAUDE.md</code> checklist.</p>
+<h4 id="part-d-explain-and-verify-1-min">Part D: Explain and Verify (1 min)</h4>
 <ol>
-<li><p>Select <strong>Plan</strong> from the Local role picker, or type <code>/plan</code>.</p>
-</li>
 <li><p>Enter:</p>
-<pre><code>I want to add input validation to the Product API POST endpoint. What&#39;s the best approach?
+<pre><code class="language-text">Which repository instructions and existing implementation patterns influenced your changes? Cite the files you used.
 </code></pre>
 </li>
-<li><p>Show the proposed files, approach, validation library, and ordered steps.</p>
+<li><p>Compare the response with the loaded References, tool activity, actual diff, and test output.</p>
 </li>
-<li><p>Do not start implementation.</p>
+<li><p>State that the retrospective is supporting evidence, not proof by itself.</p>
 </li>
-<li><p><strong>Talking point</strong>: &quot;The Local Plan role creates a reviewable checkpoint. After review, you can start implementation with the Agent role or save the plan.&quot;</p>
+<li><p><strong>Talking point</strong>: &quot;Claude&#39;s native configuration makes this behavior predictable for teams already using that workflow. It is not exclusive: Local can also discover <code>CLAUDE.md</code> when its compatibility setting is enabled.&quot;</p>
 </li>
-</ol>
-<h4 id="part-d-agent-implementation-1-min">Part D: Agent Implementation (1 min)</h4>
-<ol>
-<li><p>Switch to <strong>Agent</strong>.</p>
+<li><p><strong>Guardrail</strong>: &quot;Instructions guide behavior; they do not enforce policy. A sentence such as &#39;never commit secrets&#39; still needs secret scanning, push protection, hooks, or CI controls.&quot;</p>
 </li>
-<li><p>Enter:</p>
-<pre><code>Please build and run my project so that I can see its existing state.
-</code></pre>
+<li><p><strong>Sound bite</strong>: &quot;Developers specify the outcome and constraints. The harness discovers applicable instructions, gathers context, and coordinates the implementation steps.&quot;</p>
 </li>
-<li><p><strong>Show Copilot</strong>:</p>
-<ul>
-<li>Reading <code>package.json</code></li>
-<li>Running terminal commands (<code>npm install</code>, <code>npm run dev</code>)</li>
-<li>Verifying the build succeeded</li>
-<li>(If app is already running, it may detect that and skip build)</li>
-</ul>
-</li>
-<li><p><strong>Visible checkpoint</strong>: API is available on port 3000 and the frontend is available on port 5137.</p>
-</li>
-<li><p><strong>Talking point</strong>: &quot;Agent is the implementation role we&#39;ll use for the rest of the workshop. It lets us steer, approve, and course-correct.&quot;</p>
-</li>
-</ol>
-<h4 id="part-e-explain-why-the-picker-changes-30-sec">Part E: Explain Why the Picker Changes (30 sec)</h4>
-<ol>
-<li>Reopen the Session Target control in the active Local session.</li>
-<li>Explain that it is now a <strong>handoff</strong> control that can continue the conversation with another available target.</li>
-<li>Do not select a destination.</li>
-<li>Show the backup screenshot of an active Copilot session without the target dropdown.</li>
-<li><strong>Talking point</strong>: &quot;Current VS Code initiates cross-target handoff from Local. After Copilot, Claude, Codex, or Cloud takes ownership, start a new chat to return to Local or choose another target.&quot;</li>
 </ol>
 <h3 id="hands-on-instructions-8-min">Hands-On Instructions (8 min)</h3>
 <p>Tell attendees:</p>
@@ -306,20 +302,25 @@
 <h3 id="key-points-to-emphasize">Key Points to Emphasize</h3>
 <ul>
 <li>Session Target, role or mode, model, permissions, and execution environment are separate controls</li>
+<li>Harness choice affects supported project configuration, tools, approvals, and workflows</li>
 <li>Local exposes Ask, Agent, and Plan; other targets expose different controls</li>
 <li>Local does not mean the selected language model runs offline</li>
 <li>Selecting a Claude model is not the same as selecting the Claude target</li>
+<li><code>CLAUDE.md</code> is Claude-native project guidance, but Local can also discover it when <code>chat.useClaudeMdFile</code> is enabled</li>
+<li>Instruction files shape behavior; tests, hooks, and platform controls enforce requirements</li>
 <li>An active Local target picker initiates a handoff; an active Agent Host target does not show that picker</li>
 <li>Cloud is an umbrella target; Section 9 covers GitHub Copilot cloud agent specifically</li>
 </ul>
 <h3 id="backup-plan">Backup Plan</h3>
-<p>If the controls differ or Local is unavailable:</p>
+<p>If Claude is unavailable or the live task runs long:</p>
 <ol>
-<li>Start a new chat and confirm that <strong>Local</strong> is selected before the first prompt.</li>
-<li>Confirm VS Code and Copilot extensions are current.</li>
-<li>Use the backup screenshots and the Session Target, Local Roles, and Picker Lifecycle slides.</li>
-<li>If tool execution is slow, stop after the plan and show the already-running application.</li>
+<li>Do not ask attendees to install or authenticate with an unapproved provider.</li>
+<li>Show prepared screenshots or a recording of <code>/context</code>, the tool trace, the completed diff, and passing tests.</li>
+<li>Use the Harness-Native Project Guidance slide to narrate the configuration distinction.</li>
+<li>Continue the hands-on exercise with <strong>Local</strong>, which requires no provider-specific sign-in.</li>
 </ol>
+<h3 id="reset">Reset</h3>
+<p>Close and remove the disposable worktree or discard the facilitator-only clone. Do not carry the generated search endpoint into later workshop exercises.</p>
 <h3 id="likely-failure-modes-and-recovery">Likely Failure Modes and Recovery</h3>
 <table>
 <thead>
@@ -329,6 +330,26 @@
 </tr>
 </thead>
 <tbody><tr>
+<td>Claude target is unavailable</td>
+<td>Use the prepared recording or screenshots; continue hands-on with Local</td>
+</tr>
+<tr>
+<td><code>CLAUDE.md</code> is absent from <code>/context</code></td>
+<td>Confirm it is at the session working-folder root, start a new Claude session, then check Chat: Open Customizations or References</td>
+</tr>
+<tr>
+<td>No visible read of <code>CLAUDE.md</code> appears</td>
+<td>Explain that root guidance loads at session start; use <code>/context</code> or References as evidence</td>
+</tr>
+<tr>
+<td>Agent omits one checklist item</td>
+<td>Treat it as a teachable limitation: inspect the diff, restate the missed acceptance criterion, and rely on tests or policy controls for enforcement</td>
+</tr>
+<tr>
+<td>Live implementation exceeds two minutes</td>
+<td>Stop the run and switch to the prepared completed diff and test output</td>
+</tr>
+<tr>
 <td>Ask, Agent, or Plan is missing</td>
 <td>Start a new chat, select Local before the first prompt, and update VS Code and the Copilot extensions</td>
 </tr>
