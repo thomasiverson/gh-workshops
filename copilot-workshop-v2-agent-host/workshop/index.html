@@ -1,0 +1,3061 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot: Zero to Agents Workshop (Agent Host)</title><link rel="stylesheet" href="/gh-workshops/_astro/_document_.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/_document_.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-zero-to-agents-workshop-agent-host">GitHub Copilot: Zero to Agents Workshop (Agent Host)</h1>
+<p><strong>Duration</strong>: 4 hours 45 minutes scheduled (270 minutes of instruction + one 15-minute break; no lunch)
+<strong>Format</strong>: Presentation + Live Demo + Hands-On
+<strong>Audience</strong>: Developers with basic Copilot exposure (completions/chat)
+<strong>Focus</strong>: Copilot Agent Host, portable customization, and local-to-cloud agent workflows
+<strong>Repo</strong>: <a href="https://github.com/microsoft/GitHubCopilot_Customized" target="_blank" rel="noopener noreferrer">microsoft/GitHubCopilot_Customized</a> (OctoCAT Supply)</p>
+<hr>
+<h2 id="workshop-overview">Workshop Overview</h2>
+<p>This session teaches the forward GitHub Copilot workflow in VS Code: the <strong>Copilot harness running in Agent Host</strong>. Attendees begin with inline assistance, then learn how Agent Host separates the harness, model, mode, permissions, and execution environment. They build a portable customization stack with memory, instructions, Agent Skills, custom agents, and MCP servers; migrate legacy Local prompt files to skills; continue the same Copilot runtime in the CLI; and close with autonomous cloud agents and GitHub Copilot code review.</p>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li>Start a Copilot Agent Host session and distinguish the host, harness, model, mode, permissions, execution environment, and code isolation</li>
+<li>Select and justify Copilot Interactive, Plan, or Autopilot for a bounded task, including approval and sandbox tradeoffs</li>
+<li>Use inline completions and inline chat for fast, focused code edits</li>
+<li>Explain Copilot Memory scopes and distinguish personal context from reviewable team guidance</li>
+<li>Create custom instructions that encode team standards and internal frameworks</li>
+<li>Migrate deprecated Local prompt files into portable Agent Skills</li>
+<li>Design Agent Skills that Copilot can load by relevance or invoke explicitly</li>
+<li>Build a custom agent with a constrained tool profile and explain how a search-only planner prepares a human-reviewed delegation brief</li>
+<li>Configure portable MCP servers for browser testing and GitHub integration</li>
+<li>Use the standalone GitHub Copilot CLI as another surface for the shared Copilot runtime</li>
+<li>Evaluate when to delegate work to Copilot cloud agent and when to request GitHub Copilot code review</li>
+</ul>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub Account</strong></td>
+<td>With a Copilot Pro, Pro+, Business, Enterprise, or Max entitlement that exposes the workshop features</td>
+</tr>
+<tr>
+<td><strong>VS Code</strong></td>
+<td>Version 1.140 or later; latest stable recommended</td>
+</tr>
+<tr>
+<td><strong>Copilot Extension</strong></td>
+<td>GitHub Copilot + GitHub Copilot Chat extensions installed</td>
+</tr>
+<tr>
+<td><strong>Copilot Session Target</strong></td>
+<td>Copilot harness visible and permitted by your organization</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>Version 22 or higher (satisfies the demo app and npm installation of Copilot CLI)</td>
+</tr>
+<tr>
+<td><strong>npm</strong></td>
+<td>Latest version recommended</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>For cloning the demo repository</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot CLI</strong></td>
+<td>Install from <a href="https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli" target="_blank" rel="noopener noreferrer">docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli</a> — required for Section 8</td>
+</tr>
+<tr>
+<td><strong>PowerShell on Windows</strong></td>
+<td>PowerShell 7 or later for GitHub Copilot CLI</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="session-agenda">Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><a href="#1-welcome-objectives--environment-setup-20-min">Welcome, Objectives &amp; Environment Setup</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>1b</td>
+<td><a href="#1b-inline-completion--inline-chat-15-min">Inline Completion &amp; Inline Chat</a></td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="#2-copilot-agent-host-sessions-harness-modes-and-workspaces-25-min">Copilot Agent Host Sessions: Harness, Modes, and Workspaces</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>2b</td>
+<td><a href="#2b-copilot-interactive-context-tools-and-explicit-boundaries-10-min">Copilot Interactive: Context, Tools, and Explicit Boundaries</a></td>
+<td>10 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="#3-copilot-memory--custom-instructions-35-min">Copilot Memory &amp; Custom Instructions</a></td>
+<td>35 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="#4-migrate-prompt-files-to-agent-skills-25-min">Migrate Prompt Files to Agent Skills</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>Mid-session break</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="#5-design-portable-agent-skills-25-min">Design Portable Agent Skills</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="#6-custom-agents-in-agent-host-25-min">Custom Agents in Agent Host</a></td>
+<td>25 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="#7-portable-mcp-configuration-playwright--github-30-min">Portable MCP Configuration (Playwright + GitHub)</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>8</td>
+<td><a href="#8-github-copilot-cli-same-runtime-new-surface-30-min">GitHub Copilot CLI: Same Runtime, New Surface</a></td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>9</td>
+<td><a href="#9-cloud-agents-copilot-cloud-agent--github-copilot-code-review-20-min">Cloud Agents: Copilot cloud agent + GitHub Copilot code review</a></td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>10</td>
+<td><a href="#10-wrap-up-customization-hierarchy-recap--qa-10-min">Wrap-Up, Customization Hierarchy Recap &amp; Q&amp;A</a></td>
+<td>10 min</td>
+</tr>
+</tbody></table>
+<p><strong>Instructional total</strong>: 270 min (4h 30min)</p>
+<p><strong>Scheduled total</strong>: 285 min (4h 45min), including one 15-minute break; no lunch</p>
+<hr>
+<h2 id="1-welcome-objectives--environment-setup-20-min">1. Welcome, Objectives &amp; Environment Setup (20 min)</h2>
+<h3 id="required-prework">Required Prework</h3>
+<p>Complete the fork, clone, dependency installation, and first build before the scheduled workshop. Allow 30–45 minutes depending on network and package-cache state. Section 1 verifies the prepared environment; it does not reserve time for a fresh installation.</p>
+<h3 id="-demo-verify-the-octocat-supply-app">🖥️ DEMO: Verify the OctoCAT Supply App</h3>
+<ol>
+<li>Show the <a href="https://github.com/microsoft/GitHubCopilot_Customized" target="_blank" rel="noopener noreferrer">GitHub repo</a> in the browser</li>
+<li>Walk through the architecture: React 18+ frontend (Vite, Tailwind) + Express.js API (TypeScript, Swagger)</li>
+<li>Show the ERD diagram in <code>api/ERD.png</code></li>
+<li>Point out the <code>.github/</code> directory structure — prompts, agents (no instructions yet, no skills yet — we&#39;ll build those)</li>
+</ol>
+<details>
+<summary><h3 id="-required-prework-environment-setup-3045-min-before-workshop">🧪 Required Prework: Environment Setup (30–45 min before workshop)</h3></summary>
+
+<p><strong>Step 1: Fork, Clone, and Pin the Tested Starter</strong></p>
+<pre><code class="language-bash"># Fork the repo via GitHub UI, then:
+git clone https://github.com/&lt;YOUR-USERNAME&gt;/GitHubCopilot_Customized.git
+cd GitHubCopilot_Customized
+git switch --create workshop-agent-host 71209b7a796c967ec1bfd65dcd5898220750e4e1
+</code></pre>
+<p><strong>Step 2: Replace the Upstream Delegation Agent</strong></p>
+<p>Replace <code>.github/agents/ImplementationIdeas.agent.md</code> with this workshop-safe, search-only profile:</p>
+<pre><code class="language-markdown">---
+tools: [&#39;search&#39;]
+description: Explore implementation ideas and prepare bounded delegation briefs for approved variations
+---
+
+# Implementation Ideas
+
+Research the problem and solution space, then summarize distinct variations, tradeoffs, affected files, and verification criteria. Wait for the user to approve specific variations.
+
+For each approved variation, produce a bounded, copyable `/delegate` brief. Do not call external tools, create pull requests, or start cloud work. The user owns the explicit delegation step.
+</code></pre>
+<p>Commit the safe baseline locally so later cleanup cannot restore the upstream write-capable version:</p>
+<pre><code class="language-bash">git add .github/agents/ImplementationIdeas.agent.md
+git commit -m &quot;Use workshop-safe implementation ideas agent&quot;
+git push --set-upstream origin workshop-agent-host
+git status --short
+git rev-parse HEAD
+</code></pre>
+<p>Record the final command&#39;s output as <code>&lt;SAFETY_BASELINE_SHA&gt;</code> for the optional delegation exercise.</p>
+<p><strong>Step 3: Install &amp; Build</strong></p>
+<pre><code class="language-bash">npm ci
+npm run build
+</code></pre>
+<p><strong>Step 4: Start the Application</strong></p>
+<pre><code class="language-bash">npm run dev
+</code></pre>
+<p><strong>Step 5: Verify</strong></p>
+<ul>
+<li>API running at <code>http://localhost:3000</code> — open Swagger docs at <code>http://localhost:3000/api-docs</code></li>
+<li>Frontend running at <code>http://localhost:5137</code> — open in browser, click &quot;Products&quot;</li>
+<li>VS Code: Open Command Palette → type &quot;Copilot&quot; → verify extension is active</li>
+<li><code>.github/agents/ImplementationIdeas.agent.md</code> has only <code>tools: [&#39;search&#39;]</code>, contains no PR/cloud action, and <code>git status --short</code> is empty</li>
+</ul>
+<blockquote>
+<p><strong>Codespaces Alternative</strong>: If using Codespaces, ensure API port (3000) visibility is set to <code>public</code> to avoid CORS errors.</p>
+</blockquote>
+</details>
+
+<h3 id="in-session-environment-checkpoint-5-min">In-Session Environment Checkpoint (5 min)</h3>
+<ul>
+<li>Run <code>git status --short</code> and confirm the intended workshop fork and branch.</li>
+<li>Confirm API Swagger at <code>http://localhost:3000/api-docs</code> and the frontend at <code>http://localhost:5137</code>.</li>
+<li>Confirm the Copilot Session Target and GitHub Copilot CLI are available.</li>
+<li>Learners who are not ready pair with a prepared partner or use facilitator backup evidence rather than delaying the cohort.</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Who has used Copilot Chat before? What modes have you tried?</li>
+<li>What&#39;s your biggest frustration with Copilot today? (Common answer: &quot;It doesn&#39;t know our internal stuff&quot; — tease Section 3)</li>
+</ul>
+<hr>
+<h2 id="1b-inline-completion--inline-chat-15-min">1b. Inline Completion &amp; Inline Chat (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Inline completions</strong> are Copilot&#39;s fastest path: suggestions appear as ghost text directly in the editor while you type</li>
+<li>Comments, function names, partially written expressions, and nearby code all shape the suggestion</li>
+<li><strong>Inline chat</strong> (<code>Ctrl+I</code> on Windows/Linux, <code>Cmd+I</code> on macOS) is best for small, focused edits in the current file or selection</li>
+<li>Use inline completion when you know the local change; use the Chat view when you need broader codebase reasoning or multi-file work</li>
+<li>Always review generated edits before accepting — Copilot accelerates the edit, but you still own the code</li>
+</ul>
+<h3 id="inline-completion-vs-inline-chat-vs-chat-view">Inline Completion vs Inline Chat vs Chat View</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Best For</th>
+<th>Scope</th>
+<th>Typical Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Inline Completion</strong></td>
+<td>Completing code as you type</td>
+<td>Current file and nearby code</td>
+<td>Accept ghost text with <code>Tab</code></td>
+</tr>
+<tr>
+<td><strong>Inline Chat</strong></td>
+<td>Focused edits to selected code</td>
+<td>Current file or selection</td>
+<td>Ask, preview, accept changes</td>
+</tr>
+<tr>
+<td><strong>Copilot Interactive / Plan modes</strong></td>
+<td>Explanation, planning, and multi-file work</td>
+<td>Agent Host session, workspace, and tools</td>
+<td>Chat-driven workflow</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="-demo-explain-before-you-edit-in-headquartersts">🖥️ DEMO: Explain Before You Edit in <code>headquarters.ts</code></h3>
+<p>Ease attendees into inline chat by using it as a local code-reading tool before asking it to change anything.</p>
+<ol>
+<li>Open <code>api/src/routes/headquarters.ts</code> in the OctoCAT Supply repo</li>
+<li>Highlight the existing <code>router.put(&#39;/:id&#39;, ...)</code> handler</li>
+<li>Press <code>Ctrl+I</code> / <code>Cmd+I</code></li>
+<li>Ask:</li>
+</ol>
+<pre><code class="language-text">Explain what this method does and call out what happens to fields that are not included in req.body.
+</code></pre>
+<ol start="5">
+<li>Show that Copilot explains the route, identifies the full replacement behavior, and surfaces the risk: omitted fields can be lost because <code>headquartersList[index] = req.body</code></li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Before asking Copilot to edit code, ask it to explain the behavior in place. This builds trust, verifies that Copilot understands the local pattern, and gives you the words for the next change.&quot;</p>
+<hr>
+<h3 id="-demo-comment-to-code-in-headquartersts">🖥️ DEMO: Comment-to-Code in <code>headquarters.ts</code></h3>
+<ol>
+<li>Keep <code>api/src/routes/headquarters.ts</code> open</li>
+<li>Place the cursor after the <code>PUT /:id</code> handler and type this comment slowly:</li>
+</ol>
+<pre><code class="language-ts">// Add a PATCH route to update selected fields instead of replacing the entire headquarters record
+</code></pre>
+<ol start="3">
+<li>Pause after the comment and let Copilot offer an inline completion</li>
+<li>Accept the useful parts with <code>Tab</code>; use <code>Esc</code> or keep typing if the suggestion is wrong</li>
+<li>Review the generated route and look for the important pattern:</li>
+</ol>
+<pre><code class="language-ts">headquartersList[index] = { ...headquartersList[index], ...req.body };
+</code></pre>
+<ol start="6">
+<li>Run or explain the expected behavior: <code>PATCH /api/headquarters/1</code> updates only fields included in the request body</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;This is the smallest Copilot loop: write intent as a comment, inspect the ghost text, accept only what helps. You&#39;re not asking Copilot to understand the whole app — you&#39;re using the code around your cursor as the context.&quot;</p>
+<hr>
+<h3 id="-demo-refine-with-inline-chat">🖥️ DEMO: Refine with Inline Chat</h3>
+<p>After accepting the first completion, use inline chat to improve it without leaving the editor.</p>
+<ol>
+<li>Select the generated <code>router.patch(&#39;/:id&#39;, ...)</code> handler</li>
+<li>Press <code>Ctrl+I</code> / <code>Cmd+I</code></li>
+<li>Try these focused inline chat edit prompts one at a time:</li>
+</ol>
+<pre><code class="language-text">Add validation so headquartersId cannot be changed by PATCH and send 400 when the request body is empty. Keep the Express handler return type void: call res.status(...).json(...); then return; do not return the Response object.
+</code></pre>
+<pre><code class="language-text">Add Swagger documentation for this PATCH route using the same style as the existing PUT route.
+</code></pre>
+<ol start="4">
+<li>Show the inline diff preview before accepting</li>
+<li>Accept the changes, then verify all four contracts through Swagger or prepared <code>curl</code> commands:<ul>
+<li><code>PATCH /api/headquarters/1</code> with <code>{&quot;description&quot;:&quot;Workshop check&quot;,&quot;headquartersId&quot;:999}</code> returns <code>200</code>, keeps <code>headquartersId: 1</code>, and preserves <code>name: &quot;CatTech Global HQ&quot;</code></li>
+<li><code>PATCH /api/headquarters/1</code> with <code>{}</code> returns <code>400</code></li>
+<li><code>PATCH /api/headquarters/9999</code> returns <code>404</code></li>
+<li><code>npm run build</code> succeeds</li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-powershell">curl.exe -i -X PATCH &quot;http://localhost:3000/api/headquarters/9999&quot; -H &quot;Content-Type: application/json&quot; -d &#39;{&quot;city&quot;:&quot;Seattle&quot;}&#39;
+</code></pre>
+<pre><code class="language-bash">curl -i -X PATCH &quot;http://localhost:3000/api/headquarters/9999&quot; -H &quot;Content-Type: application/json&quot; -d &#39;{&quot;city&quot;:&quot;Seattle&quot;}&#39;
+</code></pre>
+<ol start="6">
+<li>Restart <code>npm run dev</code> after verification to restore the in-memory seed data</li>
+<li>If any contract fails, ask inline chat to repair only that behavior before accepting more changes</li>
+<li>Keep the PATCH handler selected, open the Chat view, select <strong>Copilot + Interactive</strong>, and ask for an explanation:</li>
+</ol>
+<pre><code class="language-text">Explain what changed and call out any edge cases I should test.
+</code></pre>
+<blockquote>
+<p><strong>Note</strong>: Use Ask in the Chat view for explanation prompts. Inline chat is optimized for edits and may respond that there are no changes to make.</p>
+</blockquote>
+<p><strong>Talking point</strong>: &quot;Inline chat is not a separate workflow — it&#39;s a scalpel inside the editor. Use it when the change is local enough that opening a full chat session would be more ceremony than value.&quot;</p>
+<details>
+<summary><h3 id="-hands-on-inline-completion--inline-chat-6-min">🧪 Hands-On: Inline Completion + Inline Chat (6 min)</h3></summary>
+
+<p><strong>Exercise 1 — Generate a PATCH Route</strong></p>
+<ol>
+<li>Open <code>api/src/routes/headquarters.ts</code></li>
+<li>Highlight the <code>PUT /:id</code> handler and open inline chat with <code>Ctrl+I</code> / <code>Cmd+I</code></li>
+<li>Ask Copilot to explain what the method does and what happens when fields are omitted from <code>req.body</code></li>
+<li>Add this comment after the handler:</li>
+</ol>
+<pre><code class="language-ts">// Add a PATCH route to update selected fields instead of replacing the entire headquarters record
+</code></pre>
+<ol start="5">
+<li>Wait for Copilot&#39;s inline completion and accept the useful suggestion with <code>Tab</code></li>
+<li>Confirm the generated route preserves existing fields and merges only the submitted fields</li>
+</ol>
+<p><strong>Exercise 2 — Improve the Route with Inline Chat</strong></p>
+<ol>
+<li>Select the generated PATCH handler</li>
+<li>Open inline chat with <code>Ctrl+I</code> / <code>Cmd+I</code></li>
+<li>Ask:</li>
+</ol>
+<pre><code class="language-text">Add validation so headquartersId cannot be changed by PATCH and send 400 when the request body is empty. Keep the Express handler return type void: call res.status(...).json(...); then return; do not return the Response object.
+</code></pre>
+<ol start="4">
+<li>Review the inline diff and accept it if it preserves the existing route style</li>
+<li>If TypeScript reports <code>No overload matches this call</code>, check for <code>return res.status(...).json(...)</code> and change it to <code>res.status(...).json(...); return;</code></li>
+<li>Through Swagger or <code>curl</code>, verify a partial update preserves the existing name and <code>headquartersId</code>, an empty body returns <code>400</code>, and an unknown ID returns <code>404</code></li>
+<li>Run <code>npm run build</code>, then restart <code>npm run dev</code> to restore the in-memory seed data</li>
+</ol>
+<p><strong>Exercise 3 — Add Documentation</strong></p>
+<ol>
+<li>Place the cursor above the PATCH handler</li>
+<li>Use inline completion or inline chat to add Swagger documentation matching the existing route comments</li>
+<li>Check that the docs describe a partial update, not a full replacement</li>
+</ol>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You can use inline chat to explain selected code before editing it</li>
+<li>✅ You can trigger and accept an inline completion from a descriptive comment</li>
+<li>✅ You can use inline chat to refine selected code without leaving the editor</li>
+<li>✅ Your PATCH route preserves existing headquarters fields when only selected fields are provided</li>
+<li>✅ The route rejects an empty body and an attempted <code>headquartersId</code> change, preserves existing fields, returns <code>404</code> for an unknown ID, and passes the build</li>
+<li>✅ You understand when inline workflows are enough and when to move to Copilot Interactive or Plan</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>What made the inline completion better: the comment, the nearby <code>PUT</code> handler, or both?</li>
+<li>Where would inline chat fit into your daily workflow compared with the full Chat view?</li>
+<li>What review checks should you apply before accepting generated inline code?</li>
+</ul>
+<hr>
+<h2 id="2-copilot-agent-host-sessions-harness-modes-and-workspaces-25-min">2. Copilot Agent Host Sessions: Harness, Modes, and Workspaces (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Agent Host</strong> is the dedicated process that owns sessions independently of the VS Code window displaying them</li>
+<li>An <strong>agent harness</strong> connects a model to context, tools, permissions, project configuration, and the agent loop</li>
+<li>For this workshop, select the <strong>Copilot</strong> Session Target unless an exercise explicitly compares another harness</li>
+<li>The Copilot harness uses the GitHub Copilot SDK runtime also used by GitHub Copilot CLI and the GitHub Copilot app</li>
+<li>The model picker is separate from the Session Target; changing the model does not switch harnesses or convert customization formats</li>
+<li><strong>Interactive</strong>, <strong>Plan</strong>, and <strong>Autopilot</strong> are Copilot operating modes; they are not model names or permission levels</li>
+<li>Permissions and sandboxing remain separate from the mode; Autopilot skips approvals and should be used only in a trusted, bounded environment</li>
+<li>Folder versus worktree controls where changes land; Copilot worktree sessions use <strong>Allow all</strong>, and a worktree is code isolation rather than a security boundary</li>
+</ul>
+<blockquote>
+<p><strong>UI baseline (verified October 6, 2026)</strong>: These labels match VS Code 1.140 and the <a href="https://code.visualstudio.com/docs/agents/run/agent-harnesses" target="_blank" rel="noopener noreferrer">current VS Code agent harness documentation</a>. Availability varies by account, installed providers, authentication, and organization policy.</p>
+</blockquote>
+<h3 id="host-harness-and-session-vocabulary">Host, Harness, and Session Vocabulary</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>What It Controls</th>
+<th>Workshop Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Agent Host</strong></td>
+<td>Process that owns persistent sessions and runs harness adapters</td>
+<td>Dedicated local Agent Host process</td>
+</tr>
+<tr>
+<td><strong>Session Target</strong></td>
+<td>Harness or Cloud destination selected for a new session</td>
+<td>Copilot</td>
+</tr>
+<tr>
+<td><strong>Harness</strong></td>
+<td>Agent runtime, tools, project formats, commands, and permission behavior</td>
+<td>GitHub Copilot SDK harness</td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>Reasoning, latency, and AI-credit characteristics</td>
+<td>Auto or a facilitator-approved model</td>
+</tr>
+<tr>
+<td><strong>Mode</strong></td>
+<td>How the Copilot harness approaches the task</td>
+<td>Interactive, Plan, or Autopilot</td>
+</tr>
+<tr>
+<td><strong>Execution environment</strong></td>
+<td>Where workspace tools and commands run</td>
+<td>Machine, connected host, or Dev Container</td>
+</tr>
+<tr>
+<td><strong>Code isolation</strong></td>
+<td>Which checkout receives edits</td>
+<td>Current folder or new Git worktree</td>
+</tr>
+</tbody></table>
+<h3 id="session-target-comparison">Session Target Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>What It Runs</th>
+<th>Controls You May See</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Copilot</strong></td>
+<td>GitHub Copilot SDK harness in Agent Host</td>
+<td>Interactive, Plan, Autopilot; agents, skills, hooks, and portable MCP</td>
+<td>General coding and this workshop&#39;s default workflow</td>
+</tr>
+<tr>
+<td><strong>Claude</strong></td>
+<td>Anthropic Claude Agent SDK harness</td>
+<td>Claude agents, models, commands, and permission modes</td>
+<td>Claude-native workflows and <code>CLAUDE.md</code> or <code>.claude/rules/</code> configuration</td>
+</tr>
+<tr>
+<td><strong>Codex</strong></td>
+<td>OpenAI Codex harness</td>
+<td>Codex models, configuration, and approval controls</td>
+<td>Codex-native workflows and <code>AGENTS.md</code> configuration</td>
+</tr>
+<tr>
+<td><strong>Local</strong></td>
+<td>Built-in VS Code harness in the extension host</td>
+<td>Ask, Agent, Plan; extension tools; VS Code-configured models</td>
+<td>Transitional workflows that still require extension-host capabilities</td>
+</tr>
+<tr>
+<td><strong>Cloud</strong></td>
+<td>A selected provider harness on remote infrastructure</td>
+<td>Provider, agent, and model choices when available</td>
+<td>Independent work against a GitHub repository that returns a pull request</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Migration status</strong>: Prompt files are deprecated for Agent Host and Local is scheduled for removal in a future VS Code release. Use Local only when a current dependency requires its extension-host tools or VS Code-configured models; do not build new team workflows around it.</p>
+</blockquote>
+<h3 id="harness-native-project-guidance">Harness-Native Project Guidance</h3>
+<table>
+<thead>
+<tr>
+<th>Harness</th>
+<th>Project-Wide Guidance</th>
+<th>Targeted Guidance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Copilot</strong></td>
+<td><code>.github/copilot-instructions.md</code> or <code>AGENTS.md</code></td>
+<td><code>.github/instructions/**/*.instructions.md</code></td>
+</tr>
+<tr>
+<td><strong>Claude</strong></td>
+<td><code>CLAUDE.md</code></td>
+<td>Markdown files under <code>.claude/rules/</code></td>
+</tr>
+<tr>
+<td><strong>Codex</strong></td>
+<td><code>AGENTS.md</code></td>
+<td>Nested <code>AGENTS.md</code> files</td>
+</tr>
+<tr>
+<td><strong>Local</strong></td>
+<td>Compatibility support for Copilot, <code>AGENTS.md</code>, and Claude formats</td>
+<td>Local settings determine compatibility discovery</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Configuration, not enforcement</strong>: Instruction files shape model behavior. Use hooks, tests, branch protection, secret scanning, and push protection for requirements that must run or be enforced.</p>
+</blockquote>
+<h3 id="copilot-mode-comparison">Copilot Mode Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Copilot Mode</th>
+<th>Best For</th>
+<th>Approval Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Interactive</strong></td>
+<td>Questions, implementation, iterative steering, and ordinary coding</td>
+<td>Uses the selected permission level</td>
+</tr>
+<tr>
+<td><strong>Plan</strong></td>
+<td>Research, clarifying questions, and a reviewable implementation plan</td>
+<td>Planning approval is separate from later tool approvals</td>
+</tr>
+<tr>
+<td><strong>Autopilot</strong></td>
+<td>Well-bounded autonomous work in a trusted environment</td>
+<td>Auto-approves tools and continues until it determines the task is complete</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Autopilot caution</strong>: Autopilot can edit files, run commands, and call external tools without confirmation. A worktree separates code changes but does not restrict commands, network access, or files outside it. Agent sandboxing restricts <strong>terminal-command</strong> file-system and network access; it does not sandbox file-edit, URL, or MCP tools. Sandboxing is Preview on macOS, Linux, and WSL2 and Experimental on Windows.</p>
+</blockquote>
+<h3 id="folder-or-worktree">Folder or Worktree</h3>
+<table>
+<thead>
+<tr>
+<th>Isolation</th>
+<th>Choose It When</th>
+<th>Important Constraint</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Folder</strong></td>
+<td>The task needs current uncommitted files or you want Manual permissions</td>
+<td>Changes appear directly in the active checkout</td>
+</tr>
+<tr>
+<td><strong>New Worktree</strong></td>
+<td>The task can start from committed Git state and should stay separate</td>
+<td>Uses Allow all; uncommitted and ignored files are absent unless explicitly included</td>
+</tr>
+</tbody></table>
+<h3 id="decision-framework">Decision Framework</h3>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Workshop Choice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&quot;I need to understand, build, fix, or iterate&quot;</td>
+<td><strong>Copilot + Interactive</strong> with an explicit intent boundary</td>
+</tr>
+<tr>
+<td>&quot;I need a reviewable plan before implementation&quot;</td>
+<td><strong>Copilot + Plan</strong> or <code>/plan</code></td>
+</tr>
+<tr>
+<td>&quot;I want bounded work to continue autonomously&quot;</td>
+<td><strong>Copilot + Autopilot</strong>, only after reviewing scope and controls</td>
+</tr>
+<tr>
+<td>&quot;I need provider-native configuration&quot;</td>
+<td>Start a new Claude or Codex session when approved</td>
+</tr>
+<tr>
+<td>&quot;I need a VS Code extension tool unavailable in Agent Host&quot;</td>
+<td>Use <strong>Local</strong> as a temporary compatibility path</td>
+</tr>
+<tr>
+<td>&quot;I want remote work returned as a pull request&quot;</td>
+<td><strong>Cloud</strong>, then select an approved provider</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="-demo-start-a-copilot-agent-host-session-5-min">🖥️ DEMO: Start a Copilot Agent Host Session (5 min)</h3>
+<ol>
+<li>Open a new session and select the OctoCAT Supply folder.</li>
+<li>Select <strong>Copilot</strong> as the Session Target, <strong>Folder</strong> isolation, <strong>Interactive</strong> mode, and <strong>Manual</strong> permissions.</li>
+<li>Point out that Agent Host owns the session while VS Code is the client displaying it.</li>
+<li>Enter a bounded read-only request:</li>
+</ol>
+<pre><code>Explain the API architecture and cite the route, model, and Swagger configuration files you used. Do not modify files or run commands.
+</code></pre>
+<ol start="5">
+<li>Review References and confirm that no files changed.</li>
+<li>Switch to <strong>Plan</strong> or enter:</li>
+</ol>
+<pre><code>/plan Add input validation to the Product API POST endpoint. Preserve existing clients, identify decisions I need to make, and include verification steps. Do not implement yet.
+</code></pre>
+<ol start="7">
+<li>Show the reviewable plan and clarify that approving a plan does not approve later tool calls.</li>
+<li>Show <strong>Autopilot</strong> in the mode picker, explain its approval behavior, and return to Interactive without starting it.</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;The host owns the session, the harness coordinates the workflow, the model reasons, and permissions decide what can proceed without us. Those are separate controls.&quot;</p>
+<details>
+<summary><h3 id="-hands-on-configure-a-copilot-agent-host-session-8-min">🧪 Hands-On: Configure a Copilot Agent Host Session (8 min)</h3></summary>
+
+<p><strong>Exercise 1 — Configure the Session</strong>:</p>
+<ol>
+<li>Start a new chat</li>
+<li>Select <strong>Copilot</strong>, <strong>Folder</strong>, <strong>Interactive</strong>, and <strong>Manual</strong> permissions</li>
+<li>Confirm the selected folder is your OctoCAT Supply checkout</li>
+<li>Enter:</li>
+</ol>
+<pre><code>Identify the testing framework and current test files. Cite your evidence, do not modify files, and do not run commands.
+</code></pre>
+<ol start="5">
+<li>Confirm that References are visible and no files changed</li>
+</ol>
+<p><strong>Exercise 2 — Plan Mode</strong>:</p>
+<ol>
+<li>Switch to <strong>Plan</strong>, or use <code>/plan</code></li>
+<li>Enter the following prompt:</li>
+</ol>
+<pre><code>Plan comprehensive error handling for the API routes. Preserve current response contracts, identify decisions I need to make, and include tests. Do not implement yet.
+</code></pre>
+<ol start="3">
+<li>Review the scope, affected files, unresolved decisions, and verification steps</li>
+<li>Do not approve implementation</li>
+</ol>
+<p><strong>Exercise 3 — Interactive Implementation</strong>:</p>
+<ol>
+<li>Switch back to <strong>Interactive</strong></li>
+<li>If your app isn&#39;t running, enter:</li>
+</ol>
+<pre><code>Build and run the project
+</code></pre>
+<ol start="3">
+<li>Then enter:</li>
+</ol>
+<pre><code>Open the Swagger documentation page for the API
+</code></pre>
+<p><strong>Exercise 4 — Choose and Justify the Controls</strong>:</p>
+<ol>
+<li>Choose one scenario:<ul>
+<li>Explain authentication from the active checkout without edits or commands while preserving uncommitted work.</li>
+<li>Produce a reviewable multi-file validation plan without implementing it.</li>
+<li>Run a trusted, bounded mechanical update in parallel from committed state, accepting unattended continuation.</li>
+</ul>
+</li>
+<li>Record your <strong>mode</strong>, <strong>permission level</strong>, <strong>Folder or New Worktree</strong> choice, and sandbox choice or availability.</li>
+<li>Give one reason for each selection and name the residual risk. A worktree isolates code changes but is not a security boundary; its Copilot session uses Allow all.</li>
+<li>Compare with a partner, then return the workshop session to <strong>Interactive + Manual + Folder</strong>.</li>
+</ol>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You can distinguish Session Target, role or mode, model, permissions, and execution environment</li>
+<li>✅ You can explain the relationship between Agent Host and the Copilot harness</li>
+<li>✅ You can identify Copilot Interactive, Plan, and Autopilot modes</li>
+<li>✅ You can select and justify a mode, permission level, isolation choice, and sandbox posture for a bounded scenario</li>
+<li>✅ You&#39;ve received a codebase-aware answer in Interactive without changing files</li>
+<li>✅ You&#39;ve reviewed a Copilot Plan before implementation</li>
+<li>✅ Interactive has run terminal commands and opened the application</li>
+<li>✅ You can explain why permissions and code isolation are separate controls</li>
+<li>✅ Your app is running (API on :3000, Frontend on :5137)</li>
+</ul>
+<hr>
+<h2 id="2b-copilot-interactive-context-tools-and-explicit-boundaries-10-min">2b. Copilot Interactive: Context, Tools, and Explicit Boundaries (10 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Agent Host can search the workspace, but explicit outcomes, constraints, evidence, and verification reduce ambiguity</li>
+<li>Use <strong>Add Context</strong>, file references, or a selected editor range when a particular artifact must be considered</li>
+<li>Use <strong>Configure Tools</strong> to inspect or restrict the tools available to the current agent</li>
+<li>A read-only request needs an explicit boundary such as &quot;do not modify files or run commands&quot;</li>
+<li>Inspect <strong>References</strong>, tool calls, diffs, and command results instead of relying only on the final explanation</li>
+<li>Slash commands and controls vary by harness; <code>/plan</code>, <code>/skills</code>, and <code>/agents</code> are useful Copilot entry points</li>
+</ul>
+<h3 id="a-strong-agent-request">A Strong Agent Request</h3>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Question to Answer</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Outcome</strong></td>
+<td>What result do you want?</td>
+<td>Explain the authentication flow</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Which files or systems are in bounds?</td>
+<td>Use <code>api/src/middleware/auth.ts</code> and its callers</td>
+</tr>
+<tr>
+<td><strong>Constraints</strong></td>
+<td>What must or must not happen?</td>
+<td>Do not modify files or run commands</td>
+</tr>
+<tr>
+<td><strong>Evidence</strong></td>
+<td>What should support the answer?</td>
+<td>Cite relevant files and symbols</td>
+</tr>
+<tr>
+<td><strong>Verification</strong></td>
+<td>How will you know it is complete?</td>
+<td>Identify unhandled failure paths</td>
+</tr>
+</tbody></table>
+<h3 id="context-and-tool-controls">Context and Tool Controls</h3>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Use It When</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Add Context</strong></td>
+<td>A specific file, selection, symbol, or previous result must be included</td>
+</tr>
+<tr>
+<td><strong>Configure Tools</strong></td>
+<td>You need to review, enable, or restrict built-in, extension, or MCP tools</td>
+</tr>
+<tr>
+<td><strong>References</strong></td>
+<td>You need to verify which evidence informed the response</td>
+</tr>
+<tr>
+<td><strong>Changes</strong></td>
+<td>You need to inspect edits before committing, merging, or discarding them</td>
+</tr>
+<tr>
+<td><strong>Terminal result</strong></td>
+<td>You need executable evidence that a build, test, or command succeeded</td>
+</tr>
+</tbody></table>
+<h3 id="-demo-from-vague-to-verifiable">🖥️ DEMO: From Vague to Verifiable</h3>
+<ol>
+<li>In <strong>Copilot + Interactive</strong>, ask: <code>How does authentication work?</code></li>
+<li>Note any generic assumptions or missing evidence.</li>
+<li>Attach <code>api/src/middleware/auth.ts</code>, or name the path explicitly, then ask:</li>
+</ol>
+<pre><code>Explain the authentication flow using this middleware and every route that calls it. Cite the files and symbols you used, identify unhandled failure paths, and do not modify files or run commands.
+</code></pre>
+<ol start="4">
+<li>Expand References and compare the evidence with the first response.</li>
+<li>Open Configure Tools and show that tool availability is a separate control from the model and mode.</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Agent Host can discover context, but precision still matters. State the outcome, bound the work, require evidence, and define how success will be verified.&quot;</p>
+<hr>
+<h2 id="the-customization-roadmap">The Customization Roadmap</h2>
+<p>Now that you&#39;ve configured a Copilot Agent Host session and practiced evidence-based prompting, let&#39;s look at the portable customization stack we&#39;ll build.</p>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Workshop narrative: &quot;Configure → Specialize → Extend → Delegate&quot;</li>
+<li>By the end, you&#39;ll have built a Copilot environment with memory, instructions, skills, custom agents, and portable MCP integration</li>
+<li>Repository customizations live in reviewable files that can follow the project across supported Copilot surfaces</li>
+</ul>
+<h3 id="the-customization-hierarchy">The Customization Hierarchy</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>File Location</th>
+<th>When Loaded</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Copilot Memory</strong></td>
+<td>Local VS Code memory files or GitHub-hosted repository memory</td>
+<td>Recalled when relevant</td>
+<td>Conversational preferences and emerging context</td>
+</tr>
+<tr>
+<td><strong>Custom Instructions</strong></td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>Always (every interaction)</td>
+<td>Simple rules, coding standards</td>
+</tr>
+<tr>
+<td><strong>Scoped Instructions</strong></td>
+<td><code>.github/instructions/*.instructions.md</code></td>
+<td>When matching files are active</td>
+<td>File/language-specific guidance</td>
+</tr>
+<tr>
+<td><strong>Agent Skills</strong></td>
+<td><code>.github/skills/*/SKILL.md</code></td>
+<td>Loaded by relevance or invoked explicitly</td>
+<td>Reusable workflows, scripts, examples, and resources</td>
+</tr>
+<tr>
+<td><strong>Custom Agents</strong></td>
+<td><code>.github/agents/*.agent.md</code></td>
+<td>Selected as a specialized role</td>
+<td>Role instructions, optional models, and constrained tools</td>
+</tr>
+<tr>
+<td><strong>MCP Servers</strong></td>
+<td><code>.mcp.json</code></td>
+<td>Available when the configured server runs</td>
+<td>Portable external tool and context integration</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Migration path</strong>: Prompt files are deprecated for Agent Host and are not loaded there. Section 4 converts existing <code>.prompt.md</code> workflows into Agent Skills before Section 5 designs a portable skill from scratch.</p>
+</blockquote>
+<hr>
+<h2 id="3-copilot-memory--custom-instructions-35-min">3. Copilot Memory &amp; Custom Instructions (35 min)</h2>
+<h3 id="part-a-copilot-memory-10-min">Part A: Copilot Memory (10 min)</h3>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li><strong>Copilot Memory</strong> stores preferences and contextual facts that Copilot can recall in later interactions</li>
+<li>VS Code memory files are stored locally; GitHub-hosted Copilot Memory is a separate repository-scoped system whose availability depends on account and organization settings</li>
+<li>Memory is useful for lightweight preferences, such as style choices, naming preferences, or review expectations</li>
+<li>VS Code local memory can appear in <strong>user</strong>, <strong>repository</strong>, and <strong>session</strong> scopes</li>
+<li>Memory is different from instruction files: memory is recalled by Copilot, while <code>.github/</code> instruction files are explicit, reviewable, and version-controlled</li>
+<li>Never store secrets, tokens, credentials, customer data, or sensitive information in memory</li>
+<li>If GitHub-hosted Copilot Memory is available for your organization, repository memory can also be managed from GitHub repository settings — this is separate from the VS Code local memory tool</li>
+</ul>
+<h3 id="memory-vs-instructions">Memory vs Instructions</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Best For</th>
+<th>Scope</th>
+<th>Governance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Memory</strong></td>
+<td>Lightweight preferences and facts</td>
+<td>User, repository, session, or available GitHub-hosted repository memory</td>
+<td>Review memory files/settings; do not store secrets</td>
+</tr>
+<tr>
+<td><strong>Project Instructions</strong></td>
+<td>Durable team standards</td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>Version-controlled and code-reviewed</td>
+</tr>
+<tr>
+<td><strong>Scoped Instructions</strong></td>
+<td>File or folder-specific rules</td>
+<td><code>.github/instructions/*.instructions.md</code></td>
+<td>Version-controlled and activated by <code>applyTo</code></td>
+</tr>
+</tbody></table>
+<h3 id="how-vs-code-memory-scope-is-chosen">How VS Code Memory Scope Is Chosen</h3>
+<p>Copilot infers where to store local memory from your wording and current context. The exact file name may vary, but the scope folder is the important signal:</p>
+<table>
+<thead>
+<tr>
+<th>Phrase Pattern</th>
+<th>Likely Scope</th>
+<th>Example Folder</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&quot;I prefer...&quot; or &quot;For me...&quot;</td>
+<td>User memory across workspaces</td>
+<td><code>/memories/</code></td>
+</tr>
+<tr>
+<td>&quot;In this project...&quot; or repo-specific context</td>
+<td>Repository memory for this workspace</td>
+<td><code>/memories/repo/</code></td>
+</tr>
+<tr>
+<td>&quot;For this session...&quot; or temporary task context</td>
+<td>Session memory for the current chat</td>
+<td><code>/memories/session/</code></td>
+</tr>
+</tbody></table>
+<p>If two memories land in different folders, that usually means Copilot classified one as a broad user preference and the other as repo-specific context. Use <strong>Chat: Show Memory Files</strong> to verify placement, then edit, move, or delete entries that landed in the wrong scope.</p>
+<hr>
+<h3 id="-demo-memory-instruction-layers-and-context-shaping">🖥️ DEMO: Memory, Instruction Layers, and Context Shaping</h3>
+<p>Start by showing the baseline behavior before adding memory or instruction files.</p>
+<ol>
+<li>Open <code>api/src/routes/headquarters.ts</code></li>
+<li>In chat, attach or reference the file and ask:</li>
+</ol>
+<pre><code class="language-text">Generate a validation function in the attached file.
+</code></pre>
+<ol start="3">
+<li>Note the response style: Does Copilot use nested <code>if</code> / <code>else</code> blocks? Does it infer any team preference?</li>
+<li>Now state a preference conversationally:</li>
+</ol>
+<pre><code class="language-text">Remember: I prefer early returns over nested if-else in this project.
+</code></pre>
+<ol start="5">
+<li>Show that Copilot acknowledges the memory</li>
+<li>Start a new prompt and ask again:</li>
+</ol>
+<pre><code class="language-text">Generate a validation function in the attached file.
+</code></pre>
+<ol start="7">
+<li>Compare the output to the baseline and call out whether the function now favors early returns</li>
+<li>Run <strong>Command Palette → Chat: Show Memory Files</strong> and show:<ul>
+<li>User memory: preferences available across workspaces</li>
+<li>Repository memory: local repo-scoped context for this workspace</li>
+<li>Session memory: temporary context for the current conversation</li>
+</ul>
+</li>
+<li>Explain that local memory differs from <code>.github/</code> instruction files because memory is not the team&#39;s version-controlled source of truth</li>
+<li>If your organization has GitHub-hosted Copilot Memory available, briefly show <strong>Repository Settings → Copilot → Memory</strong> and explain that it is repository-scoped, GitHub-hosted, and separate from the VS Code local memory tool</li>
+</ol>
+<blockquote>
+<p><strong>Important</strong>: Memory should never contain secrets or sensitive information. Treat memory as preference and emerging context storage, not as a vault or the team&#39;s source of truth.</p>
+</blockquote>
+<p><strong>Talking point</strong>: &quot;Memory is useful for personal or lightweight repo preferences. Instructions are where team standards become durable, reviewable, and portable. Use memory to shape the conversation; use instructions to define the contract.&quot;</p>
+<hr>
+<h3 id="part-b-custom-instructions-25-min">Part B: Custom Instructions (25 min)</h3>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Custom instructions are the simplest way to provide durable project guidance to Copilot</li>
+<li>Applicable instructions are loaded into Copilot requests as reviewable, version-controlled context</li>
+<li>Two types:<ul>
+<li><strong>Project-wide</strong>: <code>.github/copilot-instructions.md</code> — applies to all interactions in the repo</li>
+<li><strong>Scoped</strong>: <code>.github/instructions/*.instructions.md</code> — applies only when matching files are active (uses glob patterns in YAML frontmatter)</li>
+</ul>
+</li>
+</ul>
+<h3 id="what-goes-in-custom-instructions">What Goes in Custom Instructions?</h3>
+<table>
+<thead>
+<tr>
+<th>Good Candidates</th>
+<th>Bad Candidates</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Coding standards (naming, style)</td>
+<td>Entire API documentation</td>
+</tr>
+<tr>
+<td>Internal framework references</td>
+<td>Step-by-step tutorials</td>
+</tr>
+<tr>
+<td>Architecture patterns to follow</td>
+<td>Complete code examples</td>
+</tr>
+<tr>
+<td>Security requirements (no hardcoded creds)</td>
+<td>Business logic rules</td>
+</tr>
+<tr>
+<td>Testing conventions</td>
+<td>Long prose explanations</td>
+</tr>
+</tbody></table>
+<p><strong>Rule of thumb</strong>: Keep it concise. Instructions are loaded on every interaction — they consume context window.</p>
+<hr>
+<h3 id="-demo-generate-custom-instructions">🖥️ DEMO: Generate Custom Instructions</h3>
+<ol>
+<li>Start a new session with the <strong>Copilot</strong> target</li>
+<li>Run <strong>Chat: Open Customizations</strong>, or select <strong>Configure Chat</strong> and open the Overview page</li>
+<li>Ask the editor to generate workspace instructions from the repository</li>
+<li>Show Copilot analyzing the repo and generating a <code>copilot-instructions.md</code> file</li>
+<li>Review the generated content — it should reference:<ul>
+<li>Repository info (OctoCAT Supply, TypeScript)</li>
+<li>Architecture (React frontend, Express API)</li>
+<li>Build instructions (<code>npm ci &amp;&amp; npm run build</code>)</li>
+<li>Testing conventions (<code>vitest</code>)</li>
+</ul>
+</li>
+<li>Save the file to <code>.github/copilot-instructions.md</code></li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Copilot just analyzed your entire repo and wrote its own instruction manual. This file will now be loaded into every interaction.&quot;</p>
+<hr>
+<h3 id="-demo-create-scoped-instructions">🖥️ DEMO: Create Scoped Instructions</h3>
+<ol>
+<li>Create <code>.github/instructions/API.instructions.md</code>:</li>
+</ol>
+<pre><code class="language-markdown">---
+applyTo: &quot;api/**&quot;
+---
+# API Development Instructions
+
+For REST APIs in this project:
+- Use descriptive endpoint naming following REST conventions
+- Add Swagger/OpenAPI docs for all API methods
+- Implement proper error handling with appropriate HTTP status codes
+- Follow the entity pattern established in existing routes
+- Include input validation for all POST/PUT endpoints
+</code></pre>
+<ol start="2">
+<li>Open a file in <code>api/src/routes/</code> (e.g., <code>product.ts</code>), then select <strong>Copilot + Interactive</strong> and enter:</li>
+</ol>
+<pre><code>Explain how I should add a new API endpoint to this project. Cite the applicable instructions and existing route patterns. Do not modify files or run commands.
+</code></pre>
+<ol start="3">
+<li>Show how the scoped instructions influence the response — Copilot should now reference Swagger docs, REST conventions, error handling patterns, and the entity model structure</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Scoped instructions are like per-project <code>.editorconfig</code> for AI. They activate only when you&#39;re working in matching files.&quot;</p>
+<hr>
+<h3 id="-demo-the-tao-example-internal-framework">🖥️ DEMO: The TAO Example (Internal Framework)</h3>
+<p>This demo shows how local documentation and instructions can shape a response for a fictional workshop framework.</p>
+<ol>
+<li>Show the fictional TAO framework documentation in <code>docs/tao.md</code></li>
+<li>Add to <code>.github/copilot-instructions.md</code>:</li>
+</ol>
+<pre><code class="language-markdown">## Observability Requirements
+- Implement logging and monitoring using TAO (TypeScript API Observability)
+- Reference: docs/tao.md
+- Assume TAO is installed — never add the package
+- Use @Measure, @Trace, and @Log decorators for all service methods
+- Configure initTAO() in the application entry point
+</code></pre>
+<ol start="3">
+<li>Set the Session Target to <strong>Copilot</strong>, choose <strong>Interactive</strong> with <strong>Manual</strong> permissions, and enter:</li>
+</ol>
+<pre><code>Add observability to the Supplier route using our internal standards
+</code></pre>
+<ol start="4">
+<li>Show Copilot generating TAO import code (<code>import { Measure, Trace } from &#39;@tao/core&#39;</code>) from the local documentation and instructions</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;The repository supplied context for a framework that exists only in this workshop. Instructions can steer generated code toward internal conventions, but they do not guarantee correctness; review and build validation remain required.&quot;</p>
+<blockquote>
+<p><strong>Note</strong>: The generated code will not compile because the TAO package is intentionally absent. Use the failed build as evidence that instruction-following still requires dependency, API, and behavior validation.</p>
+</blockquote>
+<h4 id="cleanup-revert-tao-changes-with-copilot">Cleanup: Revert TAO Changes with Copilot</h4>
+<p>Before moving on, we need to undo the TAO changes so the codebase compiles for the remaining exercises. This is also a chance to show that Copilot can clean up its own work.</p>
+<ol>
+<li>Stay in <strong>Copilot Interactive</strong> with <strong>Manual</strong> permissions and enter:</li>
+</ol>
+<pre><code>Revert the TAO observability changes you just made to the Supplier route, and remove the &quot;Observability Requirements&quot; section from .github/copilot-instructions.md. The TAO framework is fictional and the code won&#39;t compile.
+</code></pre>
+<ol start="2">
+<li>Verify Copilot:<ul>
+<li>Removes the TAO imports and decorators from the Supplier route file</li>
+<li>Removes the <code>## Observability Requirements</code> block from <code>.github/copilot-instructions.md</code></li>
+</ul>
+</li>
+<li>Confirm the app still compiles: check the terminal or run <code>npm run build</code></li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Copilot can undo its own work just as easily as it creates it. In real projects, this is how you course-correct — tell Copilot what went wrong and let it fix it.&quot;</p>
+<details>
+<summary><h3 id="-hands-on-classify-memory-and-create-instructions-12-min">🧪 Hands-On: Classify Memory and Create Instructions (12 min)</h3></summary>
+
+<p><strong>Step 1: Establish a Baseline (Before Instructions)</strong></p>
+<ol>
+<li>Open Copilot Chat with the <strong>Copilot</strong> target and <strong>Interactive</strong> mode</li>
+<li>Ask the following question and note the response:</li>
+</ol>
+<pre><code>Explain how I should add a new API endpoint to this project. Cite evidence and do not modify files or run commands.
+</code></pre>
+<ol start="3">
+<li>Pay attention to: Does Copilot mention Swagger? Does it reference existing patterns? Does it know about the project&#39;s entity model structure?</li>
+</ol>
+<p><strong>Step 2: Generate Project-Wide Instructions</strong></p>
+<ol>
+<li>Run <strong>Chat: Open Customizations</strong>, or select <strong>Configure Chat</strong> and open the Overview page</li>
+<li>Ask Copilot to generate workspace instructions from the repository</li>
+<li>Watch Copilot analyze the repo&#39;s architecture, dependencies, build config, and conventions</li>
+<li>Review the generated content. It should reference:<ul>
+<li>The project name and tech stack (TypeScript, React, Express)</li>
+<li>Build commands (<code>npm ci &amp;&amp; npm run build</code>)</li>
+<li>Testing framework (<code>vitest</code>)</li>
+<li>Project structure and architecture patterns</li>
+</ul>
+</li>
+<li>Save the file to <code>.github/copilot-instructions.md</code></li>
+<li>Open the saved file and read through it — this is Copilot&#39;s understanding of your project</li>
+</ol>
+<p><strong>Step 3: Create Scoped API Instructions</strong></p>
+<p>Scoped instructions activate only when you&#39;re editing files that match a glob pattern. This lets you give Copilot different guidance for different parts of the codebase.</p>
+<ol>
+<li>Create the directory: <code>.github/instructions/</code></li>
+<li>Create the file <code>.github/instructions/API.instructions.md</code> with the following content:</li>
+</ol>
+<pre><code class="language-markdown">---
+applyTo: &quot;api/**&quot;
+---
+# API Development Instructions
+
+For REST APIs in this project:
+- Use descriptive endpoint naming following REST conventions
+- Add Swagger/OpenAPI docs for all API methods
+- Implement proper error handling with appropriate HTTP status codes
+- Follow the entity pattern established in existing routes
+- Include input validation for all POST/PUT endpoints
+</code></pre>
+<blockquote>
+<p><strong>Note</strong>: The <code>applyTo</code> field uses glob patterns. <code>api/**</code> means these instructions load whenever you have any file under the <code>api/</code> folder open.</p>
+</blockquote>
+<p><strong>Step 3b: Test Scoped Instructions</strong></p>
+<ol>
+<li>Open a file in <code>api/src/routes/</code> (e.g., <code>product.ts</code>)</li>
+<li>In Copilot Chat (<strong>Copilot + Interactive</strong>), enter:</li>
+</ol>
+<pre><code>Explain how I should add a new API endpoint to this project. Cite the applicable instructions and do not modify files or run commands.
+</code></pre>
+<ol start="3">
+<li>Notice how the response references Swagger docs, REST conventions, error handling patterns, and the entity model structure — these come from the scoped instructions you just created</li>
+</ol>
+<p><strong>Step 4: Classify Memory and Team Guidance</strong></p>
+<p>For each example, choose <strong>user memory</strong>, <strong>repository memory</strong>, <strong>session memory</strong>, or <strong>version-controlled instructions</strong>, then explain why:</p>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Expected Scope</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&quot;I prefer early returns across my workspaces.&quot;</td>
+<td>User memory</td>
+</tr>
+<tr>
+<td>&quot;This repository stays on React 18 until its planned upgrade.&quot;</td>
+<td>Repository memory</td>
+</tr>
+<tr>
+<td>&quot;For this chat only, use the workshop branch.&quot;</td>
+<td>Session memory</td>
+</tr>
+<tr>
+<td>&quot;Every API route must include reviewed OpenAPI documentation.&quot;</td>
+<td>Version-controlled scoped instructions</td>
+</tr>
+</tbody></table>
+<p><strong>Checkpoint</strong>: Personal or emerging context may belong in memory; durable team requirements belong in reviewed files committed with the code.</p>
+<p><strong>Step 5: Create a Frontend Scoped Instruction</strong> (Bonus)</p>
+<ol>
+<li>Create <code>.github/instructions/Frontend.instructions.md</code>:</li>
+</ol>
+<pre><code class="language-markdown">---
+applyTo: &quot;frontend/src/**&quot;
+---
+# Frontend Development Instructions
+
+For React components in this project:
+- Use functional components with TypeScript
+- Use Tailwind CSS for all styling — no inline styles or CSS modules
+- Follow the existing component structure in `frontend/src/components/`
+- Use React hooks for state management
+- All components should be exported as default exports
+</code></pre>
+<ol start="2">
+<li>Open a file in <code>src/</code> and ask Copilot about building a new component — observe the Tailwind and TypeScript guidance in the response</li>
+</ol>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You&#39;ve seen Copilot remember a preference and apply it in a follow-up prompt</li>
+<li>✅ You understand the difference between local memory, GitHub-hosted repository memory, and version-controlled instruction files</li>
+<li>✅ <code>.github/copilot-instructions.md</code> exists in your repo</li>
+<li>✅ <code>.github/instructions/API.instructions.md</code> exists with <code>applyTo: &quot;api/**&quot;</code></li>
+<li>✅ You&#39;ve compared Copilot&#39;s responses before and after adding instructions and noticed the difference</li>
+<li>✅ You understand that instructions are always-on background context</li>
+</ul>
+<hr>
+<h2 id="4-migrate-prompt-files-to-agent-skills-25-min">4. Migrate Prompt Files to Agent Skills (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Prompt files (<code>*.prompt.md</code>) are deprecated for Agent Host sessions and are not loaded by the Copilot harness</li>
+<li>Prompt files continue to work with Local only during its transition period; Local is scheduled for removal in a future release</li>
+<li>Agent Skills are the forward path for reusable task workflows and can be loaded by relevance or invoked explicitly</li>
+<li>VS Code provides a migration flow that converts workspace and user prompt files into skills</li>
+<li>Migration is not a blind rename: review tool lists, model or mode assumptions, references, inputs, and output expectations</li>
+<li>Keep the original prompt until the migrated skill has passed a representative test; the two copies do not stay synchronized</li>
+</ul>
+<h3 id="choose-the-right-destination">Choose the Right Destination</h3>
+<table>
+<thead>
+<tr>
+<th>Repeated Need</th>
+<th>Forward Customization</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Project-wide coding standard or architecture rule</td>
+<td>Custom instructions</td>
+</tr>
+<tr>
+<td>File- or task-specific guidance</td>
+<td>Scoped instructions</td>
+</tr>
+<tr>
+<td>Reusable multi-step workflow with resources</td>
+<td>Agent Skill</td>
+</tr>
+<tr>
+<td>Specialized role with a constrained tool set</td>
+<td>Custom agent</td>
+</tr>
+<tr>
+<td>External system capability</td>
+<td>MCP server</td>
+</tr>
+<tr>
+<td>Action that must run at a lifecycle point</td>
+<td>Hook</td>
+</tr>
+</tbody></table>
+<h3 id="prompt-to-skill-mapping">Prompt-to-Skill Mapping</h3>
+<table>
+<thead>
+<tr>
+<th>Prompt File Concept</th>
+<th>Agent Skill Equivalent</th>
+<th>Migration Check</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.github/prompts/name.prompt.md</code></td>
+<td><code>.github/skills/name/SKILL.md</code></td>
+<td>Folder name must match the skill <code>name</code></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>description</code></td>
+<td>Say what it does and when to use it</td>
+</tr>
+<tr>
+<td>Run button or <code>/name</code></td>
+<td><code>/name</code> when <code>user-invocable</code> is enabled</td>
+<td>Confirm the command appears</td>
+</tr>
+<tr>
+<td>Manual-only execution</td>
+<td><code>disable-model-invocation: true</code></td>
+<td>Prevent relevance-based automatic loading</td>
+</tr>
+<tr>
+<td>Prompt body</td>
+<td>Skill instructions and linked resources</td>
+<td>Remove obsolete Local-only directions</td>
+</tr>
+<tr>
+<td><code>mode</code>, <code>model</code>, or <code>tools</code> assumptions</td>
+<td>Copilot mode, custom agent, or prose constraints</td>
+<td>Review manually; these do not map one-for-one</td>
+</tr>
+</tbody></table>
+<h3 id="preserve-manual-invocation-when-needed">Preserve Manual Invocation When Needed</h3>
+<pre><code class="language-yaml">---
+name: unit-test-coverage
+description: Add and validate API unit-test coverage using this repository&#39;s Vitest patterns. Use when expanding route test coverage.
+user-invocable: true
+disable-model-invocation: true
+---
+</code></pre>
+<p>Use both properties when a migrated workflow should run only after a developer explicitly selects <code>/unit-test-coverage</code>. Remove <code>disable-model-invocation</code> when Copilot should also load the skill automatically for relevant requests.</p>
+<hr>
+<h3 id="-demo-convert-an-existing-prompt-file">🖥️ DEMO: Convert an Existing Prompt File</h3>
+<ol>
+<li>Select the <strong>Copilot</strong> target and open <code>.github/prompts/Unit-Test-Coverage.prompt.md</code>.</li>
+<li>Identify the workflow, constraints, references, tool assumptions, and success criteria worth preserving.</li>
+<li>Run <strong>Chat: Open Customizations</strong>, open <strong>Overview</strong>, and choose <strong>Migrate Prompt Files → Convert to Skills</strong>.</li>
+<li>Select <code>Unit-Test-Coverage.prompt.md</code> and keep the original during verification.</li>
+<li>Open the generated <code>.github/skills/unit-test-coverage/SKILL.md</code> and verify:<ul>
+<li>The parent folder and <code>name</code> match</li>
+<li>The description explains what the skill does and when to use it</li>
+<li>Repository references still resolve</li>
+<li>Local <code>mode</code>, model, and tool assumptions were removed or redesigned</li>
+<li>Success criteria and validation commands remain explicit</li>
+</ul>
+</li>
+<li>Add <code>user-invocable: true</code> and <code>disable-model-invocation: true</code> to preserve manual-only behavior for this exercise.</li>
+<li>Start a new Copilot session, invoke <code>/unit-test-coverage</code>, and inspect References to confirm the migrated skill loaded.</li>
+<li>Review proposed tool calls and stop before broad test generation if demo time is limited.</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Migration preserves the workflow, not every piece of frontmatter. Skills carry reusable procedure; modes, permissions, and tool availability belong to the active harness and agent configuration.&quot;</p>
+<details>
+<summary><h3 id="-hands-on-migrate-a-prompt-to-a-skill-12-min">🧪 Hands-On: Migrate a Prompt to a Skill (12 min)</h3></summary>
+
+<p><strong>Exercise 1 — Classify the Legacy Workflow</strong></p>
+<ol>
+<li>Open <code>.github/prompts/plan.prompt.md</code>.</li>
+<li>Identify its purpose, required inputs, repository references, output format, and read-only constraints.</li>
+<li>Decide that this should remain manually invoked because it overlaps with a deliberate planning checkpoint.</li>
+</ol>
+<p><strong>Checkpoint</strong>: You can explain why the workflow belongs in a skill rather than always-on instructions or a custom agent.</p>
+<p><strong>Exercise 2 — Convert It</strong></p>
+<ol>
+<li>Select the <strong>Copilot</strong> target.</li>
+<li>Run <strong>Chat: Open Customizations</strong> and open <strong>Overview</strong>.</li>
+<li>Choose <strong>Migrate Prompt Files → Convert to Skills</strong>.</li>
+<li>Select <code>plan.prompt.md</code>, keep the original, and complete the conversion.</li>
+<li>Rename the generated skill folder and <code>name</code> to <code>implementation-plan</code> if the migration retained a name that conflicts with Copilot&#39;s built-in <code>/plan</code> command.</li>
+</ol>
+<p><strong>Checkpoint</strong>: <code>.github/skills/implementation-plan/SKILL.md</code> exists and its <code>name</code> matches the parent folder.</p>
+<p><strong>Exercise 3 — Review the Skill</strong></p>
+<ol>
+<li>Remove or redesign unsupported prompt frontmatter such as Local mode, model, or tool assumptions.</li>
+<li>Ensure the description says both what the workflow does and when to use it.</li>
+<li>Add:</li>
+</ol>
+<pre><code class="language-yaml">user-invocable: true
+disable-model-invocation: true
+</code></pre>
+<ol start="4">
+<li>Preserve the requirement to produce a plan without changing project files.</li>
+<li>Remove the source prompt&#39;s requirement to save <code>/docs/&lt;feature&gt;-ImplementationPlan.md</code>; return the plan in chat so the read-only exercise does not create a project file.</li>
+<li>Update the architecture reference for the deeper skill location to <code>../../../docs/architecture.md</code>, then verify the target exists.</li>
+<li>Replace any stale React 19 assumption with the version in <code>frontend/package.json</code> (React 18.3.1 at the verified workshop baseline).</li>
+<li>Verify all remaining linked repository files exist.</li>
+</ol>
+<p><strong>Checkpoint</strong>: The migrated skill is self-contained, manually invocable, and has explicit read-only and output requirements.</p>
+<p><strong>Exercise 4 — Verify Before Removing the Prompt</strong></p>
+<ol>
+<li>Start a new <strong>Copilot + Interactive</strong> session.</li>
+<li>Invoke:</li>
+</ol>
+<pre><code class="language-text">/implementation-plan Add supplier search by name and contact person. Register the static /search route before /:id. Identify decisions and compatibility risks. Do not implement.
+</code></pre>
+<ol start="3">
+<li>Expand References and confirm the migrated skill loaded.</li>
+<li>Confirm that no project files changed.</li>
+<li>Keep the original prompt until your team reviews the migrated result; remove it later to avoid two unsynchronized sources.</li>
+</ol>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You can explain why prompt files are a Local-only migration source, not an Agent Host destination</li>
+<li>✅ You have converted an existing prompt file through the Agent Customizations editor</li>
+<li>✅ The migrated skill has a matching folder and <code>name</code>, a useful description, and no stale Local-only assumptions</li>
+<li>✅ You have preserved manual-only invocation with <code>disable-model-invocation: true</code></li>
+<li>✅ References confirms the migrated skill loaded in a Copilot session</li>
+</ul>
+<hr>
+<h2 id="5-design-portable-agent-skills-25-min">5. Design Portable Agent Skills (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Agent Skills package specialized workflows, instructions, scripts, examples, and resources</li>
+<li>Stored in <code>.github/skills/&lt;skill-name&gt;/SKILL.md</code> (project) or <code>~/.copilot/skills/&lt;skill-name&gt;/SKILL.md</code> (personal)</li>
+<li>Copilot discovers skill names and descriptions, then may load a relevant skill; discovery does not guarantee invocation</li>
+<li>Skills can also be exposed as slash commands for deliberate user invocation</li>
+<li>Skills are an <a href="https://agentskills.io/" target="_blank" rel="noopener noreferrer">open standard</a> used across supported Copilot surfaces and compatible agents</li>
+</ul>
+<h3 id="skills-vs-instructions">Skills vs Instructions</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Custom Instructions</th>
+<th>Agent Skills</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Location</strong></td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td><code>.github/skills/*/SKILL.md</code></td>
+</tr>
+<tr>
+<td><strong>When loaded</strong></td>
+<td>Included when applicable</td>
+<td>By relevance or explicit invocation</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Simple, universal rules</td>
+<td>Detailed, specialized procedures</td>
+</tr>
+<tr>
+<td><strong>Can include</strong></td>
+<td>Markdown text only</td>
+<td>Markdown + scripts + resources</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Project-wide or file-scoped</td>
+<td>Project or personal</td>
+</tr>
+</tbody></table>
+<p><strong>Rule of thumb</strong>: Use instructions for &quot;always true&quot; rules. Use skills for &quot;when doing X, follow these steps.&quot;</p>
+<h3 id="anatomy-of-a-skill">Anatomy of a Skill</h3>
+<pre><code>.github/skills/
+└── api-route-creation/
+    ├── SKILL.md              # Required — instructions + frontmatter
+    ├── route-template.ts     # Optional — example files
+    └── test-template.ts      # Optional — additional resources
+</code></pre>
+<pre><code class="language-yaml">---
+name: api-route-creation
+description: Guide for creating new API routes in the Express.js backend.
+  Use this when asked to add new endpoints or entities.
+---
+
+Follow this process when creating new API routes:
+
+1. Create the entity model in `api/src/models/`
+2. Create the route file in `api/src/routes/`
+3. Follow the pattern from `api/src/routes/product.ts`
+4. Register the route in `api/src/index.ts`
+5. Add Swagger documentation annotations
+6. Create tests in `api/src/routes/&lt;entity&gt;.test.ts`
+</code></pre>
+<h3 id="skill-scope">Skill Scope</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Location</th>
+<th>Available In</th>
+<th>Shared</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Project</strong></td>
+<td><code>.github/skills/</code></td>
+<td>This repo only</td>
+<td>With collaborators via git</td>
+</tr>
+<tr>
+<td><strong>Personal</strong></td>
+<td><code>~/.copilot/skills/</code></td>
+<td>All your repos</td>
+<td>Only on your machine</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Note</strong>: <code>~</code> refers to your OS home directory — <code>C:\Users\&lt;username&gt;</code> on Windows, <code>/Users/&lt;username&gt;</code> on macOS, or <code>/home/&lt;username&gt;</code> on Linux.</p>
+</blockquote>
+<h3 id="invocation-controls">Invocation Controls</h3>
+<table>
+<thead>
+<tr>
+<th>Frontmatter</th>
+<th>User Slash Command</th>
+<th>Model Can Load by Relevance</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Both properties omitted</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>General reusable skill</td>
+</tr>
+<tr>
+<td><code>user-invocable: false</code></td>
+<td>No</td>
+<td>Yes</td>
+<td>Background domain knowledge</td>
+</tr>
+<tr>
+<td><code>disable-model-invocation: true</code></td>
+<td>Yes</td>
+<td>No</td>
+<td>Deliberate workflow or approval checkpoint</td>
+</tr>
+<tr>
+<td>Both properties set</td>
+<td>No</td>
+<td>No</td>
+<td>Disabled skill definition</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="-demo-create-a-skill-from-scratch">🖥️ DEMO: Create a Skill from Scratch</h3>
+<ol>
+<li>Create the directory structure:</li>
+</ol>
+<pre><code class="language-bash">mkdir -p .github/skills/code-review-checklist
+</code></pre>
+<ol start="2">
+<li>Create <code>.github/skills/code-review-checklist/SKILL.md</code>:</li>
+</ol>
+<pre><code class="language-yaml">---
+name: code-review-checklist
+description: Checklist for reviewing TypeScript and Express.js code.
+  Use this when asked to review code, audit code quality, or check for
+  security and performance issues.
+---
+
+When reviewing TypeScript or Express.js code, follow this checklist:
+
+1. **Security**
+   - Check for unsanitized user input in route handlers
+   - Verify no hardcoded secrets, API keys, or credentials
+   - Ensure proper authentication/authorization checks on protected routes
+   - Look for SQL/NoSQL injection risks in database queries
+
+2. **Input Validation**
+   - Confirm all POST/PUT endpoints validate request body fields
+   - Check for missing type guards on `req.params` and `req.query`
+   - Verify appropriate HTTP status codes for validation failures (400, 422)
+
+3. **Error Handling**
+   - Ensure every route has try/catch with meaningful error responses
+   - Check that errors are logged but sensitive details are not leaked to clients
+   - Verify async errors are properly caught (no unhandled promise rejections)
+
+4. **Performance**
+   - Identify N+1 query patterns or unnecessary database calls
+   - Check for missing pagination on list endpoints
+   - Look for blocking synchronous operations in async handlers
+
+5. **Maintainability**
+   - Verify consistent naming conventions (camelCase for variables, PascalCase for types)
+   - Check for DRY violations — duplicated logic that should be extracted
+   - Ensure Swagger/OpenAPI annotations are present and accurate
+</code></pre>
+<ol start="3">
+<li>Start a new <strong>Copilot + Interactive</strong> session and enter:</li>
+</ol>
+<pre><code>Review the product route handler for security and performance issues
+</code></pre>
+<ul>
+<li>Expand References to determine whether Copilot loaded the skill. If it did not, invoke <code>/code-review-checklist</code> explicitly and compare the result.</li>
+</ul>
+<p><strong>Talking point</strong>: &quot;A good description makes relevance-based loading possible, not guaranteed. Explicit slash invocation gives the developer a deterministic choice to request the workflow.&quot;</p>
+<hr>
+<h3 id="-demo-reference-external-skill-collections">🖥️ DEMO: Reference External Skill Collections</h3>
+<p>Show attendees where to find community skills:</p>
+<ul>
+<li><a href="https://github.com/anthropics/skills" target="_blank" rel="noopener noreferrer">anthropics/skills</a> — Anthropic&#39;s reference skills</li>
+<li><a href="https://github.com/github/awesome-copilot" target="_blank" rel="noopener noreferrer">github/awesome-copilot</a> — community-curated collection</li>
+<li><a href="https://skills.sh/" target="_blank" rel="noopener noreferrer">skills.sh</a> — searchable directory of agent skills</li>
+<li><a href="https://microsoft.github.io/skills/" target="_blank" rel="noopener noreferrer">Microsoft Skills</a> — Microsoft&#39;s skills collection</li>
+</ul>
+<p><strong>Talking point</strong>: &quot;Skills are an open standard. You can use skills from the community or write your own.&quot;</p>
+<details>
+<summary><h3 id="-hands-on-create-an-agent-skill-12-min">🧪 Hands-On: Create an Agent Skill (12 min)</h3></summary>
+
+<p><strong>Exercise 1 — Create an API Route Creation Skill</strong></p>
+<ol>
+<li>Create the directory structure:</li>
+</ol>
+<pre><code class="language-bash">mkdir -p .github/skills/api-route-creation
+</code></pre>
+<ol start="2">
+<li>Create <code>.github/skills/api-route-creation/SKILL.md</code> with the following content:</li>
+</ol>
+<pre><code class="language-yaml">---
+name: api-route-creation
+description: Guide for creating new API routes in the Express.js backend.
+  Use this when asked to add new endpoints, entities, or REST resources.
+---
+
+Follow this process when creating new API routes:
+
+1. **Create the entity model** in `api/src/models/`
+   - Follow the TypeScript interface pattern from existing models
+   - Include all required and optional fields with proper types
+
+2. **Create the route file** in `api/src/routes/`
+   - Follow the pattern from `api/src/routes/product.ts`
+   - Implement full CRUD: GET (list), GET (by ID), POST, PUT, DELETE
+   - Add proper error handling with try/catch and appropriate HTTP status codes
+
+3. **Register the route** in `api/src/index.ts`
+   - Import the new route module
+   - Add it to the Express app with the correct base path
+
+4. **Add Swagger documentation**
+   - Add JSDoc annotations with @swagger tags on each endpoint
+   - Include request/response schemas, parameters, and example values
+
+5. **Create tests** in `api/src/routes/&lt;entity&gt;.test.ts`
+   - Follow the pattern from existing test files
+   - Test all CRUD operations and error scenarios
+   - Use vitest as the test framework
+</code></pre>
+<p><strong>Exercise 2 — Test Relevance-Based and Explicit Invocation</strong></p>
+<p>Skills can be loaded by relevance or requested explicitly. Test both paths and verify what actually happened through References.</p>
+<ol>
+<li>Select the <strong>Copilot</strong> target and <strong>Interactive</strong> mode in Copilot Chat</li>
+<li>Enter a prompt that should trigger the skill:</li>
+</ol>
+<pre><code>I need to add a new &quot;Warehouse&quot; entity and API endpoints for managing warehouses. Each warehouse has a name, address, city, state, zipCode, and capacity.
+</code></pre>
+<ol start="3">
+<li>Expand References and check whether <code>api-route-creation</code> loaded.</li>
+<li>If it did not load, stop the response and invoke the skill explicitly:</li>
+</ol>
+<pre><code class="language-text">/api-route-creation Create a Warehouse entity with a name, address, city, state, zipCode, and capacity.
+</code></pre>
+<ol start="5">
+<li>Review all tool calls before approval, then check whether the proposed files, Swagger documentation, and tests follow the skill.</li>
+</ol>
+<p><strong>Exercise 3 — Create a Second Skill</strong> (Bonus)</p>
+<p>Create a <code>react-component-creation</code> skill:</p>
+<pre><code class="language-bash">mkdir -p .github/skills/react-component-creation
+</code></pre>
+<p>Create <code>.github/skills/react-component-creation/SKILL.md</code>:</p>
+<pre><code class="language-yaml">---
+name: react-component-creation
+description: Guide for creating new React components in the frontend.
+  Use this when asked to add new pages, UI components, or frontend features.
+---
+
+Follow this process when creating new React components:
+
+1. **Create the component file** in `frontend/src/components/` or `frontend/src/pages/`
+   - Use functional components with TypeScript (.tsx)
+   - Use Tailwind CSS for all styling — no inline styles or CSS modules
+   - Export the component as the default export
+
+2. **Add routing** (if it&#39;s a page)
+   - Add the route to the router configuration
+   - Add a navigation link if appropriate
+
+3. **Connect to the API** (if needed)
+   - Use fetch or the existing API utility for data fetching
+   - Handle loading, error, and empty states
+   - Add TypeScript interfaces for API response types
+
+4. **Follow existing patterns**
+   - Reference `frontend/src/pages/Products.tsx` for page structure
+   - Reference `frontend/src/components/` for reusable component patterns
+</code></pre>
+<p>Test it by asking Copilot: <code>Create a Warehouses page that shows a list of all warehouses with their addresses</code></p>
+</details>
+
+<h3 id="personal-skills">Personal Skills</h3>
+<p>You can also create <strong>personal skills</strong> that apply across all your repos:</p>
+<ul>
+<li>Location: <code>~/.copilot/skills/*/SKILL.md</code> (where <code>~</code> is your OS home directory — e.g., <code>C:\Users\&lt;username&gt;</code> on Windows, <code>/Users/&lt;username&gt;</code> on macOS)</li>
+<li>These are private to your machine — not shared via git</li>
+<li>Great for personal coding preferences or tools only you use</li>
+</ul>
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You&#39;ve created <code>.github/skills/api-route-creation/SKILL.md</code> with a complete step-by-step guide</li>
+<li>✅ You&#39;ve tested both relevance-based loading and explicit slash invocation in a Copilot session</li>
+<li>✅ You understand that skill discovery does not guarantee invocation</li>
+<li>✅ You understand the difference: instructions provide applicable standards; skills package reusable workflows; custom agents define roles and tool sets</li>
+</ul>
+<hr>
+<h2 id="6-custom-agents-in-agent-host-25-min">6. Custom Agents in Agent Host (25 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Custom agents are reusable roles stored in <code>.github/agents/*.agent.md</code> for the workspace or <code>~/.copilot/agents/</code> for the user</li>
+<li>With the Copilot target selected, agents appear in the Agent dropdown as reusable specialized roles</li>
+<li>Each agent can define role instructions, tools, and optional model preferences</li>
+<li>Use the Agent Customizations editor with the intended harness selected so generated files and tool identifiers match that harness</li>
+<li>A restricted tool list reduces capability for that role, but permissions and sandboxing still control execution safety</li>
+</ul>
+<h3 id="agent-skills-vs-custom-agents">Agent Skills vs Custom Agents</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Agent Skills</th>
+<th>Custom Agents</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Purpose</strong></td>
+<td>Teach a reusable workflow or capability</td>
+<td>Define a specialized role and tool configuration</td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td><code>.github/skills/&lt;name&gt;/SKILL.md</code></td>
+<td><code>.github/agents/*.agent.md</code></td>
+</tr>
+<tr>
+<td><strong>Invocation</strong></td>
+<td>Loaded by relevance or invoked as <code>/name</code></td>
+<td>Selected as the active specialized role</td>
+</tr>
+<tr>
+<td><strong>Behavior</strong></td>
+<td>Adds task instructions and resources</td>
+<td>Shapes the active role across the conversation</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Testing, debugging, deployment, migration procedures</td>
+<td>Planning, implementation, review, or orchestration roles</td>
+</tr>
+</tbody></table>
+<h3 id="anatomy-of-an-agent-file">Anatomy of an Agent File</h3>
+<pre><code class="language-yaml">---
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;editFiles&#39;, &#39;runCommands&#39;, &#39;problems&#39;]
+description: Full-stack engineer for the OctoCAT Supply app
+---
+
+Markdown body with the agent&#39;s instructions, persona, and behavior rules.
+</code></pre>
+<p><strong>Key fields</strong>: <code>tools</code> controls available tools, <code>description</code> explains the role, and <code>model</code> optionally provides a model or fallback list.</p>
+<blockquote>
+<p><strong>Tool identifier note</strong>: Tool IDs are supplied by the VS Code <strong>Add Tools</strong> picker and may appear as short built-in names or namespaced provider/action names depending on the installed Copilot version and tool provider. Copy the exact IDs offered by your environment; do not translate between the two forms manually. MCP wildcards such as <code>github/*</code> and <code>playwright/*</code> are separate server-provided identifiers.</p>
+</blockquote>
+<hr>
+<h3 id="-demo-part-a--meet-the-octocatengineer-agent">🖥️ DEMO: Part A — Meet the OctoCATEngineer Agent</h3>
+<p><strong>Note:</strong> The OctoCATEngineer agent file is <strong>not included</strong> in your repo by default. You will need to create it yourself before you can use it in Copilot Chat.</p>
+<ol>
+<li><p><strong>Create the agent file:</strong></p>
+<ul>
+<li>In your repo, create a new file at <code>.github/agents/OctoCATEngineer.agent.md</code> with the following content:</li>
+</ul>
+<pre><code class="language-yaml">---
+tools: [&#39;search&#39;, &#39;editFiles&#39;, &#39;runCommands&#39;, &#39;problems&#39;]
+description: Full-stack engineer for the OctoCAT Supply app
+---
+
+You are a senior full-stack TypeScript engineer working on the OctoCAT Supply application — a supply chain management web app with a React 18+ frontend (Vite, Tailwind CSS) and an Express.js API backend (TypeScript, OpenAPI/Swagger).
+
+## Your Approach
+
+- Read existing code patterns before making changes — follow the conventions already established in the project
+- Use TypeScript with strict typing for all new code
+- Follow REST conventions for API endpoints
+- Add Swagger/OpenAPI documentation annotations for any new or modified API routes
+- Use Tailwind CSS for all frontend styling — no inline styles or CSS modules
+- Use functional React components with hooks
+
+## Backend Conventions
+
+- Entity models go in `api/src/models/`
+- Route handlers go in `api/src/routes/`
+- Follow the pattern established in `api/src/routes/product.ts` for new routes
+- Register new routes in `api/src/index.ts`
+- Use proper error handling with try/catch and appropriate HTTP status codes
+- Include input validation for all POST/PUT endpoints
+
+## Frontend Conventions
+
+- Pages go in `frontend/src/pages/`
+- Reusable components go in `frontend/src/components/`
+- Follow the component structure in existing pages like `frontend/src/pages/Products.tsx`
+- Use React Router for navigation
+- Handle loading, error, and empty states in all data-fetching components
+
+## Testing
+
+- Use vitest as the test framework
+- Follow patterns from existing test files
+- Run tests after making changes to verify nothing is broken
+
+## Workflow
+
+1. Understand the task by reading relevant existing code
+2. Plan the changes needed
+3. Implement the changes across all affected files
+4. Build and verify the changes compile successfully
+5. Run tests if applicable
+</code></pre>
+</li>
+<li><p>Walk through the structure:</p>
+<ul>
+<li><strong>Tools</strong>: workspace search, editing, terminal, and problems tools. Reinsert them through <strong>Add Tools</strong> if the installed Copilot harness uses different identifiers.</li>
+<li><strong>No custom model</strong> — uses whatever model you have selected</li>
+<li><strong>Persona</strong>: A full-stack TypeScript engineer who follows the project&#39;s patterns</li>
+</ul>
+</li>
+<li><p>Show the agent appearing in the Copilot Chat agents dropdown</p>
+</li>
+<li><p>Select <code>OctoCATEngineer</code> and give it a task:</p>
+</li>
+</ol>
+<pre><code>Add a GET /api/products/search endpoint that accepts a &quot;name&quot; query parameter and returns matching products
+</code></pre>
+<ol start="5">
+<li>Show the agent:<ul>
+<li>Reading existing route code for patterns</li>
+<li>Creating or editing the route file</li>
+<li>Running commands to verify the build</li>
+<li>Staying in character throughout the conversation</li>
+</ul>
+</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;This is the simplest Agent Host role: focused instructions plus workspace tools. It uses the selected Copilot model and permissions unless the agent definition says otherwise.&quot;</p>
+<hr>
+<h3 id="-demo-part-b--create-a-codereviewer-agent">🖥️ DEMO: Part B — Create a CodeReviewer Agent</h3>
+<p>Now contrast the OctoCATEngineer (read/write worker) with a read-only reviewer agent.</p>
+<p>Create <code>.github/agents/CodeReviewer.agent.md</code>:</p>
+<pre><code class="language-yaml">---
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;usages&#39;, &#39;problems&#39;]
+description: Review code for security, performance, and best practices
+---
+
+You are an expert code reviewer specializing in TypeScript and React applications.
+
+When reviewing code:
+
+1. **Security**: Check for XSS, injection, insecure data handling
+2. **Performance**: Identify N+1 queries, unnecessary re-renders, memory leaks
+3. **Best Practices**: Verify error handling, input validation, type safety
+4. **Maintainability**: Check naming, code organization, DRY violations
+
+Always provide:
+- Severity level (Critical / Warning / Suggestion)
+- Specific file and line references
+- Concrete fix recommendations with code examples
+
+Be direct and opinionated. Don&#39;t say &quot;consider&quot; — say &quot;change this to...&quot;
+</code></pre>
+<ol>
+<li>Show the new agent appearing in the agents dropdown immediately</li>
+<li>Point out the differences from OctoCATEngineer:<ul>
+<li><strong>Read-only tools</strong> — <code>codebase</code>, <code>search</code>, <code>usages</code>, <code>problems</code> (no <code>editFiles</code>, no <code>runCommands</code>)</li>
+<li><strong>Selected model</strong> — no hard-coded model, so the facilitator-approved Copilot model remains in effect</li>
+<li><strong>Different persona</strong> — reviewer, not builder</li>
+</ul>
+</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Same file format, completely different behavior. OctoCATEngineer builds features. CodeReviewer only reads and reports. The tool list controls what an agent can do.&quot;</p>
+<hr>
+<h3 id="-demo-part-c--advanced-implementationideas-agent-prepare-delegation">🖥️ DEMO: Part C — Advanced: ImplementationIdeas Agent (Prepare Delegation)</h3>
+<p>Now show a safer orchestration pattern — an agent that researches variations and prepares bounded delegation briefs for human approval.</p>
+<ol>
+<li>Open <code>.github/agents/ImplementationIdeas.agent.md</code></li>
+<li>Walk through what makes this different:<ul>
+<li><strong>Tools</strong>: workspace search only</li>
+<li><strong>Orchestration</strong>: the agent researches alternatives and formats approved variations as delegation briefs</li>
+<li><strong>Human gate</strong>: it cannot call external tools, create pull requests, or start cloud work</li>
+</ul>
+</li>
+<li>Keep this inspection-only and explain that Section 8 owns the explicit <code>/delegate</code> action.</li>
+<li>Explain the task you would submit after explicit approval:</li>
+</ol>
+<pre><code>Explore adding a wishlist feature where users can save products for later
+</code></pre>
+<ol start="5">
+<li>Show the agent:<ul>
+<li>Researching the codebase (parallel tool calls)</li>
+<li>Comparing implementation variations and tradeoffs</li>
+<li>Producing a bounded <code>/delegate</code> brief only after the user approves a variation</li>
+</ul>
+</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;The custom agent prepares a high-quality delegation brief, but the human starts cloud work explicitly. Research and delegation remain separate approval steps.&quot;</p>
+<blockquote>
+<p><strong>Note</strong>: When you run the wishlist prompt with this agent, you may see a tip from Copilot cloud agent: <em>&quot;You can make Copilot smarter by setting up custom instructions, customizing its development environment and configuring MCP servers.&quot;</em> We&#39;ll explore how to configure the Copilot cloud agent&#39;s environment in Section 9.</p>
+</blockquote>
+<blockquote>
+<p><strong>Delegation gate</strong>: The agent never starts cloud work. The user reviews the brief, acknowledges AI Credit and Actions usage, and submits <code>/delegate</code> from the prework-baseline worktree in Section 8.</p>
+</blockquote>
+<h3 id="agent-progression-summary">Agent Progression Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Tools</th>
+<th>Model</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>OctoCATEngineer</strong></td>
+<td>Workspace read/write</td>
+<td>Selected Copilot model</td>
+<td>Simple worker — builds features</td>
+</tr>
+<tr>
+<td><strong>CodeReviewer</strong></td>
+<td>Workspace read-only</td>
+<td>Selected Copilot model</td>
+<td>Reviewer — analyzes, doesn&#39;t edit</td>
+</tr>
+<tr>
+<td><strong>ImplementationIdeas</strong></td>
+<td>Workspace research</td>
+<td>Selected model</td>
+<td>Planner — prepares delegation briefs</td>
+</tr>
+</tbody></table>
+<details>
+<summary><h3 id="-hands-on-explore-and-create-custom-agents-10-min">🧪 Hands-On: Explore and Create Custom Agents (10 min)</h3></summary>
+
+<details>
+<summary>Bonus — Recreate and use the OctoCATEngineer worker</summary>
+
+<p>The facilitator demo already showed this worker pattern. Recreate it only after the required reviewer task and planner inspection are complete.</p>
+<ol>
+<li>Open the Copilot Chat agents dropdown</li>
+<li>Select <strong>OctoCATEngineer</strong> from the list</li>
+<li>Give it a task:</li>
+</ol>
+<pre><code>Add a GET /api/products/search endpoint that accepts a `name` query parameter and returns matching products. Follow the existing route pattern and include Swagger documentation and focused tests.
+</code></pre>
+<ol start="4">
+<li>Watch the agent work — it should:<ul>
+<li>Read existing route patterns</li>
+<li>Create or edit route files</li>
+<li>Run the build to verify</li>
+</ul>
+</li>
+<li>Notice how every response follows the engineer persona — it stays in character</li>
+<li>After the checkpoint, discard the Product search changes before Section 8.</li>
+</ol>
+</details>
+
+<p><strong>Exercise 1 — Build a Code Reviewer Agent</strong></p>
+<ol>
+<li>Create <code>.github/agents/CodeReviewer.agent.md</code> with the following content:</li>
+</ol>
+<pre><code class="language-yaml">---
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;usages&#39;, &#39;problems&#39;]
+description: Review code for security, performance, and best practices
+---
+
+You are an expert code reviewer specializing in TypeScript and React applications.
+
+When reviewing code:
+
+1. **Security**: Check for XSS, injection, insecure data handling
+2. **Performance**: Identify N+1 queries, unnecessary re-renders, memory leaks
+3. **Best Practices**: Verify error handling, input validation, type safety
+4. **Maintainability**: Check naming, code organization, DRY violations
+
+Always provide:
+- Severity level (Critical / Warning / Suggestion)
+- Specific file and line references
+- Concrete fix recommendations with code examples
+
+Be direct and opinionated. Don&#39;t say &quot;consider&quot; — say &quot;change this to...&quot;
+</code></pre>
+<ol start="2">
+<li>Check the agents dropdown — &quot;CodeReviewer&quot; should appear immediately (no reload needed)</li>
+</ol>
+<p><strong>Exercise 2 — Test Your Agent</strong></p>
+<ol>
+<li>Select <strong>CodeReviewer</strong> from the agents dropdown</li>
+<li>Ask it to review a specific file:</li>
+</ol>
+<pre><code>Review the product route handler for security and performance issues
+</code></pre>
+<ol start="3">
+<li>Notice how the agent stays in character — every response follows the review format you defined</li>
+<li>Confirm the response follows the requested severity, evidence, and remediation format without editing files.</li>
+</ol>
+<p><strong>Exercise 3 — Explore the ImplementationIdeas Agent</strong></p>
+<ol>
+<li>Open <code>.github/agents/ImplementationIdeas.agent.md</code></li>
+<li>Read through the file and notice the advanced patterns:<ul>
+<li>Search-only tools — no external write capability</li>
+<li>Approved variations become copyable <code>/delegate</code> briefs</li>
+</ul>
+</li>
+<li>Compare the three agents: OctoCATEngineer (worker), CodeReviewer (read-only reviewer), ImplementationIdeas (delegation-brief planner)</li>
+</ol>
+<p><strong>Exercise 4 — Create Your Own Agent</strong> (Bonus)</p>
+<p>Choose a persona that would be useful for this project and create it:</p>
+<p><strong>Option A: <code>APIDesigner.agent.md</code></strong></p>
+<pre><code class="language-yaml">---
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;editFiles&#39;, &#39;runCommands&#39;]
+description: Design and implement REST API endpoints following project patterns
+---
+
+You are an API architect specializing in Express.js and TypeScript.
+[Add behavior instructions: how to design endpoints, which patterns to follow,
+how to handle validation, what Swagger docs to generate...]
+</code></pre>
+<p><strong>Option B: <code>TestEngineer.agent.md</code></strong></p>
+<pre><code class="language-yaml">---
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;editFiles&#39;, &#39;runCommands&#39;, &#39;problems&#39;, &#39;findTestFiles&#39;]
+description: Design and write comprehensive test suites
+---
+
+You are a test engineering expert focused on TypeScript applications using vitest.
+[Add behavior instructions: what to test, coverage targets, testing patterns,
+how to handle mocking, edge cases to consider...]
+</code></pre>
+<p><strong>Option C: <code>DocWriter.agent.md</code></strong></p>
+<pre><code class="language-yaml">---
+tools: [&#39;codebase&#39;, &#39;search&#39;, &#39;editFiles&#39;]
+description: Generate and maintain project documentation from code
+---
+
+You are a technical writer who creates clear, concise documentation.
+[Add behavior instructions: documentation style, what to document,
+README structure, API doc format, code comment standards...]
+</code></pre>
+<p>Fill in the behavior instructions with your own rules, then test the agent with a real task.</p>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You&#39;ve observed the worker pattern in the facilitator demo</li>
+<li>✅ You&#39;ve created the CodeReviewer agent and tested it with a review request</li>
+<li>✅ You&#39;ve explored the ImplementationIdeas agent and understand how it prepares a brief for explicit human delegation</li>
+<li>✅ You understand the progression: workspace worker → read-only reviewer → planner with explicit human delegation</li>
+<li>✅ You understand when to use a skill, custom agent, or human-gated delegation brief</li>
+</ul>
+<hr>
+<h2 id="7-portable-mcp-configuration-playwright--github-30-min">7. Portable MCP Configuration (Playwright + GitHub) (30 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>MCP (Model Context Protocol) extends Copilot with external tools</li>
+<li>For Agent Host, prefer portable workspace <code>.mcp.json</code> or user <code>~/.copilot/mcp-config.json</code></li>
+<li><code>.vscode/mcp.json</code> is a compatibility source that VS Code can forward to Agent Host with limitations; Agent Host does not read it directly</li>
+<li>Two server types: <strong>HTTP</strong> (remote, OAuth-authenticated) and <strong>stdio</strong> (local, runs a process)</li>
+<li>The OctoCAT Supply repo includes two MCP servers:<ul>
+<li><strong>Playwright</strong> — browser automation for functional testing</li>
+<li><strong>GitHub</strong> — interact with GitHub issues, PRs, and repo data from chat</li>
+</ul>
+</li>
+</ul>
+<h3 id="portable-mcp-configuration">Portable MCP Configuration</h3>
+<p>Recommended workspace-root <code>.mcp.json</code>:</p>
+<pre><code class="language-json">{
+   &quot;mcpServers&quot;: {
+    &quot;github&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;https://api.githubcopilot.com/mcp/&quot;
+    },
+    &quot;playwright&quot;: {
+         &quot;type&quot;: &quot;stdio&quot;,
+      &quot;command&quot;: &quot;npx&quot;,
+         &quot;args&quot;: [&quot;-y&quot;, &quot;@playwright/mcp@0.0.83&quot;, &quot;--isolated&quot;]
+    }
+  }
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>Read By</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.mcp.json</code></td>
+<td>Agent Host and compatible tools</td>
+<td>Preferred workspace location</td>
+</tr>
+<tr>
+<td><code>~/.copilot/mcp-config.json</code></td>
+<td>Copilot harness and Copilot CLI</td>
+<td>Preferred user location</td>
+</tr>
+<tr>
+<td><code>.vscode/mcp.json</code></td>
+<td>VS Code; eligible servers are forwarded</td>
+<td>Compatibility only; interactive inputs are not forwarded</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Server</th>
+<th>Type</th>
+<th>Auth</th>
+<th>Requires</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GitHub</strong></td>
+<td>HTTP (remote)</td>
+<td>OAuth (automatic)</td>
+<td>Nothing extra</td>
+</tr>
+<tr>
+<td><strong>Playwright</strong></td>
+<td>stdio (local)</td>
+<td>None</td>
+<td>Node.js and a reachable browser runtime</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="-demo-migrate-and-verify-mcp-servers">🖥️ DEMO: Migrate and Verify MCP Servers</h3>
+<p>The OctoCAT Supply repository starts with <code>.vscode/mcp.json</code> so this workshop can demonstrate the supported migration path.</p>
+<ol>
+<li>Select the <strong>Copilot</strong> target.</li>
+<li>Run <strong>Chat: Open Customizations</strong>, open <strong>Overview</strong>, and choose <strong>Migrate MCP Servers</strong>.</li>
+<li>Review the <strong>Migratable</strong> and <strong>Not migratable</strong> groups. Open compatibility details before accepting a partial conversion.</li>
+<li>Migrate compatible servers to the workspace-root <code>.mcp.json</code> and keep <code>.vscode/mcp.json</code> until verification is complete.</li>
+<li>Review the generated <code>mcpServers</code> definitions and confirm no secrets were copied into source control.</li>
+<li>Temporarily rename the compatibility source to <code>.vscode/mcp.json.pre-agent-host</code>, start a new Copilot session, and run <strong>MCP: List Servers</strong>.</li>
+<li>Confirm Playwright and GitHub remain listed and inspect diagnostics/source attribution to verify Agent Host loaded <code>.mcp.json</code> rather than a forwarded VS Code definition.</li>
+<li>Trigger one tool from each server in <strong>Copilot + Interactive</strong>, then verify the server status and tool result.</li>
+<li>After verification, delete the old compatibility file or restore it only for an explicitly documented legacy consumer; do not maintain duplicate definitions.</li>
+</ol>
+<blockquote>
+<p><strong>Compatibility check</strong>: Explicit working directories, legacy SSE transport, server-version metadata, and interactive input variables can require manual edits or prevent migration. Unsupported definitions remain in their original source.</p>
+</blockquote>
+<blockquote>
+<p><strong>Approval guidance</strong>: Keep <strong>Manual</strong> permissions for the workshop. Review each external action and its parameters before approving it. Use <strong>Chat: Manage Tool Approval</strong> to inspect saved choices; do not grant blanket global approval for convenience.</p>
+</blockquote>
+<hr>
+<h3 id="-demo-playwright-mcp--browser-testing-from-natural-language">🖥️ DEMO: Playwright MCP — Browser Testing from Natural Language</h3>
+<blockquote>
+<p><strong>Prerequisite</strong>: The app must be running (<code>npm run dev</code>) and reachable from the environment where the Playwright server runs. Desktop delivery can use the headed browser. Remote hosts, containers, and Codespaces require a reachable browser runtime and typically <code>--headless</code>; use the prepared recording if that path was not rehearsed. <code>--isolated</code> prevents reuse of a persistent browser profile.</p>
+</blockquote>
+<ol>
+<li>The Playwright MCP server will auto-start when Copilot needs it</li>
+<li>Select <strong>Copilot + Interactive</strong> with <strong>Manual</strong> permissions</li>
+<li>Enter:</li>
+</ol>
+<pre><code>Browse to http://localhost:5137 and navigate to the Products page. Describe what you see.
+</code></pre>
+<ol start="4">
+<li>Show Copilot:<ul>
+<li>Sending commands to the Playwright browser</li>
+<li>Navigating to the site</li>
+<li>Describing the UI elements it finds</li>
+</ul>
+</li>
+<li>Follow up:</li>
+</ol>
+<pre><code>Click on one of the products and check if the product details are displayed correctly
+</code></pre>
+<ol start="6">
+<li>Show Copilot interacting with the page and reporting results</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;You just ran a functional test using natural language. No test scripts, no selectors, no framework setup. Copilot uses Playwright behind the scenes to drive a real browser.&quot;</p>
+<hr>
+<h3 id="-demo-run-bdd-style-test-scenarios">🖥️ DEMO: Run BDD-Style Test Scenarios</h3>
+<ol>
+<li><strong>Start a new chat</strong> — click the <strong>+</strong> button in Copilot Chat to start with a clean context</li>
+<li>Enter:</li>
+</ol>
+<pre><code>Run the following BDD test scenarios against http://localhost:5137 using Playwright:
+1. Given I navigate to the Products page, Then I should see a list of products with names, images, and prices
+2. When I click on a product, Then I should see the product details
+3. When I click &quot;Add to Cart&quot; on a product, Then I should see a confirmation
+Report pass/fail for each scenario.
+</code></pre>
+<ol start="3">
+<li>Show Copilot:<ul>
+<li>Launching the browser and navigating to the Products page</li>
+<li>Executing each scenario step (viewing products, clicking a product, clicking Add to Cart)</li>
+<li>Reporting pass/fail results for each scenario</li>
+</ul>
+</li>
+<li>Point out how the prompt uses BDD-style Given/When/Then language — but executes immediately via Playwright instead of generating a static file</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;BDD-style test scenarios described in natural language and executed live — no cucumber, no step definitions, no extra tooling. Copilot understood the Given/When/Then structure and ran a real browser through each scenario.&quot;</p>
+<ol start="5">
+<li><strong>Extract a reusable skill from the successful workflow</strong>:<ul>
+<li>Ask: <code>Create a workspace skill from the BDD workflow we just verified.</code></li>
+<li>Save it as <code>.github/skills/bdd-playwright-tests/SKILL.md</code></li>
+<li>Review the generated description, Playwright tool assumptions, expected report format, and success criteria</li>
+<li>Invoke <code>/bdd-playwright-tests</code> in a new Copilot session and confirm the skill appears in References</li>
+</ul>
+</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;We turned a verified conversation into a portable skill. The workflow can now follow the repository across supported Copilot surfaces instead of remaining a Local-only prompt file.&quot;</p>
+<hr>
+<h3 id="-demo-github-mcp--interacting-with-github-from-chat">🖥️ DEMO: GitHub MCP — Interacting with GitHub from Chat</h3>
+<ol>
+<li>Select <strong>Copilot + Interactive</strong> with <strong>Manual</strong> permissions and state the exact workshop fork, <code>&lt;OWNER&gt;/GitHubCopilot_Customized</code>.</li>
+<li>Enter:</li>
+</ol>
+<pre><code>In &lt;OWNER&gt;/GitHubCopilot_Customized, search open and closed issues for the exact title &quot;Improve API route test coverage&quot;. Return matching URLs and states. Do not write anything.
+</code></pre>
+<ol start="3">
+<li>Show Copilot searching across issue states via the GitHub API.</li>
+<li>Reuse an open match, wait for approval before reopening a closed match, or create the issue only when no exact-title match exists:</li>
+</ol>
+<pre><code>In &lt;OWNER&gt;/GitHubCopilot_Customized, first search open and closed issues for the exact title &quot;Improve API route test coverage&quot;. If one exists, return its URL and state and do not create another; if it is closed, wait for approval before reopening it. Only if none exists, draft that issue with acceptance criteria for focused tests of the existing GET /api/suppliers/:id route&#39;s 200 and 404 behavior without changing route behavior. Assign it to me, show the repository, title, body, labels, and assignee, wait for approval, then create exactly one issue and return its URL.
+</code></pre>
+<ol start="5">
+<li>Show the canonical issue being reused, reopened, or created with:<ul>
+<li>Meaningful title and description</li>
+<li>Appropriate labels</li>
+<li>Correct assignee</li>
+<li>Recorded issue URL for cleanup</li>
+<li>Recorded provenance (<code>reused-open</code>, <code>reopened-this-run</code>, or <code>created-this-run</code>) and prior assignees</li>
+</ul>
+</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;You just managed one reviewed issue without leaving VS Code. Available GitHub MCP actions depend on enabled toolsets, OAuth scopes, organization policy, and each approval.&quot;</p>
+<details>
+<summary><h3 id="-hands-on-portable-mcp-core-12-min">🧪 Hands-On: Portable MCP Core (12 min)</h3></summary>
+
+<p><strong>Exercise 1 — Migrate and Verify MCP Configuration</strong></p>
+<p>Migrate the repository&#39;s compatibility configuration before running the exercises.</p>
+<ol>
+<li>Select <strong>Copilot</strong>, open <strong>Chat: Open Customizations</strong>, and choose <strong>Migrate MCP Servers</strong>.</li>
+<li>Migrate compatible workspace servers into <code>.mcp.json</code> and inspect any compatibility warnings.</li>
+<li>Confirm that <code>.mcp.json</code> uses a top-level <code>mcpServers</code> object and contains no credentials.</li>
+<li>Rename <code>.vscode/mcp.json</code> to <code>.vscode/mcp.json.pre-agent-host</code>, start a new Copilot session, and run <strong>MCP: List Servers</strong>.</li>
+<li>Confirm both servers remain available from <code>.mcp.json</code> through diagnostics/source attribution.</li>
+<li>Complete the GitHub OAuth flow only for the scopes approved by your organization.</li>
+</ol>
+<p><strong>Checkpoint</strong>: Agent Host discovers both servers from the portable configuration.</p>
+<p><strong>Exercise 2 — Browse Your App with Playwright</strong></p>
+<ol>
+<li>Select <strong>Copilot + Interactive</strong> with <strong>Manual</strong> permissions</li>
+<li>Ask Copilot to explore your running application:</li>
+</ol>
+<pre><code>Browse to http://localhost:5137 and describe what you see on the home page
+</code></pre>
+<ol start="3">
+<li>Watch Copilot:<ul>
+<li>Launch a browser window (you&#39;ll see it open)</li>
+<li>Navigate to the URL</li>
+<li>Take a screenshot and analyze the page</li>
+<li>Describe the UI elements it finds</li>
+</ul>
+</li>
+<li>Now ask it to interact with the app:</li>
+</ol>
+<pre><code>Navigate to the Products page and click on the first product. Describe the product details you see.
+</code></pre>
+<ol start="5">
+<li>Copilot will click through the UI, read the content, and report back</li>
+</ol>
+<p><strong>Exercise 3 — Functional Testing with Natural Language</strong> (Bonus)</p>
+<ol>
+<li>Ask Copilot to verify specific functionality:</li>
+</ol>
+<pre><code>Browse to http://localhost:5137, go to Products, and verify that:
+1. All products have images displayed
+2. All products show a price
+3. The &quot;Add to Cart&quot; button is visible on each product
+Report any issues you find.
+</code></pre>
+<ol start="2">
+<li>Review the results — Copilot will check each condition and report pass/fail</li>
+<li>Try a more specific test:</li>
+</ol>
+<pre><code>Go to the Products page, click &quot;Add to Cart&quot; on any product, and tell me what happens
+</code></pre>
+<p><strong>Exercise 4 — Run BDD-Style Test Scenarios</strong> (Bonus)</p>
+<ol>
+<li>Ask Copilot to execute BDD-style test scenarios against the live app:</li>
+</ol>
+<pre><code>Run these BDD test scenarios against http://localhost:5137 using Playwright:
+1. Given I navigate to the Products page, Then I should see a list of products with names, images, and prices
+2. When I click on a product, Then I should see the product details
+3. When I click &quot;Add to Cart&quot; on a product, Then I should see a confirmation
+Report pass/fail for each scenario.
+</code></pre>
+<ol start="2">
+<li>Review Copilot&#39;s test execution results — it should:<ul>
+<li>Navigate to the Products page and verify product cards are displayed</li>
+<li>Click a product and confirm details appear</li>
+<li>Click &quot;Add to Cart&quot; and confirm the response</li>
+<li>Report pass/fail for each scenario</li>
+</ul>
+</li>
+</ol>
+<p><strong>Exercise 5 — GitHub MCP: Manage Issues from Chat</strong> (Bonus)</p>
+<ol>
+<li>In a <strong>Copilot Interactive</strong> session, identify your workshop fork as <code>&lt;OWNER&gt;/GitHubCopilot_Customized</code> and ask:</li>
+</ol>
+<pre><code>In &lt;OWNER&gt;/GitHubCopilot_Customized, search open and closed issues for the exact title &quot;Improve API route test coverage&quot;. Return matching URLs and states. Do not write anything.
+</code></pre>
+<ol start="2">
+<li>Copilot will search via the GitHub API — no terminal needed.</li>
+<li>If the exact-title issue is open, reuse it. If it is closed, show its URL and wait for approval before reopening it. Create the canonical issue only when no exact-title match exists:</li>
+</ol>
+<pre><code>In &lt;OWNER&gt;/GitHubCopilot_Customized, first search open and closed issues for the exact title &quot;Improve API route test coverage&quot;. If one exists, return its URL and state and do not create another; if it is closed, wait for approval before reopening it. Only if none exists, draft that issue with acceptance criteria for focused tests of the existing GET /api/suppliers/:id route&#39;s 200 and 404 behavior without changing route behavior. Assign it to me, show all parameters, wait for approval, then create exactly one issue and return its URL.
+</code></pre>
+<ol start="4">
+<li>Record the returned issue URL, provenance (<code>reused-open</code>, <code>reopened-this-run</code>, or <code>created-this-run</code>), and prior assignees; then verify it in the browser.</li>
+</ol>
+<p><strong>Exercise 6 — Combine Both MCP Servers</strong> (Facilitator-led bonus)</p>
+<p>This is where things get powerful — use Playwright to find a bug, then prepare a dry-run issue draft. Do not call a GitHub write tool:</p>
+<pre><code>Browse to http://localhost:5137 and test all navigation links. If you find problems, draft one consolidated issue for &lt;OWNER&gt;/GitHubCopilot_Customized and show the repository, title, body, labels, and assignee. Do not create or update an issue.
+</code></pre>
+</details>
+
+<h3 id="required-success-criteria">Required Success Criteria</h3>
+<ul>
+<li>✅ Both MCP servers are configured in portable <code>.mcp.json</code> and discovered by Agent Host</li>
+<li>✅ You understand why <code>.vscode/mcp.json</code> is a compatibility source rather than the preferred destination</li>
+<li>✅ You&#39;ve seen Playwright navigate your app and describe what it sees</li>
+<li>✅ You understand that MCP connects Copilot to the real world beyond just code files</li>
+</ul>
+<h3 id="bonus-success-criteria">Bonus Success Criteria</h3>
+<ul>
+<li>✅ You&#39;ve run a natural-language functional test against your running app</li>
+<li>✅ You&#39;ve used GitHub MCP to search for and reuse, reopen, or create the one canonical issue</li>
+</ul>
+<hr>
+<h2 id="8-github-copilot-cli-same-runtime-new-surface-30-min">8. GitHub Copilot CLI: Same Runtime, New Surface (30 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>The standalone <strong><code>copilot</code> CLI</strong> is a full AI agent in your terminal — interactive sessions with tool approvals, file editing, command execution, and plan mode</li>
+<li>It shares supported repository instructions, agents, skills, hooks, and portable MCP configuration with the Copilot harness</li>
+<li><code>/delegate</code> bridges the CLI to the Copilot cloud agent (Section 9) — start work locally, hand it off to the cloud mid-session</li>
+<li>Session persistence lets you choose an earlier session with <code>--resume</code> or continue the most recent applicable session with <code>--continue</code></li>
+</ul>
+<h3 id="what-the-github-copilot-cli-can-do">What the GitHub Copilot CLI Can Do</h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>How It Works</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Interactive agentic sessions</td>
+<td><code>copilot</code> — full TUI with tool approval, file editing, command execution</td>
+</tr>
+<tr>
+<td>Mode cycle</td>
+<td><code>Shift+Tab</code> cycles Standard → Plan → Autopilot; confirm the visible mode before submitting</td>
+</tr>
+<tr>
+<td>File context</td>
+<td><code>@path/to/file</code> — include specific files directly in prompts</td>
+</tr>
+<tr>
+<td>Delegate to Copilot cloud agent</td>
+<td><code>/delegate</code> or <code>&amp;</code> prefix — hand off current work to GitHub cloud</td>
+</tr>
+<tr>
+<td>Session picker</td>
+<td><code>--resume</code> — choose a session to resume</td>
+</tr>
+<tr>
+<td>Continue latest</td>
+<td><code>--continue</code> — resume the most recent applicable session</td>
+</tr>
+<tr>
+<td>Custom agents</td>
+<td><code>/agent</code> — use agents from <code>.github/agents/</code> (same files from Section 6)</td>
+</tr>
+<tr>
+<td>MCP servers</td>
+<td><code>/mcp add</code> — GitHub MCP built-in, add more on the fly</td>
+</tr>
+<tr>
+<td>Code review</td>
+<td><code>/review</code> — analyze changes before committing</td>
+</tr>
+<tr>
+<td>Programmatic mode</td>
+<td><code>copilot -p &quot;prompt&quot; --allow-tool &#39;shell(git)&#39;</code> — scriptable, headless</td>
+</tr>
+<tr>
+<td>Context management</td>
+<td><code>/context</code>, <code>/compact</code>, <code>/usage</code> — inspect context-window usage, compact context, and review session usage</td>
+</tr>
+</tbody></table>
+<h3 id="copilot-in-vs-code-vs-copilot-cli">Copilot in VS Code vs Copilot CLI</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Copilot Harness in VS Code</th>
+<th>GitHub Copilot CLI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Surface</strong></td>
+<td>Chat view or Agents window</td>
+<td>Terminal TUI</td>
+</tr>
+<tr>
+<td><strong>Runtime</strong></td>
+<td>Copilot SDK harness in Agent Host</td>
+<td>Copilot runtime in the CLI</td>
+</tr>
+<tr>
+<td><strong>Planning workflow</strong></td>
+<td>Plan mode or <code>/plan</code></td>
+<td><code>Shift+Tab</code> cycle; confirm Plan before submitting</td>
+</tr>
+<tr>
+<td><strong>Tool approval</strong></td>
+<td>VS Code permission and approval controls</td>
+<td>Interactive TUI approval choices</td>
+</tr>
+<tr>
+<td><strong>Custom instructions</strong></td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>Same file — shared</td>
+</tr>
+<tr>
+<td><strong>Agent Skills</strong></td>
+<td><code>.github/skills/*/SKILL.md</code></td>
+<td>Same files — shared</td>
+</tr>
+<tr>
+<td><strong>Custom agents</strong></td>
+<td><code>.github/agents/*.agent.md</code></td>
+<td>Same files — shared</td>
+</tr>
+<tr>
+<td><strong>MCP servers</strong></td>
+<td><code>.mcp.json</code> or <code>~/.copilot/mcp-config.json</code></td>
+<td>Same portable files plus <code>/mcp add</code></td>
+</tr>
+<tr>
+<td><strong>Delegate to cloud</strong></td>
+<td>Start a Cloud target session</td>
+<td><code>/delegate</code> or <code>&amp;</code> — starts Copilot cloud agent work</td>
+</tr>
+<tr>
+<td><strong>Session continuity</strong></td>
+<td>Agent Host owns restorable sessions</td>
+<td><code>--resume</code> picker or <code>--continue</code> latest session</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Visual review, worktrees, and Agent Host orchestration</td>
+<td>Terminal-native development and scripting</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="-demo-the-agentic-terminal">🖥️ DEMO: The Agentic Terminal</h3>
+<h4 id="part-a-launch-and-explore-3-min">Part A: Launch and Explore (3 min)</h4>
+<ol>
+<li><strong>Close or minimize VS Code</strong> — open a standalone terminal to emphasize this runs <em>outside</em> the IDE:<ul>
+<li><strong>Windows</strong>: Open <strong>Windows Terminal</strong> (<code>Win+X</code> → Terminal) or <strong>PowerShell</strong></li>
+<li><strong>macOS</strong>: Open <strong>Terminal.app</strong> (<code>Cmd+Space</code> → &quot;Terminal&quot;) or <strong>iTerm2</strong></li>
+</ul>
+</li>
+<li>Navigate to the project root:</li>
+</ol>
+<pre><code class="language-bash">cd path/to/GitHubCopilot_Customized
+</code></pre>
+<ol start="3">
+<li>Launch the interactive session:</li>
+</ol>
+<pre><code class="language-bash">copilot
+</code></pre>
+<blockquote>
+<p><strong>Note</strong>: Launching from a standalone terminal reinforces the key message — the GitHub Copilot CLI is independent of any editor. It works the same in Windows Terminal, iTerm2, a remote SSH session, or even a CI pipeline.</p>
+</blockquote>
+<ol start="3">
+<li>Show the <strong>trusted directory TUI prompt</strong> — approve the project directory</li>
+<li>Enter a natural language question:</li>
+</ol>
+<pre><code>Explain the architecture of this project and list all the API entities
+</code></pre>
+<ol start="5">
+<li>Show Copilot reading files and understanding the codebase in its terminal-native runtime</li>
+<li>Press <code>Shift+Tab</code> until <strong>Plan</strong> is visibly selected, then enter:</li>
+</ol>
+<pre><code>Plan how to add a Supplier search endpoint with filtering by name and contact person. Register the static /search route before /:id. Identify compatibility risks and verification steps.
+</code></pre>
+<ol start="7">
+<li>Show the structured plan output — Copilot analyzes, asks clarifying questions, and builds a step-by-step plan</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;This is the same Copilot customization strategy on a different surface. Repository instructions, agents, skills, and portable MCP configuration can follow you from Agent Host into the terminal.&quot;</p>
+<h4 id="part-b-build-a-feature-live-4-min">Part B: Build a Feature Live (4 min)</h4>
+<ol>
+<li>Press <code>Shift+Tab</code> until <strong>Standard</strong> mode is visibly selected. Do not stop on Autopilot.</li>
+<li>Enter:</li>
+</ol>
+<pre><code>Implement the Supplier search endpoint from the approved plan. Follow @api/src/routes/product.ts for route structure, register /search before /:id, preserve existing response contracts, add Swagger docs, and run focused tests.
+</code></pre>
+<ol start="3">
+<li>Show the <strong>tool approval TUI</strong>. Use <code>y</code> for a single reviewed request; explain <code>n</code> deny, <code>!</code> allow similar requests for the session, <code>#</code> deny similar requests for the session, and <code>?</code> details. Do not persist <strong>This location</strong> or <strong>Always</strong> during the workshop.</li>
+<li>Show it creating the route, adding Swagger annotations, following existing patterns from the <code>@</code> referenced file</li>
+<li>Show it optionally running the server to verify</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;One prompt. It read the pattern from the file we referenced with <code>@</code>, created the endpoint, added Swagger docs, and verified it works. The tool approval TUI keeps you in control — you see every action before it happens.&quot;</p>
+<h4 id="part-c-delegate--hand-off-to-the-cloud-3-min">Part C: /delegate — Hand Off to the Cloud (3 min)</h4>
+<ol>
+<li>Do not delegate from the workshop checkout containing later instructions, skills, agents, or application edits. Open a disposable worktree from the committed prework safety baseline.</li>
+<li>In that worktree, run <code>npm ci</code>, record the starting branch and SHA, then confirm <code>git status --short</code> is empty.</li>
+<li>Open <code>api/src/routes/supplier.ts</code>, confirm the existing <code>GET /:id</code> route is present, and run <code>npm run test:api -- --run</code>.</li>
+<li>Enter:</li>
+</ol>
+<pre><code>/delegate Add focused API tests for the existing GET /api/suppliers/:id route, covering its current 200 and 404 behavior. Do not change route behavior. Run the API tests and create a PR.
+</code></pre>
+<ol start="5">
+<li>Show Copilot creating its checkpoint/branch and cloud-agent session.</li>
+<li>Record the resulting branch, session, and pull-request URLs for cleanup.</li>
+</ol>
+<p>If the starting SHA is wrong, the route is absent, or the task changes route behavior, stop the session in the agents panel, close the recorded PR in <code>&lt;OWNER&gt;/GitHubCopilot_Customized</code>, delete only its recorded branch, remove the disposable worktree, and recreate it from the safety baseline before retrying.</p>
+<p><strong>Talking point</strong>: &quot;The local Supplier-search exercise stays local. This separate clean baseline delegates a bounded test task for an endpoint that already exists, so cloud work cannot depend on uncommitted changes.&quot;</p>
+<h4 id="part-d-bonus-capabilities-quick-fire-2-min">Part D: Bonus Capabilities Quick-Fire (2 min)</h4>
+<ol>
+<li><code>/review</code> — show inline code review of recent changes</li>
+<li><code>/context</code> — show context-window usage breakdown</li>
+<li><code>/agent</code> — show available agents (including ones from <code>.github/agents/</code>)</li>
+<li><code>!git status</code> — shell escape without a model call</li>
+<li><code>/usage</code> — show session stats (premium requests used, duration, lines edited)</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;There&#39;s a whole world of slash commands. <code>/review</code> before you commit, <code>/context</code> to see your token budget, <code>/agent</code> to switch personas. This is your daily driver if you&#39;re a terminal person.&quot;</p>
+<details>
+<summary><h3 id="-hands-on-try-the-github-copilot-cli-10-min-required-core">🧪 Hands-On: Try the GitHub Copilot CLI (10 min required core)</h3></summary>
+
+<p><strong>Exercise 1 — Launch and Explore</strong>:</p>
+<ol>
+<li>Open a <strong>standalone terminal</strong> (not VS Code&#39;s integrated terminal) to experience the CLI independently:<ul>
+<li><strong>Windows</strong>: Open <strong>Windows Terminal</strong> or <strong>PowerShell</strong> from the Start menu</li>
+<li><strong>macOS</strong>: Open <strong>Terminal.app</strong> or <strong>iTerm2</strong></li>
+</ul>
+</li>
+<li>Navigate to the project directory:</li>
+</ol>
+<pre><code class="language-bash">cd path/to/GitHubCopilot_Customized
+</code></pre>
+<ol start="3">
+<li>Launch the interactive session:</li>
+</ol>
+<pre><code class="language-bash">copilot
+</code></pre>
+<ol start="3">
+<li>When prompted, confirm you trust the project directory</li>
+<li>Ask a question about the codebase:</li>
+</ol>
+<pre><code>What testing framework does this project use? What&#39;s the current test coverage?
+</code></pre>
+<ol start="5">
+<li>Notice how it reads files and provides a codebase-aware answer — same intelligence as VS Code</li>
+</ol>
+<p><strong>Exercise 2 — File Context with <code>@</code></strong>:</p>
+<ol>
+<li>Reference a specific file in your prompt:</li>
+</ol>
+<pre><code>Explain what @api/src/routes/product.ts does and list all the endpoints it defines
+</code></pre>
+<ol start="2">
+<li>Notice how Copilot includes the file contents automatically — no need to copy-paste</li>
+</ol>
+<p><strong>Exercise 3 — Plan Mode</strong>:</p>
+<ol>
+<li>Press <code>Shift+Tab</code> until <strong>Plan</strong> is visibly selected. The key cycles Standard → Plan → Autopilot.</li>
+<li>Enter:</li>
+</ol>
+<pre><code>Plan how to add a Supplier search endpoint with filtering by name and contact person. Register /search before /:id.
+</code></pre>
+<ol start="3">
+<li>Review the structured plan — files to change, approach, step-by-step instructions</li>
+<li>Press <code>Shift+Tab</code> until <strong>Standard</strong> is visibly selected; do not submit while Autopilot is selected.</li>
+</ol>
+<p><strong>Exercise 4 — Build Something</strong> (Bonus):</p>
+<ol>
+<li>Ask Copilot to implement the planned feature:</li>
+</ol>
+<pre><code>Implement the Supplier search endpoint from the plan above, following the patterns in @api/src/routes/product.ts and registering /search before /:id.
+</code></pre>
+<ol start="2">
+<li>Review each request. Use <code>y</code> for a single approval; use <code>!</code> only if you intentionally accept similar requests for the rest of this session. Do not persist <strong>This location</strong> or <strong>Always</strong> for the workshop.</li>
+<li>Let Copilot create the files and optionally test them</li>
+</ol>
+<p><strong>Exercise 5 — Delegate to Copilot cloud agent</strong> (Facilitator-led bonus):</p>
+<blockquote>
+<p><strong>Safety note</strong>: <code>/delegate</code> can checkpoint and commit unstaged work. Create a disposable worktree with <code>git worktree add ../octocat-delegate -b workshop/delegate-tests &lt;SAFETY_BASELINE_SHA&gt;</code>, run <code>npm ci</code> inside it, confirm <code>git status --short</code> is empty, verify the existing supplier-by-ID route, and run <code>npm run test:api -- --run</code>. Copilot cloud agent must be enabled for the repository.</p>
+</blockquote>
+<ol>
+<li>In the verified baseline worktree, hand off the bounded task:</li>
+</ol>
+<pre><code>/delegate Add focused API tests for the existing GET /api/suppliers/:id route, covering its current 200 and 404 behavior. Do not change route behavior. Run the API tests and create a PR.
+</code></pre>
+<ol start="2">
+<li>Follow the link to see the Copilot cloud agent session on GitHub</li>
+<li>Record the created branch, session URL, and PR URL. If anything is out of scope, stop the session, close the repository-qualified PR, delete only the recorded branch, and remove the worktree.</li>
+<li>Alternatively, skip delegation and use <code>/review</code> on the local Supplier search changes.</li>
+</ol>
+<p><strong>Exercise 6 — Explore Slash Commands</strong> (Bonus):</p>
+<p>Try these commands to explore the CLI&#39;s capabilities:</p>
+<pre><code>/agent
+</code></pre>
+<p>View available agents (including ones from <code>.github/agents/</code>)</p>
+<pre><code>/context
+</code></pre>
+<p>See current context-window usage</p>
+<pre><code>/usage
+</code></pre>
+<p>View session statistics</p>
+<pre><code>!git log --oneline -5
+</code></pre>
+<p>Run a shell command directly (the <code>!</code> prefix skips the AI model)</p>
+</details>
+
+<h3 id="success-criteria">Success Criteria</h3>
+<ul>
+<li>✅ You&#39;ve launched <code>copilot</code> and approved the trusted directory prompt</li>
+<li>✅ You&#39;ve asked a codebase-aware question and received an intelligent answer</li>
+<li>✅ You&#39;ve used <code>@path/to/file</code> to include file context in a prompt</li>
+<li>✅ You&#39;ve used the Shift+Tab cycle and confirmed Plan and Standard before submitting</li>
+<li>✅ You&#39;ve inspected context-window usage with <code>/context</code></li>
+<li>✅ You understand how optional <code>/review</code> and <code>/delegate</code> extend the core workflow</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>How does the Copilot terminal surface compare with a Copilot Agent Host session in VS Code? When would you choose each?</li>
+<li><code>/delegate</code> lets you start work locally and hand off to the cloud. How would this change your daily workflow?</li>
+<li>The CLI supports the same custom instructions, agents, and MCP servers as VS Code. How does having one config across IDE + terminal + cloud benefit your team?</li>
+<li>What security policies should govern approval scopes, delegation, and disposable execution environments?</li>
+</ul>
+<hr>
+<h2 id="9-cloud-agents-copilot-cloud-agent--github-copilot-code-review-20-min">9. Cloud Agents: Copilot cloud agent + GitHub Copilot code review (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<ul>
+<li>Cloud agents operate at the platform level — they run on GitHub, not in your IDE</li>
+<li><strong>Copilot cloud agent</strong>: Assign a GitHub Issue to Copilot → it codes autonomously and creates a PR</li>
+<li><strong>GitHub Copilot code review</strong>: Request Copilot as a reviewer on a PR → it provides AI-powered review comments</li>
+</ul>
+<h3 id="the-autonomous-development-loop">The Autonomous Development Loop</h3>
+<pre><code>┌─────────────┐    ┌─────────────────┐    ┌─────────────┐    ┌──────────────┐    ┌─────────────┐
+│ 📋 GitHub  │───►│ 🤖 Copilot       │───►│ 📝 Pull    │───►│ 🔍 Copilot   │───►│ ✅ Merge    │
+│    Issue   │    │ cloud agent     │    │    Request │    │    Code Review│    │             │
+│             │    │ Creates branch  │    │             │    │ + Human    │    │             │
+│             │    │ Implements      │    │             │    │    Review   │    │             │
+└─────────────┘    └─────────────────┘    └─────────────┘    └──────────────┘    └─────────────┘
+</code></pre>
+<h3 id="part-a-copilot-cloud-agent-10-min">Part A: Copilot cloud agent (10 min)</h3>
+<blockquote>
+<p><strong>Feature status</strong>: Copilot cloud agent is <strong>generally available</strong>; current GitHub Docs mark the specific <strong>assign Copilot to an issue</strong> flow as <strong>Public Preview</strong>. Availability depends on plan, policy, and repository configuration.</p>
+</blockquote>
+<p><strong>Concept</strong>:</p>
+<ul>
+<li>Assign a well-scoped issue in the designated workshop fork to Copilot — it creates a branch, implements the solution, and opens a PR</li>
+<li>Works asynchronously and returns changes through a pull request</li>
+<li>Must be compatible with repository rulesets and branch protections</li>
+</ul>
+<p><strong>Prerequisites</strong>:</p>
+<ul>
+<li>Actions enabled on the repo</li>
+<li>Human review and compatible branch protection are strongly recommended</li>
+<li>Copilot cloud agent enabled in repo settings</li>
+</ul>
+<h3 id="your-customization-files-work-in-the-cloud-too">Your Customization Files Work in the Cloud Too</h3>
+<p>Copilot cloud agent reads supported repository customizations, including the instructions and skills built in this workshop:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+<th>Used By</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>Coding standards, architecture rules</td>
+<td>IDE Agent + Copilot cloud agent</td>
+</tr>
+<tr>
+<td><code>.github/skills/*/SKILL.md</code></td>
+<td>Specialized procedures (auto-selected)</td>
+<td>IDE Agent + Copilot cloud agent</td>
+</tr>
+</tbody></table>
+<p><strong>Key insight</strong>: Put shared standards and workflows in formats supported by each target. Do not assume that every personal setting or harness-specific customization transfers to cloud execution.</p>
+<hr>
+<h3 id="-demo-assign-an-issue-to-copilot-cloud-agent">🖥️ DEMO: Assign an Issue to Copilot cloud agent</h3>
+<ol>
+<li>Open <code>&lt;OWNER&gt;/GitHubCopilot_Customized</code> in the browser and verify the owner and repository.</li>
+<li>Open the canonical issue recorded in Section 7 and retain its provenance and prior-assignee record. If it is unavailable, use the prepared workshop-fork issue; do not create another live issue.</li>
+<li>Click <strong>Assignees</strong> → type and select <strong>Copilot</strong></li>
+<li>Open the agents panel or <code>https://github.com/copilot/agents</code> and show the session starting</li>
+<li>Explain what happens next:<ul>
+<li>Copilot creates a feature branch</li>
+<li>Reads the codebase to understand patterns</li>
+<li>Implements the solution across relevant files</li>
+<li>Runs tests (if configured)</li>
+<li>Opens a PR with a description of changes</li>
+</ul>
+</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;You just delegated a code task to an autonomous agent. It can use the repository instructions and skills we prepared, then return its work through a pull request for review.&quot;</p>
+<hr>
+<h3 id="-demo-show-the-custom-agent--human--cloud-delegation">🖥️ DEMO: Show the Custom Agent → Human → Cloud Delegation</h3>
+<ol>
+<li>Recall the <code>ImplementationIdeas.agent.md</code> from Section 6</li>
+<li>Show an approved, bounded <code>/delegate</code> brief produced by the agent.</li>
+<li>Explain: &quot;The custom agent researches and packages the work. The human reviews the brief and explicitly starts delegation from the prework-baseline worktree.&quot;</li>
+</ol>
+<h3 id="part-b-github-copilot-code-review-10-min">Part B: GitHub Copilot code review (10 min)</h3>
+<p><strong>Concept</strong>:</p>
+<ul>
+<li>Add Copilot as a reviewer on the dedicated workshop-fork PR — it provides AI-powered code review</li>
+<li>Reviews cover: correctness, security, performance, style, best practices</li>
+<li>Provides inline comments with severity levels and suggested fixes</li>
+<li>Complementary to human review, not a replacement</li>
+<li>Some file types are excluded, including dependency manifests, logs, and SVG files; review coverage is not identical to “every changed file”</li>
+</ul>
+<hr>
+<h3 id="-demo-request-copilot-review-on-a-pr">🖥️ DEMO: Request Copilot Review on a PR</h3>
+<ol>
+<li>Open the recorded, dedicated workshop-fork PR (use the cloud-agent PR or a prepared disposable PR; never use an unrelated PR)</li>
+<li>Click <strong>Reviewers</strong> → Add <strong>Copilot</strong> as a reviewer</li>
+<li>Wait for the review to appear</li>
+<li>Walk through the review comments:<ul>
+<li>Show inline code suggestions with diffs</li>
+<li>Show severity indicators</li>
+<li>Explain that accepting a suggestion creates a commit; do not apply it by default</li>
+<li>Show how to dismiss/resolve suggestions</li>
+</ul>
+</li>
+<li>Apply a suggestion only after explicit confirmation that the PR is disposable and belongs to <code>&lt;OWNER&gt;/GitHubCopilot_Customized</code>.</li>
+<li>Compare with human review — Copilot catches pattern-based issues; humans catch intent and business logic</li>
+</ol>
+<p><strong>Talking point</strong>: &quot;Copilot can identify pattern-based correctness, security, and maintainability concerns. Human reviewers still own intent, risk acceptance, and business behavior.&quot;</p>
+<h3 id="key-differences-copilot-agent-host-vs-copilot-cloud-agent">Key Differences: Copilot Agent Host vs Copilot Cloud Agent</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Copilot Agent Host</th>
+<th>Copilot cloud agent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Where</strong></td>
+<td>Machine, connected host, or Dev Container</td>
+<td>Provider cloud infrastructure against a GitHub repository</td>
+</tr>
+<tr>
+<td><strong>How</strong></td>
+<td>Copilot target with Interactive, Plan, or Autopilot</td>
+<td>Select Cloud and Copilot, assign an issue, or delegate</td>
+</tr>
+<tr>
+<td><strong>Sync</strong></td>
+<td>Interactive in the editor</td>
+<td>Async, autonomous</td>
+</tr>
+<tr>
+<td><strong>Steering</strong></td>
+<td>Active conversation, modes, permissions, and worktree choices</td>
+<td>Issue or task definition followed by PR review</td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>File changes in your workspace</td>
+<td>A Pull Request</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Iterative work, exploration</td>
+<td>Well-defined tasks, delegation</td>
+</tr>
+</tbody></table>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>When would you keep work in a VS Code Copilot session versus delegate it to Copilot cloud agent?</li>
+<li>How does this change your team&#39;s issue workflow?</li>
+<li>What guardrails would you put in place? (Branch protection, required human review)</li>
+</ul>
+<hr>
+<h2 id="10-wrap-up-customization-hierarchy-recap--qa-10-min">10. Wrap-Up, Customization Hierarchy Recap &amp; Q&amp;A (10 min)</h2>
+<h3 id="the-full-customization-stack">The Full Customization Stack</h3>
+<p>You&#39;ve now built every layer:</p>
+<pre><code>┌────────────────────────────────────────────────────────────┐
+│                    CLOUD AGENTS                            │
+│  Copilot cloud agent (async PRs) + Copilot code review     │
+└────────────────────────────┬───────────────────────────────┘
+                             │
+┌────────────────────────────▼───────────────────────────────┐
+│                    MCP SERVERS                              │
+│  .mcp.json — Playwright (browser) + GitHub (issues, PRs)   │
+└────────────────────────────┬───────────────────────────────┘
+                             │
+┌────────────────────────────▼───────────────────────────────┐
+│                      CUSTOM AGENTS                          │
+│  .github/agents/*.agent.md — roles and constrained tools   │
+└────────────────────────────┬───────────────────────────────┘
+                             │
+┌────────────────────────────▼───────────────────────────────┐
+│                    AGENT SKILLS                             │
+│  .github/skills/*/SKILL.md — reusable portable workflows   │
+└────────────────────────────┬───────────────────────────────┘
+                             │
+┌────────────────────────────▼───────────────────────────────┐
+│                  CUSTOM INSTRUCTIONS                        │
+│  .github/copilot-instructions.md — always-on context       │
+│  .github/instructions/*.instructions.md — scoped rules     │
+└────────────────────────────┬───────────────────────────────┘
+                             │
+┌────────────────────────────▼───────────────────────────────┐
+│                       MEMORY                                │
+│  Local preferences and emerging context, never secrets     │
+└────────────────────────────┬───────────────────────────────┘
+                             │
+┌────────────────────────────▼───────────────────────────────┐
+│                 COPILOT IN AGENT HOST                       │
+│  Interactive · Plan · Autopilot · permissions · worktrees  │
+└────────────────────────────────────────────────────────────┘
+
+   GitHub Copilot CLI (§8) — same strategy on a terminal surface
+</code></pre>
+<h3 id="key-takeaways">Key Takeaways</h3>
+<ol>
+<li><strong>Agent Host owns the session</strong> — the Copilot harness, model, mode, permissions, environment, and isolation remain separate choices</li>
+<li><strong>Interactive, Plan, and Autopilot serve different risk profiles</strong> — permissions and sandboxing still matter in every mode</li>
+<li><strong>Memory is local context, not team policy</strong> — promote reviewed knowledge into version-controlled instructions or skills</li>
+<li><strong>Custom Instructions encode durable standards</strong> — internal frameworks, architecture decisions, and file-specific guidance</li>
+<li><strong>Agent Skills replace Local prompt-file workflows</strong> — skills package portable procedures and can be loaded by relevance or invoked explicitly</li>
+<li><strong>Custom agents define specialized roles</strong> — combine role instructions with constrained tool profiles</li>
+<li><strong>Portable MCP extends Copilot&#39;s reach</strong> — use <code>.mcp.json</code> instead of building new dependencies on <code>.vscode/mcp.json</code></li>
+<li><strong>Copilot spans surfaces and environments</strong> — continue from Agent Host to CLI or delegate independent work to the cloud</li>
+</ol>
+<h3 id="what-you-built-today">What You Built Today</h3>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Copilot Memory preference</td>
+<td>Section 3 — Memory &amp; Custom Instructions</td>
+</tr>
+<tr>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>Section 3 — Custom Instructions</td>
+</tr>
+<tr>
+<td><code>.github/instructions/API.instructions.md</code></td>
+<td>Section 3 — Scoped Instructions</td>
+</tr>
+<tr>
+<td><code>.github/skills/implementation-plan/SKILL.md</code></td>
+<td>Section 4 — Prompt Migration</td>
+</tr>
+<tr>
+<td><code>.github/skills/api-route-creation/SKILL.md</code></td>
+<td>Section 5 — Portable Agent Skills</td>
+</tr>
+<tr>
+<td><code>.github/agents/CodeReviewer.agent.md</code></td>
+<td>Section 6 — Custom Agents</td>
+</tr>
+<tr>
+<td><code>.mcp.json</code></td>
+<td>Section 7 — Portable MCP Configuration</td>
+</tr>
+<tr>
+<td>GitHub Copilot CLI agentic terminal session</td>
+<td>Section 8 — GitHub Copilot CLI</td>
+</tr>
+</tbody></table>
+<h3 id="resources">Resources</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GitHub Copilot Docs</td>
+<td><a href="https://docs.github.com/en/copilot" target="_blank" rel="noopener noreferrer">https://docs.github.com/en/copilot</a></td>
+</tr>
+<tr>
+<td>VS Code 1.140 Release Notes</td>
+<td><a href="https://code.visualstudio.com/updates/v1_140" target="_blank" rel="noopener noreferrer">https://code.visualstudio.com/updates/v1_140</a></td>
+</tr>
+<tr>
+<td>VS Code Agent Host</td>
+<td><a href="https://code.visualstudio.com/docs/agents/concepts/agent-host" target="_blank" rel="noopener noreferrer">https://code.visualstudio.com/docs/agents/concepts/agent-host</a></td>
+</tr>
+<tr>
+<td>VS Code Agent Harnesses</td>
+<td><a href="https://code.visualstudio.com/docs/agents/run/agent-harnesses" target="_blank" rel="noopener noreferrer">https://code.visualstudio.com/docs/agents/run/agent-harnesses</a></td>
+</tr>
+<tr>
+<td>VS Code Sessions and Handoff</td>
+<td><a href="https://code.visualstudio.com/docs/agents/concepts/sessions" target="_blank" rel="noopener noreferrer">https://code.visualstudio.com/docs/agents/concepts/sessions</a></td>
+</tr>
+<tr>
+<td>VS Code Planning Modes</td>
+<td><a href="https://code.visualstudio.com/docs/agents/run/planning" target="_blank" rel="noopener noreferrer">https://code.visualstudio.com/docs/agents/run/planning</a></td>
+</tr>
+<tr>
+<td>VS Code Approvals and Autopilot</td>
+<td><a href="https://code.visualstudio.com/docs/agents/run/approvals" target="_blank" rel="noopener noreferrer">https://code.visualstudio.com/docs/agents/run/approvals</a></td>
+</tr>
+<tr>
+<td>Copilot in the CLI</td>
+<td><a href="https://docs.github.com/en/copilot/github-copilot-in-the-cli" target="_blank" rel="noopener noreferrer">https://docs.github.com/en/copilot/github-copilot-in-the-cli</a></td>
+</tr>
+<tr>
+<td>Custom Instructions</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/configure-custom-instructions" target="_blank" rel="noopener noreferrer">https://docs.github.com/en/copilot/how-tos/configure-custom-instructions</a></td>
+</tr>
+<tr>
+<td>Customization Migration</td>
+<td><a href="https://code.visualstudio.com/docs/agent-customization/overview#_migrate-customizations" target="_blank" rel="noopener noreferrer">https://code.visualstudio.com/docs/agent-customization/overview#_migrate-customizations</a></td>
+</tr>
+<tr>
+<td>Agent Skills</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/agents/about-agent-skills" target="_blank" rel="noopener noreferrer">https://docs.github.com/en/copilot/concepts/agents/about-agent-skills</a></td>
+</tr>
+<tr>
+<td>MCP Servers</td>
+<td><a href="https://code.visualstudio.com/docs/agent-customization/mcp-servers" target="_blank" rel="noopener noreferrer">https://code.visualstudio.com/docs/agent-customization/mcp-servers</a></td>
+</tr>
+<tr>
+<td>Copilot cloud agent</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent" target="_blank" rel="noopener noreferrer">https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent</a></td>
+</tr>
+<tr>
+<td>GitHub Copilot code review</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/code-review/code-review" target="_blank" rel="noopener noreferrer">https://docs.github.com/en/copilot/concepts/code-review/code-review</a></td>
+</tr>
+<tr>
+<td>Copilot Trust Center</td>
+<td><a href="https://resources.github.com/copilot-trust-center/" target="_blank" rel="noopener noreferrer">https://resources.github.com/copilot-trust-center/</a></td>
+</tr>
+<tr>
+<td>Copilot SDK</td>
+<td><a href="https://github.com/github/copilot-sdk" target="_blank" rel="noopener noreferrer">https://github.com/github/copilot-sdk</a></td>
+</tr>
+<tr>
+<td>OctoCAT Supply Repo</td>
+<td><a href="https://github.com/microsoft/GitHubCopilot_Customized" target="_blank" rel="noopener noreferrer">https://github.com/microsoft/GitHubCopilot_Customized</a></td>
+</tr>
+<tr>
+<td>Community Skills</td>
+<td><a href="https://github.com/github/awesome-copilot" target="_blank" rel="noopener noreferrer">https://github.com/github/awesome-copilot</a></td>
+</tr>
+</tbody></table>
+<h3 id="qa-topics-to-prepare-for">Q&amp;A Topics to Prepare For</h3>
+<ul>
+<li>How do instructions, skills, and agents propagate across forks?</li>
+<li>Can we restrict which MCP servers developers use?</li>
+<li>How do we measure ROI on Copilot customization?</li>
+<li>Does Copilot cloud agent respect branch protection rules?</li>
+<li>Can we use custom instructions with Copilot in github.com (not just IDE)?</li>
+<li>How do skills interact with custom instructions? (Both loaded? Priority?)</li>
+</ul>
+<hr>
+<h2 id="post-workshop-actions">Post-Workshop Actions</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Commit and push all supported customization files you created today (instructions, skills, agents, and <code>.mcp.json</code>)</li>
+<li><input disabled="" type="checkbox"> Review the Copilot cloud agent PR when it completes</li>
+<li><input disabled="" type="checkbox"> Share the <code>.github/</code> customization files with your team</li>
+<li><input disabled="" type="checkbox"> Identify 3-5 internal frameworks or patterns to encode as custom instructions</li>
+<li><input disabled="" type="checkbox"> Inventory Local prompt files and convert the workflows your team still needs into Agent Skills</li>
+<li><input disabled="" type="checkbox"> Build an Agent Skill for your team&#39;s most specialized workflow and verify it through References</li>
+<li><input disabled="" type="checkbox"> Evaluate MCP servers for your toolchain (database, API testing, deployment)</li>
+<li><input disabled="" type="checkbox"> Enable GitHub Copilot code review on your repositories</li>
+<li><input disabled="" type="checkbox"> Schedule a follow-up session to share learnings and iterate on customizations</li>
+</ul>
+<hr>
+<h2 id="appendix-quick-reference">Appendix: Quick Reference</h2>
+<h3 id="customization-file-locations">Customization File Locations</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Path</th>
+<th>Activation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Project instructions</td>
+<td><code>.github/copilot-instructions.md</code></td>
+<td>Included across applicable repository requests</td>
+</tr>
+<tr>
+<td>Scoped instructions</td>
+<td><code>.github/instructions/**/*.instructions.md</code></td>
+<td>File pattern or task relevance</td>
+</tr>
+<tr>
+<td>Custom agents</td>
+<td><code>.github/agents/*.agent.md</code></td>
+<td>Selected as a specialized role</td>
+</tr>
+<tr>
+<td>Project skills</td>
+<td><code>.github/skills/*/SKILL.md</code></td>
+<td>Relevance-based or explicit slash invocation</td>
+</tr>
+<tr>
+<td>Personal skills</td>
+<td><code>~/.copilot/skills/*/SKILL.md</code></td>
+<td>Relevance-based or explicit slash invocation</td>
+</tr>
+<tr>
+<td>Workspace MCP</td>
+<td><code>.mcp.json</code></td>
+<td>Agent Host discovers portable server definitions</td>
+</tr>
+<tr>
+<td>User MCP</td>
+<td><code>~/.copilot/mcp-config.json</code></td>
+<td>Available across Copilot workspaces</td>
+</tr>
+<tr>
+<td>Legacy migration source</td>
+<td><code>.github/prompts/*.prompt.md</code></td>
+<td>Local only; convert to skills</td>
+</tr>
+</tbody></table>
+<h3 id="agent-file-frontmatter-reference">Agent File Frontmatter Reference</h3>
+<pre><code class="language-yaml">---
+tools: [&#39;tool1&#39;, &#39;tool2&#39;]     # Available tools
+description: &#39;Text&#39;           # Shown in agents dropdown
+# model is optional; omit it to use the selected Copilot model
+---
+</code></pre>
+<h3 id="skill-file-frontmatter-reference">Skill File Frontmatter Reference</h3>
+<pre><code class="language-yaml">---
+name: skill-name              # Lowercase, hyphens for spaces
+description: &#39;What it does and when to use it&#39;
+user-invocable: true          # Optional: show as a slash command
+disable-model-invocation: false # Optional: allow relevance-based loading
+license: &#39;MIT&#39;                # Optional
+---
+</code></pre>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Copilot not active</td>
+<td>Check extension is installed and signed in</td>
+</tr>
+<tr>
+<td>Copilot target unavailable</td>
+<td>Update VS Code and Copilot, verify entitlement and organization policy, then use the facilitator recording</td>
+</tr>
+<tr>
+<td>MCP server won&#39;t start</td>
+<td>Check <code>MCP: List Servers</code>, inspect <code>.mcp.json</code>, review logs, and verify Node.js for stdio servers</td>
+</tr>
+<tr>
+<td>Playwright MCP fails</td>
+<td>Confirm the app is reachable from the server environment and check port 5137</td>
+</tr>
+<tr>
+<td>GitHub MCP auth error</td>
+<td>Re-authenticate via OAuth, or use PAT with correct scopes</td>
+</tr>
+<tr>
+<td>CORS errors in Codespaces</td>
+<td>Set API port (3000) visibility to <code>public</code></td>
+</tr>
+<tr>
+<td>Migrated prompt is missing</td>
+<td>Agent Host does not load prompt files; convert it through <strong>Migrate Prompt Files</strong></td>
+</tr>
+<tr>
+<td>Skills not loading</td>
+<td>Verify <code>SKILL.md</code>, matching folder and <code>name</code>, description quality, and invocation controls; then inspect References</td>
+</tr>
+<tr>
+<td>Custom instructions ignored</td>
+<td>Verify file is in <code>.github/</code> root, check for syntax errors</td>
+</tr>
+<tr>
+<td><code>copilot</code> CLI not available</td>
+<td>Install the standalone GitHub Copilot CLI — see <a href="https://docs.github.com/en/copilot/github-copilot-in-the-cli" target="_blank" rel="noopener noreferrer">docs.github.com/copilot/github-copilot-in-the-cli</a> for install instructions</td>
+</tr>
+</tbody></table>
+<hr>
+<p>Demo repository: <a href="https://github.com/microsoft/GitHubCopilot_Customized" target="_blank" rel="noopener noreferrer">microsoft/GitHubCopilot_Customized</a></p>
+<p><em>Workshop guide for GitHub Copilot: Zero to Agents Workshop (Agent Host)</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/workshop.astro_astro_type_script_index_0_lang.CNkWxYwE.js"></script>
