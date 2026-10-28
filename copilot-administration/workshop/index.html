@@ -1,0 +1,592 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot Administration Workshop</title><link rel="stylesheet" href="/gh-workshops/_astro/_document_.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/_document_.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.copy-btn{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);cursor:pointer;font-size:12px;line-height:1;opacity:0;transition:opacity .15s}pre:hover .copy-btn{opacity:1}.copy-btn:hover{color:var(--text-1, #e6edf3);border-color:var(--text-2, #8b949e)}.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-administration-workshop">GitHub Copilot Administration Workshop</h1>
+<p><strong>Duration</strong>: 60 minutes, including demos, discussion, and closing Q&A; no break<br><strong>Format</strong>: Instructor-led presentation + safe live demos in the instructor&#39;s environment<br><strong>Audience</strong>: Customer GitHub Copilot administrators, enterprise and organization owners, and endpoint and billing administrators<br><strong>Focus</strong>: AI controls and governance, client configuration through <code>managed-settings.json</code>, and budgeting and administrative operations<br><strong>Delivery readiness</strong>: Instructor environment rehearsal required for live demos; offline alternatives are provided<br><strong>Product-source review date</strong>: October 28, 2026</p>
+<h2 id="workshop-overview">Workshop Overview</h2>
+<p>Administer Copilot as a managed service: decide what is allowed, deliver client guardrails, verify the effective configuration, and control consumption. Participants observe the instructor and answer short administrative scenarios; they do not need an administrator account or a configured device.</p>
+<p>This is a <strong>standalone workshop</strong>, not a module of the AI Credits curriculum. It has its own one-hour scope and current product-source baseline. Longer billing exercises are available in the <a href="../../github-copilot-token-admin/workshop/">administration and budget guardrails module</a>.</p>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<p>By the end, administrators can:</p>
+<ol>
+<li>Assign an administrative requirement to the correct control plane and explain enterprise enforcement versus organization delegation.</li>
+<li>Read a valid <code>managed-settings.json</code> example, choose a delivery method, and verify an effective setting on a supported client.</li>
+<li>Distinguish seat charges, included AI credits, user-level budgets, and metered spending limits.</li>
+<li>Diagnose a blocked-user scenario and name the owner, evidence, and recovery path.</li>
+</ol>
+<h3 id="prerequisites">Prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Who</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Participants</strong></td>
+<td>Familiarity with GitHub organizations and basic Copilot usage; no tenant access, software installation, or hands-on configuration required</td>
+</tr>
+<tr>
+<td><strong>Instructor: service demo</strong></td>
+<td>Authorized owner access to a dedicated non-production enterprise and organization with Copilot Business or Enterprise; sanitized examples of enforced and delegated policies</td>
+</tr>
+<tr>
+<td><strong>Instructor: client demo</strong></td>
+<td>A disposable Windows VM, current stable VS Code with Copilot, and a test account; stage managed settings and verify client support before class</td>
+</tr>
+<tr>
+<td><strong>Instructor: billing demo</strong></td>
+<td>Authorized billing access and a pre-existing, sanitized budget in the instructor&#39;s non-production billing entity</td>
+</tr>
+<tr>
+<td><strong>No live access available</strong></td>
+<td>Use the linked official documentation, local JSON template, worked examples, and fallback instructions in the demo runbook</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Safety boundary</strong>: All three live demos are read-only inspections of pre-staged state. Do not assign seats, save policies, change billing controls, deploy endpoint files, generate paid requests, or export account data during class. Even the instructor&#39;s own production environment is out of scope.</p>
+</blockquote>
+<p><strong>Delivery artifacts</strong>:</p>
+<ul>
+<li><a href="/gh-workshops/copilot-administration/slides/">Slidev presentation</a>, including facilitator notes.</li>
+<li><a href="/gh-workshops/copilot-administration/demo/">Instructor demo runbook</a>, including preparation, checkpoints, recovery, and reset.</li>
+<li><a href="/gh-workshops/copilot-administration/downloads/templates/managed-settings.json" download>Managed settings example</a>, for review and disposable-environment preparation only.</li>
+</ul>
+<h2 id="session-agenda">Session Agenda</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Topic</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Opening and administrator responsibilities</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>AI controls and governance</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Client configuration with managed-settings.json</td>
+<td>20 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Budgeting and administrative operations</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Administrator checklist and Q&amp;A</td>
+<td>5 min</td>
+</tr>
+</tbody></table>
+<p><strong>Total: 60 minutes.</strong> Demo 1 (5 minutes), Demo 2 (7 minutes), and Demo 3 (5 minutes) are included in their sections, not additional time.</p>
+<h2 id="1-opening-and-administrator-responsibilities-5-min">1. Opening and administrator responsibilities (5 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<p>Use the first two minutes for introductions and objectives, then spend three minutes establishing responsibility and the safety boundary.</p>
+<ul>
+<li><strong>Access</strong> determines who receives Copilot; <strong>policy</strong> determines which capabilities are available. Enabling a feature is not the same as assigning a license.</li>
+<li><strong>Client guardrails</strong> govern supported local behavior; <strong>billing controls</strong> govern consumption and paid usage.</li>
+<li>A setting being visible in a portal does not prove that the correct account, device, client, or billing scope receives it.</li>
+<li>Recommendations in this workshop are operating practices, not mandatory GitHub defaults or contractual guarantees.</li>
+</ul>
+<h3 id="administrative-ownership">Administrative Ownership</h3>
+<table>
+<thead>
+<tr>
+<th>Responsibility</th>
+<th>Operational owner to nominate</th>
+<th>Evidence to retain</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Service policies and license lifecycle</td>
+<td>Enterprise or organization administration</td>
+<td>Approved scope, policy state, license source, change record</td>
+</tr>
+<tr>
+<td>Managed client rollout</td>
+<td>Endpoint/platform administration</td>
+<td>Reviewed JSON, deployment target, client version, effective-setting check</td>
+</tr>
+<tr>
+<td>Consumption and exceptions</td>
+<td>Billing administration with FinOps</td>
+<td>Billing entity, budget type/scope, hard-stop state, approver</td>
+</tr>
+<tr>
+<td>Data handling and incidents</td>
+<td>Security/privacy team with service owner</td>
+<td>Approved use cases, control limitations, escalation and containment plan</td>
+</tr>
+</tbody></table>
+<p>These are recommended responsibilities, not a complete GitHub permission matrix. Enterprise owners or users with <strong>Manage enterprise AI controls</strong> can manage enterprise policies. Billing roles are separate; an endpoint administrator does not automatically have GitHub billing rights. See <a href="https://docs.github.com/en/copilot/concepts/enterprise/policies">policy permissions</a> and <a href="https://docs.github.com/en/billing/concepts/budgets-and-alerts#roles-and-access-for-budgets">budget roles</a>.</p>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Who owns service policy, endpoint deployment, and billing in your customer environment? Identify a missing handoff rather than expecting one administrator to own everything.</li>
+</ul>
+<h2 id="2-ai-controls-and-governance-15-min">2. AI controls and governance (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<p>Allocate 7 minutes to the control model, 5 minutes to Demo 1, and 3 minutes to the decision scenario and discussion.</p>
+<h3 id="choose-the-correct-control-plane">Choose the Correct Control Plane</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Primary control plane</th>
+<th>Verification evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Decide which Copilot clients, features, and models licensed users can access</td>
+<td>GitHub enterprise/organization AI controls</td>
+<td>Policy scope and effective account entitlement</td>
+</tr>
+<tr>
+<td>Apply supported Copilot behavior across clients</td>
+<td>Copilot enterprise-managed settings</td>
+<td>Delivered key, supported client, effective value and source</td>
+</tr>
+<tr>
+<td>Manage VS Code-specific editor behavior</td>
+<td>VS Code device policies</td>
+<td>Device deployment and Policy Diagnostics</td>
+</tr>
+<tr>
+<td>Limit AI credit consumption or additional spend</td>
+<td>GitHub billing controls</td>
+<td>Billing entity, budget scope, consumption, hard-stop state</td>
+</tr>
+</tbody></table>
+<p>Repository instructions and prompts provide guidance; they are <strong>not an enforceable administrative security boundary</strong>.</p>
+<h3 id="policy-scope-and-delegation">Policy Scope and Delegation</h3>
+<ul>
+<li>Navigate to <strong>Enterprise &gt; AI controls</strong>. <strong>Copilot</strong> contains administration, privacy, model, billing, and usage controls; <strong>Configure features &amp; clients</strong> exposes the relevant client controls. <strong>Agents</strong> and <strong>MCP</strong> have separate areas.</li>
+<li>An enterprise can enforce a policy or, for most policies, let organizations decide. Organization settings cannot undo enterprise enforcement.</li>
+<li>Users assigned a license directly by the enterprise require attention to <strong>Policies for enterprise-assigned users</strong>; organization delegation alone does not define their default.</li>
+<li>Do not assume one universal enterprise-to-organization-to-repository hierarchy for every control. Scope and supported surfaces vary.</li>
+<li>Multiple license sources can change policy resolution. Confirm the user&#39;s license and billing source instead of diagnosing from one organization page.</li>
+<li>Review defaults for newly available GA features and models. A decision about today&#39;s model catalog does not settle tomorrow&#39;s default availability.</li>
+</ul>
+<p>Sources: <a href="https://docs.github.com/en/copilot/concepts/enterprise/policies">policy concepts</a>, <a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-enterprise-policies">enterprise configuration</a>, and <a href="https://docs.github.com/en/copilot/reference/supported-surfaces-for-policies">supported policy surfaces</a>.</p>
+<h3 id="governance-decisions-to-record">Governance Decisions to Record</h3>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Recommended administrative practice</th>
+<th>Limitation to communicate</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Features, models, and preview access</td>
+<td>Assign an approver and a review cadence; pilot changes</td>
+<td>Availability and policy coverage differ by feature and client</td>
+</tr>
+<tr>
+<td>MCP and agent tools</td>
+<td>Review the server, identity, permissions, and downstream data destination</td>
+<td>A Copilot policy is not blanket governance for every third-party host</td>
+</tr>
+<tr>
+<td>Public-code matching</td>
+<td>Set the applicable policy with legal/IP stakeholders</td>
+<td>Filtering does not replace code review or license analysis</td>
+</tr>
+<tr>
+<td>Content exclusion</td>
+<td>Use supported exclusions where appropriate; verify the exact surface</td>
+<td>Not supported in editor Edit/Agent modes; not a universal DLP boundary</td>
+</tr>
+<tr>
+<td>Policy changes and incidents</td>
+<td>Keep approved baselines and audit evidence; scope containment to the issue</td>
+<td>Do not promise that every Copilot activity or prompt appears in the audit log</td>
+</tr>
+</tbody></table>
+<p>Content exclusion can also receive indirect semantic information from an IDE; do not demonstrate it as proof that no sensitive information can ever reach a model. Consult the current <a href="https://docs.github.com/en/copilot/concepts/security-governance-and-network-settings/content-exclusion">content exclusion limitations</a>. Refer data retention, residency, and contractual questions to current product and legal documentation rather than making blanket promises.</p>
+<h3 id="demo-1-inspect-ai-controls-and-effective-scope-5-min">Demo 1: Inspect AI Controls and Effective Scope (5 min)</h3>
+<p>Follow <a href="/gh-workshops/copilot-administration/demo/#demo-1-inspect-ai-controls-and-effective-scope-5-min">Demo 1 in the runbook</a>.</p>
+<ol>
+<li>Confirm the non-production enterprise and test identity.</li>
+<li>Inspect an enforced policy and an organization-delegated policy.</li>
+<li>Show the organization view and explain which decision it can make.</li>
+<li>Identify the owner and evidence required for an approved change; do not save anything.</li>
+</ol>
+<p><strong>Checkpoint</strong>: Attendees identify the policy&#39;s scope, enforcement/delegation state, and a supported client. A disabled organization control inherited from the enterprise is expected behavior, not a portal defect.</p>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>A team requests a new model and an external MCP server. Which approvals are separate, and what data flow must be reviewed?</li>
+<li>Your enterprise delegates a policy, but a directly assigned user sees different behavior. What account and assignment evidence would you check first?</li>
+</ul>
+<h2 id="3-client-configuration-with-managed-settingsjson-20-min">3. Client configuration with managed-settings.json (20 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<p>Allocate 8 minutes to schema and delivery, 7 minutes to Demo 2, and 5 minutes to troubleshooting and discussion.</p>
+<p><strong>Enterprise-managed settings</strong> centrally configure supported Copilot client behavior. The documented clients include Copilot CLI, VS Code, the GitHub Copilot app, Copilot cloud agent, and JetBrains IDEs, but <strong>not every key works in every client</strong>. Check the <a href="https://docs.github.com/en/copilot/reference/enterprise-administrators/enterprise-managed-settings">per-key reference</a>, not just the client list.</p>
+<h3 id="read-the-example">Read the Example</h3>
+<p>The <a href="/gh-workshops/copilot-administration/downloads/templates/managed-settings.json" download>copyable template</a> contains:</p>
+<pre><code class="language-json">{
+  &quot;model&quot;: &quot;auto&quot;,
+  &quot;permissions&quot;: {
+    &quot;disableBypassPermissionsMode&quot;: &quot;disable&quot;
+  }
+}
+</code></pre>
+<ul>
+<li><strong><code>model</code></strong> is a top-level default for new conversations, not a model allowlist. Users can select another permitted model for a conversation.</li>
+<li><strong><code>permissions.disableBypassPermissionsMode</code></strong> takes the string <code>&quot;disable&quot;</code>, not a Boolean. In Copilot CLI it blocks bypass/allow-all modes. For VS Code, confirm the exact client, harness, effective policy, and permission UI during rehearsal.</li>
+<li>Disabling bypass does <strong>not</strong> disable assisted permissions or guarantee a prompt for every operation. Use separately supported permission controls if the requirement is fresh approval for particular operations.</li>
+<li>The example is deliberately small. It does not configure sandboxing, network restrictions, exclusions, or budgets.</li>
+</ul>
+<blockquote>
+<p><strong>VS Code documentation discrepancy</strong>: The <a href="https://docs.github.com/en/copilot/reference/enterprise-administrators/enterprise-managed-settings">GitHub reference</a> describes the bypass key as disabling global auto-approval. The <a href="https://code.visualstudio.com/docs/enterprise/manage-ai-settings">VS Code guide</a> describes removing <strong>Allow all</strong> from the Copilot session permissions picker and treats the <code>ChatToolsAutoApprove</code> global device policy separately. Do not equate these controls or attribute an independently enforced restriction to the sample. Resolve the exact behavior through authorized client rehearsal or vendor clarification before making a live enforcement claim; otherwise use the labeled illustrative fallback.</p>
+</blockquote>
+<h3 id="delivery-methods">Delivery Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Configuration and targeting</th>
+<th>Administrative trade-off</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Server-managed</strong></td>
+<td>Selected <code>.github-private</code> repository; default-branch file <code>copilot/managed-settings.json</code>; enterprise-licensed users</td>
+<td>Reviewable history; supports enterprise-team overrides; also reaches supported cloud clients</td>
+</tr>
+<tr>
+<td><strong>Native MDM</strong></td>
+<td>OS-managed key/string values; Windows registry or macOS managed preferences</td>
+<td>Device targeting; local clients only; not a JSON file copied to a registry key</td>
+</tr>
+<tr>
+<td><strong>File-based</strong></td>
+<td>Protected platform-specific <code>managed-settings.json</code> on each target environment</td>
+<td>Local clients only; useful in VMs/containers; devices without the file do not receive that control</td>
+</tr>
+</tbody></table>
+<p>For server delivery, the repository must be selected under <strong>Enterprise &gt; AI controls &gt; Agents &gt; Configuration source</strong>. Creating a similarly named repository alone does not activate governance. Default-branch changes apply to enterprise-licensed users in scope, even when they cannot read that repository.</p>
+<p>On Windows, file delivery uses:</p>
+<pre><code class="language-text">%ProgramFiles%\GitHubCopilot\managed-settings.json
+</code></pre>
+<p>Native Windows MDM uses string (<code>REG_SZ</code>) values under:</p>
+<pre><code class="language-text">HKEY_LOCAL_MACHINE\SOFTWARE\Policies\GitHubCopilot
+</code></pre>
+<p>For that MDM method, use the dotted key and string value:</p>
+<pre><code class="language-text">permissions.disableBypassPermissionsMode = disable
+</code></pre>
+<p>That notation explains a native policy entry; it is not JSON or a command. Booleans, arrays, and objects in native MDM are stored as JSON text inside string values. Check the <a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/deploy-managed-settings">deployment guide</a> for macOS/Linux locations and permissions. Do not place the Copilot file in the VS Code device-policy namespace or assume workspace settings enforce it.</p>
+<h3 id="precedence-and-operational-limits">Precedence and Operational Limits</h3>
+<ul>
+<li>General delivery precedence: <strong>MDM-managed &gt; server-managed &gt; file-based &gt; user-level settings</strong>.</li>
+<li>Exceptions compose restrictively: <code>sandbox</code> and permission rule arrays are not ordinary last-writer-wins settings. A bypass disable from any managed layer cannot be relaxed by a lower layer.</li>
+<li>For an overlapping VS Code device-policy control, the Copilot enterprise-managed setting takes precedence; configure one authoritative system per overlapping control when practical.</li>
+<li>Server changes normally reach supported clients within about an hour; restarting or signing in again triggers refresh. File updates require client restart. Stage changes before the workshop.</li>
+<li>If CLI cannot fetch server settings and has no cached response, those server settings are unavailable for that session. For controls that must exist before sign-in or without a server response, evaluate MDM/file delivery and the documented fresh-policy options.</li>
+<li>In VS Code, applying enterprise-managed settings disables the Claude and Codex harness integrations because those harnesses cannot enforce these controls. This is a <strong>harness</strong> restriction, not a claim that Claude models are unavailable in Copilot.</li>
+<li>Adding advanced keys can have version or host prerequisites and can block users on unsupported clients. Do not copy a large policy sample without testing it.</li>
+</ul>
+<p>Sources: <a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/deploy-managed-settings">deployment and precedence</a>, <a href="https://docs.github.com/en/copilot/reference/enterprise-administrators/enterprise-managed-settings">setting semantics</a>, and <a href="https://code.visualstudio.com/docs/enterprise/manage-ai-settings">VS Code management layers</a>.</p>
+<h3 id="demo-2-inspect-managed-settings-on-a-client-7-min">Demo 2: Inspect Managed Settings on a Client (7 min)</h3>
+<p>Follow <a href="/gh-workshops/copilot-administration/demo/#demo-2-inspect-managed-settings-on-a-client-7-min">Demo 2 in the runbook</a>. Prefer a pre-staged disposable Windows VM using file delivery so enterprise-wide changes are unnecessary.</p>
+<ol>
+<li>Read the local template and identify the two settings.</li>
+<li>Inspect the pre-staged file and its protected location.</li>
+<li>Run <strong>Developer: Policy Diagnostics</strong> in VS Code and inspect the effective managed bypass restriction, its source, and the matching permission UI.</li>
+<li>Explain the model default versus the service model policy without sending a prompt.</li>
+</ol>
+<p><strong>Checkpoint</strong>: Evidence identifies the effective managed bypass restriction and its source on the actual client and harness. An unrelated disabled global-auto-approval control, parsed JSON, or a file on disk alone does not prove enforcement by the sample. Sanitize diagnostics before screen sharing or retaining them.</p>
+<h3 id="troubleshooting-sequence">Troubleshooting Sequence</h3>
+<ol>
+<li>Confirm client/version, signed-in account, license source, and intended billing entity.</li>
+<li>Check that the key is supported for that client and execution mode.</li>
+<li>Check source selection, protected file location, native value types, and higher-precedence settings.</li>
+<li>Validate JSON and inspect GitHub&#39;s server-settings validation when using repository delivery; inspect the client&#39;s effective configuration.</li>
+<li>Refresh/restart as documented; test on the disposable device. If the checkpoint still fails, report it and use the offline explanation rather than weakening a policy.</li>
+</ol>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>A developer can change a normal editor preference but cannot select a restricted session permission level. What evidence identifies the managed control and its source?</li>
+<li>Your file says one value and diagnostics shows another source. Which delivery channel would you inspect before editing the file again?</li>
+</ul>
+<h2 id="4-budgeting-and-administrative-operations-15-min">4. Budgeting and administrative operations (15 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<p>Allocate 6 minutes to the billing model, 5 minutes to Demo 3, and 4 minutes to the scenario and operating cadence.</p>
+<h3 id="separate-licenses-credits-and-paid-usage">Separate Licenses, Credits, and Paid Usage</h3>
+<ul>
+<li><strong>Seat charges</strong> cover assigned Copilot licenses. Current published Business pricing is $19 USD/user/month with 1,900 included AI credits; Enterprise is $39 USD/user/month with 3,900. Confirm the customer&#39;s contract and current pricing.</li>
+<li><strong>AI credits</strong> measure usage; 1 credit equals $0.01 USD. Included credits are pooled at the billing entity, reset monthly at 00:00 UTC on the first day, and do not roll over.</li>
+<li>Model and token consumption drive AI credit usage. Code completions and next edit suggestions do not consume AI credits and remain available when an AI-credit budget blocks credit-consuming features.</li>
+<li><strong>AI credits paid usage</strong> controls usage beyond the included allowance; GitHub documents additional usage as enabled by default. Inspect the actual customer setting rather than relying on that default.</li>
+<li>A metered spending budget does not cap license charges. Removing a seat does not refund the remainder of the current billing cycle.</li>
+</ul>
+<p>Sources: <a href="https://docs.github.com/en/copilot/concepts/billing-and-usage/organizations-and-enterprises/seats-and-billing-cycles">seats and billing cycles</a> and <a href="https://docs.github.com/en/copilot/concepts/billing-and-usage/organizations-and-enterprises/billing">usage-based billing</a>.</p>
+<h3 id="budget-controls-are-not-interchangeable">Budget Controls Are Not Interchangeable</h3>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What it governs</th>
+<th>Blocking behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>User-level budget (ULB)</strong></td>
+<td>One user&#39;s total credit consumption, including included and metered usage</td>
+<td>Always a hard stop; $0 blocks that user immediately</td>
+</tr>
+<tr>
+<td><strong>Cost-center, organization, or enterprise spending budget</strong></td>
+<td>Metered charges, not the seat bill or ordinary included-pool consumption</td>
+<td>Stops usage only when the applicable hard-stop option is enabled</td>
+</tr>
+<tr>
+<td><strong>AI credits paid usage policy</strong></td>
+<td>Whether usage can continue as paid usage beyond included credits</td>
+<td>If disabled, exhaustion blocks credit-consuming features</td>
+</tr>
+<tr>
+<td><strong>Budget alerts</strong></td>
+<td>Notification about the selected spending scope</td>
+<td>Notifications alone do not stop usage</td>
+</tr>
+</tbody></table>
+<p>Within user-level budgets, the most specific value wins: <strong>individual &gt; cost-center user-level &gt; universal</strong>. This is replacement, not addition. Cost-center user-level budgets are different from cost-center spending budgets.</p>
+<p>Keep the one-hour explanation bounded:</p>
+<ul>
+<li>Inspect all applicable scopes; another exhausted hard limit can block a user with ULB headroom.</li>
+<li><strong>Cost-center included usage controls</strong> are a separate option that can cap that cost center&#39;s draw from included credits; they are not its metered spending budget.</li>
+<li><strong>Cost-center exclusion</strong> can remove that cost center&#39;s metered charges from the enterprise spending cap. Never present an enterprise cap as an unconditional cap on every team&#39;s spend.</li>
+<li>Budget alerts can be enabled at 75%, 90%, and 100% for supported scopes. User-level alerting is not consistently available; do not depend on it alone.</li>
+<li>New spending budgets measure metered usage from their creation onward, not earlier spending in that cycle.</li>
+<li>A budget block does not automatically switch the user to a cheaper model.</li>
+</ul>
+<p>Sources: <a href="https://docs.github.com/en/copilot/concepts/billing-and-usage/organizations-and-enterprises/budgets">Copilot budget controls</a> and <a href="https://docs.github.com/en/billing/concepts/budgets-and-alerts">budgets and alerts</a>.</p>
+<h3 id="worked-example-plan-the-bill-then-diagnose-the-block">Worked Example: Plan the Bill, Then Diagnose the Block</h3>
+<p><strong>Illustrative full-month configuration</strong>: 100 Business seats at public list price, one billing entity, a pre-existing $300 Copilot metered hard-stop budget, no excluded cost centers, no other charges, taxes, discounts, or proration.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Calculation</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Monthly seat charges</td>
+<td>100 x $19</td>
+<td>$1,900</td>
+</tr>
+<tr>
+<td>Included shared AI credits</td>
+<td>100 x 1,900</td>
+<td>190,000 credits</td>
+</tr>
+<tr>
+<td>Approved metered usage allowance</td>
+<td>$300 / $0.01</td>
+<td>30,000 additional credits</td>
+</tr>
+<tr>
+<td>Planned license-plus-metered ceiling for this simplified configuration</td>
+<td>$1,900 + $300</td>
+<td>$2,200</td>
+</tr>
+</tbody></table>
+<p>This is a planning example, not a quote or a guarantee for other billing configurations.</p>
+<p><strong>Scenario</strong>: A user has consumed $20 worth of AI credits and reached an individual $20 ULB. The shared pool still has credits, and the enterprise spending budget has headroom.</p>
+<p><strong>Answer</strong>: The user is blocked from credit-consuming features by the individual ULB. Raising the enterprise spending budget does not fix that limit. An authorized administrator reviews the effective ULB and consumption, then approves a scoped adjustment or waits for reset. Do not raise limits just to demonstrate recovery. Code completions and next edit suggestions continue.</p>
+<h3 id="demo-3-inspect-budgets-and-identify-the-limiting-control-5-min">Demo 3: Inspect Budgets and Identify the Limiting Control (5 min)</h3>
+<p>Follow <a href="/gh-workshops/copilot-administration/demo/#demo-3-inspect-budgets-and-identify-the-limiting-control-5-min">Demo 3 in the runbook</a>.</p>
+<ol>
+<li>Open the instructor&#39;s non-production <strong>Billing &amp; Licensing &gt; Budgets and alerts</strong> page.</li>
+<li>Inspect the pre-existing budget&#39;s type, scope, amount, hard-stop state, and alert recipients.</li>
+<li>Contrast spending evidence with license/activity evidence.</li>
+<li>Resolve the worked blocked-user example verbally. Do not create a budget or consume credits.</li>
+</ol>
+<p><strong>Checkpoint</strong>: Participants name the actual limiting control and its administrative owner, rather than assuming an alert, a seat change, or a larger enterprise budget solves every block.</p>
+<h3 id="recommended-operating-cadence">Recommended Operating Cadence</h3>
+<table>
+<thead>
+<tr>
+<th>Cadence</th>
+<th>Administrative action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Onboarding/offboarding</td>
+<td>Confirm license source, identity, approved clients, endpoint policy, and removal workflow</td>
+</tr>
+<tr>
+<td>Weekly during rollout</td>
+<td>Review usage/blocked-user patterns, alerts, failed deployments, and support tickets</td>
+</tr>
+<tr>
+<td>Monthly</td>
+<td>Reconcile assigned seats, activity, included credits, metered charges, and cost-center membership; review exceptions</td>
+</tr>
+<tr>
+<td>On change or incident</td>
+<td>Record scope, approver, current baseline, rollback owner, validation evidence, and developer communication</td>
+</tr>
+</tbody></table>
+<p>Usage/adoption reports are not invoices, and activity is not a standalone productivity score. Avoid displaying customer names or exporting reports during training. For time-limited exceptions, record an expiry and owner; use a supported individual-budget expiration where available.</p>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>A user is blocked while the shared pool still has credits. Which control should you inspect before approving more paid usage?</li>
+<li>Who receives a spending alert, and who can approve an exception before a critical team is affected?</li>
+</ul>
+<h2 id="5-administrator-checklist-and-qa-5-min">5. Administrator checklist and Q&amp;A (5 min)</h2>
+<h3 id="key-points">Key Points</h3>
+<p>Use two minutes for a three-question teach-back, two minutes for Q&amp;A, and one minute for next actions.</p>
+<table>
+<thead>
+<tr>
+<th>Teach-back question</th>
+<th>Expected answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Where do you allow a Copilot client or model?</td>
+<td>Applicable GitHub AI controls, with license/account scope verified</td>
+</tr>
+<tr>
+<td>Does copying JSON prove the device is governed?</td>
+<td>No; verify supported keys, actual delivery, and effective client evidence</td>
+</tr>
+<tr>
+<td>Does a spending alert stop usage or cap seat fees?</td>
+<td>No; inspect hard-stop behavior, scope, and separate license charges</td>
+</tr>
+</tbody></table>
+<h3 id="customer-takeaway-checklist">Customer Takeaway Checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Name the service-policy, endpoint, billing, and incident owners.</li>
+<li><input disabled="" type="checkbox"> Inventory license sources, client versions, allowed features/models, and exceptions.</li>
+<li><input disabled="" type="checkbox"> Record enforced/delegated decisions and defaults for new features/models.</li>
+<li><input disabled="" type="checkbox"> Choose a managed-settings delivery method; pilot with representative accounts and devices.</li>
+<li><input disabled="" type="checkbox"> Retain effective-setting evidence, not just deployment success.</li>
+<li><input disabled="" type="checkbox"> Confirm paid-usage policy, ULBs, spending scopes, hard stops, alert recipients, and excluded cost centers.</li>
+<li><input disabled="" type="checkbox"> Define a blocked-user escalation path and time-bounded exception approval.</li>
+<li><input disabled="" type="checkbox"> Schedule recurring seat, usage, policy-drift, and budget reviews.</li>
+</ul>
+<h3 id="discussion-points">Discussion Points</h3>
+<ul>
+<li>Which one control or handoff will you verify first after this session, and who will own it?</li>
+</ul>
+<h2 id="appendix">Appendix</h2>
+<h3 id="source-and-claim-ledger">Source and Claim Ledger</h3>
+<p>All rows were reviewed on <strong>2026-10-28</strong>. The cited documentation did not expose a publication/last-updated date in the retrieved article bodies. These are documented capabilities, not a blanket GA assertion: the sources below did not label the workshop&#39;s two sample keys as preview. Recheck status, client coverage, paths, and customer availability before delivery.</p>
+<table>
+<thead>
+<tr>
+<th>Classification</th>
+<th>Claim checked and verified wording</th>
+<th>Primary source</th>
+<th>Confidence / affected artifacts</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Verified</td>
+<td>Enterprise policies can enforce or delegate; directly assigned users and multiple license sources require specific handling</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/enterprise/policies">Policy concepts</a></td>
+<td>High / guide, deck, Demo 1</td>
+</tr>
+<tr>
+<td>Verified</td>
+<td>AI controls separates Copilot, Agents, and MCP; features/client configuration has its own entry</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-enterprise-policies">Enterprise policy administration</a></td>
+<td>High / guide, Demo 1</td>
+</tr>
+<tr>
+<td>Verified</td>
+<td>Policy coverage varies by surface; content exclusion is not supported in editor Edit/Agent modes</td>
+<td><a href="https://docs.github.com/en/copilot/reference/supported-surfaces-for-policies">Policy surfaces</a>, <a href="https://docs.github.com/en/copilot/concepts/security-governance-and-network-settings/content-exclusion">content exclusion</a></td>
+<td>High / guide, deck</td>
+</tr>
+<tr>
+<td>Verified</td>
+<td>Server delivery uses a selected governance repository and its default-branch file</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/create-github-private-repo">Repository setup</a>, <a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/get-started">getting started</a></td>
+<td>High / guide, deck, Demo 2</td>
+</tr>
+<tr>
+<td>Verified</td>
+<td>Native MDM string values and file deployment are different channels; precedence has restrictive exceptions</td>
+<td><a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/deploy-managed-settings">Deployment methods</a></td>
+<td>High / guide, deck, Demo 2</td>
+</tr>
+<tr>
+<td>Verified</td>
+<td>Top-level <code>model</code> is a default; bypass disable is the string <code>disable</code> and does not disable assisted permissions</td>
+<td><a href="https://docs.github.com/en/copilot/reference/enterprise-administrators/enterprise-managed-settings">Managed settings reference</a></td>
+<td>High / guide, deck, template, Demo 2</td>
+</tr>
+<tr>
+<td>Verified</td>
+<td>Copilot managed settings differ from VS Code device policies; overlapping control precedence and harness restrictions matter</td>
+<td><a href="https://code.visualstudio.com/docs/enterprise/manage-ai-settings">VS Code AI management</a></td>
+<td>High / guide, deck, Demo 2</td>
+</tr>
+<tr>
+<td>Verified</td>
+<td>Policy Diagnostics reports applied/non-applied policy state and can contain sensitive identity/session information</td>
+<td><a href="https://code.visualstudio.com/docs/enterprise/policies#verify-policy-enforcement">VS Code policies</a></td>
+<td>High / guide, deck, Demo 2</td>
+</tr>
+<tr>
+<td>Verified</td>
+<td>Current public prices, included credits, pooling, reset, paid usage, and seat-cycle behavior</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/billing-and-usage/organizations-and-enterprises/seats-and-billing-cycles">Seats and billing cycles</a>, <a href="https://docs.github.com/en/copilot/concepts/billing-and-usage/organizations-and-enterprises/billing">usage billing</a></td>
+<td>High / guide, deck, Demo 3</td>
+</tr>
+<tr>
+<td>Verified</td>
+<td>ULB specificity, hard stops, included usage controls, exclusions, and no automatic cheaper-model fallback</td>
+<td><a href="https://docs.github.com/en/copilot/concepts/billing-and-usage/organizations-and-enterprises/budgets">Copilot budgets</a></td>
+<td>High / guide, deck, Demo 3</td>
+</tr>
+<tr>
+<td>Verified</td>
+<td>Spending alerts are separate from hard stops; user-level alerts are inconsistent; new budgets exclude earlier metered usage</td>
+<td><a href="https://docs.github.com/en/billing/concepts/budgets-and-alerts">Budgets and alerts</a>, <a href="https://docs.github.com/en/billing/how-tos/set-up-budgets">budget setup</a></td>
+<td>High / guide, deck, Demo 3</td>
+</tr>
+<tr>
+<td>Uncertain / conflicting primary wording</td>
+<td>GitHub describes bypass disable through global auto-approval; VS Code distinguishes the session Allow all permission from the global device policy. Exact UI/policy mapping requires client rehearsal or vendor clarification</td>
+<td><a href="https://docs.github.com/en/copilot/reference/enterprise-administrators/enterprise-managed-settings">GitHub managed settings</a>, <a href="https://code.visualstudio.com/docs/enterprise/manage-ai-settings">VS Code AI management</a></td>
+<td>Unresolved mapping / guide, deck, Demo 2</td>
+</tr>
+<tr>
+<td>Uncertain / environment-dependent</td>
+<td>Customer contract pricing, tenant UI, effective client values, deployment permissions, and actual blocking behavior require instructor rehearsal</td>
+<td>Above sources plus local account/device evidence</td>
+<td>Not environment-verified / all demos</td>
+</tr>
+<tr>
+<td>Unsupported / not taught</td>
+<td>A universal JSON schema across every client, universal content-exclusion protection, alerts as hard caps, or a model default as an allowlist</td>
+<td>No supporting source; do not infer these claims</td>
+<td>Rejected / all artifacts</td>
+</tr>
+</tbody></table>
+<h3 id="delivery-readiness-and-recovery">Delivery Readiness and Recovery</h3>
+<ul>
+<li>Complete independent technical, learning, facilitation, and execution reviews before publication.</li>
+<li>Independent technical, learning/facilitation, and execution reviews completed on October 28, 2026 with no release blockers. Documented warnings cover the VS Code control-mapping discrepancy and unexecuted live-environment rehearsal.</li>
+<li>Use the facilitator notes with the runbook and rehearse the planned delivery path.</li>
+<li>GitHub account operations, endpoint enforcement, and actual spending limits must be rehearsed by an authorized instructor; repository checks do not prove them.</li>
+<li>Prepare sanitized screenshots of the three checkpoints in advance. If unavailable, the runbook&#39;s explicit offline path uses the deck, template, worked example, and public documentation without presenting them as observed tenant state.</li>
+<li>If a live checkpoint fails, spend at most 30 seconds checking the expected page or account, then use the fallback. Preserve closing Q&amp;A.</li>
+</ul>
+<p><em>Workshop guide for GitHub Copilot Administration Workshop</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/workshop.astro_astro_type_script_index_0_lang.CNkWxYwE.js"></script>

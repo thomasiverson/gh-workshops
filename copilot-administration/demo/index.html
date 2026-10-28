@@ -1,0 +1,255 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-astro-cid-744z7xss> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GitHub Copilot Administration: Instructor Demo Runbook</title><link rel="stylesheet" href="/gh-workshops/_astro/_document_.Cb_k8sn1.css">
+<link rel="stylesheet" href="/gh-workshops/_astro/_document_.CUTqQMLy.css">
+<style>.markdown-body{background:transparent}.markdown-body pre{position:relative}.document-copy{position:absolute;top:8px;right:8px;padding:4px 8px;border:1px solid var(--border, #30363d);border-radius:6px;background:var(--bg-soft, #161b22);color:var(--text-2, #8b949e);font-size:12px;cursor:pointer;opacity:0}pre:hover .document-copy{opacity:1}
+</style></head> <body data-astro-cid-744z7xss> <header class="site-header" data-astro-cid-744z7xss> <a href="/gh-workshops/" class="logo" data-astro-cid-744z7xss> <svg viewBox="0 0 16 16" aria-hidden="true" data-astro-cid-744z7xss><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 01-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 010 8c0-4.42 3.58-8 8-8z" data-astro-cid-744z7xss></path></svg> <span class="logo-sep" data-astro-cid-744z7xss></span> <h1 data-astro-cid-744z7xss>Workshops</h1> </a> <nav data-astro-cid-744z7xss> <a href="/gh-workshops/" data-astro-cid-744z7xss>Home</a> </nav> </header> <main class="main-content" data-astro-cid-744z7xss>  <article class="markdown-body"><h1 id="github-copilot-administration-instructor-demo-runbook">GitHub Copilot Administration: Instructor Demo Runbook</h1>
+<p><strong>Workshop duration</strong>: 60 minutes<br><strong>Demo time</strong>: 17 minutes, embedded in Sections 2-4; not additional time<br><strong>Format</strong>: Instructor-only, read-only inspection of pre-staged non-production state<br><strong>Audience</strong>: Customer GitHub Copilot administrators<br><strong>Canonical source</strong>: <a href="/gh-workshops/copilot-administration/workshop/">Workshop guide</a><br><strong>Validation status</strong>: Product documentation reviewed October 28, 2026; authenticated tenant steps and endpoint enforcement require instructor rehearsal.</p>
+<h2 id="safety-and-preparation">Safety and Preparation</h2>
+<ul>
+<li>Use a dedicated test enterprise/organization and a disposable Windows VM, not production or a customer tenant.</li>
+<li>Confirm authorization, test identity, license source, billing entity, and an authorized recovery owner.</li>
+<li>During class, do not change selectors or toggles, type into configuration forms, save policies, assign seats, alter budgets, send paid prompts, or download reports.</li>
+<li>Do not display credentials, session identifiers, customer information, account-wide billing details, or raw Policy Diagnostics output.</li>
+<li>Perform staging before class; staging itself can change access, client capabilities, or spending authority. Follow the normal approval process.</li>
+<li>Capture a baseline for every staged object. Prefer a VM snapshot for the client and no new service/billing objects just for the demonstration.</li>
+<li>Keep pre-captured, sanitized checkpoint screenshots if permitted. Screenshots are optional: each demo has a complete documentation-and-slide fallback.</li>
+<li>For disconnected delivery, cache approved documentation beforehand or omit link-opening and use the local deck, JSON template, and hypothetical examples. These remain illustrative, not enforcement evidence.</li>
+<li>At a failed checkpoint, spend no more than 30 seconds checking page/account context, then switch to fallback. Do not repair policy during the workshop.</li>
+</ul>
+<h3 id="setup-checklist">Setup Checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Read the guide and verify current official documentation.</li>
+<li><input disabled="" type="checkbox"> Confirm the environment contains no production users or customer repositories.</li>
+<li><input disabled="" type="checkbox"> Confirm enterprise policy access and separate billing permissions.</li>
+<li><input disabled="" type="checkbox"> Stage an enforced policy and a delegated policy; record their exact labels and affected surfaces.</li>
+<li><input disabled="" type="checkbox"> Prepare a disposable Windows VM with current stable VS Code, Copilot, and the intended test account.</li>
+<li><input disabled="" type="checkbox"> Take the VM baseline snapshot before installing the sample managed file.</li>
+<li><input disabled="" type="checkbox"> Check for higher-precedence MDM/server policy; do not weaken existing managed restrictions to make the sample win.</li>
+<li><input disabled="" type="checkbox"> Inspect a pre-existing budget and record type, scope, hard-stop setting, and sanitized alert-recipient roles.</li>
+<li><input disabled="" type="checkbox"> Pre-open only the relevant policy, client, and budget views; close unrelated browser tabs and notifications.</li>
+<li><input disabled="" type="checkbox"> Rehearse all three checkpoints. If any cannot be observed, plan that demo as an explicitly labeled offline walkthrough.</li>
+</ul>
+<h2 id="demo-summary">Demo Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Demo</th>
+<th>Workshop section</th>
+<th>Time</th>
+<th>Visible checkpoint</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>AI controls and governance</td>
+<td>5 min</td>
+<td>Enforced versus delegated policy and corresponding organization scope</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Client configuration with managed-settings.json</td>
+<td>7 min</td>
+<td>Effective managed bypass restriction, matching permission UI, and source</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Budgeting and administrative operations</td>
+<td>5 min</td>
+<td>Budget type/scope, hard-stop state, and limiting-control diagnosis</td>
+</tr>
+</tbody></table>
+<h2 id="demo-1-inspect-ai-controls-and-effective-scope-5-min">Demo 1: Inspect AI Controls and Effective Scope (5 min)</h2>
+<h3 id="purpose-and-prerequisites">Purpose and Prerequisites</h3>
+<p>Show how administrators identify the responsible policy scope, rather than treating license assignment and policy enablement as the same action. Supports workshop objectives 1 and 4 and Section 2.</p>
+<p>Require authorized enterprise and organization policy-view access, the pre-staged policies, and a sanitized test identity. Participants do not sign in.</p>
+<h3 id="pre-demo-setup">Pre-Demo Setup</h3>
+<ol>
+<li>In preparation, record one enforced and one organization-delegated policy that actually exist in this test enterprise.</li>
+<li>Record each policy&#39;s supported client/surface using <a href="https://docs.github.com/en/copilot/reference/supported-surfaces-for-policies">policy coverage</a>.</li>
+<li>Open the enterprise AI controls page and the organization policy page in separate tabs.</li>
+<li>Ensure the capture includes scope labels but not account identifiers or unrelated enterprise details.</li>
+</ol>
+<h3 id="ordered-actions-and-talk-track">Ordered Actions and Talk Track</h3>
+<ol>
+<li><strong>0:00-0:30</strong>: Confirm the dedicated non-production enterprise and the instructor&#39;s test identity. Say: &quot;We are inspecting, not configuring.&quot;</li>
+<li><strong>0:30-1:30</strong>: Navigate through <strong>AI controls &gt; Copilot</strong>, including <strong>Configure features &amp; clients</strong> where relevant. Identify <strong>Agents</strong> and <strong>MCP</strong> as separate areas without changing their state.</li>
+<li><strong>1:30-2:30</strong>: Point to the staged enforced policy. Name the capability, scope, and supported surface. Do not open or manipulate an edit control.</li>
+<li><strong>2:30-3:30</strong>: Point to the delegated policy. Switch to the organization page and contrast the two effective states.</li>
+<li><strong>3:30-4:30</strong>: Explain that direct enterprise assignments require their own delegated-policy default, and that multiple license sources need specific investigation.</li>
+<li><strong>4:30-5:00</strong>: Ask attendees to identify the change owner and the evidence they would record. Return to the deck.</li>
+</ol>
+<p><strong>Expected checkpoint</strong>: A visible scope/enforcement indicator explains why the organization can decide one policy but cannot override the other. The policy label and its actual supported surface are named.</p>
+<h3 id="failure-recovery-and-offline-path">Failure, Recovery, and Offline Path</h3>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Safe response</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Permission error or unexpected enterprise</td>
+<td>Stop navigation; do not request broader rights during class</td>
+</tr>
+<tr>
+<td>UI labels differ</td>
+<td>Follow the current <a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-enterprise-policies">enterprise policy guide</a>; do not invent a setting</td>
+</tr>
+<tr>
+<td>No useful enforced/delegated pair</td>
+<td>Do not create one live; use a rehearsed screenshot or the policy concepts page</td>
+</tr>
+<tr>
+<td>Checkpoint cannot be shown</td>
+<td>Label the remainder &quot;documentation walkthrough, not observed tenant behavior&quot;</td>
+</tr>
+</tbody></table>
+<p><strong>Offline path</strong>: Open <a href="https://docs.github.com/en/copilot/concepts/enterprise/policies">policy concepts</a> and use the deck&#39;s control-plane slide. Describe an enterprise-enforced disabled client and a different delegated feature as a <strong>hypothetical</strong> pair. Ask who can approve each change.</p>
+<h3 id="reset-and-cleanup">Reset and Cleanup</h3>
+<p>No live state changes or exports are expected. Close the test tabs after delivery. If staging changed a policy, the authorized owner restores the recorded baseline after class and verifies it in both views. If any state changes unexpectedly during class, stop and notify that owner; do not silently self-repair.</p>
+<h2 id="demo-2-inspect-managed-settings-on-a-client-7-min">Demo 2: Inspect Managed Settings on a Client (7 min)</h2>
+<h3 id="purpose-and-prerequisites">Purpose and Prerequisites</h3>
+<p>Connect reviewed JSON, its delivery channel, and evidence of actual client enforcement. Supports workshop objectives 2 and 4 and Section 3.</p>
+<p>Use the pre-staged disposable Windows VM, current stable VS Code with Copilot, and the <a href="/gh-workshops/copilot-administration/downloads/templates/managed-settings.json" download>managed settings template</a>. No inference request or tool execution by an agent is needed.</p>
+<h3 id="pre-demo-setup-disposable-vm-only">Pre-Demo Setup: Disposable VM Only</h3>
+<ol>
+<li><p>Take a baseline VM snapshot and record the recovery owner before installing settings.</p>
+</li>
+<li><p>Confirm that the current client supports the two sample keys using the <a href="https://docs.github.com/en/copilot/reference/enterprise-administrators/enterprise-managed-settings">reference</a>. Do not assume support from valid JSON.</p>
+</li>
+<li><p>Check for MDM/server policies that take precedence. If another source already controls auto-approval, plan to explain that source; do not remove it.</p>
+</li>
+<li><p>Through the approved endpoint process, stage the sample as a regular, protected file at the following Windows location. Do not replace an existing policy file; use a clean VM instead.</p>
+<pre><code class="language-text">%ProgramFiles%\GitHubCopilot\managed-settings.json
+</code></pre>
+</li>
+<li><p>Ensure standard users cannot modify the policy file, then restart VS Code to load file-based settings.</p>
+</li>
+<li><p>Record the client version and selected harness. Run <strong>Developer: Policy Diagnostics</strong> from the Command Palette during rehearsal. Identify the exact policy, effective value/source, and matching session permission UI. The GitHub reference describes global auto-approval, while current VS Code documentation describes removing <strong>Allow all</strong> from the Copilot permissions picker and treats <code>ChatToolsAutoApprove</code> separately. Do not equate these controls or attribute a separate device policy to the sample. If the mapping cannot be confirmed, request vendor clarification and plan the illustrative fallback.</p>
+</li>
+<li><p>Prepare a sanitized excerpt or capture limited to the policy row. The full report may expose account/session information.</p>
+</li>
+<li><p>Rehearse showing the matching managed UI restriction without enabling it or invoking bypass mode.</p>
+</li>
+</ol>
+<p><strong>Server-managed alternative, preparation only</strong>: In a dedicated non-production enterprise, select the governance organization under <strong>AI controls &gt; Agents &gt; Configuration source</strong> and review the default-branch file <code>copilot/managed-settings.json</code> in its <code>.github-private</code> repository. Confirm the test user&#39;s license source and refresh the client before class. Selection and default-branch commits can affect all licensed users in scope; never do this live.</p>
+<h3 id="ordered-actions-and-talk-track">Ordered Actions and Talk Track</h3>
+<ol>
+<li><p><strong>0:00-1:00</strong>: Open the template. Explain that <code>model: auto</code> is a default, not an allowlist, and that the bypass key uses the string <code>disable</code>.</p>
+</li>
+<li><p><strong>1:00-2:00</strong>: Show the pre-staged file&#39;s location on the VM. Explain file-based targeting versus repository targeting.</p>
+</li>
+<li><p><strong>2:00-3:00</strong>: Read and parse the installed file with the following <strong>PowerShell</strong> command, only in the demo VM. It prints only the two workshop properties.</p>
+<pre><code class="language-powershell">$policyPath = Join-Path $env:ProgramFiles &#39;GitHubCopilot\managed-settings.json&#39;
+if (-not (Test-Path -LiteralPath $policyPath -PathType Leaf)) {
+    throw &quot;Demo policy file is missing: $policyPath&quot;
+}
+$policy = Get-Content -LiteralPath $policyPath -Raw -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
+[pscustomobject]@{
+    Model = $policy.model
+    BypassMode = $policy.permissions.disableBypassPermissionsMode
+}
+</code></pre>
+<p>Expected sample values, not proof of enforcement:</p>
+<pre><code class="language-text">Model  BypassMode
+-----  ----------
+auto   disable
+</code></pre>
+</li>
+<li><p><strong>3:00-5:00</strong>: Pause screen sharing before running <strong>Developer: Policy Diagnostics</strong> again. Privately verify the current policy identifier, value/source, and matching permission UI. Resume sharing only with sanitized evidence; label any prepared capture as prepared, not proof of current state. If current enforcement cannot be confirmed, use the illustrative fallback.</p>
+</li>
+<li><p><strong>5:00-6:00</strong>: Name the effective value and source. Explain that MDM/server/file/user precedence has restrictive exceptions, and that disabling bypass does not require prompts for every operation.</p>
+</li>
+<li><p><strong>6:00-7:00</strong>: Point out the service/client distinction: allowed models remain governed by GitHub policy. Mention the VS Code Claude/Codex harness restriction and distinguish harnesses from model choices. Return to the deck.</p>
+</li>
+</ol>
+<p><strong>Expected checkpoint</strong>: The actual client and harness show the managed bypass restriction, matching permission UI, and source evidence. A parsed file, an unrelated disabled global toggle, a control with no source, or a stale capture alone is not sufficient to claim current enforcement by the sample.</p>
+<h3 id="failure-recovery-and-offline-path">Failure, Recovery, and Offline Path</h3>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Safe response</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>File absent or malformed</td>
+<td>Let the command report the error; do not create or edit a device policy live</td>
+</tr>
+<tr>
+<td>Unexpected effective value or source</td>
+<td>Identify the mismatch; check higher-precedence channels later</td>
+</tr>
+<tr>
+<td>No diagnostic entry or unsupported client</td>
+<td>Do not claim enforcement; switch to offline and record the rehearsal gap</td>
+</tr>
+<tr>
+<td>Sensitive report content appears</td>
+<td>Stop screen sharing, close the report, and use only a sanitized capture</td>
+</tr>
+<tr>
+<td>Authentication or sync problem</td>
+<td>Do not expose credentials or spend the section reauthenticating; use fallback</td>
+</tr>
+</tbody></table>
+<p><strong>Offline path</strong>: Show the template and <a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-managed-settings/deploy-managed-settings">deployment documentation</a>, or use the local deck if disconnected. Write down the evidence fields verbally: <strong>client/harness, policy identifier, value, source, matching UI</strong>. A disabled managed bypass mode is an illustrative expected result, not an observed one; the exact VS Code mapping remains subject to rehearsal or vendor clarification. Use the model-default and higher-precedence scenarios from the deck.</p>
+<h3 id="reset-and-cleanup">Reset and Cleanup</h3>
+<p>Close diagnostics without saving or exporting raw identity/session data. After class, the authorized owner reverts the disposable VM to its recorded snapshot and verifies the baseline policy state. Do not remove an unrelated managed file, uninstall production policy, or commit a default-branch rollback in a shared enterprise merely to clean up this demo. For the server alternative, follow the approved baseline-restoration change and verify the client refresh.</p>
+<h2 id="demo-3-inspect-budgets-and-identify-the-limiting-control-5-min">Demo 3: Inspect Budgets and Identify the Limiting Control (5 min)</h2>
+<h3 id="purpose-and-prerequisites">Purpose and Prerequisites</h3>
+<p>Show that budget type, scope, hard-stop state, and consumption evidence matter more than the displayed dollar amount alone. Supports workshop objectives 3 and 4 and Section 4.</p>
+<p>Require authorized billing-view access, an existing sanitized non-production budget, and the guide&#39;s illustrative 100-seat example. No budget creation or paid requests are necessary.</p>
+<h3 id="pre-demo-setup">Pre-Demo Setup</h3>
+<ol>
+<li>Record the test billing entity, assigned role, and exact budget to inspect.</li>
+<li>Record type, scope, amount, hard-stop setting, alert configuration, and whether any cost center is excluded from an enterprise cap.</li>
+<li>Confirm that displayed consumption dates and periods are understood; zero usage is acceptable. Do not manufacture billable usage.</li>
+<li>Open <strong>Billing &amp; Licensing &gt; Budgets and alerts</strong> and a sanitized usage summary in advance. If the budget details are only available through an editing form, use a previously sanitized capture rather than manipulating the form live.</li>
+</ol>
+<h3 id="ordered-actions-and-talk-track">Ordered Actions and Talk Track</h3>
+<ol>
+<li><strong>0:00-1:00</strong>: Confirm the billing scope without displaying customer identity or payment details.</li>
+<li><strong>1:00-2:00</strong>: Inspect the pre-existing budget&#39;s type, scope, and amount. Say: &quot;A seat bill, a per-user consumption limit, and a metered spending limit are different things.&quot;</li>
+<li><strong>2:00-3:00</strong>: Identify the hard-stop state and alert-recipient roles. Say: &quot;An alert alone permits spending to continue; a ULB is always a hard stop.&quot;</li>
+<li><strong>3:00-4:00</strong>: Show sanitized usage evidence or the offline example. Contrast assigned seats and activity with actual AI credit consumption.</li>
+<li><strong>4:00-5:00</strong>: Present the scenario: &quot;$20 individual ULB exhausted; pool and enterprise spending headroom remain.&quot; Ask which limit blocks the user and who can approve a scoped exception. Do not raise a budget. Return to the deck.</li>
+</ol>
+<p><strong>Expected checkpoint</strong>: Attendees identify the individual ULB as the blocker. They recognize that the simplified 100-seat/$300 metered budget example totals $2,200 before other charges only under its stated assumptions.</p>
+<h3 id="failure-recovery-and-offline-path">Failure, Recovery, and Offline Path</h3>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Safe response</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>No billing permission</td>
+<td>Use the official docs and worked example; do not request owner access during class</td>
+</tr>
+<tr>
+<td>No spending history</td>
+<td>Explain the controls using zero usage; do not generate paid prompts</td>
+</tr>
+<tr>
+<td>Unexpected alert options or budget labels</td>
+<td>Note the difference and consult current documentation; do not infer missing behavior</td>
+</tr>
+<tr>
+<td>Budget is editable only through a form</td>
+<td>Do not type, toggle, or save; use the sanitized preparation capture or offline example</td>
+</tr>
+</tbody></table>
+<p><strong>Offline path</strong>: Open <a href="https://docs.github.com/en/copilot/concepts/billing-and-usage/organizations-and-enterprises/budgets">Copilot budgets</a> and the guide&#39;s worked example. Verbally identify <strong>type, scope, hard stop, owner</strong> for a hypothetical budget. Clearly distinguish the hypothetical $20 ULB from actual tenant data.</p>
+<h3 id="reset-and-cleanup">Reset and Cleanup</h3>
+<p>No new budget, seat, alert recipient, export, or paid usage is created during the demo. Close billing views. If preparation created or altered an object under an approved change, its authorized owner restores the recorded baseline and verifies that no production user is affected. Investigate any unexpected change through the normal billing/change process, not a live workshop repair.</p>
+<h2 id="rehearsal-acceptance">Rehearsal Acceptance</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Each live checkpoint has been observed in the instructor&#39;s actual non-production environment, or the demo is explicitly scheduled as offline.</li>
+<li><input disabled="" type="checkbox"> All captures and diagnostic excerpts are sanitized.</li>
+<li><input disabled="" type="checkbox"> No class step saves a setting, changes access, consumes credits, or exports account data.</li>
+<li><input disabled="" type="checkbox"> Demo times remain 5 + 7 + 5 = 17 minutes within the 60-minute agenda.</li>
+<li><input disabled="" type="checkbox"> The restoration owner and baseline are recorded before staging.</li>
+</ul>
+<p><em>Instructor demo runbook for GitHub Copilot Administration Workshop</em></p>
+</article>  </main> <script type="module" src="/gh-workshops/_astro/Base.astro_astro_type_script_index_0_lang.gsZV6wv4.js"></script> </body> </html>  <script type="module" src="/gh-workshops/_astro/_...document_.astro_astro_type_script_index_0_lang.OBuYvQ_z.js"></script>
